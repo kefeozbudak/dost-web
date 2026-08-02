@@ -107,8 +107,12 @@ ${knowledgeBase || 'Yok'}`;
       
       if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
         try {
+          let host = process.env.SMTP_HOST;
+          if (host.includes('://')) {
+            host = host.split('://')[1];
+          }
           const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
+            host: host,
             port: Number(process.env.SMTP_PORT) || 587,
             secure: Number(process.env.SMTP_PORT) === 465,
             auth: {

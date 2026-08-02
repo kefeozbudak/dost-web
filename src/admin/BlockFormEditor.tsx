@@ -230,6 +230,52 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         </label>
       </div>
       <div className="p-4 overflow-y-auto flex-1">
+        <div className="mb-6 p-4 bg-white border border-slate-200 rounded-xl space-y-4 shadow-sm">
+          <h4 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-3">Genel Modül Ayarları</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Zemin Rengi</label>
+              <div className="flex items-center gap-2">
+                <input 
+                  type="color" 
+                  value={block.styles?.backgroundColor || '#ffffff'} 
+                  onChange={(e) => {
+                    const newStyles = { ...(block.styles || {}), backgroundColor: e.target.value };
+                    handleChange('styles', newStyles);
+                  }}
+                  className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                />
+                <input 
+                  type="text" 
+                  value={block.styles?.backgroundColor || ''}
+                  onChange={(e) => {
+                    const newStyles = { ...(block.styles || {}), backgroundColor: e.target.value };
+                    handleChange('styles', newStyles);
+                  }}
+                  placeholder="Varsayılan (Boş bırakılabilir)"
+                  className="flex-1 text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-end">
+              <label className="flex items-center gap-2 text-sm font-bold text-slate-600 mb-1.5 cursor-pointer bg-slate-50 px-3 py-1.5 rounded border border-slate-200 w-full">
+                <input 
+                  type="checkbox" 
+                  checked={!!block.styles?.fullWidth}
+                  onChange={(e) => {
+                    const newStyles = { ...(block.styles || {}), fullWidth: e.target.checked };
+                    handleChange('styles', newStyles);
+                  }}
+                  className="rounded text-blue-600 w-4 h-4 border-slate-300"
+                />
+                Tam Genişlik (Sağ-Sol Yasla)
+              </label>
+            </div>
+          </div>
+        </div>
+
         {block.type === 'hero' && (
           <div className="space-y-4">
             <div>
@@ -237,7 +283,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               <select 
                 value={block.layoutOrder || 'text_images_buttons'} 
                 onChange={(e) => handleChange('layoutOrder', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 font-medium"
               >
                 <option value="text_images_buttons">Yazı - Resimler - Butonlar</option>
                 <option value="images_text_buttons">Resimler - Yazı - Butonlar</option>
@@ -246,7 +292,124 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             </div>
 
             {renderInputWithStyle('Badge (İsteğe Bağlı)', 'badge')}
-            {renderTextareaWithStyle('Ana Başlık', 'title')}
+
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Başlık Ayarları & Yerleşimi</span>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Başlık Durumu (Metin Yerleşimi)</label>
+                <select 
+                  value={block.titleLayout || block.styles?.titleLayout || 'inline'} 
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    onChange({
+                      ...block,
+                      titleLayout: val,
+                      styles: { ...(block.styles || {}), titleLayout: val }
+                    });
+                  }}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 font-medium bg-white"
+                >
+                  <option value="inline">Yan Yana (Aynı Hizada)</option>
+                  <option value="stacked">Alt Alta (Üst Üste Düzen)</option>
+                </select>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">1. Başlık Parçası (Metin 1)</label>
+                  <FieldStylePicker block={block} fieldKey="titlePart1" onChange={handleStyleChange} />
+                </div>
+                <input 
+                  type="text" 
+                  value={block.titlePart1 || ''} 
+                  onChange={e => {
+                    const p1 = e.target.value;
+                    const p2 = block.titlePart2 || '';
+                    onChange({
+                      ...block,
+                      titlePart1: p1,
+                      title: `${p1} ${p2}`.trim()
+                    });
+                  }} 
+                  placeholder="örn: Eğitimde Dostluk"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 bg-white font-bold" 
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">2. Başlık Parçası (Metin 2)</label>
+                  <FieldStylePicker block={block} fieldKey="titlePart2" onChange={handleStyleChange} />
+                </div>
+                <input 
+                  type="text" 
+                  value={block.titlePart2 || ''} 
+                  onChange={e => {
+                    const p2 = e.target.value;
+                    const p1 = block.titlePart1 || '';
+                    onChange({
+                      ...block,
+                      titlePart1: p1,
+                      titlePart2: p2,
+                      title: `${p1} ${p2}`.trim()
+                    });
+                  }} 
+                  placeholder="örn: Gelecekte Başarı"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 bg-white font-bold" 
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Birleşik / Genel Ana Başlık</label>
+                  <FieldStylePicker block={block} fieldKey="title" onChange={handleStyleChange} />
+                </div>
+                <textarea 
+                  value={block.title || ''} 
+                  onChange={e => {
+                    const val = e.target.value;
+                    let p1 = '';
+                    let p2 = '';
+                    
+                    if (val.includes(',')) {
+                      const parts = val.split(',');
+                      p1 = parts[0].trim();
+                      p2 = parts.slice(1).join(',').trim();
+                    } else if (val.includes('\n')) {
+                      const parts = val.split('\n');
+                      p1 = parts[0].trim();
+                      p2 = parts.slice(1).join(' ').trim();
+                    } else if (val.includes(' ')) {
+                      const words = val.trim().split(' ');
+                      if (words.length >= 2) {
+                        const mid = Math.ceil(words.length / 2);
+                        p1 = words.slice(0, mid).join(' ');
+                        p2 = words.slice(mid).join(' ');
+                      } else {
+                        p1 = val;
+                        p2 = '';
+                      }
+                    } else {
+                      p1 = val;
+                      p2 = '';
+                    }
+
+                    onChange({
+                      ...block,
+                      title: val,
+                      titlePart1: p1,
+                      titlePart2: p2
+                    });
+                  }} 
+                  placeholder="örn: Eğitimde Dostluk, Gelecekte Başarı"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 bg-white min-h-[70px]" 
+                />
+              </div>
+            </div>
+
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},

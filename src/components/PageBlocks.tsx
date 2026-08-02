@@ -60,12 +60,12 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
         case 'news_hero':
           return (
-            <section key={index} className={`relative pt-32 pb-20 overflow-hidden ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+            <section key={index} className={`relative pt-32 pb-20 overflow-hidden ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
               <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 z-10"></div>
                 <div className="w-full h-full" style={getImageStyle(block, 'image')}></div>
               </div>
-              <div className={`relative z-20 px-margin-mobile md:px-margin-desktop ${block.fullWidth ? 'max-w-container-max mx-auto' : 'w-full'}`}>
+              <div className={`relative z-20 px-margin-mobile md:px-margin-desktop ${(block.fullWidth || block.styles?.fullWidth) ? 'max-w-container-max mx-auto' : 'w-full'}`}>
                 <div className="max-w-2xl text-on-primary">
                   {block.title && <h1 style={getTitleStyle(block)} className="font-display-lg text-[36px] md:text-display-lg mb-4 whitespace-pre-line" dangerouslySetInnerHTML={{ __html: block.title }}></h1>}
                   {block.subtitle && <p style={getSubtitleStyle(block)} className="font-body-lg text-base md:text-body-lg opacity-90 leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{ __html: block.subtitle }}></p>}
@@ -76,9 +76,9 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
         case 'news_grid':
           return (
-            <div key={index} className={block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto'}>
+            <div key={index} className={(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto'} style={getStyle(block, '')}>
               <section className="bg-surface-container-lowest sticky top-20 z-40 border-b border-border-subtle" style={getStyle(block, 'filterContainer')}>
-                <div className={`px-margin-mobile md:px-margin-desktop ${block.fullWidth ? 'max-w-container-max mx-auto' : 'w-full'}`}>
+                <div className={`px-margin-mobile md:px-margin-desktop ${(block.fullWidth || block.styles?.fullWidth) ? 'max-w-container-max mx-auto' : 'w-full'}`}>
                   <div className="flex flex-nowrap md:flex-wrap overflow-x-auto items-center gap-6 md:gap-8 py-4 no-scrollbar">
                     {block.categories?.map((cat: any, i: number) => (
                       <button key={i} className={`whitespace-nowrap category-btn font-label-md text-sm md:text-label-md pb-4 transition-all ${i === 0 ? 'text-primary border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`}>
@@ -90,7 +90,7 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
               </section>
 
               <section className="py-10 md:py-section-gap px-margin-mobile md:px-margin-desktop" style={getStyle(block, '')}>
-                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-gutter ${block.fullWidth ? 'max-w-container-max mx-auto' : 'w-full'}`}>
+                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-gutter ${(block.fullWidth || block.styles?.fullWidth) ? 'max-w-container-max mx-auto' : 'w-full'}`}>
                   {block.items?.map((item: any, i: number) => (
                     <div key={i} className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden hover:shadow-sm transition-all group flex flex-col" style={{ backgroundColor: item.cardBgColor, borderColor: item.cardBorderColor, borderRadius: item.cardBorderRadius }}>
                       <div className="relative aspect-video overflow-hidden">
@@ -138,8 +138,8 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
         case 'newsletter':
           return (
-            <section key={index} className={`py-12 md:py-section-gap px-margin-mobile md:px-margin-desktop bg-primary-container/10 ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={`max-w-4xl mx-auto text-center ${block.fullWidth ? 'max-w-container-max mx-auto' : 'w-full'}`}>
+            <section key={index} className={`py-12 md:py-section-gap px-margin-mobile md:px-margin-desktop bg-primary-container/10 ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+              <div className={`max-w-4xl mx-auto text-center ${(block.fullWidth || block.styles?.fullWidth) ? 'max-w-container-max mx-auto' : 'w-full'}`}>
                 {block.icon && <span className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4" style={{ fontVariationSettings: "'FILL' 1" }}>{block.icon}</span>}
                 {block.title && <h2 style={getTitleStyle(block)} className="font-headline-xl text-[28px] md:text-headline-xl text-primary mb-4 whitespace-pre-line" dangerouslySetInnerHTML={{ __html: block.title }}></h2>}
                 {block.desc && <p style={getSubtitleStyle(block)} className="font-body-lg text-base md:text-body-lg text-on-surface-variant mb-6 md:mb-8 whitespace-pre-line" dangerouslySetInnerHTML={{ __html: block.desc }}></p>}
@@ -154,28 +154,56 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
           );
         case 'hero':
           return (
-            <section key={index} className={`relative flex flex-col justify-center items-center pt-8 pb-8 md:pt-12 md:pb-10 px-margin-mobile md:px-margin-desktop bg-[#f8f9fa] overflow-hidden ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`}>
+            <section key={index} className={`relative flex flex-col justify-center items-center pt-8 pb-8 md:pt-12 md:pb-10 px-margin-mobile md:px-margin-desktop bg-[#f8f9fa] overflow-hidden ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
               
               <div className="w-full flex flex-col gap-6 md:gap-10">
                 {(() => {
                   const layoutOrder = block.layoutOrder || 'text_images_buttons';
                   
                   const textContent = (
-                    <div className={`${block.fullWidth ? "max-w-container-max mx-auto" : "w-full"} text-center relative z-10`}>
+                    <div className={`${(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"} text-center relative z-10`}>
                       {block.badge && (
                         <span style={getBadgeStyle(block)} className="inline-block py-1.5 px-6 rounded-full bg-blue-100/80 text-blue-800 text-[11px] font-bold mb-4 tracking-widest">
                           {block.badge}
                         </span>
                       )}
-                      {block.titlePart1 || block.titlePart2 ? (
-                        <h1 style={getTitleStyle(block)} className="text-4xl md:text-5xl lg:text-[56px] font-extrabold mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-wrap">
-                          {block.titlePart1 && <span style={getTitlePart1Style(block)}>{block.titlePart1}</span>}
-                          {' '}
-                          {block.titlePart2 && <span style={getTitlePart2Style(block)}>{block.titlePart2}</span>}
-                        </h1>
-                      ) : (
-                        <h1 style={getTitleStyle(block)} className="text-4xl md:text-5xl lg:text-[56px] font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.title || ""}}></h1>
-                      )}
+                      {(() => {
+                        const isStacked = block.titleLayout === 'stacked' || block.styles?.titleLayout === 'stacked';
+                        const hasPart1 = Boolean(block.titlePart1 && block.titlePart1.trim());
+                        const hasPart2 = Boolean(block.titlePart2 && block.titlePart2.trim());
+
+                        if (hasPart1 || hasPart2) {
+                          return (
+                            <h1 
+                              style={getTitleStyle(block)} 
+                              className={`text-4xl md:text-5xl lg:text-[56px] font-extrabold mb-4 max-w-4xl mx-auto leading-tight ${
+                                isStacked 
+                                  ? 'flex flex-col items-center justify-center gap-1 md:gap-2' 
+                                  : 'flex flex-wrap items-center justify-center gap-x-3 md:gap-x-4 gap-y-1'
+                              }`}
+                            >
+                              {hasPart1 && (
+                                <span style={getTitlePart1Style(block)} className="inline-block">
+                                  {block.titlePart1}
+                                </span>
+                              )}
+                              {hasPart2 && (
+                                <span style={getTitlePart2Style(block)} className="inline-block">
+                                  {block.titlePart2}
+                                </span>
+                              )}
+                            </h1>
+                          );
+                        }
+
+                        return (
+                          <h1 
+                            style={getTitleStyle(block)} 
+                            className="text-4xl md:text-5xl lg:text-[56px] font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line" 
+                            dangerouslySetInnerHTML={{ __html: block.title || "" }}
+                          />
+                        );
+                      })()}
                       <p style={getSubtitleStyle(block)} className="text-base md:text-[17px] text-[#556987] max-w-3xl mx-auto whitespace-pre-line font-medium leading-relaxed" dangerouslySetInnerHTML={{__html: block.subtitle || ""}}></p>
                     </div>
                   );
@@ -269,8 +297,8 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
         
         case 'education_levels':
           return (
-            <section key={index} className={`py-section-gap px-margin-mobile md:px-margin-desktop ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={{ backgroundColor: block.styles?.backgroundColor || '#4873f4', ...getStyle(block, '') }}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto" : "w-full"}>
+            <section key={index} className={`py-section-gap px-margin-mobile md:px-margin-desktop ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={{ backgroundColor: block.styles?.backgroundColor || '#4873f4', ...getStyle(block, '') }}>
+              <div className={(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"}>
                 <div className="flex flex-row items-center gap-4 mb-10 md:mb-12">
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm">
                     <span className="material-symbols-outlined text-white text-3xl">school</span>
@@ -302,8 +330,8 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
           
         case 'features':
           return (
-            <section key={index} className={`py-section-gap px-margin-desktop ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto" : "w-full"}>
+            <section key={index} className={`py-section-gap px-margin-desktop ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+              <div className={(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"}>
               <div className="text-center mb-10 md:mb-16">
                 <span style={getSubtitleStyle(block)} className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.subtitle || ""}}></span>
                 <h2 style={getTitleStyle(block)} className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.title || ""}}></h2>
@@ -339,8 +367,8 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
           
         case 'campuses':
           return (
-            <section key={index} className={`py-section-gap px-margin-desktop bg-surface-container/50 ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto" : "w-full"}>
+            <section key={index} className={`py-section-gap px-margin-desktop bg-surface-container/50 ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+              <div className={(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"}>
               <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-12 gap-6">
                 <div>
                   <span style={getSubtitleStyle(block)} className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.subtitle || ""}}></span>
@@ -376,8 +404,8 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
           
                 case 'video':
           return (
-            <section key={index} className={`py-section-gap px-margin-mobile md:px-margin-desktop relative overflow-hidden ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto relative z-10" : "relative z-10"}>
+            <section key={index} className={`py-section-gap px-margin-mobile md:px-margin-desktop relative overflow-hidden ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+              <div className={(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto relative z-10" : "relative z-10"}>
                 <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
                 
@@ -416,13 +444,18 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
         case 'stats':
           return (
-            <section key={index} className={`py-section-gap px-margin-desktop text-center ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto" : "w-full"}>
-              <div className="bg-primary-container rounded-2xl md:rounded-[2rem] p-8 md:p-12 lg:p-20 relative overflow-hidden">
+            <section 
+              key={index} 
+              className={`py-section-gap px-margin-mobile md:px-margin-desktop text-center bg-primary-container ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} 
+              style={getStyle(block, '')}
+            >
+              <div className="relative overflow-hidden w-full h-full absolute inset-0 rounded-3xl pointer-events-none">
                 <div className="absolute inset-0 z-0 opacity-10">
                   <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
                 </div>
-                <div className="relative z-10">
+              </div>
+              <div className={`${(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"} relative z-10 p-4 md:p-8 lg:p-12`}>
+                <div>
                   <h2 style={getTitleStyle(block)} className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.title || ""}}></h2>
                   <p style={getSubtitleStyle(block)} className="text-white/80 max-w-2xl mx-auto mb-8 md:mb-12 text-sm md:text-lg whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.subtitle || ""}}></p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12">
@@ -441,13 +474,12 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
                   )}
                 </div>
               </div>
-              </div>
             </section>
           );
         case 'news':
           return (
-            <section key={index} className={`py-section-gap px-margin-desktop ${block.fullWidth ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
-              <div className={block.fullWidth ? "max-w-container-max mx-auto" : "w-full"}>
+            <section key={index} className={`py-section-gap px-margin-desktop ${(block.fullWidth || block.styles?.fullWidth) ? 'w-full' : 'max-w-container-max mx-auto rounded-3xl'}`} style={getStyle(block, '')}>
+              <div className={(block.fullWidth || block.styles?.fullWidth) ? "max-w-container-max mx-auto" : "w-full"}>
               <div className="flex justify-between items-end mb-10 md:mb-12">
                 <div>
                   <span style={getSubtitleStyle(block)} className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line" dangerouslySetInnerHTML={{__html: block.subtitle || ""}}></span>
@@ -873,7 +905,7 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
       if (block.type === 'achievements_academic_bento') {
         return (
-          <section key={block.id} className="py-20 bg-[#faf8ff]">
+          <section key={block.id} className="py-20 bg-[#faf8ff]" style={getStyle(block, '')}>
             <div className="max-w-7xl mx-auto px-8">
               <div className="text-center mb-16">
                 <h2 className="font-bold text-[36px] text-[#1a1b23] mb-4">{block.title}</h2>
@@ -967,7 +999,7 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
       if (block.type === 'achievements_social_gallery') {
         return (
-          <section key={block.id} className="py-20 bg-white">
+          <section key={block.id} className="py-20 bg-white" style={getStyle(block, '')}>
             <div className="max-w-7xl mx-auto px-8">
               <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
                 <div className="max-w-2xl">
@@ -1008,7 +1040,7 @@ export const DynamicBlockRenderer = ({ blocks, onBlockClick }: { blocks: any[], 
 
       if (block.type === 'achievements_science_projects') {
         return (
-          <section key={block.id} className="py-20 bg-[#f3f2fd] overflow-hidden">
+          <section key={block.id} className="py-20 bg-[#f3f2fd] overflow-hidden" style={getStyle(block, '')}>
             <div className="max-w-7xl mx-auto px-8">
               <div className="bg-[#0f172a] rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#1d4eca]/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px]"></div>
