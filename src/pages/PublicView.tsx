@@ -102,20 +102,6 @@ export default function PublicView() {
             blocks: module.defaultBasarilarimizData
           });
         });
-} else if (location.pathname === '/yonetim-kadrosu') {
-        import('../lib/defaultData').then((module) => {
-          setPageData({
-            title: 'Yönetim Kadrosu',
-            blocks: module.defaultYonetimKadrosuData.filter((b: any) => b.type !== 'header' && b.type !== 'footer')
-          });
-        });
-} else if (location.pathname === '/akademik-kadro') {
-        import('../lib/defaultData').then((module) => {
-          setPageData({
-            title: 'Akademik Kadro',
-            blocks: module.defaultAkademikKadroData.filter((b: any) => b.type !== 'header' && b.type !== 'footer')
-          });
-        });
 } else if (location.pathname === '/hakkimizda') {
         import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
           setPageData({

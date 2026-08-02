@@ -362,7 +362,7 @@ export const DynamicBlockRenderer = ({
                   </button>
                 </div>
               </div>
-              <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="flex gap-gutter overflow-x-auto no-scrollbar pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 {(block.items || []).map((item: any, i: number) => (
                   <div key={i} className="min-w-[350px] bg-white rounded-2xl overflow-hidden shadow-sm border border-border-subtle group flex-shrink-0" style={getCardStyle(item)}>
                     <div className="h-64 overflow-hidden relative">
@@ -1049,7 +1049,7 @@ export const DynamicBlockRenderer = ({
                 style={getStyle(block, "")}
               >
                 <div
-                  className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
+                  className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-gutter ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
                 >
                   {block.items?.map((item: any, i: number) => (
                     <div
@@ -1652,7 +1652,7 @@ export const DynamicBlockRenderer = ({
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-gutter">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -1795,7 +1795,7 @@ export const DynamicBlockRenderer = ({
                 backgroundPosition: "center center",
               }}
             >
-              <div className="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center">
+              <div className="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 gap-gutter relative z-10 py-20 items-center">
                 <div className="space-y-6 text-center mx-auto">
                   {block.badge && (
                     <span className="inline-block bg-primary-container/20 text-inverse-primary px-4 py-1 rounded-full text-label-sm font-label-sm">
@@ -1876,7 +1876,7 @@ export const DynamicBlockRenderer = ({
                     style={{ backgroundColor: "#D4AF37" }}
                   ></div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
                   {/* LGS Card */}
                   {block.items && block.items[0] && (
                     <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2">
@@ -2036,7 +2036,7 @@ export const DynamicBlockRenderer = ({
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -2236,7 +2236,7 @@ export const DynamicBlockRenderer = ({
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-gutter">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -2435,7 +2435,7 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface-container-low"
               style={getStyle(block, "")}
             >
-              <div className="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-2 gap-6">
+              <div className="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-2 gap-gutter">
                 {block.items?.map((item: any, i: number) => {
                   const isSecondary = i % 2 !== 0;
                   return (
@@ -2499,7 +2499,7 @@ export const DynamicBlockRenderer = ({
                     ></p>
                   )}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
                   {block.items?.map((item: any, i: number) => {
                     const colors = [
                       "text-primary",
@@ -3170,7 +3170,7 @@ export const DynamicBlockRenderer = ({
               className="relative pt-32 pb-section-gap px-margin-desktop bg-surface-bright overflow-hidden"
               style={getStyle(block, "container")}
             >
-              <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center relative z-10">
+              <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center relative z-10">
                 <div className="space-y-6">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed/20 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider">
@@ -3436,7 +3436,7 @@ export const DynamicBlockRenderer = ({
                     )}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
                   {(block.items || []).map((item: any, i: number) => (
                     <div
                       key={i}
@@ -3499,7 +3499,7 @@ export const DynamicBlockRenderer = ({
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-surface-background via-surface-background/80 to-transparent"></div>
               </div>
-              <div className="relative z-10 max-w-container-max mx-auto px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="relative z-10 max-w-container-max mx-auto px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
                 <div className="col-span-1 md:col-span-7 lg:col-span-6 space-y-6">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
@@ -3815,7 +3815,7 @@ export const DynamicBlockRenderer = ({
             style={getStyle(block, "container")}
           >
             <div className="max-w-container-max mx-auto px-margin-desktop">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
                 <div className="md:col-span-5 order-2 md:order-1 relative">
                   <div className="absolute -inset-4 bg-secondary/5 rounded-2xl -z-10"></div>
                   <div
@@ -4611,290 +4611,6 @@ export const DynamicBlockRenderer = ({
         );
       }
 
-      if (block.type === 'menu_hero') {
-        return (
-          <section key={index} className="relative h-[400px] flex items-center overflow-hidden" style={getStyle(block, 'container')}>
-            {block.image && <img alt="" className="absolute inset-0 w-full h-full object-cover" src={block.image} style={getImageStyle(block, 'image', index)} />}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-            <div className="max-w-container-max mx-auto px-margin-desktop relative z-10 w-full">
-              <div className="max-w-2xl">
-                {block.badge && (
-                  <span className="inline-block py-1 px-3 rounded-full bg-primary/20 text-[#b6c4ff] text-sm font-semibold mb-4 backdrop-blur-sm border border-white/10" style={getBadgeStyle(block)}>
-                    {block.badge}
-                  </span>
-                )}
-                <h1 className="text-4xl lg:text-6xl font-black text-white mb-6 leading-tight" style={getTitleStyle(block)}>{block.title}</h1>
-                {block.subtitle && (
-                  <p className="text-lg lg:text-xl text-white/80 font-light leading-relaxed">
-                    {block.subtitle}
-                  </p>
-                )}
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === 'menu_calendar') {
-        return (
-          <section key={index} className="py-12 bg-surface-background" style={getStyle(block, 'container')}>
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 max-w-container-max mx-auto px-margin-desktop">
-              <div>
-                <h2 className="text-2xl font-bold text-slate-800" style={getTitleStyle(block)}>{block.title}</h2>
-                {block.subtitle && <p className="text-slate-500">{block.subtitle}</p>}
-              </div>
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm">
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
-                    <span className="material-symbols-outlined text-slate-500">chevron_left</span>
-                  </button>
-                  <span className="px-6 font-bold text-slate-800 min-w-[140px] text-center">{block.month || "Ekim 2023"}</span>
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
-                    <span className="material-symbols-outlined text-slate-500">chevron_right</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="max-w-container-max mx-auto px-margin-desktop">
-              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200">
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block">Pazartesi</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block">Salı</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block">Çarşamba</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block">Perşembe</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block">Cuma</div>
-                  <div className="py-5 text-center text-xs font-black text-primary uppercase tracking-widest hidden md:block">Cumartesi</div>
-                  <div className="py-5 text-center text-xs font-black text-red-500 uppercase tracking-widest hidden md:block">Pazar</div>
-                  
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest md:hidden">Pzt</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest md:hidden">Sal</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest md:hidden">Çar</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest md:hidden">Per</div>
-                  <div className="py-5 text-center text-xs font-black text-slate-600 uppercase tracking-widest md:hidden">Cum</div>
-                  <div className="py-5 text-center text-xs font-black text-primary uppercase tracking-widest md:hidden">Cmt</div>
-                  <div className="py-5 text-center text-xs font-black text-red-500 uppercase tracking-widest md:hidden">Paz</div>
-                </div>
-                
-                <div className="grid grid-cols-7 divide-x divide-y divide-slate-200">
-                  {block.days?.map((day: any, i: number) => {
-                    if (!day.isCurrentMonth) {
-                      return (
-                        <div key={i} className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px]">
-                          <span className="text-slate-400 font-medium opacity-50 text-xs md:text-base">{day.date}</span>
-                        </div>
-                      );
-                    }
-                    
-                    if (day.isClosed) {
-                      return (
-                        <div key={i} className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30">
-                          <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3">
-                            <span className="text-sm md:text-xl font-black text-slate-800">{day.date}</span>
-                            <span className="text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase text-center w-full md:w-auto">Kapalı</span>
-                          </div>
-                        </div>
-                      );
-                    }
-                    
-                    if (day.isToday) {
-                      return (
-                        <div key={i} className="p-2 md:p-4 bg-primary/5 transition-colors ring-1 md:ring-2 ring-inset ring-primary relative min-h-[120px] md:min-h-[220px]">
-                          <div className="absolute -top-1 -right-1">
-                            <span className="flex h-3 w-3 md:h-4 md:w-4">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-primary"></span>
-                            </span>
-                          </div>
-                          <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3">
-                            <span className="text-sm md:text-xl font-black text-primary">{day.date}</span>
-                            <span className="text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-primary text-white uppercase text-center w-full xl:w-auto">Bugün</span>
-                          </div>
-                          <ul className="space-y-1 md:space-y-2">
-                            {(Array.isArray(day.meals) ? day.meals : typeof day.meals === 'string' ? day.meals.split(/[,\n]+/).map((s: string) => s.trim()).filter(Boolean) : [])?.map((meal: string, mIndex: number) => (
-                              <li key={mIndex} className="text-[10px] md:text-sm font-bold text-slate-800 flex items-start gap-1 md:gap-2 leading-tight">
-                                <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0"></span> {meal}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      );
-                    }
-                    
-                    return (
-                      <div key={i} className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px]">
-                        <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3">
-                          <span className="text-sm md:text-xl font-black text-slate-800">{day.date}</span>
-                          {day.kcal && <span className="text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] uppercase text-center w-full xl:w-auto">{day.kcal}</span>}
-                        </div>
-                        <ul className="space-y-1 md:space-y-2">
-                          {(Array.isArray(day.meals) ? day.meals : typeof day.meals === 'string' ? day.meals.split(/[,\n]+/).map((s: string) => s.trim()).filter(Boolean) : [])?.map((meal: string, mIndex: number) => (
-                            <li key={mIndex} className="text-[10px] md:text-sm text-slate-700 flex items-start gap-1 md:gap-2 leading-tight">
-                              <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0"></span> {meal}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  })}
-                  
-                  {Array.from({ length: Math.max(0, 35 - (block.days?.length || 0)) }).map((_, i) => (
-                    <div key={"empty-" + i} className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px]"></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === 'menu_features') {
-        return (
-          <section key={index} className="py-8 bg-surface-background max-w-container-max mx-auto px-margin-desktop" style={getStyle(block, 'container')}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {block.items?.map((item: any, i: number) => (
-                <div key={i} className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4" style={getCardStyle(item)}>
-                  {item.icon && <span className="material-symbols-outlined text-4xl" style={{ color: item.iconColor || 'var(--color-primary)' }}>{item.icon}</span>}
-                  <div>
-                    <h4 className="font-bold text-slate-800" style={{ color: item.itemTitleColor }}>{item.title}</h4>
-                    <p className="text-sm text-slate-500" style={{ color: item.itemDescColor }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        );
-      }
-      if (block.type === 'academic_calendar_hero') {
-        return (
-          <section key={index} className="relative bg-primary text-on-primary overflow-hidden" style={getStyle(block, 'container')}>
-            <div className="absolute inset-0 z-0">
-              <div 
-                className="w-full h-full bg-cover bg-center opacity-30 mix-blend-multiply" 
-                style={getImageStyle(block, 'image', index)} 
-              />
-            </div>
-            <div className="relative z-10 max-w-container-max mx-auto px-margin-desktop py-section-gap flex flex-col items-center text-center">
-              <h1 className="font-display-lg text-display-lg text-on-primary mb-6" style={getTitleStyle(block)}>{block.title}</h1>
-              {block.subtitle && (
-                <p className="font-body-lg text-body-lg text-on-primary-container max-w-2xl" style={getSubtitleStyle(block)}>
-                  {block.subtitle}
-                </p>
-              )}
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === 'academic_calendar') {
-        return (
-          <div key={index} className="max-w-container-max mx-auto px-margin-desktop py-section-gap" style={getStyle(block, 'container')}>
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm">
-              <div className="flex items-center space-x-6 mb-4 md:mb-0">
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center">
-                  <span className="material-symbols-outlined">chevron_left</span>
-                </button>
-                <h2 className="font-headline-xl text-headline-xl text-on-surface">{block.month || "Ekim 2023"}</h2>
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center">
-                  <span className="material-symbols-outlined">chevron_right</span>
-                </button>
-              </div>
-              <div className="flex space-x-4">
-                {block.pdfUrl && (
-                  <a href={block.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors">
-                    <span className="material-symbols-outlined text-xl">picture_as_pdf</span>
-                    <span>{block.pdfButtonText || "PDF İndir"}</span>
-                  </a>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-section-gap">
-              <div className="grid grid-cols-7 border-b border-border-subtle bg-surface-container-low">
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant hidden md:block">Pazartesi</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant hidden md:block">Salı</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant hidden md:block">Çarşamba</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant hidden md:block">Perşembe</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant hidden md:block">Cuma</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant text-error hidden md:block">Cumartesi</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant text-error hidden md:block">Pazar</div>
-                
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant md:hidden">Pzt</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant md:hidden">Sal</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant md:hidden">Çar</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant md:hidden">Per</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant md:hidden">Cum</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant text-error md:hidden">Cmt</div>
-                <div className="py-4 text-center font-label-md text-label-md text-on-surface-variant text-error md:hidden">Paz</div>
-              </div>
-
-              <div className="grid grid-cols-7 border-l border-t border-border-subtle">
-                {block.days?.map((day: any, i: number) => {
-                  if (!day.isCurrentMonth) {
-                    return (
-                      <div key={i} className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container relative">
-                        <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2">{day.date}</span>
-                      </div>
-                    );
-                  }
-
-                  if (day.isWeekend) {
-                    return (
-                      <div key={i} className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container-high relative">
-                        <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2">{day.date}</span>
-                        <div className="mt-8 text-center text-on-surface-variant font-caption text-[8px] md:text-caption opacity-50">Hafta Sonu</div>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={i} className={`min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle relative group hover:bg-surface-container-lowest transition-colors ${day.isToday ? 'ring-2 ring-primary ring-inset' : ''} ${day.bgColor ? day.bgColor : 'bg-surface-card'}`}>
-                      {day.isToday && <span className="absolute top-1 md:top-2 left-1 md:left-2 bg-primary text-on-primary font-caption text-[8px] md:text-caption px-1.5 py-0.5 rounded uppercase tracking-wider">Bugün</span>}
-                      <span className={`font-label-md text-label-md absolute top-1 md:top-2 right-1 md:right-2 ${day.isToday ? 'text-primary font-bold' : 'text-on-surface'}`}>{day.date}</span>
-                      
-                      <div className="mt-6 md:mt-8 space-y-1">
-                        {day.events && day.events.length > 0 ? day.events.map((event: any, eIndex: number) => (
-                          <div key={eIndex} className={`px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[10px] font-bold leading-tight truncate border ${event.colorClass || "bg-surface-container text-on-surface border-border-subtle"}`}>
-                            {event.title}
-                            {event.subtitle && <><br /><span className="font-normal opacity-90 text-center block">{event.subtitle}</span></>}
-                          </div>
-                        )) : day.eventTitle ? (
-                          <div className={`px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[10px] font-bold leading-tight truncate border ${day.eventColorClass || "bg-surface-container text-on-surface border-border-subtle"}`}>
-                            {day.eventTitle}
-                            {day.eventSubtitle && <><br /><span className="font-normal opacity-90 text-center block">{day.eventSubtitle}</span></>}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {block.legends && block.legends.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                {block.legends.map((legend: any, i: number) => (
-                  <div key={i} className="bg-surface-card border border-border-subtle rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow" style={getCardStyle(legend)}>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className={`w-8 h-8 rounded flex items-center justify-center ${legend.iconBgClass || 'bg-surface-container'}`}>
-                        <span className={`material-symbols-outlined text-sm ${legend.iconColorClass || 'text-on-surface'}`} style={{ fontVariationSettings: "'FILL' 1" }}>{legend.icon}</span>
-                      </div>
-                      <h3 className="font-headline-md text-headline-md text-on-surface" style={{ color: legend.itemTitleColor }}>{legend.title}</h3>
-                    </div>
-                    <p className="font-body-md text-body-md text-on-surface-variant mb-4" style={{ color: legend.itemDescColor }}>{legend.desc}</p>
-                    {legend.url && (
-                      <a href={legend.url} className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline">
-                        <span>{legend.buttonText || "İncele"}</span>
-                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      }
       return null;
     };
 

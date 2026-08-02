@@ -50,22 +50,12 @@ export default function PageEditor() {
   
   const [selectedBlockIndex, setSelectedBlockIndex] = useState<number | null>(null);
   const [editorVisible, setEditorVisible] = useState(false);
+  const [activeArrayItem, setActiveArrayItem] = useState<{ arrayKey: string, index: number } | null>(null);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'pages'), (snapshot) => {
       let fetchedPages = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) }));
-      const defaultPages = [
-                { id: 'duyurular', title: 'Duyurular', path: '/duyurular' },
-{ id: 'home', title: 'Ana Sayfa', path: '/' },
-        { id: 'hakkimizda', title: 'Hakkımızda', path: '/hakkimizda' }
-      ];
-      defaultPages.forEach(dp => {
-        if (!fetchedPages.find(p => p.id === dp.id)) {
-          if (dp.id === 'home') fetchedPages.unshift(dp);
-          else fetchedPages.push(dp);
-        }
-      });
-      setPagesList(fetchedPages.filter((p: any) => !p.isDeleted));
+        setPagesList(fetchedPages.filter((p: any) => !p.isDeleted));
     });
     return () => unsubscribe();
   }, []);
@@ -97,16 +87,6 @@ export default function PageEditor() {
             const defaultData = { title: 'Başarılarımız', path: '/basarilarimiz', blocks: module.defaultBasarilarimizData };
             setPageData(defaultData);
           });
-} else if (pageId === 'yonetim-kadrosu') {
-          import('../lib/defaultData').then((module) => {
-            const defaultData = { title: 'Yönetim Kadrosu', path: '/yonetim-kadrosu', blocks: module.defaultYonetimKadrosuData };
-            setPageData(defaultData);
-          });
-} else if (pageId === 'akademik-kadro') {
-          import('../lib/defaultData').then((module) => {
-            const defaultData = { title: 'Akademik Kadro', path: '/akademik-kadro', blocks: module.defaultAkademikKadroData };
-            setPageData(defaultData);
-          });
 } else if (pageId === 'hakkimizda') {
           import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
             const defaultData = { title: 'Hakkımızda', path: '/hakkimizda', blocks: defaultHakkimizdaData };
@@ -125,6 +105,8 @@ export default function PageEditor() {
   const handleBlockClick = (index: number, e?: React.MouseEvent) => {
     setSelectedBlockIndex(index);
     setEditorVisible(true);
+    setActiveArrayItem(null);
+
     if (e) {
       let x = e.clientX + 20;
       let y = e.clientY - 50;
@@ -134,6 +116,61 @@ export default function PageEditor() {
       if (x < 20) x = 20;
       if (y < 20) y = 20;
       setEditorPos({ x, y });
+
+      const block = pageData?.blocks?.[index];
+      if (block && e.target) {
+        const target = e.target as HTMLElement;
+        const textContent = target.textContent?.trim();
+        const tagName = target.tagName.toUpperCase();
+        let imageSrc = '';
+        if (tagName === 'IMG') {
+          imageSrc = (target as HTMLImageElement).src;
+        } else if (target.style && target.style.backgroundImage) {
+           imageSrc = target.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+        }
+
+        const arrays = ['items', 'days', 'buttons', 'categories', 'legends', 'sidebarItems'];
+        let found = false;
+
+        for (const arrKey of arrays) {
+          if (block[arrKey] && Array.isArray(block[arrKey])) {
+            for (let i = 0; i < block[arrKey].length; i++) {
+              const item = block[arrKey][i];
+              if (!item) continue;
+              
+              if (typeof item === 'string') {
+                if (textContent && textContent.includes(item)) {
+                  setActiveArrayItem({ arrayKey: arrKey, index: i });
+                  found = true; break;
+                }
+                continue;
+              }
+
+              if (imageSrc) {
+                const itemImg = item.image || item.icon || item.logo || item.url;
+                if (itemImg && typeof itemImg === 'string' && imageSrc.includes(itemImg)) {
+                  setActiveArrayItem({ arrayKey: arrKey, index: i });
+                  found = true; break;
+                }
+              }
+
+              if (textContent && textContent.length > 2) {
+                 const match = Object.values(item).some(val => {
+                    if (typeof val === 'string' && val.length > 2) {
+                        return textContent.includes(val) || val.includes(textContent);
+                    }
+                    return false;
+                 });
+                 if (match) {
+                    setActiveArrayItem({ arrayKey: arrKey, index: i });
+                    found = true; break;
+                 }
+              }
+            }
+          }
+          if (found) break;
+        }
+      }
     }
   };
 
@@ -246,7 +283,7 @@ export default function PageEditor() {
               
               <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-white rounded-b-xl">
                 {selectedBlockIndex !== null && pageData?.blocks ? (
-                  <BlockFormEditor 
+                  <BlockFormEditor activeArrayItem={activeArrayItem} 
                     block={pageData.blocks[selectedBlockIndex]} 
                     onChange={handleBlockChange}
                     pagesList={pagesList}
@@ -282,6 +319,35 @@ export default function PageEditor() {
                           { type: 'management_rector', label: 'Rektör Bölümü' },
                           { type: 'management_vice_rectors', label: 'Rektör Yardımcıları' },
                           { type: 'management_deans', label: 'Dekanlar' },
+                          { type: 'kindergarten_hero', label: 'Anaokulu Hero' },
+                          { type: 'kindergarten_bento', label: 'Anaokulu Bento' },
+                          { type: 'kindergarten_branches', label: 'Anaokulu Branşlar' },
+                          { type: 'primary_school_hero', label: 'İlkokul Hero' },
+                          { type: 'primary_school_bento', label: 'İlkokul Bento' },
+                          { type: 'middle_school_hero', label: 'Ortaokul Hero' },
+                          { type: 'middle_school_pedagogy', label: 'Ortaokul Pedagoji' },
+                          { type: 'middle_school_lgs', label: 'Ortaokul LGS Bento' },
+                          
+                          
+                          
+                          { type: 'campus_hero', label: 'Kampüs Hero' },
+                          { type: 'campus_bento', label: 'Kampüs Kademe (Bento)' },
+                          { type: 'campus_gallery', label: 'Kampüs Tesisleri' },
+                          { type: 'campus_life', label: 'Kampüs Yaşamı' },
+                          { type: 'campus_contact', label: 'Kampüs İletişim' },
+
+                          { type: 'contact_hero', label: 'İletişim Hero' },
+                          { type: 'contact_campuses', label: 'Kampüs Kartları' },
+                          { type: 'contact_form', label: 'İletişim Formu' },
+                          { type: 'social_media', label: 'Sosyal Medya Linkleri' },
+
+                          { type: 'clubs_hero', label: 'Kulüp Hero' },
+                          { type: 'clubs_grid', label: 'Kulüp Grid (Kartlar)' },
+                          { type: 'clubs_benefits', label: 'Kulüp Avantajlar' },
+                          { type: 'clubs_cta', label: 'Kulüp CTA' },
+
+                          { type: 'high_school_hero', label: 'Lise Hero' },
+                          { type: 'high_school_programs', label: 'Lise Programlar' },
                           { type: 'achievements_hero', label: 'Başarılar Hero' },
                           { type: 'achievements_academic_bento', label: 'Başarılar Akademik Bento' },
                           { type: 'achievements_social_gallery', label: 'Başarılar Sosyal Galeri' },
@@ -289,7 +355,12 @@ export default function PageEditor() {
                           { type: 'mission_vision', label: 'Misyon & Vizyon' },
                           { type: 'timeline', label: 'Tarihçe' },
                           { type: 'values', label: 'Değerler' },
-                          { type: 'quote_image', label: 'Alıntı' }
+                          { type: 'quote_image', label: 'Alıntı' },
+                          { type: 'menu_hero', label: 'Yemek Menüsü Hero' },
+                          { type: 'menu_calendar', label: 'Yemek Menüsü Takvim' },
+                          { type: 'menu_features', label: 'Yemek Menüsü Özellikler' },
+                          { type: 'academic_calendar_hero', label: 'Akademik Takvim Hero' },
+                          { type: 'academic_calendar', label: 'Akademik Takvim Modülü' },
                         ].map((b, i) => (
                           <button
                             key={i}

@@ -18,19 +18,7 @@ export default function PagesCenter() {
       const q = query(collection(db, 'pages'), orderBy('createdAt', 'desc'));
       const snapshot = await getDocs(q);
       let fetchedPages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      const defaultPages = [
-                { id: 'duyurular', title: 'Duyurular', status: 'published', lastEdited: new Date().toISOString().split('T')[0], path: '/duyurular', isDefault: true },
-{ id: 'akademik-kadro', title: 'Akademik Kadro', status: 'published', lastEdited: new Date().toISOString().split('T')[0], path: '/akademik-kadro', isDefault: true },
-{ id: 'home', title: 'Ana Sayfa', path: '/' },
-        { id: 'hakkimizda', title: 'Hakkımızda', path: '/hakkimizda' }
-      ];
-      defaultPages.forEach(dp => {
-        if (!fetchedPages.find(p => p.id === dp.id)) {
-          if (dp.id === 'home') fetchedPages.unshift(dp);
-          else fetchedPages.push(dp);
-        }
-      });
-      setPages(fetchedPages.filter((p: any) => !p.isDeleted));
+        setPages(fetchedPages.filter((p: any) => !p.isDeleted));
     } catch (e) {
       console.error(e);
     } finally {

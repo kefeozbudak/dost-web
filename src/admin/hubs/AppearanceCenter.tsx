@@ -85,20 +85,6 @@ export default function AppearanceCenter() {
         const pagesQuery = query(collection(db, 'pages'), orderBy('order', 'asc'));
         const pagesSnapshot = await getDocs(pagesQuery);
         let fetchedPages = pagesSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        const defaultPages = [
-          { id: 'basarilarimiz', title: 'Başarılarımız', path: '/basarilarimiz' },
-      { id: 'duyurular', title: 'Duyurular', path: '/duyurular' },
-          { id: 'yonetim-kadrosu', title: 'Yönetim Kadrosu', path: '/yonetim-kadrosu' },
-          { id: 'akademik-kadro', title: 'Akademik Kadro', path: '/akademik-kadro' },
-{ id: 'home', title: 'Ana Sayfa', path: '/' },
-          { id: 'hakkimizda', title: 'Hakkımızda', path: '/hakkimizda' }
-        ];
-        defaultPages.forEach(dp => {
-          if (!fetchedPages.find(p => p.id === dp.id)) {
-            if (dp.id === 'home') fetchedPages.unshift(dp);
-            else fetchedPages.push(dp);
-          }
-        });
         setPagesList(fetchedPages.filter((p: any) => !p.isDeleted));
       } catch (e) {
         console.error(e);

@@ -32,20 +32,6 @@ export default function AdminLayout() {
     const unsubscribe = onSnapshot(collection(db, 'pages'), (snapshot) => {
       try {
         let fetched = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) }));
-        const defaultPages = [
-            { id: 'duyurular', title: 'Duyurular', status: 'published', path: '/duyurular' },
-{ id: 'basarilarimiz', title: 'Başarılarımız', status: 'published', path: '/basarilarimiz' },
-  { id: 'yonetim-kadrosu', title: 'Yönetim Kadrosu', status: 'published', path: '/yonetim-kadrosu' },
-          { id: 'akademik-kadro', title: 'Akademik Kadro', status: 'published', path: '/akademik-kadro' },
-{ id: 'home', title: 'Ana Sayfa', path: '/' },
-          { id: 'hakkimizda', title: 'Hakkımızda', path: '/hakkimizda' }
-        ];
-        defaultPages.forEach(dp => {
-          if (!fetched.find(p => p.id === dp.id)) {
-            if (dp.id === 'home') fetched.unshift(dp);
-            else fetched.push(dp);
-          }
-        });
         setPagesList(fetched.filter((p: any) => !p.isDeleted));
       } catch (e) {
         console.error("Error processing pages:", e);

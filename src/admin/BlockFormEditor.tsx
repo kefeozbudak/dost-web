@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Plus, GripVertical } from 'lucide-react';
 import IconField from '../components/IconField';
 import MediaPickerModal from '../components/MediaPickerModal';
 import FieldStylePicker from './components/FieldStylePicker';
 
 interface BlockFormEditorProps {
+  activeArrayItem?: { arrayKey: string, index: number } | null;
   block: any;
   onChange: (block: any) => void;
   pagesList?: any[];
@@ -12,7 +13,21 @@ interface BlockFormEditorProps {
   saving?: boolean;
 }
 
-export default function BlockFormEditor({ block, onChange, pagesList, onSave, saving }: BlockFormEditorProps) {
+export default function BlockFormEditor({ block, onChange, pagesList, onSave, saving, activeArrayItem }: BlockFormEditorProps) {
+  const arrayItemRefs = useRef<{[key: string]: HTMLDetailsElement | null}>({});
+  useEffect(() => {
+    if (activeArrayItem) {
+      const key = `${activeArrayItem.arrayKey}-${activeArrayItem.index}`;
+      const el = arrayItemRefs.current[key];
+      if (el) {
+        el.open = true;
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 50);
+      }
+    }
+  }, [activeArrayItem, block]);
+
   const [mediaPickerConfig, setMediaPickerConfig] = useState<{ isOpen: boolean; onSelect: (url: string) => void }>({ isOpen: false, onSelect: () => {} });
 
   if (!block) return <div className="text-sm text-slate-500 text-center py-8">Lütfen düzenlemek için bir modül seçin.</div>;
@@ -52,16 +67,41 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
   );
 
   const renderImageUpload = (label: string, key: string) => (
-    <div>
-      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{label}</label>
+    <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">{label}</label>
       <div className="flex gap-2">
-        <input type="text" value={block[key] || ''} onChange={e => handleChange(key, e.target.value)} className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none" />
-        <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleChange(key, url) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md font-bold text-xs whitespace-nowrap">Seç</button>
+        <input type="text" value={block[key] || ''} onChange={e => handleChange(key, e.target.value)} className="flex-1 px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:ring-1 focus:ring-blue-500 bg-white" placeholder="https://..." />
+        <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleChange(key, url) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md font-bold text-xs whitespace-nowrap shadow-sm transition-colors">Seç</button>
       </div>
+      {block[key] && (
+        <div className="grid grid-cols-1 gap-3 mt-2 pt-3 border-t border-slate-200">
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label className="text-[9px] font-bold text-slate-400 uppercase">Sol/Sağ (X)</label>
+              <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{block[`${key}_posX`] ?? 50}%</span>
+            </div>
+            <input type="range" min="0" max="100" step="1" value={block[`${key}_posX`] ?? 50} onChange={(e) => handleChange(`${key}_posX`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label className="text-[9px] font-bold text-slate-400 uppercase">Üst/Alt (Y)</label>
+              <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{block[`${key}_posY`] ?? 50}%</span>
+            </div>
+            <input type="range" min="0" max="100" step="1" value={block[`${key}_posY`] ?? 50} onChange={(e) => handleChange(`${key}_posY`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <label className="text-[9px] font-bold text-slate-400 uppercase">Yakınlaştır</label>
+              <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{block[`${key}_scale`] ?? 100}%</span>
+            </div>
+            <input type="range" min="10" max="500" step="1" value={block[`${key}_scale`] ?? 100} onChange={(e) => handleChange(`${key}_scale`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+          </div>
+        </div>
+      )}
     </div>
   );
 
-  const renderArrayEditor = (arrayKey: string, itemFields: {key: string, label: string, type: 'text' | 'textarea' | 'icon' | 'image' | 'checkbox' | 'url' | 'color' | 'select', options?: {value: string, label: string}[]}[], title: string = "Öğeler", hasStyles: boolean = false, arrayStyleKey?: string) => {
+  const renderArrayEditor = (arrayKey: string, itemFields: {key: string, label: string, type: 'text' | 'textarea' | 'icon' | 'image' | 'checkbox' | 'url' | 'color' | 'select', options?: {value: string, label: string}[]}[], title: string = "Öğeler", hasStyles: boolean = true, arrayStyleKey?: string) => {
     const handleDragStart = (e: React.DragEvent, index: number) => {
       e.dataTransfer.setData('text/plain', index.toString());
     };
@@ -162,12 +202,37 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               }
               if (field.type === 'image') {
                 return (
-                  <div key={field.key} className="flex flex-col gap-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{field.label}</label>
+                  <div key={field.key} className="flex flex-col gap-2 p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{field.label}</label>
                     <div className="flex gap-2">
-                      <input type="text" value={item[field.key] || ''} onChange={(e) => handleArrayChange(arrayKey, idx, field.key, e.target.value)} className="flex-1 text-sm border-slate-300 rounded p-1.5" />
-                      <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleArrayChange(arrayKey, idx, field.key, url) })} className="bg-blue-600 text-white px-2 py-1 rounded text-[10px] font-bold">Seç</button>
+                      <input type="text" value={item[field.key] || ''} onChange={(e) => handleArrayChange(arrayKey, idx, field.key, e.target.value)} className="flex-1 text-sm border border-slate-300 rounded p-1.5 focus:ring-1 focus:ring-blue-500 bg-white" placeholder="https://..." />
+                      <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleArrayChange(arrayKey, idx, field.key, url) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-[11px] font-bold shadow-sm transition-colors">Seç</button>
                     </div>
+                    {item[field.key] && (
+                      <div className="grid grid-cols-1 gap-3 mt-3 pt-3 border-t border-slate-200">
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-[9px] font-bold text-slate-400 uppercase">Sol/Sağ (X)</label>
+                            <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{item[`${field.key}_posX`] ?? 50}%</span>
+                          </div>
+                          <input type="range" min="0" max="100" step="1" value={item[`${field.key}_posX`] ?? 50} onChange={(e) => handleArrayChange(arrayKey, idx, `${field.key}_posX`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-[9px] font-bold text-slate-400 uppercase">Üst/Alt (Y)</label>
+                            <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{item[`${field.key}_posY`] ?? 50}%</span>
+                          </div>
+                          <input type="range" min="0" max="100" step="1" value={item[`${field.key}_posY`] ?? 50} onChange={(e) => handleArrayChange(arrayKey, idx, `${field.key}_posY`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-[9px] font-bold text-slate-400 uppercase">Yakınlaştır</label>
+                            <span className="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">{item[`${field.key}_scale`] ?? 100}%</span>
+                          </div>
+                          <input type="range" min="10" max="500" step="1" value={item[`${field.key}_scale`] ?? 100} onChange={(e) => handleArrayChange(arrayKey, idx, `${field.key}_scale`, Number(e.target.value))} className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               }
@@ -190,8 +255,64 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                   </label>
                 )
               }
-              return null;
             })}
+            
+            {hasStyles && (
+              <div className="mt-4 pt-3 border-t border-slate-200">
+                <details className="group">
+                  <summary className="text-[11px] font-bold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-blue-600 list-none flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px] group-open:rotate-90 transition-transform">chevron_right</span>
+                    İleri Düzey Stiller
+                  </summary>
+                  <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-3 pl-5">
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Kart Zemin Rengi</label>
+                      <input type="text" value={item.cardBgColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBgColor', e.target.value)} placeholder="örn: #ffffff" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Kenarlık Rengi & Kalınlığı</label>
+                      <div className="flex gap-1">
+                        <input type="text" value={item.cardBorderColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderColor', e.target.value)} placeholder="Renk (örn: #e2e8f0)" className="w-2/3 text-xs border-slate-300 rounded p-1.5" />
+                        <input type="text" value={item.cardBorderWidth || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderWidth', e.target.value)} placeholder="Kalınlık (1px)" className="w-1/3 text-xs border-slate-300 rounded p-1.5" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Köşe Yuvarlama (Radius)</label>
+                      <input type="text" value={item.cardBorderRadius || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderRadius', e.target.value)} placeholder="örn: 12px veya 1.5rem" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">İç Boşluk (Padding)</label>
+                      <input type="text" value={item.cardPadding || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardPadding', e.target.value)} placeholder="örn: 24px" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Gölge Efekti (Shadow)</label>
+                      <select value={item.cardShadow || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardShadow', e.target.value)} className="w-full text-xs border-slate-300 rounded p-1.5 bg-white">
+                        <option value="">Varsayılan</option>
+                        <option value="none">Yok (none)</option>
+                        <option value="sm">Küçük (sm)</option>
+                        <option value="md">Orta (md)</option>
+                        <option value="lg">Büyük (lg)</option>
+                        <option value="xl">Çok Büyük (xl)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Başlık Rengi</label>
+                      <input type="text" value={item.itemTitleColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemTitleColor', e.target.value)} placeholder="örn: #1a1b23" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Açıklama Rengi</label>
+                      <input type="text" value={item.itemDescColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemDescColor', e.target.value)} placeholder="örn: #434654" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                    </div>
+                    <div className="flex items-end pb-1">
+                      <label className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                        <input type="checkbox" checked={!!item.hoverEffect} onChange={(e) => handleArrayChange(arrayKey, idx, 'hoverEffect', e.target.checked)} className="rounded text-blue-600" />
+                        Hover Efekti (Büyüme/Yükselme)
+                      </label>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            )}
           </div>
           <button onClick={() => {
             const newItems = [...(block[arrayKey] || [])];
@@ -258,7 +379,30 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                 />
               </div>
             </div>
-
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Metin Rengi</label>
+              <div className="flex items-center gap-2">
+                <input 
+                  type="color" 
+                  value={block.styles?.color || '#000000'} 
+                  onChange={(e) => {
+                    const newStyles = { ...(block.styles || {}), color: e.target.value };
+                    handleChange('styles', newStyles);
+                  }}
+                  className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                />
+                <input 
+                  type="text" 
+                  value={block.styles?.color || ''}
+                  onChange={(e) => {
+                    const newStyles = { ...(block.styles || {}), color: e.target.value };
+                    handleChange('styles', newStyles);
+                  }}
+                  placeholder="Varsayılan (Boş bırakılabilir)"
+                  className="flex-1 text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
             <div className="flex items-end">
               <label className="flex items-center gap-2 text-sm font-bold text-slate-600 mb-1.5 cursor-pointer bg-slate-50 px-3 py-1.5 rounded border border-slate-200 w-full">
                 <input 
@@ -421,8 +565,12 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'label', label: 'Buton Metni', type: 'text'},
               {key: 'url', label: 'Link URL', type: 'url'},
               {key: 'icon', label: 'İkon', type: 'icon'},
-              {key: 'bgColor', label: 'Arka Plan Rengi', type: 'color'},
-              {key: 'textColor', label: 'Yazı Rengi', type: 'color'}
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
             ], "Butonlar", false, 'buttons')}
           </div>
         )}
@@ -559,10 +707,14 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderTextareaWithStyle('Alıntı (Söz)', 'quote')}
             {renderArrayEditor('buttons', [
               {key: 'label', label: 'Buton Metni', type: 'text'},
-              {key: 'url', label: 'Link', type: 'url'},
+              {key: 'url', label: 'Link URL', type: 'url'},
               {key: 'icon', label: 'İkon', type: 'icon'},
-              {key: 'bgColor', label: 'Arka Plan Rengi', type: 'color'},
-              {key: 'textColor', label: 'Yazı Rengi', type: 'color'}
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
             ], "Aksiyon Butonları")}
           </div>
         )}
@@ -610,9 +762,12 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'label', label: 'Buton Metni', type: 'text'},
               {key: 'url', label: 'Link URL', type: 'url'},
               {key: 'icon', label: 'İkon', type: 'icon'},
-              {key: 'primary', label: 'Birincil Buton', type: 'checkbox'},
-              {key: 'bgColor', label: 'Arka Plan Rengi', type: 'color'},
-              {key: 'textColor', label: 'Yazı Rengi', type: 'color'}
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
             ], "Butonlar", false, 'buttons')}
           </div>
         )}
@@ -687,6 +842,379 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         )}
 
 
+        {block.type === 'kindergarten_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Üst Başlık (Rozet)', 'badge')}
+            {renderTextareaWithStyle('Açıklama Metni', 'subtitle')}
+            {renderImageUpload('Görsel (Sağ Kısım)', 'image')}
+            {renderInputWithStyle('Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)', 'imageBadgeTitle')}
+            {renderInputWithStyle('Görsel Alt Açıklama (Örn: Aktif Öğrenme)', 'imageBadgeDesc')}
+            <div className="flex flex-col gap-1"><label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Görsel Alt İkon</label><IconField value={block.imageBadgeIcon || ''} onChange={(val) => handleChange('imageBadgeIcon', val)} /></div>
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'kindergarten_bento' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Açıklama', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'rowSpan', label: 'Geniş Kart', type: 'checkbox'},
+              {key: 'highlight', label: 'Mavi Temalı (Primary)', type: 'checkbox'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}
+            ], "Bento Kartları")}
+          </div>
+        )}
+
+        {block.type === 'kindergarten_branches' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Açıklama', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'image', label: 'Görsel', type: 'image'}
+            ], "Branş Kartları")}
+          </div>
+        )}
+
+        {block.type === 'primary_school_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Üst Başlık (Rozet)', 'badge')}
+            {renderTextareaWithStyle('Açıklama Metni', 'subtitle')}
+            {renderImageUpload('Görsel (Arkaplan)', 'image')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'primary_school_bento' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Açıklama', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'image', label: 'Görsel', type: 'image'},
+              {key: 'rowSpan', label: 'Geniş Kart', type: 'checkbox'},
+              {key: 'styleType', label: 'Stil Tipi', type: 'select', options: [{value: 'primary', label: 'Primary (Mavi)'}, {value: 'secondary', label: 'Secondary (Turkuaz)'}]}
+            ], "Bento Kartları")}
+          </div>
+        )}
+
+        {block.type === 'middle_school_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Üst Başlık (Rozet)', 'badge')}
+            {renderTextareaWithStyle('Açıklama Metni', 'subtitle')}
+            {renderImageUpload('Görsel (Arkaplan)', 'image')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'middle_school_pedagogy' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderImageUpload('Görsel (Sol Kısım)', 'image')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'styleType', label: 'Stil Tipi', type: 'select', options: [{value: 'primary', label: 'Primary (Mavi)'}, {value: 'secondary', label: 'Secondary (Turkuaz)'}]}
+            ], "Pedagoji Kartları")}
+          </div>
+        )}
+
+        {block.type === 'middle_school_lgs' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'image', label: 'Görsel', type: 'image'},
+              {key: 'badge', label: 'Rozet (Örn: Ana Odak)', type: 'text'},
+              {key: 'rowSpan', label: 'Geniş Kart', type: 'checkbox'},
+              {key: 'styleType', label: 'Stil Tipi (İkon Arkaplanı)', type: 'select', options: [{value: 'primary', label: 'Primary (Mavi)'}, {value: 'secondary', label: 'Secondary (Turkuaz)'}, {value: 'tertiary', label: 'Tertiary (Gri)'}]}
+            ], "LGS Kartları")}
+          </div>
+        )}
+
+        
+        
+        
+        {block.type === 'campus_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderImageUpload('Arkaplan Görseli', 'image')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'campus_bento' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Kart Başlığı', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'image', label: 'Görsel', type: 'image'},
+              {key: 'colSpan', label: 'Sütun Genişliği (örn: col-span-12 md:col-span-6 lg:col-span-4)', type: 'text'}
+            ], "Eğitim Kademeleri Kartları")}
+          </div>
+        )}
+
+        {block.type === 'campus_gallery' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Kart Başlığı', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'image', label: 'Görsel', type: 'image'}
+            ], "Galeri Kartları")}
+          </div>
+        )}
+
+        {block.type === 'campus_life' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Rozet (Örn: Kampüs Yaşamı)', 'badge')}
+            {renderInputWithStyle('Başlık (1. Kısım)', 'titlePart1')}
+            {renderInputWithStyle('Başlık (2. Kısım)', 'titlePart2')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            <div className="grid grid-cols-2 gap-4">
+              {renderImageUpload('Görsel 1 (Sol Üst)', 'image1')}
+              {renderImageUpload('Görsel 2 (Sol Alt)', 'image2')}
+              {renderImageUpload('Görsel 3 (Sağ Üst)', 'image3')}
+              {renderImageUpload('Görsel 4 (Sağ Alt)', 'image4')}
+            </div>
+            {renderArrayEditor('items', [
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'title', label: 'Madde Metni', type: 'text'}
+            ], "Özellik Listesi")}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'URL', type: 'url'},
+              {key: 'style', label: 'Stil (primary veya outline)', type: 'text'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'campus_contact' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderArrayEditor('items', [
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'title', label: 'Başlık (Adres/Telefon vb.)', type: 'text'},
+              {key: 'desc', label: 'İçerik', type: 'textarea'}
+            ], "İletişim Bilgileri")}
+            <h3 className="font-semibold text-sm">Harita Alanı</h3>
+            {renderTextareaWithStyle('Harita iframe Kodu (Eğer varsa alttakiler geçersiz olur)', 'mapCode')}
+            {renderImageUpload('Harita Yedek Görseli', 'image')}
+            {renderInputWithStyle('Harita İçi Kart Başlığı', 'cardTitle')}
+            {renderInputWithStyle('Harita İçi Kart Alt Metni', 'cardDesc')}
+            {renderArrayEditor('buttons', [
+              {key: 'url', label: 'Yol Tarifi Linki', type: 'url'},
+              {key: 'icon', label: 'İkon (örn: directions)', type: 'icon'}
+            ], "Harita Butonu (Maks 1)")}
+          </div>
+        )}
+
+        {block.type === 'contact_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+          </div>
+        )}
+
+        {block.type === 'contact_campuses' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Kampüs Adı', type: 'text'},
+              {key: 'badge', label: 'Rozet (Örn: ERYAMAN)', type: 'text'},
+              {key: 'address', label: 'Adres', type: 'textarea'},
+              {key: 'phone', label: 'Telefon', type: 'text'},
+              {key: 'image', label: 'Harita Görseli (Yedek)', type: 'image'},
+              {key: 'mapCode', label: 'Harita Kodu (iframe, Google Maps vs.)', type: 'textarea'},
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Yol Tarifi Linki', type: 'url'}
+            ], "Kampüs Kartları")}
+          </div>
+        )}
+
+        {block.type === 'contact_form' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+          </div>
+        )}
+
+        {block.type === 'social_media' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'icon', label: 'İkon (SVG Kodu)', type: 'icon'},
+              {key: 'url', label: 'Profil Linki', type: 'url'}
+            ], "Sosyal Medya Linkleri")}
+          </div>
+        )}
+
+        {block.type === 'clubs_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
+            {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderImageUpload('Arkaplan Görseli', 'image')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'clubs_grid' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Filtre Kategorileri (Virgülle ayrılmış)', 'categories')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'category', label: 'Kategori', type: 'text'},
+              {key: 'badge', label: 'Rozet (Örn: Kontenjan: 5 Kişi)', type: 'text'},
+              {key: 'badgeColor', label: 'Rozet Rengi Tipi', type: 'select', options: [{value: 'secondary', label: 'Turkuaz'}, {value: 'error', label: 'Kırmızı'}]},
+              {key: 'icon', label: 'Kategori İkonu', type: 'icon'},
+              {key: 'image', label: 'Görsel', type: 'image'},
+              {key: 'url', label: 'Detay Linki', type: 'url'}
+            ], "Kulüp Kartları")}
+          </div>
+        )}
+
+        {block.type === 'clubs_benefits' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'}
+            ], "Avantaj Kartları")}
+          </div>
+        )}
+
+        {block.type === 'clubs_cta' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'high_school_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Üst Başlık (Rozet)', 'badge')}
+            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
+            {renderInputWithStyle('Başlık Bölüm 2 (Renkli)', 'titlePart2')}
+            {renderInputWithStyle('Başlık Bölüm 2 Rengi', 'titlePart2Color')}
+            {renderTextareaWithStyle('Açıklama Metni', 'subtitle')}
+            {renderImageUpload('Görsel (Sağ Kısım)', 'image')}
+            {renderArrayEditor('buttons', [
+              {key: 'label', label: 'Buton Metni', type: 'text'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
+            ], "Butonlar")}
+          </div>
+        )}
+
+        {block.type === 'high_school_programs' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderTextareaWithStyle('Alt Açıklama', 'subtitle')}
+            {renderArrayEditor('items', [
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'features', label: 'Özellikler (Her satıra bir tane)', type: 'textarea'},
+              {key: 'icon', label: 'İkon', type: 'icon'},
+              {key: 'styleType', label: 'Stil Tipi', type: 'select', options: [{value: 'primary', label: 'Primary (Mavi)'}, {value: 'secondary', label: 'Secondary (Turkuaz)'}]}
+            ], "Program Kartları")}
+          </div>
+        )}
+
         {block.type === 'achievements_hero' && (
           <div className="space-y-4">
             {renderInputWithStyle('Rozet (Badge)', 'badge')}
@@ -697,57 +1225,59 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderImageUpload('Arkaplan Görseli', 'image')}
             {renderArrayEditor('buttons', [
               {key: 'label', label: 'Buton Metni', type: 'text'},
-              {key: 'url', label: 'Link (URL)', type: 'url'},
+              {key: 'url', label: 'Link URL', type: 'url'},
               {key: 'icon', label: 'İkon', type: 'icon'},
-              {key: 'bgColor', label: 'Arkaplan Rengi', type: 'color'},
-              {key: 'textColor', label: 'Yazı Rengi', type: 'color'}
+              {key: 'style', label: 'Stil (Varsayılan)', type: 'select', options: [{value: 'primary', label: 'Birincil'}, {value: 'secondary', label: 'İkincil'}, {value: 'outline', label: 'Çizgili'}, {value: 'ghost', label: 'Saydam'}]},
+              {key: 'bgColor', label: 'Özel Arka Plan Rengi', type: 'color'},
+              {key: 'textColor', label: 'Özel Yazı Rengi', type: 'color'},
+              {key: 'borderColor', label: 'Özel Kenarlık Rengi', type: 'color'},
+              {key: 'borderRadius', label: 'Özel Köşe Yuvarlama (Örn: 8px)', type: 'text'},
+              {key: 'primary', label: 'Birincil Buton (Eski)', type: 'checkbox'}
             ], "Butonlar")}
           </div>
         )}
 
-        {block.type === 'achievements_academic_bento' && (
+        {block.type === 'bento_academic' && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
               {key: 'icon', label: 'İkon', type: 'icon'},
-              {key: 'style', label: 'Stil (primary/list/stat/default)', type: 'text'},
-              {key: 'statValue', label: 'İstatistik Değeri', type: 'text'},
-              {key: 'statLabel', label: 'İstatistik Etiketi', type: 'text'},
-              {key: 'badge', label: 'Rozet (Badge)', type: 'text'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'},
-              {key: 'url', label: 'Buton URL', type: 'url'}
-            ], "Öğeler")}
+              {key: 'stat', label: 'İstatistik (Kart 1)', type: 'text'},
+              {key: 'statLabel', label: 'İstatistik Etiketi (Kart 1)', type: 'text'},
+              {key: 'tag', label: 'Rozet/Etiket (Kart 1)', type: 'text'},
+              {key: 'buttonText', label: 'Buton Metni (Kart 2)', type: 'text'},
+              {key: 'url', label: 'Buton URL (Kart 2)', type: 'url'}
+            ], "Öğeler (Max 3, Özel Tasarım)")}
           </div>
         )}
 
-        {block.type === 'achievements_social_gallery' && (
+        {block.type === 'achievements_grid' && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderInputWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
-              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'subtitle', label: 'Alt Başlık', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
-              {key: 'hoverText', label: 'Hover Metni', type: 'text'}
-            ], "Galeri Öğeleri")}
+              {key: 'hoverText', label: 'Hover Üzeri Yazı', type: 'text'}
+            ], "Kültür / Sanat Başarı Öğeleri")}
           </div>
         )}
 
-        {block.type === 'achievements_science_projects' && (
+        {block.type === 'achievements_science' && (
           <div className="space-y-4">
             {renderInputWithStyle('Rozet (Badge)', 'badge')}
             {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Görsel', 'image')}
-            {renderInputWithStyle('Görsel Üzeri Etiket', 'imageBadge')}
+            {renderInputWithStyle('Görsel Üzeri Rozet', 'highlightTag')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
               {key: 'icon', label: 'İkon', type: 'icon'}
-            ], "Projeler")}
+            ], "Bilim Projeleri")}
           </div>
         )}
 
@@ -798,6 +1328,78 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderInputWithStyle('Input Placeholder', 'inputPlaceholder')}
             {renderInputWithStyle('Buton Metni', 'buttonText')}
             {renderInputWithStyle('Alt Açıklama (Caption)', 'caption')}
+          </div>
+        )}
+        {block.type === 'menu_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Badge (Etiket)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderImageUpload('Arkaplan Resmi', 'image')}
+          </div>
+        )}
+        {block.type === 'menu_calendar' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderInputWithStyle('Ay (örn: Ekim 2023)', 'month')}
+            {renderArrayEditor('days', [
+              {key: 'date', label: 'Tarih (örn: 1 Paz)', type: 'text'},
+              {key: 'kcal', label: 'Kalori (örn: 850 kcal)', type: 'text'},
+              {key: 'meals', label: 'Yemekler (Virgülle Ayırın)', type: 'textarea'},
+              {key: 'isCurrentMonth', label: 'Geçerli Ay Mı? (İşaretlenmezse silik görünür)', type: 'checkbox'},
+              {key: 'isClosed', label: 'Tatil / Kapalı Mı?', type: 'checkbox'},
+              {key: 'isToday', label: 'Bugün Mü?', type: 'checkbox'}
+            ], "Takvim Günleri")}
+          </div>
+        )}
+        {block.type === 'menu_features' && (
+          <div className="space-y-4">
+            {renderArrayEditor('items', [
+              {key: 'icon', label: 'İkon (örn: nutrition)', type: 'icon'},
+              {key: 'iconColor', label: 'Özel İkon Rengi', type: 'color'},
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'itemTitleColor', label: 'Özel Başlık Rengi', type: 'color'},
+              {key: 'itemDescColor', label: 'Özel Açıklama Rengi', type: 'color'}
+            ], "Özellikler")}
+          </div>
+        )}
+        {block.type === 'academic_calendar_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderImageUpload('Arkaplan Resmi', 'image')}
+          </div>
+        )}
+        {block.type === 'academic_calendar' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Ay (örn: Ekim 2023)', 'month')}
+            {renderInputWithStyle('PDF URL', 'pdfUrl')}
+            {renderInputWithStyle('PDF Buton Metni', 'pdfButtonText')}
+            
+            {renderArrayEditor('days', [
+              {key: 'date', label: 'Tarih (Sadece sayı, örn: 1)', type: 'text'},
+              {key: 'isCurrentMonth', label: 'Geçerli Ay Mı? (İşaretlenmezse silik görünür)', type: 'checkbox'},
+              {key: 'isWeekend', label: 'Hafta Sonu Mu?', type: 'checkbox'},
+              {key: 'isToday', label: 'Bugün Mü?', type: 'checkbox'},
+              {key: 'bgColor', label: 'Hücre Arkaplan Rengi (örn: bg-green-50)', type: 'text'},
+              {key: 'eventTitle', label: 'Etkinlik Başlığı', type: 'text'},
+              {key: 'eventSubtitle', label: 'Etkinlik Alt Açıklaması', type: 'text'},
+              {key: 'eventColorClass', label: 'Etkinlik Sınıfları (örn: bg-secondary-fixed text-on-secondary-fixed-variant border-secondary/20)', type: 'textarea'}
+            ], "Takvim Günleri")}
+
+            {renderArrayEditor('legends', [
+              {key: 'icon', label: 'İkon (örn: edit_document)', type: 'icon'},
+              {key: 'iconBgClass', label: 'İkon Arkaplan Sınıfı (örn: bg-error-container)', type: 'text'},
+              {key: 'iconColorClass', label: 'İkon Renk Sınıfı (örn: text-on-error-container)', type: 'text'},
+              {key: 'title', label: 'Başlık', type: 'text'},
+              {key: 'desc', label: 'Açıklama', type: 'textarea'},
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'buttonText', label: 'Link Metni (İncele)', type: 'text'},
+              {key: 'itemTitleColor', label: 'Özel Başlık Rengi', type: 'color'},
+              {key: 'itemDescColor', label: 'Özel Açıklama Rengi', type: 'color'}
+            ], "Lejant (Açıklama) Kartları")}
           </div>
         )}
 

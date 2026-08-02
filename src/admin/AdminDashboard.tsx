@@ -38,22 +38,6 @@ export default function AdminDashboard() {
         const pagesQ = query(collection(db, 'pages'), orderBy('updatedAt', 'desc'), limit(5));
         const recentPagesSnap = await getDocs(pagesQ);
         let fetchedPages = recentPagesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        const defaultPages = [
-                  { id: 'duyurular', title: 'Duyurular', views: 0, lastEdited: new Date().toISOString().split('T')[0], status: 'published', path: '/duyurular' },
-{ id: 'basarilarimiz', title: 'Başarılarımız', views: 0, lastEdited: new Date().toISOString().split('T')[0], status: 'published', path: '/basarilarimiz' },
-        { id: 'yonetim-kadrosu', title: 'Yönetim Kadrosu', views: 0, lastEdited: new Date().toISOString().split('T')[0], status: 'published', path: '/yonetim-kadrosu' },
-          { id: 'akademik-kadro', title: 'Akademik Kadro', views: 0, lastEdited: new Date().toISOString().split('T')[0], status: 'published', path: '/akademik-kadro' },
-{ id: 'home', title: 'Ana Sayfa', path: '/', updatedAt: Date.now() },
-          { id: 'hakkimizda', title: 'Hakkımızda', path: '/hakkimizda', updatedAt: Date.now() }
-        ];
-
-        defaultPages.forEach(dp => {
-          if (!fetchedPages.find((p: any) => p.id === dp.id)) {
-            fetchedPages.push(dp as any);
-          }
-        });
-
         setRecentPages(fetchedPages.slice(0, 5));
 
         
