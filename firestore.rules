@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Check if user is authenticated with email
+    function isAuthenticated() {
+      return request.auth != null && request.auth.token != null && request.auth.token.email != null;
+    }
+
+    // Check if the authenticated user is an admin
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'yasinozbudak@gmail.com' ||
+        (
+          exists(/databases/$(database)/documents/users/$(request.auth.token.email)) &&
+          (
+            get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'super_admin' ||
+            get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'editor' ||
+            get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'restricted'
+          )
+        )
+      );
+    }
+
+    match /settings/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /forms/{formId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /media/{mediaId} {
+      allow read: if true;
+      allow write, delete: if isAdmin();
+    }
+    
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (request.auth.token.email == userId || isAdmin());
+    }
+  }
+}
+

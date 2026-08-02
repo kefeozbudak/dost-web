@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global settings for the site",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 100 },
+        "theme": { "type": "object" },
+        "maintenanceMode": { "type": "boolean" },
+        "announcement": { "type": "object" },
+        "megaMenu": { "type": "object" },
+        "footer": { "type": "object" }
+      }
+    },
+    "Page": {
+      "title": "Page",
+      "description": "A dynamic page definition",
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "maxLength": 100, "pattern": "^/.*" },
+        "title": { "type": "string", "maxLength": 100 },
+        "components": { "type": "array" },
+        "seo": { "type": "object" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["path", "title", "createdAt", "updatedAt"]
+    },
+    "FormSubmission": {
+      "title": "FormSubmission",
+      "description": "Form submissions",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["contact", "club", "scholarship", "chat"] },
+        "data": { "type": "object" },
+        "createdAt": { "type": "number" },
+        "status": { "type": "string", "enum": ["new", "read", "archived"] }
+      },
+      "required": ["type", "data", "createdAt", "status"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile with RBAC",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["super_admin", "editor", "scholarship_admin", "club_admin", "restricted"] },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["email", "role", "createdAt"]
+    },
+    "Media": {
+      "title": "Media",
+      "description": "Uploaded media assets",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "createdAt": { "type": "number" }
+      }
+    }
+  },
+  "firestore": {
+    "settings/{documentId}": {
+      "schema": { "$ref": "#/entities/SiteSettings" },
+      "description": "Site global settings"
+    },
+    "pages/{pageId}": {
+      "schema": { "$ref": "#/entities/Page" },
+      "description": "Dynamic pages"
+    },
+    "forms/{formId}": {
+      "schema": { "$ref": "#/entities/FormSubmission" },
+      "description": "Form submissions"
+    },
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and RBAC"
+    },
+    "media/{mediaId}": {
+      "schema": { "$ref": "#/entities/Media" },
+      "description": "Uploaded media items"
+    }
+  }
+}

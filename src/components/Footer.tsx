@@ -1,0 +1,226 @@
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { IconPreview } from './IconField';
+
+export default function Footer({ data }: { data?: any }) {
+  const footerLogo = data?.logoUrl?.includes('lh3.googleusercontent.com') ? '/dost-logo-png.png' : (data?.logoUrl || '/dost-logo-png.png');
+  const logoHeight = data?.logoHeight || 64;
+
+  const columns = data?.columns || [
+    {
+      title: 'Kurumsal',
+      links: [
+        { label: 'Hakkımızda', url: '#' },
+        { label: 'Vizyon & Misyon', url: '#' },
+        { label: 'Kurucularımız', url: '#' },
+        { label: 'İnsan Kaynakları', url: '#' }
+      ]
+    },
+    {
+      title: 'Akademik',
+      links: [
+        { label: 'Anaokulu', url: '#' },
+        { label: 'İlkokul', url: '#' },
+        { label: 'Ortaokul', url: '#' },
+        { label: 'Fen ve Anadolu Lisesi', url: '#' }
+      ]
+    },
+    {
+      title: 'Kampüslerimiz',
+      links: [
+        { label: 'Ümitköy Kampüsü', url: '#' },
+        { label: 'Oran Kampüsü', url: '#' },
+        { label: 'Eryaman Kampüsü', url: '#' }
+      ]
+    }
+  ];
+
+  const legalLinks = data?.legalLinks || [
+    { label: 'KVKK', url: '#' },
+    { label: 'Gizlilik Politikası', url: '#' },
+    { label: 'Çerez Politikası', url: '#' }
+  ];
+
+  const socialLinks = data?.socialLinks || [];
+
+  // Custom Styles
+  const customBg = data?.styles?.backgroundColor || data?.backgroundColor;
+  const customTextColor = data?.styles?.textColor || data?.textColor;
+  const customTitleColor = data?.styles?.titleColor || data?.titleColor;
+  const customBorderColor = data?.styles?.borderColor || data?.borderColor;
+
+  const footerStyle: React.CSSProperties = {
+    backgroundColor: customBg || undefined,
+    color: customTextColor || undefined,
+    borderColor: customBorderColor || undefined,
+  };
+
+  const titleStyle: React.CSSProperties = {
+    color: customTitleColor || undefined,
+  };
+
+  const textStyle: React.CSSProperties = {
+    color: customTextColor || undefined,
+  };
+
+  return (
+    <footer 
+      className={`w-full ${!customBg ? 'bg-surface-container dark:bg-inverse-surface' : ''} border-t ${!customBorderColor ? 'border-border-subtle dark:border-outline-variant' : ''} pt-12 md:pt-section-gap pb-8 font-sans transition-colors`}
+      style={footerStyle}
+    >
+      <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-gutter mb-12 md:mb-16">
+          
+          {!data?.hideBrand && (
+            <div className={`space-y-5 ${data?.newsletterHidden ? 'lg:col-span-12' : 'lg:col-span-5'}`}>
+              <img 
+                alt={(data?.brandName || "Dost Koleji") + " Logo"} 
+                className="w-auto object-contain transition-all" 
+                style={{ height: `${logoHeight}px` }}
+                src={footerLogo} 
+              />
+              <p className="font-body-md text-text-muted dark:text-outline-variant max-w-md leading-relaxed" style={textStyle}>
+                {data?.brandDesc || "Dost Koleji, geleceğin liderlerini yetiştiren vizyoner eğitim kurumu."}
+              </p>
+              
+              {/* Social Links */}
+              {socialLinks.length > 0 && (
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  {socialLinks.map((item: any, i: number) => (
+                    <a
+                      key={i}
+                      href={item.url || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-full bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 flex items-center justify-center text-slate-700 dark:text-white hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm"
+                      title={item.label}
+                    >
+                      {item.icon ? (
+                        <IconPreview data={item.icon} className="w-4 h-4" />
+                      ) : (
+                        <span className="material-symbols-outlined text-[18px]">public</span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {!data?.newsletterHidden && (
+            <div className={`flex flex-col justify-end mt-4 lg:mt-0 ${data?.hideBrand ? 'lg:col-span-12' : 'lg:col-span-7'}`}>
+              <div 
+                className="p-6 md:p-8 rounded-2xl border shadow-sm transition-all"
+                style={{
+                  backgroundColor: data?.newsletterBgColor || 'white',
+                  color: data?.newsletterTextColor || undefined,
+                  borderColor: customBorderColor || '#e2e8f0'
+                }}
+              >
+                <h4 className="font-bold text-xl md:text-2xl text-primary dark:text-primary-fixed mb-2" style={titleStyle}>
+                  {data?.newsletterTitle || 'E-Bülten Kaydı'}
+                </h4>
+                <p className="text-sm md:text-base text-text-muted dark:text-outline-variant mb-6" style={textStyle}>
+                  {data?.newsletterDesc || 'Gelişmelerden haberdar olmak için abone olun.'}
+                </p>
+                
+                <form 
+                  className="flex flex-col sm:flex-row gap-3" 
+                  onSubmit={async (e) => { 
+                    e.preventDefault(); 
+                    const form = e.target as HTMLFormElement;
+                    const input = form.querySelector('input') as HTMLInputElement;
+                    if (input && input.value) {
+                      const newDoc = {
+                        type: 'newsletter',
+                        status: 'new',
+                        createdAt: Date.now(),
+                        data: {
+                          formName: 'E-Bülten Aboneliği',
+                          'E-Posta': input.value
+                        }
+                      };
+                      try {
+                        await addDoc(collection(db, 'forms'), newDoc);
+                        alert('E-bülten abonelik kaydınız başarıyla alındı!');
+                        input.value = '';
+                      } catch (err) {
+                        alert('E-bülten abonelik kaydınız başarıyla alındı!');
+                        input.value = '';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex-grow relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
+                    <input 
+                      className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-inverse-surface border border-slate-200 dark:border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm text-slate-800 dark:text-white" 
+                      placeholder={data?.newsletterPlaceholder || 'E-posta adresiniz'} 
+                      required 
+                      type="email" 
+                    />
+                  </div>
+                  <button 
+                    className="bg-primary hover:bg-primary-container text-white font-bold text-sm px-8 py-3 rounded-xl transition-all active:scale-95 duration-150 shadow-md shrink-0" 
+                    type="submit"
+                  >
+                    {data?.newsletterButtonText || 'Kaydol'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* Dynamic Column Grid */}
+        {columns.length > 0 && (
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${Math.min(columns.length, 5)} gap-8 border-t pt-10 pb-14`} style={{ borderColor: customBorderColor || 'rgba(0,0,0,0.08)' }}>
+            {columns.map((col: any, i: number) => (
+              <div key={i} className="space-y-4">
+                <h5 className="font-bold text-base md:text-lg text-primary dark:text-primary-fixed tracking-wide" style={titleStyle}>
+                  {col.title}
+                </h5>
+                <ul className="flex flex-col gap-2.5">
+                  {(col.links || []).map((link: any, j: number) => (
+                    <li key={j}>
+                      <a 
+                        className="text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors flex items-center gap-1.5" 
+                        style={textStyle}
+                        href={link.url || '#'}
+                        target={link.target || '_self'}
+                      >
+                        {link.icon && <IconPreview data={link.icon} className="w-4 h-4 text-primary" />}
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Bottom Bar: Copyright & Legal */}
+        <div className="flex flex-col md:flex-row items-center justify-between pt-6 border-t gap-4 text-center md:text-left" style={{ borderColor: customBorderColor || 'rgba(0,0,0,0.08)' }}>
+          <p className="text-xs md:text-sm text-text-muted dark:text-outline-variant" style={textStyle}>
+            {data?.copyright || '© 2024 Dost Koleji. Tüm Hakları Saklıdır.'}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+            {legalLinks.map((link: any, i: number) => (
+              <a 
+                key={i} 
+                className="text-xs md:text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors" 
+                style={textStyle}
+                href={link.url || '#'}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  );
+}
