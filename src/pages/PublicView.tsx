@@ -68,11 +68,6 @@ export default function PublicView() {
                   } else {
                       newBlocks.push(videoBlock);
                   }
-                  if (auth.currentUser) {
-                    import('firebase/firestore').then(({ setDoc }) => {
-                        setDoc(docRef, { blocks: newBlocks }, { merge: true }).catch(() => {});
-                    });
-                  }
                   data.blocks = newBlocks;
               }
            }

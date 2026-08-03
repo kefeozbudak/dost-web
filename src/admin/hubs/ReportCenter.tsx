@@ -593,185 +593,135 @@ export default function ReportCenter() {
     const items = target === 'all' ? filteredReports : [target];
     if (!items || items.length === 0) return;
 
+    const keyTranslations: Record<string, string> = {
+      studentgender: 'Öğrenci Cinsiyeti',
+      studentgrade: 'Öğrenci Kademesi/Sınıfı',
+      parenttc: 'Veli TC No',
+      parentname: 'Veli Adı Soyadı',
+      studenttc: 'Öğrenci TC No',
+      parentphone: 'Veli Telefon Numarası',
+      heardfrom: 'Bizi Nereden Duydunuz?',
+      campus: 'Kampüs',
+      notes: 'Notlar',
+      studentname: 'Öğrenci Adı Soyadı',
+      academicyear: 'Akademik Yıl',
+      parentrelation: 'Öğrenci Yakınlık Derecesi',
+      studentbirthdate: 'Öğrenci Doğum Tarihi',
+      parentemail: 'Veli E-posta Adresi',
+      message: 'Mesaj',
+      name: 'Adı Soyadı',
+      email: 'E-posta Adresi',
+      phone: 'Telefon Numarası',
+      subject: 'Konu',
+      kademe: 'Eğitim Kademesi',
+      kampus: 'Kampüs'
+    };
+
+    const translateKey = (key: string) => {
+      const lowerKey = key.toLowerCase();
+      if (keyTranslations[lowerKey]) return keyTranslations[lowerKey];
+      
+      let displayKey = key.replace(/_/g, ' ');
+      displayKey = displayKey.charAt(0).toUpperCase() + displayKey.slice(1);
+      return displayKey;
+    };
+
+    // Specific field order for pre-registration form
+    const orderPreReg = [
+      'campus', 'academicYear', 
+      'studentName', 'studentTc', 'studentGender', 'studentBirthDate', 'studentGrade',
+      'parentName', 'parentTc', 'parentPhone', 'parentEmail', 'parentRelation',
+      'heardFrom', 'notes'
+    ];
+    
+    const orderContact = [
+      'name', 'email', 'phone', 'kampus', 'kademe', 'subject', 'message'
+    ];
+
     try {
-      const printWindow = window.open('', '_blank', 'width=900,height=750');
+      const printWindow = window.open('', '_blank');
       if (printWindow) {
-        const printContent = `
+        let printContent = `
           <!DOCTYPE html>
           <html>
             <head>
               <meta charset="utf-8">
-              <title>Dost Koleji - Form Rapor Çıktısı</title>
+              <title>Dost Koleji - Rapor Çıktısı</title>
               <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 24px; color: #1e293b; line-height: 1.5; background: #fff; }
-                .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #004899; padding-bottom: 12px; margin-bottom: 24px; }
-                .logo-title { display: flex; align-items: center; gap: 12px; }
-                .logo { height: 48px; width: auto; }
-                .title { font-size: 20px; font-weight: 800; color: #004899; margin: 0; }
-                .subtitle { font-size: 12px; color: #64748b; margin: 0; }
-                .meta { text-align: right; font-size: 12px; color: #475569; }
-                .card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-bottom: 16px; page-break-inside: avoid; background: #ffffff; }
-                .card-header { display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; }
-                .form-name { font-weight: 800; color: #004899; font-size: 14px; }
-                .date { font-size: 12px; color: #64748b; }
-                .field { margin-bottom: 8px; font-size: 13px; }
-                .field strong { color: #334155; display: inline-block; width: 200px; }
-                .message-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 13px; }
-                .footer { text-align: center; margin-top: 32px; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+                body { font-family: sans-serif; padding: 20px; line-height: 1.6; color: #000; }
+                .report { border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px; }
+                .dost-header { font-size: 20px; font-weight: 900; color: #004899; margin-bottom: 10px; }
+                .title { font-size: 16px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: #333; }
+                .row { margin-bottom: 6px; font-size: 14px; display: flex; align-items: baseline; }
+                .label { font-weight: bold; margin-right: 10px; width: 220px; flex-shrink: 0; color: #222; }
+                .value { flex-grow: 1; }
+                .date { font-size: 13px; color: #555; margin-bottom: 15px; }
+                @media print {
+                  .report { page-break-inside: avoid; }
+                }
               </style>
             </head>
             <body>
-              <div class="header">
-                <div class="logo-title">
-                  <img src="/yelken_transparent.png" class="logo" alt="Dost Koleji" />
-                  <div>
-                    <h1 class="title">DOST KOLEJİ</h1>
-                    <p class="subtitle">Rapor Merkezi - Başvuru Formu Çıktısı</p>
-                  </div>
-                </div>
-                <div class="meta">
-                  <p style="margin: 0;"><strong>Tarih:</strong> ${format(new Date(), 'dd.MM.yyyy HH:mm')}</p>
-                  <p style="margin: 0;"><strong>Kayıt Sayısı:</strong> ${items.length}</p>
-                </div>
-              </div>
+        `;
 
-              ${items.map((rep, idx) => {
-                const sender = extractSenderInfo(rep.data);
-                const data = rep.data || {};
-                
-                if (rep.type === 'pre_registration_form') {
-                  const birthDate = data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-';
-                  return `
-                    <div class="card" style="margin-bottom: 24px;">
-                      <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-                        <div style="font-size: 12px; color: #64748b; background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: bold;">
-                          #${idx + 1} - ÖĞRENCİ ÖN KAYIT FORMU
-                        </div>
-                      </div>
-                      
-                      <!-- 1. ÖĞRENCİ BİLGİLERİ -->
-                      <div style="margin-bottom: 24px;">
-                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">1. ÖĞRENCİ BİLGİLERİ</span>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Öğrenci Adı Soyadı</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentName || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">T.C. Kimlik Numarası</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentTc || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Doğum Tarihi</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${birthDate}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Cinsiyet</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentGender || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Mevcut Sınıf Seviyesi</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentGrade || '-'}</div>
-                          </div>
-                        </div>
-                      </div>
+        items.forEach((rep: any, idx: number) => {
+           let dataHtml = '';
+           
+           let senderName = 'Bilinmiyor';
+           if (rep.data) {
+             if (rep.data.ParentName) senderName = rep.data.ParentName;
+             else if (rep.data.parentName) senderName = rep.data.parentName;
+             else if (rep.data.name) senderName = rep.data.name;
+             else if (rep.data.StudentName) senderName = rep.data.StudentName;
+             else if (rep.data.studentName) senderName = rep.data.studentName;
+           }
 
-                      <!-- 2. VELİ BİLGİLERİ -->
-                      <div style="margin-bottom: 24px;">
-                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">2. VELİ BİLGİLERİ</span>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Veli Adı Soyadı</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentName || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">T.C. Kimlik Numarası</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentTc || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Telefon Numarası</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentPhone || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">E-posta Adresi</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentEmail || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Öğrenciye Yakınlık Derecesi</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentRelation || '-'}</div>
-                          </div>
-                        </div>
-                      </div>
+           if (rep.data) {
+             const dataKeys = Object.keys(rep.data).filter(k => k !== 'formName' && rep.data[k]);
+             
+             const isPreReg = rep.type === 'pre_registration_form' || dataKeys.some(k => k.toLowerCase() === 'studenttc');
+             const preferredOrder = isPreReg ? orderPreReg : orderContact;
+             
+             dataKeys.sort((a, b) => {
+               const idxA = preferredOrder.findIndex(k => k.toLowerCase() === a.toLowerCase());
+               const idxB = preferredOrder.findIndex(k => k.toLowerCase() === b.toLowerCase());
+               if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+               if (idxA !== -1) return -1;
+               if (idxB !== -1) return 1;
+               return 0;
+             });
 
-                      <!-- 3. KAMPÜS VE TERCİHLER -->
-                      <div style="margin-bottom: ${data.notes ? '24px' : '0'};">
-                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">3. KAMPÜS VE TERCİHLER</span>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Kampüs Seçimi</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.campus || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Akademik Yıl</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.academicYear || '-'}</div>
-                          </div>
-                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
-                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Bizi nereden duydunuz?</div>
-                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.heardFrom || '-'}</div>
-                          </div>
-                        </div>
-                      </div>
+             for (const key of dataKeys) {
+               const val = rep.data[key];
+               if (key.toLowerCase() === 'notes') continue; // append notes at the end
+               let displayKey = translateKey(key);
+               let displayVal = val;
+               if (typeof val === 'object' && val !== null) {
+                  displayVal = JSON.stringify(val);
+               }
 
-                      <!-- 4. NOTLAR -->
-                      ${data.notes ? `
-                      <div>
-                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">4. EK NOTLAR</span>
-                        </div>
-                        <div style="background-color: #eff6ff; padding: 16px; border-radius: 6px; border: 1px solid #dbeafe;">
-                          <div style="font-size: 13px; font-weight: 500; color: #1e3a8a; white-space: pre-wrap;">${data.notes}</div>
-                        </div>
-                      </div>
-                      ` : ''}
-                      
-                      <!-- Footer bar -->
-                      <div style="display: flex; height: 6px; width: 100%; margin-top: 24px; border-radius: 3px; overflow: hidden;">
-                        <div style="flex: 1; background-color: #2357c6;"></div>
-                        <div style="flex: 1; background-color: #001b3b;"></div>
-                        <div style="flex: 1; background-color: #2b5ec9;"></div>
-                      </div>
-                    </div>
-                  `;
-                }
+               dataHtml += `<div class="row"><span class="label">${displayKey}:</span> <span class="value">${displayVal}</span></div>`;
+             }
+           }
+           
+           const dateStr = rep.createdAt ? new Date(rep.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+           const formName = rep.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : rep.type === 'contact_form' ? 'İletişim Formu' : (rep.data?.formName || 'Veli Asistanı Formu');
+           
+           printContent += `
+             <div class="report">
+               <div class="dost-header">Dost Koleji</div>
+               <div class="title">Rapor #${idx + 1} - ${formName}</div>
+               <div class="date">
+                 <strong>Tarih / Saat:</strong> ${dateStr}<br/>
+                 <strong>Gönderen:</strong> ${senderName}
+               </div>
+               ${dataHtml}
+               ${(rep.data?.notes || rep.data?.Notes) ? `<div class="row"><span class="label">Notlar:</span> <span class="value">${rep.data?.notes || rep.data?.Notes}</span></div>` : ''}
+             </div>
+           `;
+        });
 
-                // Fallback / Standard Form
-                return `
-                  <div class="card">
-                    <div class="card-header">
-                      <span class="form-name">#${idx + 1} - ${rep.type === 'contact_form' ? 'İletişim Formu' : (rep.data?.formName || 'Form')}</span>
-                      <span class="date">${formatReportDate(rep.createdAt)}</span>
-                    </div>
-                    <div class="field"><strong>Gönderen:</strong> ${sender.name || 'Bilinmiyor'}</div>
-                    <div class="field"><strong>İlgilendiği Eğitim Kademesi:</strong> ${sender.kademe || 'Belirtilmedi'}</div>
-                    <div class="field"><strong>İlgilendiği Kampüs:</strong> ${sender.kampus || 'Belirtilmedi'}</div>
-                    <div class="field"><strong>Telefon Numarası:</strong> ${sender.phone || 'Belirtilmedi'}</div>
-                    ${sender.email ? `<div class="field"><strong>E-posta:</strong> ${sender.email}</div>` : ''}
-                    <div class="message-box">
-                      <strong>Mesaj:</strong><br/>
-                      ${sender.message ? `"${sender.message}"` : 'Mesaj bulunmuyor'}
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-
-              <div class="footer">Dost Koleji Yönetim Paneli Rapor Çıktısı</div>
-
+        printContent += `
               <script>
                 window.onload = function() {
                   window.print();
@@ -782,14 +732,10 @@ export default function ReportCenter() {
         `;
         printWindow.document.write(printContent);
         printWindow.document.close();
-        return;
       }
     } catch (e) {
-      console.warn("Popup blocked, using fallback", e);
+      alert('Yazdırma işlemi açılamadı. Lütfen pop-up engelleyicinizi kontrol edin.');
     }
-
-    // Fallback
-    alert('Yazdırma işlemi açılır pencere (popup) engelleyicisi tarafından durduruldu. Lütfen tarayıcınızın adres çubuğundan izin verin veya pop-up engelleyiciyi kapatın.');
   };
 
   return (
@@ -1021,15 +967,15 @@ export default function ReportCenter() {
                           {formatReportDate(report.createdAt)}
                         </span>
 
-                        <button 
-                          onClick={(e) => { e.stopPropagation(); handlePrint(report); }}
-                          className="flex items-center gap-1 px-3 py-1 bg-blue-50 text-[#004899] hover:bg-blue-100 rounded-lg text-xs font-bold transition-colors cursor-pointer border border-blue-200/60"
-                          title="Bu Raporu PDF Olarak İndir / Yazdır"
-                        >
-                          <Printer className="w-3.5 h-3.5 text-[#38C1D2]" />
-                          PDF / Yazdır
-                        </button>
 
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); handlePrint(report); }} 
+                          className="flex items-center gap-1 px-3 py-1 bg-blue-50 text-[#004899] hover:bg-blue-100 rounded-lg text-xs font-bold transition-colors cursor-pointer border border-blue-200/60" 
+                          title="Bu Raporu Yazdır" 
+                        > 
+                          <Printer className="w-3.5 h-3.5 text-[#38C1D2]" /> 
+                          Yazdır 
+                        </button>
                         {deleteConfirmId === report.id ? (
                           <div className="flex items-center gap-1 bg-red-50 border border-red-200 p-1 rounded-xl animate-in fade-in zoom-in-95 duration-150">
                             <span className="text-[11px] font-bold text-red-700 px-1">Silinsin mi?</span>
