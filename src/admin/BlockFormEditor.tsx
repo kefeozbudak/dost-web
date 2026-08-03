@@ -142,7 +142,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           <summary className="flex gap-2 items-center p-3 cursor-pointer list-none select-none">
             <span className="material-symbols-outlined text-[16px] text-slate-400 group-open/item:rotate-90 transition-transform">chevron_right</span>
             <div className="flex-1 font-bold text-xs text-slate-600 truncate">{typeof item === 'string' ? item : (item.title || item.label || item.day || item.name || item.text || `Öğe ${idx + 1}`)}</div>
-            <GripVertical className="w-4 h-4 text-slate-300 cursor-move" draggable onDragStart={(e) => handleDragStart(e, idx)} onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, idx)} onClick={(e) => e.preventDefault()} />
+            <span draggable onDragStart={(e) => handleDragStart(e, idx)} onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, idx)} onClick={(e) => e.preventDefault()} className="cursor-move"><GripVertical className="w-4 h-4 text-slate-300" /></span>
           </summary>
           <div className="p-3 pt-0 border-t border-slate-200 flex gap-2 items-start mt-2">
             <div className="flex-1 space-y-2">
@@ -1133,6 +1133,16 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderCommonFields()}
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+          </div>
+        )}
+        
+        {block.type === 'pre_registration_form' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Form Başlığı (Örn: ÖĞRENCİ ÖN KAYIT FORMU)', 'title')}
+            {renderInputWithStyle('Alt Başlık (Örn: Lütfen Formu Eksiksiz Doldurunuz.)', 'subtitle')}
+            {renderInputWithStyle('Webhook URL (Opsiyonel: Form gönderilince verilerin iletileceği URL)', 'webhookUrl')}
+            <p className="text-xs text-slate-500 italic mt-1">Bu form önceden tanımlanmış sabit bir yapıya sahiptir. Renk ve stiller "İleri Düzey Stiller" sekmesinden veya blok stillerinden ayarlanabilir.</p>
           </div>
         )}
 

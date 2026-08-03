@@ -109,6 +109,13 @@ export default function PublicView() {
             blocks: defaultHakkimizdaData
           });
         });
+      } else if (location.pathname === '/on-kayit') {
+        import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
+          setPageData({
+            title: 'Öğrenci Ön Kayıt Formu',
+            blocks: defaultPreRegistrationData
+          });
+        });
       } else {
         setPageData(null);
       }

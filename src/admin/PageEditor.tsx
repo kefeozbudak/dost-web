@@ -92,6 +92,11 @@ export default function PageEditor() {
             const defaultData = { title: 'Hakkımızda', path: '/hakkimizda', blocks: defaultHakkimizdaData };
             setPageData(defaultData);
           });
+        } else if (pageId === 'on-kayit') {
+          import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
+            const defaultData = { title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit', blocks: defaultPreRegistrationData };
+            setPageData(defaultData);
+          });
         }
       } catch (e) {
         console.error(e);
@@ -427,6 +432,7 @@ export default function PageEditor() {
                           { type: 'menu_features', label: 'Yemek Menüsü Özellikler' },
                           { type: 'academic_calendar_hero', label: 'Akademik Takvim Hero' },
                           { type: 'academic_calendar', label: 'Akademik Takvim Modülü' },
+                          { type: 'pre_registration_form', label: 'Ön Kayıt Formu' },
                         ].map((b, i) => (
                           <button
                             key={i}

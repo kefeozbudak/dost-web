@@ -8,10 +8,229 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 
+
+
+const PreRegistrationReportView = ({ data }: { data: any }) => {
+  return (
+    <div className="bg-white rounded-xl overflow-hidden border border-slate-200/80 shadow-sm w-full max-w-4xl mx-auto my-4">
+      <div className="p-6 space-y-8">
+        {/* 1. ÖĞRENCİ BİLGİLERİ */}
+        <section>
+          <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+            <span className="material-symbols-outlined text-[#2b5ec9] text-xl">school</span>
+            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">ÖĞRENCİ BİLGİLERİ</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Öğrenci Adı Soyadı</span>
+              <p className="text-sm font-semibold text-slate-800">{data.studentName || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">T.C. Kimlik Numarası</span>
+              <p className="text-sm font-semibold text-slate-800">{data.studentTc || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Doğum Tarihi</span>
+              <p className="text-sm font-semibold text-slate-800">{data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cinsiyet</span>
+              <p className="text-sm font-semibold text-slate-800">{data.studentGender || '-'}</p>
+            </div>
+            <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Mevcut Sınıf Seviyesi</span>
+              <p className="text-sm font-semibold text-slate-800">{data.studentGrade || '-'}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. VELİ BİLGİLERİ */}
+        <section>
+          <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+            <span className="material-symbols-outlined text-[#2b5ec9] text-xl">family_restroom</span>
+            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">VELİ BİLGİLERİ</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Veli Adı Soyadı</span>
+              <p className="text-sm font-semibold text-slate-800">{data.parentName || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">T.C. Kimlik Numarası</span>
+              <p className="text-sm font-semibold text-slate-800">{data.parentTc || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Telefon Numarası</span>
+              <p className="text-sm font-semibold text-slate-800">{data.parentPhone || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">E-posta Adresi</span>
+              <p className="text-sm font-semibold text-slate-800">{data.parentEmail || '-'}</p>
+            </div>
+            <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Öğrenciye Yakınlık Derecesi</span>
+              <p className="text-sm font-semibold text-slate-800">{data.parentRelation || '-'}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. KAMPÜS VE TERCİHLER */}
+        <section>
+          <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+            <span className="material-symbols-outlined text-[#2b5ec9] text-xl">location_on</span>
+            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">KAMPÜS VE TERCİHLER</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kampüs Seçimi</span>
+              <p className="text-sm font-semibold text-slate-800">{data.campus || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Akademik Yıl</span>
+              <p className="text-sm font-semibold text-slate-800">{data.academicYear || '-'}</p>
+            </div>
+            <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Bizi nereden duydunuz?</span>
+              <p className="text-sm font-semibold text-slate-800">{data.heardFrom || '-'}</p>
+            </div>
+          </div>
+        </section>
+        
+        {data.notes && (
+          <section>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <span className="block text-[10px] font-bold text-[#002147] uppercase mb-1">Eklemek İstedikleriniz</span>
+              <p className="text-sm font-medium text-slate-800 whitespace-pre-wrap">{data.notes}</p>
+            </div>
+          </section>
+        )}
+      </div>
+      
+      {/* Footer bar */}
+      <div className="flex h-1.5 w-full">
+        <div className="w-1/3 bg-[#2357c6]"></div>
+        <div className="w-1/3 bg-[#001b3b]"></div>
+        <div className="w-1/3 bg-[#2b5ec9]"></div>
+      </div>
+    </div>
+  );
+};
+
+const PreRegistrationPrintView = ({ data, date, index }: { data: any, date: number, index: number }) => {
+  return (
+    <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '24px', pageBreakInside: 'avoid', overflow: 'hidden', fontFamily: 'sans-serif' }}>
+      <div style={{ padding: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+          <div style={{ fontSize: '12px', color: '#64748b', backgroundColor: '#f1f5f9', padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+            #{index + 1} - ÖĞRENCİ ÖN KAYIT FORMU
+          </div>
+        </div>
+        {/* 1. ÖĞRENCİ BİLGİLERİ */}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>1. ÖĞRENCİ BİLGİLERİ</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Öğrenci Adı Soyadı</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.studentName || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>T.C. Kimlik Numarası</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.studentTc || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Doğum Tarihi</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Cinsiyet</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.studentGender || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 100%', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Mevcut Sınıf Seviyesi</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.studentGrade || '-'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. VELİ BİLGİLERİ */}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>2. VELİ BİLGİLERİ</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Veli Adı Soyadı</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.parentName || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>T.C. Kimlik Numarası</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.parentTc || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Telefon Numarası</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.parentPhone || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>E-posta Adresi</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.parentEmail || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 100%', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Öğrenciye Yakınlık Derecesi</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.parentRelation || '-'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. KAMPÜS VE TERCİHLER */}
+        <div style={{ marginBottom: data.notes ? '24px' : '0' }}>
+          <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>3. KAMPÜS VE TERCİHLER</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Kampüs Seçimi</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.campus || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 calc(50% - 8px)', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Akademik Yıl</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.academicYear || '-'}</div>
+            </div>
+            <div style={{ flex: '1 1 100%', backgroundColor: '#f8fafc', padding: '12px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Bizi nereden duydunuz?</div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>{data.heardFrom || '-'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. NOTLAR */}
+        {data.notes && (
+          <div>
+            <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>4. EK NOTLAR</span>
+            </div>
+            <div style={{ backgroundColor: '#eff6ff', padding: '16px', borderRadius: '6px', border: '1px solid #dbeafe' }}>
+              <div style={{ fontSize: '13px', fontWeight: '500', color: '#1e3a8a', whiteSpace: 'pre-wrap' }}>{data.notes}</div>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Footer bar */}
+      <div style={{ display: 'flex', height: '6px', width: '100%' }}>
+        <div style={{ flex: '1', backgroundColor: '#2357c6' }}></div>
+        <div style={{ flex: '1', backgroundColor: '#001b3b' }}></div>
+        <div style={{ flex: '1', backgroundColor: '#2b5ec9' }}></div>
+      </div>
+    </div>
+  );
+};
+
 export default function ReportCenter() {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'chat' | 'all'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'pre_registration' | 'contact' | 'all'>('chat');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterKampus, setFilterKampus] = useState('');
   const [filterKademe, setFilterKademe] = useState('');
@@ -284,27 +503,50 @@ export default function ReportCenter() {
     let kademe = '';
     let message = '';
     const otherFields: { label: string; value: any }[] = [];
+    
+    const keyTranslations: Record<string, string> = {
+      studentName: "Öğrenci Adı",
+      studentTc: "Öğrenci TC",
+      studentBirthDate: "Doğum Tarihi",
+      studentGender: "Cinsiyet",
+      studentGrade: "Sınıf Seviyesi",
+      parentName: "Veli Adı",
+      parentTc: "Veli TC",
+      parentPhone: "Veli Telefon",
+      parentEmail: "Veli E-posta",
+      parentRelation: "Yakınlık",
+      campus: "Kampüs",
+      academicYear: "Akademik Yıl",
+      heardFrom: "Nereden Duydu",
+      notes: "Ek Notlar"
+    };
 
     Object.entries(data).forEach(([key, val]) => {
       if (!val) return;
       const lowerKey = key.toLowerCase().trim();
-
+      const label = keyTranslations[key] || key;
       if (lowerKey.includes('formname')) return;
 
-      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim')) {
+      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim') || lowerKey.includes('grade')) {
         if (!kademe) kademe = String(val);
-      } else if (lowerKey.includes('kampüs') || lowerKey.includes('kampus')) {
+        else otherFields.push({ label, value: val });
+      } else if (lowerKey.includes('kampüs') || lowerKey.includes('kampus') || lowerKey.includes('campus')) {
         if (!kampus) kampus = String(val);
+        else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('telefon') || lowerKey.includes('tel') || lowerKey.includes('phone') || lowerKey.includes('gsm')) {
         if (!phone) phone = String(val);
+        else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('email') || lowerKey.includes('eposta') || lowerKey.includes('e-posta')) {
         if (!email) email = String(val);
-      } else if (lowerKey.includes('mesaj') || lowerKey.includes('not') || lowerKey.includes('açıklama')) {
+        else otherFields.push({ label, value: val });
+      } else if (lowerKey.includes('mesaj') || lowerKey.includes('not') || lowerKey.includes('açıklama') || lowerKey.includes('notes')) {
         if (!message) message = String(val);
+        else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('adı') || lowerKey.includes('soyad') || lowerKey.includes('isim') || lowerKey.includes('ad ') || lowerKey === 'ad' || lowerKey.includes('name')) {
         if (!name) name = String(val);
+        else otherFields.push({ label, value: val });
       } else {
-        otherFields.push({ label: key, value: val });
+        otherFields.push({ label, value: val });
       }
     });
 
@@ -322,9 +564,9 @@ export default function ReportCenter() {
   // Filter forms based on tab & search term
   const filteredReports = reports.filter(r => {
     // Tab filter
-    if (activeTab === 'chat' && !(r.type === 'chat' || !r.type || r.data?.formName)) {
-      return false;
-    }
+    if (activeTab === 'chat' && !(r.type === 'chat' || !r.type || r.data?.formName)) return false;
+    if (activeTab === 'pre_registration' && r.type !== 'pre_registration_form') return false;
+    if (activeTab === 'contact' && r.type !== 'contact_form') return false;
     
     const sender = extractSenderInfo(r.data);
 
@@ -395,10 +637,124 @@ export default function ReportCenter() {
 
               ${items.map((rep, idx) => {
                 const sender = extractSenderInfo(rep.data);
+                const data = rep.data || {};
+                
+                if (rep.type === 'pre_registration_form') {
+                  const birthDate = data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-';
+                  return `
+                    <div class="card" style="margin-bottom: 24px;">
+                      <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                        <div style="font-size: 12px; color: #64748b; background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-weight: bold;">
+                          #${idx + 1} - ÖĞRENCİ ÖN KAYIT FORMU
+                        </div>
+                      </div>
+                      
+                      <!-- 1. ÖĞRENCİ BİLGİLERİ -->
+                      <div style="margin-bottom: 24px;">
+                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">1. ÖĞRENCİ BİLGİLERİ</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Öğrenci Adı Soyadı</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentName || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">T.C. Kimlik Numarası</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentTc || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Doğum Tarihi</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${birthDate}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Cinsiyet</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentGender || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Mevcut Sınıf Seviyesi</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.studentGrade || '-'}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 2. VELİ BİLGİLERİ -->
+                      <div style="margin-bottom: 24px;">
+                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">2. VELİ BİLGİLERİ</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Veli Adı Soyadı</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentName || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">T.C. Kimlik Numarası</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentTc || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Telefon Numarası</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentPhone || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">E-posta Adresi</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentEmail || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Öğrenciye Yakınlık Derecesi</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.parentRelation || '-'}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 3. KAMPÜS VE TERCİHLER -->
+                      <div style="margin-bottom: ${data.notes ? '24px' : '0'};">
+                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">3. KAMPÜS VE TERCİHLER</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Kampüs Seçimi</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.campus || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 calc(50% - 8px); background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Akademik Yıl</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.academicYear || '-'}</div>
+                          </div>
+                          <div style="flex: 1 1 100%; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #f1f5f9;">
+                            <div style="font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Bizi nereden duydunuz?</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #0f172a;">${data.heardFrom || '-'}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 4. NOTLAR -->
+                      ${data.notes ? `
+                      <div>
+                        <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                          <span style="font-size: 14px; font-weight: bold; color: #1e293b;">4. EK NOTLAR</span>
+                        </div>
+                        <div style="background-color: #eff6ff; padding: 16px; border-radius: 6px; border: 1px solid #dbeafe;">
+                          <div style="font-size: 13px; font-weight: 500; color: #1e3a8a; white-space: pre-wrap;">${data.notes}</div>
+                        </div>
+                      </div>
+                      ` : ''}
+                      
+                      <!-- Footer bar -->
+                      <div style="display: flex; height: 6px; width: 100%; margin-top: 24px; border-radius: 3px; overflow: hidden;">
+                        <div style="flex: 1; background-color: #2357c6;"></div>
+                        <div style="flex: 1; background-color: #001b3b;"></div>
+                        <div style="flex: 1; background-color: #2b5ec9;"></div>
+                      </div>
+                    </div>
+                  `;
+                }
+
+                // Fallback / Standard Form
                 return `
                   <div class="card">
                     <div class="card-header">
-                      <span class="form-name">#${idx + 1} - ${rep.data?.formName || 'İletişim Formu'}</span>
+                      <span class="form-name">#${idx + 1} - ${rep.type === 'contact_form' ? 'İletişim Formu' : (rep.data?.formName || 'Form')}</span>
                       <span class="date">${formatReportDate(rep.createdAt)}</span>
                     </div>
                     <div class="field"><strong>Gönderen:</strong> ${sender.name || 'Bilinmiyor'}</div>
@@ -433,34 +789,11 @@ export default function ReportCenter() {
     }
 
     // Fallback
-    setPrintTarget(target);
-    setTimeout(() => {
-      window.print();
-    }, 300);
+    alert('Yazdırma işlemi açılır pencere (popup) engelleyicisi tarafından durduruldu. Lütfen tarayıcınızın adres çubuğundan izin verin veya pop-up engelleyiciyi kapatın.');
   };
 
   return (
     <>
-      {/* Printable Area CSS for window.print() */}
-      <style>{`
-        @media print {
-          body * {
-            visibility: hidden !important;
-          }
-          #printable-report-area, #printable-report-area * {
-            visibility: visible !important;
-          }
-          #printable-report-area {
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 100% !important;
-            background: white !important;
-            padding: 20px !important;
-            color: black !important;
-          }
-        }
-      `}</style>
 
       <div className="flex-1 overflow-y-auto bg-slate-50 p-4 md:p-6 font-sans text-slate-800">
         <div className="max-w-5xl mx-auto space-y-6">
@@ -482,46 +815,46 @@ export default function ReportCenter() {
                   <span className="text-xs font-bold text-red-700 px-2">Listelenenleri Sil?</span>
                   <button 
                     onClick={handleBulkDelete}
-                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
-                  >
-                    Evet
-                  </button>
+                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  >Evet, Sil</button>
                   <button 
                     onClick={() => setBulkDeleteConfirm(false)}
-                    className="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-medium transition-colors"
-                  >
-                    İptal
-                  </button>
+                    className="px-3 py-1.5 bg-white text-slate-600 hover:bg-slate-100 rounded-lg text-xs font-bold border border-slate-200 transition-colors"
+                  >İptal</button>
                 </div>
               ) : (
-                <button 
-                  onClick={() => setBulkDeleteConfirm(true)}
-                  disabled={filteredReports.length === 0}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 border border-red-200 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50"
-                  title="Listelenen tüm formları sil"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Toplu Sil
-                </button>
+                <>
+                  {selectedIds.length > 0 && (
+                     <button
+                       onClick={() => setBulkDeleteConfirm(true)}
+                       className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 shadow-sm"
+                     >
+                       <Trash2 className="w-4 h-4" />
+                       Seçilenleri Sil ({selectedIds.length})
+                     </button>
+                  )}
+                  <button
+                    onClick={() => setIsSelectionMode(!isSelectionMode)}
+                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 shadow-sm ${isSelectionMode ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    {isSelectionMode ? 'Seçimi İptal Et' : 'Seç'}
+                  </button>
+                  <button
+                    onClick={() => handlePrint('all')}
+                    className="px-4 py-2 bg-[#004899] hover:bg-[#003875] text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center gap-2"
+                  >
+                    <Printer className="w-4 h-4" />
+                    Tümünü Yazdır
+                  </button>
+                </>
               )}
-              
-              <button 
-                onClick={() => handlePrint('all')}
-                disabled={filteredReports.length === 0}
-                className="flex items-center gap-2 px-4 py-2.5 bg-[#004899] hover:bg-[#38C1D2] text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer disabled:opacity-50"
-                title="Listelenen tüm formları PDF / Yazdır"
-              >
-                <Printer className="w-4 h-4" />
-                Listeyi PDF / Yazdır
-              </button>
             </div>
           </div>
 
-          {/* Controls & Filter Bar */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 space-y-4">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              {/* Tabs */}
-              <div className="flex items-center gap-3 border-b md:border-b-0 border-slate-200 pb-2 md:pb-0">
+          {/* Controls Bar */}
+          <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between bg-white p-2 rounded-2xl shadow-sm border border-slate-200">
+              <div className="flex flex-wrap gap-2 p-1 bg-slate-50 rounded-xl border border-slate-100">
                 <button 
                   onClick={() => setActiveTab('chat')}
                   className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
@@ -530,12 +863,37 @@ export default function ReportCenter() {
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
-                  Veli Asistanı Formları
+                  Veli Asistanı
                   <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'chat' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
-                    {chatFormsCount}
+                    {reports.filter(r => r.type === 'chat' || !r.type || r.data?.formName).length}
                   </span>
                 </button>
-
+                <button 
+                  onClick={() => setActiveTab('pre_registration')}
+                  className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'pre_registration' 
+                      ? 'bg-[#004899] text-white shadow-sm' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  ÖN KAYIT FORMU
+                  <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'pre_registration' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {reports.filter(r => r.type === 'pre_registration_form').length}
+                  </span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab('contact')}
+                  className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'contact' 
+                      ? 'bg-[#004899] text-white shadow-sm' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  İLETİŞİM SAYFASI
+                  <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'contact' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {reports.filter(r => r.type === 'contact_form').length}
+                  </span>
+                </button>
                 <button 
                   onClick={() => setActiveTab('all')}
                   className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
@@ -544,7 +902,7 @@ export default function ReportCenter() {
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
-                  Tüm Formlar ({reports.length})
+                  Tüm Formlar
                 </button>
               </div>
 
@@ -600,7 +958,6 @@ export default function ReportCenter() {
               </div>
             </div>
           </div>
-
           {/* Main List */}
           <div className="space-y-4">
             {loading ? (
@@ -611,7 +968,7 @@ export default function ReportCenter() {
               <div className="text-center text-slate-500 py-12 bg-white border-2 border-dashed border-slate-200 rounded-2xl p-6">
                 <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                 <p className="font-bold text-sm text-slate-700">Henüz kayıtlı bir form bulunmuyor.</p>
-                <p className="text-xs text-slate-400 mt-1">Sitede Veli Asistanı formları doldurulduğunda anında buraya düşecektir.</p>
+                <p className="text-xs text-slate-400 mt-1">Sitede Sitedeki formlar doldurulduğunda anında buraya düşecektir.</p>
               </div>
             ) : (
               filteredReports.map((report) => {
@@ -644,7 +1001,7 @@ export default function ReportCenter() {
                           />
                         )}
                         <span className="px-3 py-1 bg-[#004899]/10 text-[#004899] text-xs font-black rounded-lg border border-[#004899]/20">
-                          {report.data?.formName || 'İletişim Formu'}
+                          {report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : report.data?.formName || 'Veli Asistanı Formu'}
                         </span>
 
                         <button 
@@ -736,6 +1093,7 @@ export default function ReportCenter() {
 
                     {/* EXPANDABLE DETAILS AREA */}
                     {isExpanded && (
+                      report.type === 'pre_registration_form' ? <PreRegistrationReportView data={report.data} /> : (
                       <div className="bg-gradient-to-b from-blue-50/50 to-slate-50 border border-slate-200 rounded-xl p-4.5 space-y-3.5 shadow-2xs">
                         
                         {/* 1. Gönderen & WhatsApp */}
@@ -830,6 +1188,7 @@ export default function ReportCenter() {
                         )}
 
                       </div>
+                      ) // end ternary
                     )}
                   </div>
                 );
@@ -837,69 +1196,6 @@ export default function ReportCenter() {
             )}
           </div>
         </div>
-      </div>
-
-      {/* PRINTABLE RENDER CONTAINER FOR WINDOW.PRINT() */}
-      <div id="printable-report-area" className="hidden print:block">
-        <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-          {/* Print Header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #004899', paddingBottom: '12px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img src="/yelken_transparent.png" alt="Dost Koleji" style={{ height: '48px', width: 'auto' }} />
-              <div>
-                <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#004899', margin: 0 }}>DOST KOLEJİ</h1>
-                <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>Rapor Merkezi - Başvuru Formu Dökümü</p>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right', fontSize: '11px', color: '#555' }}>
-              <p style={{ margin: 0 }}><strong>Rapor Tarihi:</strong> {format(new Date(), 'dd.MM.yyyy HH:mm')}</p>
-              <p style={{ margin: 0 }}><strong>Toplam Kayıt:</strong> {printTarget === 'all' ? filteredReports.length : 1}</p>
-            </div>
-          </div>
-
-          {/* Print Body */}
-          {(printTarget === 'all' ? filteredReports : [printTarget]).map((rep, index) => {
-            if (!rep) return null;
-            const sender = extractSenderInfo(rep.data);
-            return (
-              <div key={rep.id || index} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', marginBottom: '20px', pageBreakInside: 'avoid' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #eee', paddingBottom: '8px', marginBottom: '12px' }}>
-                  <span style={{ fontWeight: 'bold', color: '#004899', fontSize: '14px' }}>
-                    #{index + 1} - {rep.data?.formName || 'İletişim Formu'}
-                  </span>
-                  <span style={{ fontSize: '12px', color: '#666' }}>
-                    Tarih: {formatReportDate(rep.createdAt)}
-                  </span>
-                </div>
-
-                <div style={{ backgroundColor: '#fafafa', border: '1px solid #e2e8f0', padding: '12px', borderRadius: '6px', fontSize: '13px', lineHeight: '1.8' }}>
-                  <p style={{ margin: 0 }}><strong>Gönderen:</strong> {sender.name || 'Bilinmiyor'}</p>
-                  <p style={{ margin: 0 }}><strong>İlgilendiği Eğitim Kademesi:</strong> {sender.kademe || 'Belirtilmedi'}</p>
-                  <p style={{ margin: 0 }}><strong>İlgilendiği Kampüs:</strong> {sender.kampus || 'Belirtilmedi'}</p>
-                  <p style={{ margin: 0 }}><strong>Telefon Numarası:</strong> {sender.phone || 'Belirtilmedi'}</p>
-                  {sender.email && <p style={{ margin: 0 }}><strong>E-posta:</strong> {sender.email}</p>}
-                  <p style={{ margin: '8px 0 0 0', paddingTop: '8px', borderTop: '1px solid #e2e8f0' }}><strong>Mesaj:</strong> {sender.message || 'Mesaj bulunmuyor'}</p>
-                </div>
-
-                {sender.otherFields.length > 0 && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', fontSize: '11px', marginTop: '10px' }}>
-                    {sender.otherFields.map((f, i) => (
-                      <div key={i}>
-                        <strong>{f.label}:</strong> {String(f.value)}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-          <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '30px', textAlign: 'center', fontSize: '10px', color: '#888' }}>
-            Dost Koleji Yönetim Paneli Otomatik Çıktı Belgesidir.
-          </div>
-        </div>
-      </div>
     </>
   );
-}
-
+};

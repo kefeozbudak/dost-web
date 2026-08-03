@@ -15,6 +15,143 @@ export default function AdminDashboard() {
   const [recentPages, setRecentPages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Auto-patch home page links and create on-kayit page
+  useEffect(() => {
+    const patchHomeLinks = async () => {
+      try {
+        const { doc, getDoc, updateDoc, setDoc } = await import('firebase/firestore');
+        
+        // 1. Create on-kayit page if it doesn't exist
+        const pageRef = doc(db, 'pages', 'on-kayit');
+        const pageSnap = await getDoc(pageRef);
+        if (!pageSnap.exists()) {
+           const { defaultPreRegistrationData } = await import('../lib/defaultData');
+           await setDoc(pageRef, {
+              title: 'Öğrenci Ön Kayıt Formu',
+              path: '/on-kayit',
+              blocks: defaultPreRegistrationData,
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+              author: 'system'
+           });
+        }
+        
+        // 2. Patch home page
+        const homeRef = doc(db, 'pages', 'home');
+        const homeSnap = await getDoc(homeRef);
+        if (homeSnap.exists()) {
+          const data = homeSnap.data();
+          let modified = false;
+          if (data.blocks) {
+            const newBlocks = [...data.blocks];
+            for (let i = 0; i < newBlocks.length; i++) {
+              if (newBlocks[i].type === 'header') {
+                if (newBlocks[i].ctaButton && newBlocks[i].ctaButton.label === 'Ön Kayıt Formu' && newBlocks[i].ctaButton.url === '#') {
+                  newBlocks[i].ctaButton.url = '/on-kayit';
+                  modified = true;
+                }
+                if (!newBlocks[i].links) newBlocks[i].links = [];
+                const hasLink = newBlocks[i].links.some((l) => l.url === '/on-kayit');
+                if (!hasLink) {
+                  newBlocks[i].links.push({ label: 'Ön Kayıt', url: '/on-kayit' });
+                  modified = true;
+                }
+              }
+              if (newBlocks[i].type === 'footer') {
+                 if (!newBlocks[i].columns) newBlocks[i].columns = [];
+                 let kurumsalCol = newBlocks[i].columns.find(c => c.title === 'Kurumsal' || c.title === 'Akademik');
+                 if (kurumsalCol) {
+                    const hasLink = kurumsalCol.links.some(l => l.url === '/on-kayit');
+                    if (!hasLink) {
+                       kurumsalCol.links.push({ label: 'Ön Kayıt Formu', url: '/on-kayit' });
+                       modified = true;
+                    }
+                 } else if (newBlocks[i].columns.length > 0) {
+                    const hasLink = newBlocks[i].columns[0].links.some(l => l.url === '/on-kayit');
+                    if (!hasLink) {
+                       newBlocks[i].columns[0].links.push({ label: 'Ön Kayıt Formu', url: '/on-kayit' });
+                       modified = true;
+                    }
+                 }
+              }
+            }
+            if (modified) {
+              await updateDoc(homeRef, { blocks: newBlocks });
+            }
+          }
+        }
+        
+        // 3. Patch settings/header and settings/footer
+        const headerRef = doc(db, 'settings', 'header');
+        const headerSnap = await getDoc(headerRef);
+        if (headerSnap.exists()) {
+           const hData = headerSnap.data();
+           let hModified = false;
+           if (!hData.links) hData.links = [];
+           if (!hData.links.some(l => l.url === '/on-kayit')) {
+              hData.links.push({ label: 'Ön Kayıt', url: '/on-kayit' });
+              hModified = true;
+           }
+           if (hData.ctaButton && hData.ctaButton.url !== '/on-kayit') {
+              hData.ctaButton.url = '/on-kayit';
+              hModified = true;
+           }
+           if (hModified) await updateDoc(headerRef, hData);
+        } else {
+           // create if not exists
+           await setDoc(headerRef, {
+             logoUrl: '/dost-logo-png.png',
+             links: [
+               { label: 'Hakkımızda', url: '/hakkimizda' },
+               { label: 'Kampüslerimiz', url: '#' },
+               { label: 'Ön Kayıt', url: '/on-kayit' }
+             ],
+             ctaButton: { label: 'Ön Kayıt Formu', url: '/on-kayit' }
+           });
+        }
+        
+        const footerRef = doc(db, 'settings', 'footer');
+        const footerSnap = await getDoc(footerRef);
+        if (footerSnap.exists()) {
+           const fData = footerSnap.data();
+           let fModified = false;
+           if (!fData.columns) fData.columns = [];
+           let kurumsalCol = fData.columns.find(c => c.title === 'Kurumsal' || c.title === 'Akademik' || c.title === 'Kayıt');
+           if (kurumsalCol) {
+              if (!kurumsalCol.links.some(l => l.url === '/on-kayit')) {
+                 kurumsalCol.links.push({ label: 'Öğrenci Ön Kayıt Formu', url: '/on-kayit' });
+                 fModified = true;
+              }
+           } else if (fData.columns.length > 0) {
+              if (!fData.columns[0].links.some(l => l.url === '/on-kayit')) {
+                 fData.columns[0].links.push({ label: 'Öğrenci Ön Kayıt Formu', url: '/on-kayit' });
+                 fModified = true;
+              }
+           }
+           if (fModified) await updateDoc(footerRef, fData);
+        } else {
+           await setDoc(footerRef, {
+              logoUrl: '/dost-logo-png.png',
+              brandName: 'Dost Koleji',
+              brandDesc: 'Dost Koleji, geleceğin liderlerini yetiştiren vizyoner eğitim kurumu.',
+              newsletterTitle: 'E-Bülten Kaydı',
+              newsletterDesc: 'Gelişmelerden haberdar olmak için abone olun.',
+              newsletterPlaceholder: 'E-posta adresiniz',
+              newsletterButtonText: 'Kaydol',
+              copyright: '© 2024 Dost Koleji. Tüm Hakları Saklıdır.',
+              columns: [
+                { title: 'Kurumsal', links: [{ label: 'Hakkımızda', url: '/hakkimizda' }, { label: 'Öğrenci Ön Kayıt Formu', url: '/on-kayit' }] }
+              ],
+              legalLinks: [{ label: 'KVKK', url: '#' }]
+           });
+        }
+      } catch (e) {
+        console.error("Patch error", e);
+      }
+    };
+    patchHomeLinks();
+  }, []);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {

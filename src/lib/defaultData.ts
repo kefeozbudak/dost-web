@@ -4,10 +4,11 @@ export const defaultHomePageData = [
     logoUrl: '/dost-logo-png.png',
     links: [
       { label: 'Kampüslerimiz', url: '#' },
+      { label: 'Ön Kayıt', url: '/on-kayit' },
       { label: 'İletişim', url: '#' }
     ],
     showSearch: true,
-    ctaButton: { label: 'Ön Kayıt Formu', url: '#' }
+    ctaButton: { label: 'Ön Kayıt Formu', url: '/on-kayit' }
   },
   
   
@@ -27,7 +28,7 @@ export const defaultHomePageData = [
       { title: 'Ümitköy Kampüsü', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5CIEGWjb5N00w9IoqzRdjl_ii1MbkI7Z1xQkvkffIT-UMMiC1lGzNY8gEffFUaAcOgCIWSqHyjPyVwFA6b8odbabXRT3NpYvqJ9kjlniTj66HVIyK9J_aF_TtcQMqSeWEk6QLzaBua6W-MPgsOuC0ucsq66FIeadv-cd3ld8LK3aTAttcYZmTQtKcrzsqeFk6v6GHydnRqRb34MkLs-EykBN6zKsuX_HayF1xTPq4R8F1NJavFJVK' }
     ],
     buttons: [
-      { label: 'Kampüsleri Keşfet', style: 'primary' },
+      { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '/on-kayit' },
       { label: 'Hemen Başvur', style: 'secondary' }
     ]
   },
@@ -284,10 +285,11 @@ export const defaultBasarilarimizData = [
     logoUrl: '/dost-logo-png.png',
     links: [
       { label: 'Kampüslerimiz', url: '#' },
+      { label: 'Ön Kayıt', url: '/on-kayit' },
       { label: 'İletişim', url: '#' }
     ],
     showSearch: true,
-    ctaButton: { label: 'Ön Kayıt Formu', url: '#' }
+    ctaButton: { label: 'Ön Kayıt Formu', url: '/on-kayit' }
   },
   {
     type: 'achievements_hero',
@@ -493,5 +495,19 @@ export const defaultDuyurularData = [
     inputPlaceholder: 'E-posta adresiniz',
     buttonText: 'Abone Ol',
     caption: 'Kayıt olarak Gizlilik Politikamızı ve KVKK metnini kabul etmiş sayılırsınız.'
+  }
+];
+
+export const defaultPreRegistrationData = [
+  {
+    type: 'pre_registration_form',
+    title: 'ÖĞRENCİ ÖN KAYIT FORMU',
+    subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.',
+    styles: {
+      backgroundColor: '#f6f6f8',
+      headerBgColor: '#002147',
+      cardBgColor: '#ffffff',
+      titlePart1Color: '#1d4eca'
+    }
   }
 ];

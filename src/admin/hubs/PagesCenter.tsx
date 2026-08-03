@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { db, auth } from '../../lib/firebase';
+import { defaultPreRegistrationData } from '../../lib/defaultData';
 import { FileText, Plus, Trash2, Eye, EyeOff, Edit, ExternalLink, Settings, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -106,6 +107,32 @@ export default function PagesCenter() {
             <h1 className="text-3xl font-black tracking-tight mb-2 text-slate-800">Sayfa Yönetimi</h1>
             <p className="text-slate-500 text-sm">Sitenizdeki tüm sayfaları buradan yönetebilir, yeni sayfalar oluşturabilirsiniz.</p>
           </div>
+          <button
+            onClick={async () => {
+              if (window.confirm('Eksik varsayılan sayfaları (Örn: Ön Kayıt) oluşturmak ister misiniz?')) {
+                const docRef = doc(db, 'pages', 'on-kayit');
+                const docSnap = await getDoc(docRef);
+                if (!docSnap.exists()) {
+                  await setDoc(docRef, {
+                    title: 'Öğrenci Ön Kayıt',
+                    path: '/on-kayit',
+                    blocks: defaultPreRegistrationData,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    author: auth.currentUser?.email || 'admin'
+                  });
+                  alert('Ön Kayıt sayfası başarıyla oluşturuldu!');
+                  window.location.reload();
+                } else {
+                  alert('Ön Kayıt sayfası zaten mevcut.');
+                }
+              }
+            }}
+            className="flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-sm font-bold transition-colors shadow-sm"
+          >
+            <Settings className="w-4 h-4" />
+            Varsayılanları Kur
+          </button>
           <button 
             onClick={() => setShowCreateModal(true)}
             className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-colors shadow-sm"
