@@ -34,7 +34,13 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
   if (!block) return <div className="text-sm text-slate-500 text-center py-8">Lütfen düzenlemek için bir modül seçin.</div>;
 
   const handleChange = (key: string, value: any) => {
-    onChange({ ...block, [key]: value });
+    const updated = { ...block, [key]: value };
+    if (key === 'url' || key === 'buttonUrl') {
+      updated.url = value;
+      updated.buttonUrl = value;
+      updated.link = value;
+    }
+    onChange(updated);
   };
 
   const handleStyleChange = (key: string, value: any) => {
@@ -55,6 +61,11 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
     const currentArray = getEffectiveArray(arrayKey);
     const newArray = currentArray.map((item: any) => ({ ...item }));
     newArray[index] = { ...newArray[index], [itemKey]: value };
+    if (itemKey === 'url' || itemKey === 'buttonUrl') {
+      newArray[index].url = value;
+      newArray[index].buttonUrl = value;
+      newArray[index].link = value;
+    }
     if (arrayKey === 'inputs' && itemKey === 'label' && (!newArray[index].name || newArray[index].name.startsWith('input_'))) {
       const slug = value.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 20);
       if (slug) newArray[index].name = slug;
@@ -71,6 +82,48 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
       <input type="text" value={block[key] || ''} onChange={e => handleChange(key, e.target.value)} className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500" />
     </div>
   );
+
+  const renderUrlInputWithStyle = (label: string, key: string) => {
+    const val = block[key] || '';
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">{label}</label>
+          <FieldStylePicker block={block} fieldKey={key} onChange={handleStyleChange} />
+        </div>
+        <div className="flex gap-2 w-full">
+          <select
+            value={val === '/' || pagesList?.find(p => p.path === val) ? val : 'custom'}
+            onChange={(e) => {
+              if (e.target.value !== 'custom') {
+                handleChange(key, e.target.value);
+                if (key === 'buttonUrl') handleChange('url', e.target.value);
+                if (key === 'url') handleChange('buttonUrl', e.target.value);
+              }
+            }}
+            className="w-1/2 px-2 py-1.5 text-xs border border-slate-300 rounded bg-white text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="custom">Sayfa Seç</option>
+            <option value="/">Ana Sayfa (/)</option>
+            {pagesList?.filter(p => p.id !== 'home').map(p => (
+              <option key={p.id} value={p.path}>{p.title} ({p.path})</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={val}
+            onChange={(e) => {
+              handleChange(key, e.target.value);
+              if (key === 'buttonUrl') handleChange('url', e.target.value);
+              if (key === 'url') handleChange('buttonUrl', e.target.value);
+            }}
+            placeholder="Özel URL Girin (Örn: /on-kayit)"
+            className="w-1/2 px-2 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+    );
+  };
 
   const renderTextareaWithStyle = (label: string, key: string) => (
     <div>
@@ -199,7 +252,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                 return <input key={field.key} type="text" value={item[field.key] || ''} onChange={(e) => handleArrayChange(arrayKey, idx, field.key, e.target.value)} placeholder={field.label} className="w-full text-sm border-slate-300 rounded p-1.5 font-bold" />
               }
               if (field.type === 'url') {
-                const val = item[field.key] || '';
+                const val = item[field.key] || item.url || item.buttonUrl || '';
                 return (
                   <div key={field.key} className="flex flex-col gap-1">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{field.label}</label>
@@ -207,21 +260,29 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                       <select
                         value={val === '/' || pagesList?.find(p => p.path === val) ? val : 'custom'}
                         onChange={(e) => {
-                          if (e.target.value !== 'custom') handleArrayChange(arrayKey, idx, field.key, e.target.value);
+                          if (e.target.value !== 'custom') {
+                            handleArrayChange(arrayKey, idx, field.key, e.target.value);
+                            if (field.key === 'buttonUrl') handleArrayChange(arrayKey, idx, 'url', e.target.value);
+                            if (field.key === 'url') handleArrayChange(arrayKey, idx, 'buttonUrl', e.target.value);
+                          }
                         }}
-                        className="w-1/2 px-2 py-1.5 text-xs border border-slate-300 rounded bg-white text-slate-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-1/2 px-2 py-1.5 text-xs border border-slate-300 rounded bg-white text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-blue-500"
                       >
                         <option value="custom">Sayfa Seç</option>
-                        <option value="/">Ana Sayfa</option>
+                        <option value="/">Ana Sayfa (/)</option>
                         {pagesList?.filter(p => p.id !== 'home').map(p => (
-                          <option key={p.id} value={p.path}>{p.title}</option>
+                          <option key={p.id} value={p.path}>{p.title} ({p.path})</option>
                         ))}
                       </select>
                       <input
                         type="text"
                         value={val}
-                        onChange={(e) => handleArrayChange(arrayKey, idx, field.key, e.target.value)}
-                        placeholder="Özel URL Girin"
+                        onChange={(e) => {
+                          handleArrayChange(arrayKey, idx, field.key, e.target.value);
+                          if (field.key === 'buttonUrl') handleArrayChange(arrayKey, idx, 'url', e.target.value);
+                          if (field.key === 'url') handleArrayChange(arrayKey, idx, 'buttonUrl', e.target.value);
+                        }}
+                        placeholder="Özel URL Girin (Örn: /on-kayit)"
                         className="w-1/2 px-2 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                       />
                     </div>
@@ -653,10 +714,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
-              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'},
-              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
-              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'}
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}
             ], "Görseller")}
                         {renderArrayEditor('buttons', [
               {key: 'label', label: 'Buton Metni', type: 'text'},
@@ -931,8 +989,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
-              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'}
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}
             ], "Öğeler", true)}
           </div>
         )}

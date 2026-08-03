@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { IconPreview } from './IconField';
+import SmartLink from './SmartLink';
 
 export default function Header({ data }: { data?: any }) {
   const logoSrc = data?.logoUrl?.includes('lh3.googleusercontent.com') ? '/dost-logo-png.png' : (data?.logoUrl || '/dost-logo-png.png');
@@ -46,9 +47,9 @@ export default function Header({ data }: { data?: any }) {
              <div key={i} className="h-full flex items-center group/nav relative"
                   onMouseEnter={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(i)}
                   onMouseLeave={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(null)}>
-               <a 
+               <SmartLink 
                  className="nav-link-underline font-label-md text-label-md text-primary custom-hover-color transition-colors flex items-center gap-1.5" 
-                 href={link.url || '#'}
+                 url={link.url}
                >
                  {link.iconData?.position === 'left' || !link.iconData?.position ? (
                    <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
@@ -65,7 +66,7 @@ export default function Header({ data }: { data?: any }) {
                    <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
                  ) : null}
                  {(link.type === 'mega' || link.type === 'dropdown') && <span className="material-symbols-outlined text-sm">expand_more</span>}
-               </a>
+               </SmartLink>
                
                {link.type === 'mega' && activeMegaMenu === i && (
                   <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-screen max-w-[1200px] bg-white border border-border-subtle shadow-2xl rounded-b-2xl overflow-hidden transition-all duration-300 opacity-100 visible">
@@ -119,9 +120,9 @@ export default function Header({ data }: { data?: any }) {
         
         <div className="flex items-center gap-4 md:gap-6">
           {ctaLabel && !ctaHidden && (
-            <a className="hidden sm:flex items-center bg-primary text-white font-label-md text-label-md px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all" href={ctaUrl}>
+            <SmartLink className="hidden sm:flex items-center bg-primary text-white font-label-md text-label-md px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all" url={ctaUrl}>
               {ctaLabel}
-            </a>
+            </SmartLink>
           )}
           <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-2 text-primary">
             <span className="material-symbols-outlined text-[32px]">menu</span>

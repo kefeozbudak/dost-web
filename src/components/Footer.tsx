@@ -1,6 +1,7 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { IconPreview } from './IconField';
+import SmartLink from './SmartLink';
 
 export default function Footer({ data }: { data?: any }) {
   const footerLogo = data?.logoUrl?.includes('lh3.googleusercontent.com') ? '/dost-logo-png.png' : (data?.logoUrl || '/dost-logo-png.png');
@@ -184,15 +185,15 @@ export default function Footer({ data }: { data?: any }) {
                 <ul className="flex flex-col gap-2.5">
                   {(col.links || []).map((link: any, j: number) => (
                     <li key={j}>
-                      <a 
+                      <SmartLink 
                         className="text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors flex items-center gap-1.5" 
                         style={textStyle}
-                        href={link.url || '#'}
+                        url={link.url}
                         target={link.target || '_self'}
                       >
                         {link.icon && <IconPreview data={link.icon} className="w-4 h-4 text-primary" />}
                         {link.label}
-                      </a>
+                      </SmartLink>
                     </li>
                   ))}
                 </ul>
@@ -208,14 +209,14 @@ export default function Footer({ data }: { data?: any }) {
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             {legalLinks.map((link: any, i: number) => (
-              <a 
+              <SmartLink 
                 key={i} 
                 className="text-xs md:text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors" 
                 style={textStyle}
-                href={link.url || '#'}
+                url={link.url}
               >
                 {link.label}
-              </a>
+              </SmartLink>
             ))}
           </div>
         </div>

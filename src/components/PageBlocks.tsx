@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import IconField, { IconPreview } from "./IconField";
+import SmartLink from "./SmartLink";
 import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS } from "../lib/defaultFormInputs";
 
 const ClubsGridBlock = ({
@@ -770,9 +771,9 @@ export const DynamicBlockRenderer = ({
                 {block.buttons && block.buttons.length > 0 && (
                   <div className="flex gap-4 flex-wrap">
                     {block.buttons.map((btn: any, btnIdx: number) => (
-                      <a key={btnIdx} href={btn.url || '#'} className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2" style={getIndividualButtonStyle(btn)}>
+                      <SmartLink key={btnIdx} url={btn.url || btn.buttonUrl || btn.link} className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2" style={getIndividualButtonStyle(btn)}>
                         {btn.label} {btn.icon && <span className="material-symbols-outlined">{btn.icon}</span>}
-                      </a>
+                      </SmartLink>
                     ))}
                   </div>
                 )}
@@ -897,9 +898,9 @@ export const DynamicBlockRenderer = ({
                 {block.buttons && block.buttons.length > 0 && (
                   <div className="flex gap-4 flex-wrap">
                     {block.buttons.map((btn: any, btnIdx: number) => (
-                      <a key={btnIdx} href={btn.url || '#'} className={`px-8 py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === 'outline' ? 'border-2 border-primary text-primary hover:bg-primary/5' : 'bg-secondary text-white hover:opacity-90'}`} style={getIndividualButtonStyle(btn)}>
+                      <SmartLink key={btnIdx} url={btn.url || btn.buttonUrl || btn.link} className={`px-8 py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === 'outline' ? 'border-2 border-primary text-primary hover:bg-primary/5' : 'bg-secondary text-white hover:opacity-90'}`} style={getIndividualButtonStyle(btn)}>
                         {btn.label}
-                      </a>
+                      </SmartLink>
                     ))}
                   </div>
                 )}
@@ -942,9 +943,9 @@ export const DynamicBlockRenderer = ({
                           <p className="text-sm text-text-muted">{block.cardDesc}</p>
                         </div>
                         {block.buttons && block.buttons[0] && (
-                          <a href={block.buttons[0].url || '#'} className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
+                          <SmartLink url={block.buttons[0].url || block.buttons[0].buttonUrl || block.buttons[0].link} className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
                             <span className="material-symbols-outlined">{block.buttons[0].icon || 'directions'}</span>
-                          </a>
+                          </SmartLink>
                         )}
                       </div>
                     </>
@@ -1871,9 +1872,9 @@ export const DynamicBlockRenderer = ({
                       >
                         {item.desc}
                       </p>
-                      {(item.buttonText || item.buttonUrl) && (
-                        <a
-                          href={item.buttonUrl || "#"}
+                      {(item.buttonText || item.buttonUrl || item.url) && (
+                        <SmartLink
+                          url={item.buttonUrl || item.url || item.link}
                           className="w-full py-3.5 px-4 rounded-xl bg-[#5eead4] text-[#0f172a] font-bold text-sm text-center hover:opacity-90 hover:shadow-lg transition-all duration-300 block"
                           style={{
                               ...getItemButtonStyle(block),
@@ -1882,7 +1883,7 @@ export const DynamicBlockRenderer = ({
                           }}
                         >
                           {item.buttonText || "Detaylı Bilgi"}
-                        </a>
+                        </SmartLink>
                       )}
                     </div>
                   ))}
@@ -1940,14 +1941,17 @@ export const DynamicBlockRenderer = ({
                                 {item.desc}
                               </p>
                               {item.buttonText && (
-                                <button className="bg-white text-primary text-sm md:text-base font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-lg hover:bg-surface-container transition-all">
+                                <SmartLink
+                                  url={item.buttonUrl || item.url || item.link}
+                                  className="bg-white text-primary text-sm md:text-base font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-lg hover:bg-surface-container transition-all inline-block"
+                                >
                                   {item.buttonText}{" "}
                                   {item.buttonIcon && (
                                     <span className="material-symbols-outlined ml-1 text-[0.9em]">
                                       {item.buttonIcon}
                                     </span>
                                   )}
-                                </button>
+                                </SmartLink>
                               )}
                             </div>
                           </div>
@@ -2017,12 +2021,15 @@ export const DynamicBlockRenderer = ({
                     ></h2>
                   </div>
                   {block.viewAllText && (
-                    <button className="hidden md:flex items-center gap-2 text-primary text-sm md:text-base font-bold hover:underline">
+                    <SmartLink
+                      url={block.viewAllUrl || block.buttonUrl || block.url || '/kampusler'}
+                      className="hidden md:flex items-center gap-2 text-primary text-sm md:text-base font-bold hover:underline"
+                    >
                       {block.viewAllText}
                       <span className="material-symbols-outlined">
                         chevron_right
                       </span>
-                    </button>
+                    </SmartLink>
                   )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
@@ -2057,14 +2064,17 @@ export const DynamicBlockRenderer = ({
                         >
                           {item.desc}
                         </p>
-                        <button className="w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto">
+                        <SmartLink
+                          url={item.buttonUrl || item.url || item.link}
+                          className="w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto text-center block"
+                        >
                           {item.buttonText || "İncele"}{" "}
                           {item.buttonIcon && (
                             <span className="material-symbols-outlined ml-1 text-[0.9em]">
                               {item.buttonIcon}
                             </span>
                           )}
-                        </button>
+                        </SmartLink>
                       </div>
                     </div>
                   ))}
@@ -2553,8 +2563,8 @@ export const DynamicBlockRenderer = ({
                     ))}
                   </div>
                   {block.buttonText && (
-                    <a
-                      href={block.buttonUrl || "#"}
+                    <SmartLink
+                      url={block.buttonUrl || block.url || block.link}
                       className="inline-flex items-center gap-2 md:gap-3 bg-secondary-container text-teal-950 px-6 py-3 md:px-10 md:py-4 rounded-full text-sm md:text-base font-bold hover:bg-secondary-fixed transition-all"
                     >
                       {block.buttonText}
@@ -2563,7 +2573,7 @@ export const DynamicBlockRenderer = ({
                           {block.buttonIcon}
                         </span>
                       )}
-                    </a>
+                    </SmartLink>
                   )}
                 </div>
               </div>
@@ -2695,9 +2705,9 @@ export const DynamicBlockRenderer = ({
                       {block.buttons.map((btn: any, i: number) => {
                         const isCustomColors = btn.bgColor || btn.textColor;
                         return (
-                          <a
+                          <SmartLink
                             key={i}
-                            href={btn.url || "#"}
+                            url={btn.url || btn.buttonUrl || btn.link}
                             style={getIndividualButtonStyle(btn)}
                             className={
                               !isCustomColors
@@ -2720,7 +2730,7 @@ export const DynamicBlockRenderer = ({
                                   className="w-[1.1em] h-[1.1em]"
                                 />
                               ))}
-                          </a>
+                          </SmartLink>
                         );
                       })}
                     </div>
@@ -5174,10 +5184,10 @@ export const DynamicBlockRenderer = ({
               </div>
               <div className="flex space-x-4">
                 {block.pdfUrl && (
-                  <a href={block.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors">
+                  <SmartLink url={block.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors">
                     <span className="material-symbols-outlined text-xl">picture_as_pdf</span>
                     <span>{block.pdfButtonText || "PDF İndir"}</span>
-                  </a>
+                  </SmartLink>
                 )}
               </div>
             </div>
@@ -5256,10 +5266,10 @@ export const DynamicBlockRenderer = ({
                     </div>
                     <p className="font-body-md text-body-md text-on-surface-variant mb-4" style={{ color: legend.itemDescColor }}>{legend.desc}</p>
                     {legend.url && (
-                      <a href={legend.url} className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline">
+                      <SmartLink url={legend.url} className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline">
                         <span>{legend.buttonText || "İncele"}</span>
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                      </a>
+                      </SmartLink>
                     )}
                   </div>
                 ))}
