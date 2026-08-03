@@ -241,19 +241,20 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {defaultInputs.map((input: any, i: number) => {
+                const inputKey = input.id || input.name || `inp_${i}`;
                 const colSpan = (input.type === 'section_title' || input.type === 'textarea' || input.type === 'checkbox' || input.type === 'radio' || input.fullWidth) ? 'md:col-span-2' : '';
                 
                 if (input.type === 'section_title') {
                   if (type === 'pre_registration_form') {
                     return (
-                      <div key={i} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
+                      <div key={inputKey} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
                         {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
                         <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider">{input.label}</h2>
                       </div>
                     );
                   }
                   return (
-                    <div key={i} className={`flex items-center gap-2 border-b border-border-subtle pb-3 mt-4 first:mt-0 ${colSpan}`}>
+                    <div key={inputKey} className={`flex items-center gap-2 border-b border-border-subtle pb-3 mt-4 first:mt-0 ${colSpan}`}>
                       {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
                       <h2 className="font-headline-md text-headline-md text-on-surface">{input.label}</h2>
                     </div>
@@ -262,7 +263,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
 
                 if (input.type === 'checkbox') {
                   return (
-                    <div key={i} className={`pt-2 border-t border-border-subtle ${colSpan}`}>
+                    <div key={inputKey} className={`pt-2 border-t border-border-subtle ${colSpan}`}>
                       <label className="flex items-start gap-3 cursor-pointer group">
                         <div className="relative mt-1">
                           <input 
@@ -283,11 +284,11 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 if (input.type === 'radio') {
                   const opts = (input.options || "").split(',').map((o: string) => o.trim());
                   return (
-                    <div key={i} className={`space-y-2 ${colSpan}`}>
+                    <div key={inputKey} className={`space-y-2 ${colSpan}`}>
                       <label className="font-label-md text-label-md text-on-surface-variant block">{input.label}</label>
                       <div className="space-y-2">
                         {opts.map((opt: string, optIdx: number) => (
-                          <label key={optIdx} className="flex items-center gap-2 cursor-pointer">
+                          <label key={`${inputKey}_opt_${optIdx}`} className="flex items-center gap-2 cursor-pointer">
                             <input 
                               type="radio" name={input.name} value={opt} required={input.required}
                               checked={formData[input.name] === opt} 
@@ -304,7 +305,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 
                 if (input.type === 'textarea') {
                   return (
-                    <div key={i} className={`space-y-2 ${colSpan}`}>
+                    <div key={inputKey} className={`space-y-2 ${colSpan}`}>
                       <label className="font-label-md text-label-md text-on-surface-variant block">{input.label}</label>
                       <textarea 
                         required={input.required} rows={4}
@@ -319,7 +320,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 if (input.type === 'select') {
                   const opts = (input.options || "").split(',').map((o: string) => o.trim());
                   return (
-                    <div key={i} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                    <div key={inputKey} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
                       <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
                       <select 
                         required={input.required} 
@@ -328,7 +329,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                       >
                         <option disabled value="">{input.placeholder || "Seçiniz"}</option>
                         {opts.map((opt: string, optIdx: number) => (
-                          <option key={optIdx} value={opt}>{opt}</option>
+                          <option key={`${inputKey}_opt_${optIdx}`} value={opt}>{opt}</option>
                         ))}
                       </select>
                     </div>
@@ -336,7 +337,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 }
 
                 return (
-                  <div key={i} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                  <div key={inputKey} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
                     <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
                     <input 
                       type={input.type || "text"} required={input.required} 
@@ -355,24 +356,48 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                     <h2 className="font-headline-md text-headline-md text-on-surface">Kulüp Seçimi</h2>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {defaultClubs.map((clubOpt: any) => (
-                      <div key={clubOpt.id} className="relative">
-                        <input 
-                          type="radio" name="club" id={`club_${clubOpt.id}`} value={clubOpt.label} required
-                          checked={formData.club === clubOpt.label} onChange={e => handleChange('club', e.target.value)}
-                          className="peer hidden" 
-                        />
-                        <label 
-                          htmlFor={`club_${clubOpt.id}`}
-                          className="flex flex-col items-center justify-center p-4 border border-border-subtle rounded-xl cursor-pointer hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/5 transition-all group h-full"
-                        >
-                          <span className={`material-symbols-outlined text-3xl mb-2 transition-colors ${formData.club === clubOpt.label ? 'text-primary' : 'text-text-muted group-hover:text-primary'}`}>
-                            {clubOpt.icon || 'explore'}
-                          </span>
-                          <span className="font-label-md text-label-md text-on-surface text-center">{clubOpt.label}</span>
-                        </label>
-                      </div>
-                    ))}
+                    {defaultClubs.map((clubOpt: any, clubIdx: number) => {
+                      const isSelected = formData.club === clubOpt.label;
+                      const clubId = clubOpt.id || `club_${clubIdx}`;
+                      const iconVal = clubOpt.icon || 'explore';
+                      const isMaterialIcon = typeof iconVal === 'string' && iconVal === iconVal.toLowerCase();
+
+                      return (
+                        <div key={clubId} className="relative">
+                          <input 
+                            type="radio" name="club" id={`club_${clubId}`} value={clubOpt.label} required
+                            checked={isSelected} onChange={e => handleChange('club', e.target.value)}
+                            className="peer hidden" 
+                          />
+                          <label 
+                            htmlFor={`club_${clubId}`}
+                            className={`flex flex-col items-center justify-center p-4 border rounded-xl cursor-pointer transition-all duration-200 group h-full text-center relative overflow-hidden ${
+                              isSelected 
+                                ? 'bg-[#002147] border-[#002147] text-white shadow-md ring-2 ring-[#002147]/30 scale-[1.02]' 
+                                : 'bg-white border-border-subtle text-on-surface hover:border-blue-300 hover:bg-slate-50'
+                            }`}
+                          >
+                            <div className="mb-2">
+                              {isMaterialIcon ? (
+                                <span className={`material-symbols-outlined text-3xl transition-colors ${isSelected ? 'text-white' : 'text-text-muted group-hover:text-primary'}`}>
+                                  {iconVal}
+                                </span>
+                              ) : (
+                                <IconPreview data={iconVal} className={`w-8 h-8 transition-colors ${isSelected ? 'text-white' : 'text-text-muted group-hover:text-primary'}`} />
+                              )}
+                            </div>
+                            <span className={`font-bold text-xs sm:text-sm transition-colors ${isSelected ? 'text-white' : 'text-on-surface'}`}>
+                              {clubOpt.label}
+                            </span>
+                            {isSelected && (
+                              <div className="absolute top-2 right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-white text-[10px]">
+                                ✓
+                              </div>
+                            )}
+                          </label>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

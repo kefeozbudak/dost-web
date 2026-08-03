@@ -255,17 +255,33 @@ export default function PageEditor() {
     });
   };
 
+  const getPagePath = () => {
+    if (pageData?.path && pageData.path.trim()) {
+      return pageData.path.startsWith('/') ? pageData.path : `/${pageData.path}`;
+    }
+    if (pageId === 'home') return '/';
+    return pageId ? (pageId.startsWith('/') ? pageId : `/${pageId}`) : '/';
+  };
+
+  const handlePreviewClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const previewUrl = getPagePath();
+    window.open(previewUrl, '_blank');
+  };
+
   const handleSave = async () => {
     if (!pageId) return;
     setSaving(true);
     try {
+      const pathToSave = getPagePath();
       const dataToSave = {
         ...pageData,
-        path: pageData.path || (pageId === 'home' ? '/' : `/${pageId}`),
-        title: pageData.title || (pageId === 'home' ? 'Ana Sayfa' : pageId)
+        path: pathToSave,
+        title: pageData?.title || (pageId === 'home' ? 'Ana Sayfa' : pageId),
+        updatedAt: Date.now()
       };
       console.log("Saving dataToSave:", dataToSave);
-      await setDoc(doc(db, 'pages', pageId), dataToSave);
+      await setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true });
       setPageData(dataToSave);
       alert('Sayfa başarıyla kaydedildi!');
     } catch (e: any) {
@@ -285,7 +301,14 @@ export default function PageEditor() {
           Sayfa Düzenleyici: <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded">{pageId}</span>
         </h1>
         <div className="flex gap-2 w-full sm:w-auto">
-          <a href={pageData?.path || '/'} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 bg-slate-800 text-white border border-slate-700 rounded text-[10px] font-bold uppercase tracking-widest hover:bg-slate-700 transition-colors flex items-center justify-center gap-1">
+          <a 
+            href={getPagePath()} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onClick={handlePreviewClick}
+            className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 bg-slate-800 text-white border border-slate-700 rounded text-[10px] font-bold uppercase tracking-widest hover:bg-slate-700 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+            title="Bu Sayfayı Ön İzle"
+          >
             <span className="material-symbols-outlined text-[12px]">open_in_new</span>
             Ön İzleme
           </a>

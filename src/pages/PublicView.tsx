@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db, loginWithGoogle, auth } from '../lib/firebase';
 import { Lock, Settings } from 'lucide-react';
 import AssistantWidget from '../components/AssistantWidget';
@@ -48,63 +48,101 @@ export default function PublicView() {
 
   useEffect(() => {
     setLoading(true);
-    const q = query(collection(db, 'pages'), where('path', '==', location.pathname));
-    
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
-      if (!snapshot.empty) {
-        const docRef = snapshot.docs[0].ref;
-        let data = snapshot.docs[0].data();
-        
-        // Auto-insert video block for homepage if missing
-        if (location.pathname === '/' && data.blocks) {
-           const hasVideo = data.blocks.some((b: any) => b.type === 'video');
-           if (!hasVideo) {
-              const statsIndex = data.blocks.findIndex((b: any) => b.type === 'stats');
-              const videoBlock = defaultHomePageData.find(b => b.type === 'video');
-              if (videoBlock) {
-                  let newBlocks = [...data.blocks];
-                  if (statsIndex !== -1) {
-                      newBlocks.splice(statsIndex, 0, videoBlock);
-                  } else {
-                      newBlocks.push(videoBlock);
-                  }
-                  data.blocks = newBlocks;
-              }
-           }
-        }
+    const rawPath = location.pathname;
+    const cleanPath = rawPath.startsWith('/') ? rawPath : '/' + rawPath;
+    const docId = rawPath === '/' ? 'home' : rawPath.substring(1);
 
+    const docRef = doc(db, 'pages', docId);
+    
+    const unsubscribeDoc = onSnapshot(docRef, async (docSnap) => {
+      if (docSnap.exists()) {
+        let data = docSnap.data();
+        
         if (data.isDeleted || data.isHidden) {
-          setPageData(null); // Pretend it doesn't exist if deleted or hidden
+          setPageData(null);
         } else {
+          // Auto-insert video block for homepage if missing
+          if ((rawPath === '/' || docId === 'home') && data.blocks) {
+             const hasVideo = data.blocks.some((b: any) => b.type === 'video');
+             if (!hasVideo) {
+                const statsIndex = data.blocks.findIndex((b: any) => b.type === 'stats');
+                const videoBlock = defaultHomePageData.find(b => b.type === 'video');
+                if (videoBlock) {
+                    let newBlocks = [...data.blocks];
+                    if (statsIndex !== -1) {
+                        newBlocks.splice(statsIndex, 0, videoBlock);
+                    } else {
+                        newBlocks.push(videoBlock);
+                    }
+                    data.blocks = newBlocks;
+                }
+             }
+          }
           setPageData(data);
+          setLoading(false);
+          return;
         }
-      } else if (location.pathname === '/') {
+      }
+
+      // If document wasn't found by direct ID (e.g. custom slug), query by path
+      try {
+        const q = query(collection(db, 'pages'), where('path', '==', cleanPath));
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          let data = snapshot.docs[0].data();
+          if (data.isDeleted || data.isHidden) {
+            setPageData(null);
+          } else {
+            setPageData(data);
+          }
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.error("Query by path error:", err);
+      }
+
+      // Default built-in fallbacks if no doc in Firestore
+      if (rawPath === '/' || docId === 'home') {
         setPageData({
           title: 'Ana Sayfa',
           blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
         });
-                        } else if (location.pathname === '/duyurular') {
+      } else if (docId === 'kulup-kayit-formu' || cleanPath === '/kulup-kayit-formu') {
+        setPageData({
+          title: 'Kulüp Kayıt Formu',
+          path: '/kulup-kayit-formu',
+          blocks: [
+            {
+              type: 'club_registration_form',
+              titlePart1: 'Dost Koleji',
+              titlePart2: 'Kulüp Kayıt',
+              subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.'
+            }
+          ]
+        });
+      } else if (docId === 'duyurular' || cleanPath === '/duyurular') {
         import('../lib/defaultData').then((module) => {
           setPageData({
             title: 'Duyurular',
             blocks: module.defaultDuyurularData
           });
         });
-} else if (location.pathname === '/basarilarimiz') {
+      } else if (docId === 'basarilarimiz' || cleanPath === '/basarilarimiz') {
         import('../lib/defaultData').then((module) => {
           setPageData({
             title: 'Başarılarımız',
             blocks: module.defaultBasarilarimizData
           });
         });
-} else if (location.pathname === '/hakkimizda') {
+      } else if (docId === 'hakkimizda' || cleanPath === '/hakkimizda') {
         import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
           setPageData({
             title: 'Hakkımızda',
             blocks: defaultHakkimizdaData
           });
         });
-      } else if (location.pathname === '/on-kayit') {
+      } else if (docId === 'on-kayit' || cleanPath === '/on-kayit') {
         import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
           setPageData({
             title: 'Öğrenci Ön Kayıt Formu',
@@ -117,16 +155,18 @@ export default function PublicView() {
       setLoading(false);
     }, (e) => {
       console.error("PUBLIC_VIEW_ERROR:", e);
-      if (location.pathname === '/') {
+      if (rawPath === '/' || docId === 'home') {
         setPageData({
           title: 'Ana Sayfa',
           blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
         });
+      } else {
+        setPageData(null);
       }
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribeDoc();
   }, [location.pathname]);
 
   const handleAdminLogin = async () => {

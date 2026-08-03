@@ -264,10 +264,15 @@ export default function PagesCenter() {
                       </td>
                       <td className="px-6 py-4 text-right flex items-center justify-end gap-2">
                         <a 
-                          href={page.path} 
+                          href={page.path || (page.id === 'home' ? '/' : `/${page.id}`)} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const url = page.path || (page.id === 'home' ? '/' : `/${page.id}`);
+                            window.open(url, '_blank');
+                          }}
+                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
                           title="Önizle"
                         >
                           <ExternalLink className="w-4 h-4" />

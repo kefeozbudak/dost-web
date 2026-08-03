@@ -1280,7 +1280,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderArrayEditor('clubs', [
               { key: 'id', label: 'Kulüp ID (boşluksuz)', type: 'text' },
               { key: 'label', label: 'Kulüp Adı', type: 'text' },
-              { key: 'icon', label: 'İkon (Google Material)', type: 'text' },
+              { key: 'icon', label: 'İkon', type: 'icon' },
             ], "Kulüpler")}
 
             {renderArrayEditor('inputs', [
@@ -1301,7 +1301,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)', type: 'textarea' },
               { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
               { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
-              { key: 'icon', label: 'İkon (Google Material Icon adı - Bölüm başlıkları için)', type: 'text' },
+              { key: 'icon', label: 'İkon', type: 'icon' },
             ], "Form Alanları (İnputlar)")}
           </div>
         )}
@@ -1351,7 +1351,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)', type: 'textarea' },
               { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
               { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
-              { key: 'icon', label: 'İkon (Google Material Icon adı - Bölüm başlıkları için)', type: 'text' },
+              { key: 'icon', label: 'İkon', type: 'icon' },
             ], "Form Alanları (İnputlar)")}
           </div>
         )}
