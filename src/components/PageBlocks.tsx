@@ -190,6 +190,7 @@ export const DynamicBlockRenderer = ({
     getStyle(block, "itemContainer");
   const getItemTitleStyle = (block: any) => getStyle(block, "itemTitle");
   const getItemDescStyle = (block: any) => getStyle(block, "itemDesc");
+  const getItemButtonStyle = (block: any) => getStyle(block, "itemButton");
   const getTitlePart1Style = (block: any) => ({
     ...getStyle(block, "titlePart1"),
     color: block.styles?.titlePart1Color || block.titlePart1Color || undefined,
@@ -1473,9 +1474,15 @@ export const DynamicBlockRenderer = ({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {block.items?.map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className="p-6 md:p-8 rounded-[2rem] bg-white/10 border border-white/10 hover:bg-white/[0.15] hover:border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col text-left backdrop-blur-md"
+                    <div key={i} data-editor-item-index={i} className={`p-6 md:p-8 rounded-[2rem] bg-white/10 border border-white/10 ${item.hoverEffect ? 'hover:-translate-y-1 hover:shadow-2xl' : ''} hover:bg-white/[0.15] hover:border-white/20 transition-all duration-300 flex flex-col text-left backdrop-blur-md`}
+                      style={{
+                          backgroundColor: item.cardBgColor || undefined,
+                          borderColor: item.cardBorderColor || undefined,
+                          borderWidth: item.cardBorderWidth || undefined,
+                          borderRadius: item.cardBorderRadius || undefined,
+                          padding: item.cardPadding || undefined,
+                          boxShadow: item.cardShadow === 'none' ? 'none' : (item.cardShadow ? `var(--tw-shadow-${item.cardShadow})` : undefined),
+                      }}
                     >
                       <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner">
                         {typeof item.icon === "object" ||
@@ -1492,13 +1499,13 @@ export const DynamicBlockRenderer = ({
                         )}
                       </div>
                       <h3
-                        style={getItemTitleStyle(block)}
+                        style={{...getItemTitleStyle(block), color: item.itemTitleColor || getItemTitleStyle(block)?.color}}
                         className="text-xl md:text-2xl font-bold mb-3 text-white"
                       >
                         {item.title}
                       </h3>
                       <p
-                        style={getItemDescStyle(block)}
+                        style={{...getItemDescStyle(block), color: item.itemDescColor || getItemDescStyle(block)?.color}}
                         className="text-white/80 text-sm leading-relaxed mb-8 flex-1"
                       >
                         {item.desc}
@@ -1506,7 +1513,12 @@ export const DynamicBlockRenderer = ({
                       {(item.buttonText || item.buttonUrl) && (
                         <a
                           href={item.buttonUrl || "#"}
-                          className="w-full py-3.5 px-4 rounded-xl bg-[#5eead4] text-[#0f172a] font-bold text-sm text-center hover:bg-[#4fd1c5] hover:shadow-lg hover:shadow-[#5eead4]/20 transition-all duration-300"
+                          className="w-full py-3.5 px-4 rounded-xl bg-[#5eead4] text-[#0f172a] font-bold text-sm text-center hover:opacity-90 hover:shadow-lg transition-all duration-300 block"
+                          style={{
+                              ...getItemButtonStyle(block),
+                              backgroundColor: item.buttonBgColor || getItemButtonStyle(block)?.backgroundColor,
+                              color: item.buttonTextColor || getItemButtonStyle(block)?.color
+                          }}
                         >
                           {item.buttonText || "Detaylı Bilgi"}
                         </a>
@@ -4906,9 +4918,12 @@ export const DynamicBlockRenderer = ({
       <div
         key={index}
         className={`${onBlockClick ? "relative group/block" : ""} ${block.isHidden ? "opacity-50 grayscale" : ""}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          onBlockClick && onBlockClick(index, e);
+        onClickCapture={(e) => {
+          if (onBlockClick) {
+            e.preventDefault();
+            e.stopPropagation();
+            onBlockClick(index, e);
+          }
         }}
       >
         {block.isHidden && onBlockClick && (

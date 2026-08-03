@@ -128,21 +128,24 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             <FieldStylePicker block={block} fieldKey="itemTitle" onChange={handleStyleChange} />
             <span className="text-[10px] text-slate-500 font-bold flex items-center uppercase ml-2">Açıklama Stili:</span>
             <FieldStylePicker block={block} fieldKey="itemDesc" onChange={handleStyleChange} />
+            <span className="text-[10px] text-slate-500 font-bold flex items-center uppercase ml-2">Buton Stili:</span>
+            <FieldStylePicker block={block} fieldKey="itemButton" onChange={handleStyleChange} />
           </div>
         )}
       </div>
       {(block[arrayKey] || []).map((item: any, idx: number) => (
-        <div 
+        <details 
           key={idx} 
-          draggable
-          onDragStart={(e) => handleDragStart(e, idx)}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => handleDrop(e, idx)}
-          className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-200 mb-2 relative cursor-move"
+          ref={(el) => { arrayItemRefs.current[`${arrayKey}-${idx}`] = el; }}
+          className="group/item bg-slate-50 rounded-lg border border-slate-200 mb-2"
         >
-
-          <GripVertical className="w-4 h-4 text-slate-300 mt-2 shrink-0 cursor-move" />
-          <div className="flex-1 space-y-2">
+          <summary className="flex gap-2 items-center p-3 cursor-pointer list-none select-none">
+            <span className="material-symbols-outlined text-[16px] text-slate-400 group-open/item:rotate-90 transition-transform">chevron_right</span>
+            <div className="flex-1 font-bold text-xs text-slate-600 truncate">{typeof item === 'string' ? item : (item.title || item.label || item.day || item.name || item.text || `Öğe ${idx + 1}`)}</div>
+            <GripVertical className="w-4 h-4 text-slate-300 cursor-move" draggable onDragStart={(e) => handleDragStart(e, idx)} onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, idx)} onClick={(e) => e.preventDefault()} />
+          </summary>
+          <div className="p-3 pt-0 border-t border-slate-200 flex gap-2 items-start mt-2">
+            <div className="flex-1 space-y-2">
             {itemFields.map(field => {
               if (field.type === 'select') {
                 return (
@@ -267,22 +270,32 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                   <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-3 pl-5">
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Kart Zemin Rengi</label>
-                      <input type="text" value={item.cardBgColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBgColor', e.target.value)} placeholder="örn: #ffffff" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex items-center gap-2">
+                        <input type="color" value={item.cardBgColor === 'currentColor' || !item.cardBgColor ? '#ffffff' : item.cardBgColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBgColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.cardBgColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBgColor', e.target.value)} placeholder="Şeffaf" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Kenarlık Rengi & Kalınlığı</label>
-                      <div className="flex gap-1">
-                        <input type="text" value={item.cardBorderColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderColor', e.target.value)} placeholder="Renk (örn: #e2e8f0)" className="w-2/3 text-xs border-slate-300 rounded p-1.5" />
-                        <input type="text" value={item.cardBorderWidth || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderWidth', e.target.value)} placeholder="Kalınlık (1px)" className="w-1/3 text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex gap-1 items-center">
+                        <input type="color" value={item.cardBorderColor === 'currentColor' || !item.cardBorderColor ? '#e2e8f0' : item.cardBorderColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.cardBorderColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderColor', e.target.value)} placeholder="Renk" className="w-1/2 text-xs border-slate-300 rounded p-1.5" />
+                        <input type="text" value={item.cardBorderWidth || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderWidth', e.target.value)} placeholder="1px" className="w-1/3 text-xs border-slate-300 rounded p-1.5" />
                       </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Köşe Yuvarlama (Radius)</label>
-                      <input type="text" value={item.cardBorderRadius || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderRadius', e.target.value)} placeholder="örn: 12px veya 1.5rem" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex items-center gap-2">
+                        <input type="range" min="0" max="64" value={parseInt(item.cardBorderRadius) || 0} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderRadius', e.target.value + 'px')} className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer" />
+                        <input type="text" value={item.cardBorderRadius || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardBorderRadius', e.target.value)} placeholder="12px" className="w-16 text-xs border-slate-300 rounded p-1.5 text-center" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">İç Boşluk (Padding)</label>
-                      <input type="text" value={item.cardPadding || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardPadding', e.target.value)} placeholder="örn: 24px" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex items-center gap-2">
+                        <input type="range" min="0" max="64" value={parseInt(item.cardPadding) || 0} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardPadding', e.target.value + 'px')} className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer" />
+                        <input type="text" value={item.cardPadding || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'cardPadding', e.target.value)} placeholder="24px" className="w-16 text-xs border-slate-300 rounded p-1.5 text-center" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Gölge Efekti (Shadow)</label>
@@ -297,11 +310,33 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Başlık Rengi</label>
-                      <input type="text" value={item.itemTitleColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemTitleColor', e.target.value)} placeholder="örn: #1a1b23" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex items-center gap-2">
+                        <input type="color" value={item.itemTitleColor === 'currentColor' || !item.itemTitleColor ? '#000000' : item.itemTitleColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemTitleColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.itemTitleColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemTitleColor', e.target.value)} placeholder="Varsayılan" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold text-slate-400 block mb-1">Açıklama Rengi</label>
-                      <input type="text" value={item.itemDescColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemDescColor', e.target.value)} placeholder="örn: #434654" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      <div className="flex items-center gap-2">
+                        <input type="color" value={item.itemDescColor === 'currentColor' || !item.itemDescColor ? '#000000' : item.itemDescColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemDescColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.itemDescColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'itemDescColor', e.target.value)} placeholder="Varsayılan" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Buton Yazı Rengi</label>
+                      <div className="flex items-center gap-2">
+                        <input type="color" value={item.buttonTextColor === 'currentColor' || !item.buttonTextColor ? '#0f172a' : item.buttonTextColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'buttonTextColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.buttonTextColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'buttonTextColor', e.target.value)} placeholder="Varsayılan" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 block mb-1">Buton Zemin Rengi</label>
+                      <div className="flex items-center gap-2">
+                        <input type="color" value={item.buttonBgColor === 'currentColor' || !item.buttonBgColor ? '#5eead4' : item.buttonBgColor} onChange={(e) => handleArrayChange(arrayKey, idx, 'buttonBgColor', e.target.value)} className="w-6 h-6 p-0 border-0 rounded cursor-pointer shrink-0" />
+                        <input type="text" value={item.buttonBgColor || ''} onChange={(e) => handleArrayChange(arrayKey, idx, 'buttonBgColor', e.target.value)} placeholder="Varsayılan" className="w-full text-xs border-slate-300 rounded p-1.5" />
+                      </div>
                     </div>
                     <div className="flex items-end pb-1">
                       <label className="flex items-center gap-2 text-xs font-bold text-slate-600">
@@ -314,12 +349,13 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               </div>
             )}
           </div>
-          <button onClick={() => {
+         <button onClick={() => {
             const newItems = [...(block[arrayKey] || [])];
             newItems.splice(idx, 1);
             handleChange(arrayKey, newItems);
-          }} className="text-red-500 hover:text-red-700 p-1">Sil</button>
-        </div>
+          }} className="text-red-500 hover:text-red-700 p-1 text-xs font-bold mt-2">Sil</button>
+          </div>
+        </details>
       ))}
       <button onClick={() => handleChange(arrayKey, [...(block[arrayKey] || []), {}])} className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded flex items-center justify-center gap-1 mt-2">
         <Plus className="w-3 h-3" /> Ekle
@@ -558,8 +594,11 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
-              {key: 'url', label: 'Link URL', type: 'url'}
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
+              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'},
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
+              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'}
             ], "Görseller")}
                         {renderArrayEditor('buttons', [
               {key: 'label', label: 'Buton Metni', type: 'text'},
@@ -728,7 +767,6 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'role', label: 'Rol/Ünvan', type: 'text'},
               {key: 'badge', label: 'Sorumluluk (Badge)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
               {key: 'url', label: 'Profil Linki', type: 'url'},
               {key: 'buttonText', label: 'Buton Metni', type: 'text'}
             ], "Yöneticiler")}
@@ -745,7 +783,6 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'role', label: 'Rol/Ünvan', type: 'text'},
               {key: 'badge', label: 'Fakülte (Badge)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
               {key: 'url', label: 'Fakülte Linki', type: 'url'},
               {key: 'buttonText', label: 'Buton Metni', type: 'text'}
             ], "Dekanlar")}
@@ -834,9 +871,10 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'icon', label: 'İkon', type: 'icon'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
-              {key: 'url', label: 'Link URL', type: 'url'}
+              {key: 'url', label: 'Link URL', type: 'url'},
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'},
+              {key: 'buttonUrl', label: 'Buton Linki', type: 'url'}
             ], "Öğeler", true)}
           </div>
         )}
@@ -1306,7 +1344,6 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'tag', label: 'Kategori Seç (Rozet)', type: 'select', options: (block.categories || []).filter((c: any) => c.label !== 'Tümü').map((c: any) => ({value: c.label || c, label: c.label || c}))},
               {key: 'tagColor', label: 'Etiket Rengi (Tailwind class)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'icon', label: 'İkon (Opsiyonel)', type: 'icon'},
               {key: 'buttonText', label: 'Buton Metni', type: 'text'},
               {key: 'url', label: 'Buton URL', type: 'url'}
             ,

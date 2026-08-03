@@ -119,56 +119,122 @@ export default function PageEditor() {
 
       const block = pageData?.blocks?.[index];
       if (block && e.target) {
-        const target = e.target as HTMLElement;
-        const textContent = target.textContent?.trim();
-        const tagName = target.tagName.toUpperCase();
+        let currentTarget: HTMLElement | null = e.target as HTMLElement;
+        let textContent = '';
         let imageSrc = '';
-        if (tagName === 'IMG') {
-          imageSrc = (target as HTMLImageElement).src;
-        } else if (target.style && target.style.backgroundImage) {
-           imageSrc = target.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+        let originalTarget = e.target as HTMLElement;
+        
+        let depth = 0;
+        while (currentTarget && depth < 5) {
+            if (currentTarget.textContent) {
+                const txt = currentTarget.textContent.trim();
+                if (txt && !textContent) textContent = txt;
+            }
+            if (currentTarget.tagName === 'IMG' && !imageSrc) {
+                imageSrc = (currentTarget as HTMLImageElement).src;
+            } else if (currentTarget.style && currentTarget.style.backgroundImage && !imageSrc) {
+                imageSrc = currentTarget.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+            }
+            currentTarget = currentTarget.parentElement;
+            depth++;
         }
 
         const arrays = ['items', 'days', 'buttons', 'categories', 'legends', 'sidebarItems'];
+        
+        let blockContainer = originalTarget.closest('.group\\/block') || originalTarget.closest('section');
+        let matchingDOMIndex = -1;
+        let explicitArrayIndex = -1;
+        
+        // Look for data-editor-item-index in ancestors
+        let currentItem = originalTarget;
+        while(currentItem && currentItem !== blockContainer) {
+            if (currentItem.hasAttribute('data-editor-item-index')) {
+                explicitArrayIndex = parseInt(currentItem.getAttribute('data-editor-item-index') || '-1', 10);
+                break;
+            }
+            currentItem = currentItem.parentElement as HTMLElement;
+        }
+
+        if (explicitArrayIndex === -1 && blockContainer && textContent) {
+            const walker = document.createTreeWalker(blockContainer, NodeFilter.SHOW_ELEMENT, null);
+            let matchCount = 0;
+            let currentNode = walker.nextNode();
+            while(currentNode) {
+                const el = currentNode as HTMLElement;
+                if (el.children.length === 0 && el.textContent?.trim() === textContent) {
+                    if (el === originalTarget || el.contains(originalTarget) || originalTarget.contains(el)) {
+                        matchingDOMIndex = matchCount;
+                        break;
+                    }
+                    matchCount++;
+                }
+                currentNode = walker.nextNode();
+            }
+        }
+
+        let bestMatch: { arrayKey: string, index: number } | null = null;
         let found = false;
 
         for (const arrKey of arrays) {
           if (block[arrKey] && Array.isArray(block[arrKey])) {
+            if (explicitArrayIndex !== -1 && explicitArrayIndex < block[arrKey].length) {
+                // If it's a known array key that we added explicit indexes for, use it.
+                // Assuming explicit array indexes are mostly for 'items'.
+                bestMatch = { arrayKey: arrKey, index: explicitArrayIndex };
+                found = true;
+                break;
+            }
+            let stringMatches = [];
+            
             for (let i = 0; i < block[arrKey].length; i++) {
               const item = block[arrKey][i];
               if (!item) continue;
               
               if (typeof item === 'string') {
                 if (textContent && textContent.includes(item)) {
-                  setActiveArrayItem({ arrayKey: arrKey, index: i });
-                  found = true; break;
+                  stringMatches.push({ arrayKey: arrKey, index: i });
                 }
                 continue;
               }
 
               if (imageSrc) {
-                const itemImg = item.image || item.icon || item.logo || item.url;
+                const itemImg = item.image || item.icon || item.logo || item.url || item.thumbnail;
                 if (itemImg && typeof itemImg === 'string' && imageSrc.includes(itemImg)) {
-                  setActiveArrayItem({ arrayKey: arrKey, index: i });
+                  bestMatch = { arrayKey: arrKey, index: i };
                   found = true; break;
                 }
               }
 
-              if (textContent && textContent.length > 2) {
+              if (textContent && textContent.length > 0) {
                  const match = Object.values(item).some(val => {
-                    if (typeof val === 'string' && val.length > 2) {
+                    if (typeof val === 'string' && val.length > 1) {
                         return textContent.includes(val) || val.includes(textContent);
                     }
                     return false;
                  });
                  if (match) {
-                    setActiveArrayItem({ arrayKey: arrKey, index: i });
-                    found = true; break;
+                    stringMatches.push({ arrayKey: arrKey, index: i });
                  }
               }
             }
+            
+            if (found) break;
+            
+            if (stringMatches.length > 0) {
+                if (explicitArrayIndex !== -1 && explicitArrayIndex < stringMatches.length) {
+                    bestMatch = { arrayKey: arrKey, index: explicitArrayIndex };
+                } else if (matchingDOMIndex !== -1 && matchingDOMIndex < stringMatches.length) {
+                    bestMatch = stringMatches[matchingDOMIndex];
+                } else {
+                    bestMatch = stringMatches[0];
+                }
+                break;
+            }
           }
-          if (found) break;
+        }
+        
+        if (bestMatch) {
+            setActiveArrayItem(bestMatch);
         }
       }
     }
