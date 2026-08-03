@@ -3,6 +3,7 @@ import { Plus, GripVertical } from 'lucide-react';
 import IconField from '../components/IconField';
 import MediaPickerModal from '../components/MediaPickerModal';
 import FieldStylePicker from './components/FieldStylePicker';
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS } from '../lib/defaultFormInputs';
 
 interface BlockFormEditorProps {
   activeArrayItem?: { arrayKey: string, index: number } | null;
@@ -40,9 +41,24 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
     onChange({ ...block, styles: { ...(block.styles || {}), [key]: value } });
   };
 
+  const getEffectiveArray = (arrayKey: string) => {
+    let current = block[arrayKey];
+    if (arrayKey === 'inputs' && (!current || current.length === 0)) {
+      if (block.type === 'pre_registration_form') return DEFAULT_PRE_REGISTRATION_INPUTS;
+      if (block.type === 'club_registration_form') return DEFAULT_CLUB_INPUTS;
+      return [];
+    }
+    return current || [];
+  };
+
   const handleArrayChange = (arrayKey: string, index: number, itemKey: string, value: any) => {
-    const newArray = [...(block[arrayKey] || [])];
+    const currentArray = getEffectiveArray(arrayKey);
+    const newArray = currentArray.map((item: any) => ({ ...item }));
     newArray[index] = { ...newArray[index], [itemKey]: value };
+    if (arrayKey === 'inputs' && itemKey === 'label' && (!newArray[index].name || newArray[index].name.startsWith('input_'))) {
+      const slug = value.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 20);
+      if (slug) newArray[index].name = slug;
+    }
     handleChange(arrayKey, newArray);
   };
 
@@ -102,6 +118,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
   );
 
   const renderArrayEditor = (arrayKey: string, itemFields: {key: string, label: string, type: 'text' | 'textarea' | 'icon' | 'image' | 'checkbox' | 'url' | 'color' | 'select', options?: {value: string, label: string}[]}[], title: string = "Öğeler", hasStyles: boolean = true, arrayStyleKey?: string) => {
+    const currentArray = getEffectiveArray(arrayKey);
+
     const handleDragStart = (e: React.DragEvent, index: number) => {
       e.dataTransfer.setData('text/plain', index.toString());
     };
@@ -110,7 +128,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
       const fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
       if (fromIndex === index) return;
       
-      const newArray = [...(block[arrayKey] || [])];
+      const newArray = currentArray.map((item: any) => ({ ...item }));
       const [movedItem] = newArray.splice(fromIndex, 1);
       newArray.splice(index, 0, movedItem);
       handleChange(arrayKey, newArray);
@@ -133,7 +151,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           </div>
         )}
       </div>
-      {(block[arrayKey] || []).map((item: any, idx: number) => (
+      {currentArray.map((item: any, idx: number) => (
         <details 
           key={idx} 
           ref={(el) => { arrayItemRefs.current[`${arrayKey}-${idx}`] = el; }}
@@ -141,7 +159,20 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         >
           <summary className="flex gap-2 items-center p-3 cursor-pointer list-none select-none">
             <span className="material-symbols-outlined text-[16px] text-slate-400 group-open/item:rotate-90 transition-transform">chevron_right</span>
-            <div className="flex-1 font-bold text-xs text-slate-600 truncate">{typeof item === 'string' ? item : (item.title || item.label || item.day || item.name || item.text || `Öğe ${idx + 1}`)}</div>
+            <div className="flex-1 font-bold text-xs text-slate-600 truncate">
+              {typeof item === 'string' ? item : (
+                arrayKey === 'inputs' ? (
+                  <span className="flex items-center gap-1.5 flex-wrap">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 uppercase shrink-0">
+                      {item.type === 'section_title' ? '📌 Bölüm' : item.type === 'select' ? '🔽 Açılır Liste' : item.type === 'radio' ? '🔘 Radio' : item.type === 'checkbox' ? '☑️ Checkbox' : item.type === 'date' ? '📅 Tarih' : item.type === 'tel' ? '📞 Telefon' : item.type === 'email' ? '✉️ E-Posta' : item.type === 'textarea' ? '📄 Textarea' : '📝 Metin'}
+                    </span>
+                    <span className="font-semibold text-slate-800">{item.label || item.name || `Alan ${idx + 1}`}</span>
+                    {item.required && <span className="text-red-500 font-bold" title="Zorunlu Alan">*</span>}
+                    {item.fullWidth && <span className="text-[9px] bg-slate-200 text-slate-600 px-1 rounded font-normal">Tam Genişlik</span>}
+                  </span>
+                ) : (item.title || item.label || item.day || item.name || item.text || `Öğe ${idx + 1}`)
+              )}
+            </div>
             <span draggable onDragStart={(e) => handleDragStart(e, idx)} onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, idx)} onClick={(e) => e.preventDefault()} className="cursor-move"><GripVertical className="w-4 h-4 text-slate-300" /></span>
           </summary>
           <div className="p-3 pt-0 border-t border-slate-200 flex gap-2 items-start mt-2">
@@ -350,16 +381,43 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             )}
           </div>
          <button onClick={() => {
-            const newItems = [...(block[arrayKey] || [])];
+            const newItems = currentArray.map((i: any) => ({ ...i }));
             newItems.splice(idx, 1);
             handleChange(arrayKey, newItems);
           }} className="text-red-500 hover:text-red-700 p-1 text-xs font-bold mt-2">Sil</button>
           </div>
         </details>
       ))}
-      <button onClick={() => handleChange(arrayKey, [...(block[arrayKey] || []), {}])} className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded flex items-center justify-center gap-1 mt-2">
-        <Plus className="w-3 h-3" /> Ekle
-      </button>
+      <div className="flex gap-2 mt-2">
+        <button 
+          type="button"
+          onClick={() => {
+            const newItem = arrayKey === 'inputs' 
+              ? { type: 'text', name: 'input_' + Date.now(), label: 'Yeni Form Alanı', placeholder: '', required: false }
+              : {};
+            handleChange(arrayKey, [...currentArray, newItem]);
+          }} 
+          className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded flex items-center justify-center gap-1 shadow-sm transition-colors"
+        >
+          <Plus className="w-3.5 h-3.5" /> Yeni {arrayKey === 'inputs' ? 'Form Alanı (İnput)' : 'Öğe'} Ekle
+        </button>
+
+        {arrayKey === 'inputs' && (
+          <button
+            type="button"
+            onClick={() => {
+              if (confirm("Form alanlarını orijinal varsayılan şablona sıfırlamak istediğinize emin misiniz? Yapılan özelleştirmeler sıfırlanacaktır.")) {
+                const defaults = block.type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : DEFAULT_CLUB_INPUTS;
+                handleChange(arrayKey, defaults);
+              }
+            }}
+            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded transition-colors flex items-center gap-1 border border-slate-200"
+            title="Varsayılan Şablona Sıfırla"
+          >
+            <span className="material-symbols-outlined text-[15px]">restart_alt</span> Sıfırla
+          </button>
+        )}
+      </div>
     </div>
   ); };
 
@@ -1135,6 +1193,61 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
           </div>
         )}
+
+        {block.type === 'club_registration_form' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Form Başlığı', 'title')}
+            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">Form Görünüm & CSS Renk Ayarları</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Başlık Bölümü Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.headerBgColor || '#002147'} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.headerBgColor || ''} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} placeholder="#002147" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Form Kartı Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.cardBgColor || '#ffffff'} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.cardBgColor || ''} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} placeholder="#ffffff" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {renderArrayEditor('clubs', [
+              { key: 'id', label: 'Kulüp ID (boşluksuz)', type: 'text' },
+              { key: 'label', label: 'Kulüp Adı', type: 'text' },
+              { key: 'icon', label: 'İkon (Google Material)', type: 'text' },
+            ], "Kulüpler")}
+
+            {renderArrayEditor('inputs', [
+              { key: 'type', label: 'Alan Tipi (Görev Seçimi)', type: 'select', options: [
+                { value: 'text', label: 'Kısa Metin (Tek Satır Metin)' },
+                { value: 'select', label: 'Açılır Liste / Seçim Kutusu (Dropdown)' },
+                { value: 'radio', label: 'Çoktan Seçmeli (Radyo Butonları)' },
+                { value: 'checkbox', label: 'Onay Kutusu (Checkbox)' },
+                { value: 'date', label: 'Tarih Seçici (Date)' },
+                { value: 'tel', label: 'Telefon Numarası (Phone)' },
+                { value: 'email', label: 'E-Posta Adresi (Email)' },
+                { value: 'textarea', label: 'Uzun Metin Kutusu (Textarea)' },
+                { value: 'section_title', label: 'Bölüm / Kısım Başlığı (Section Header)' }
+              ] },
+              { key: 'label', label: 'Görünen Etiket / Metin (Örn: Kampüs Seçimi)', type: 'text' },
+              { key: 'name', label: 'Alan Kimliği / Key (İngilizce/Boşluksuz)', type: 'text' },
+              { key: 'placeholder', label: 'Yer Tutucu Metin (Örn: Kampüs Seçiniz)', type: 'text' },
+              { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)', type: 'textarea' },
+              { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
+              { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
+              { key: 'icon', label: 'İkon (Google Material Icon adı - Bölüm başlıkları için)', type: 'text' },
+            ], "Form Alanları (İnputlar)")}
+          </div>
+        )}
         
         {block.type === 'pre_registration_form' && (
           <div className="space-y-4">
@@ -1142,7 +1255,47 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             {renderInputWithStyle('Form Başlığı (Örn: ÖĞRENCİ ÖN KAYIT FORMU)', 'title')}
             {renderInputWithStyle('Alt Başlık (Örn: Lütfen Formu Eksiksiz Doldurunuz.)', 'subtitle')}
             {renderInputWithStyle('Webhook URL (Opsiyonel: Form gönderilince verilerin iletileceği URL)', 'webhookUrl')}
-            <p className="text-xs text-slate-500 italic mt-1">Bu form önceden tanımlanmış sabit bir yapıya sahiptir. Renk ve stiller "İleri Düzey Stiller" sekmesinden veya blok stillerinden ayarlanabilir.</p>
+            
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">Form Görünüm & CSS Renk Ayarları</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Başlık Bölümü Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.headerBgColor || '#002147'} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.headerBgColor || ''} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} placeholder="#002147" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Form Kartı Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.cardBgColor || '#ffffff'} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.cardBgColor || ''} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} placeholder="#ffffff" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {renderArrayEditor('inputs', [
+              { key: 'type', label: 'Alan Tipi (Görev Seçimi)', type: 'select', options: [
+                { value: 'text', label: 'Kısa Metin (Tek Satır Metin)' },
+                { value: 'select', label: 'Açılır Liste / Seçim Kutusu (Dropdown)' },
+                { value: 'radio', label: 'Çoktan Seçmeli (Radyo Butonları)' },
+                { value: 'checkbox', label: 'Onay Kutusu (Checkbox)' },
+                { value: 'date', label: 'Tarih Seçici (Date)' },
+                { value: 'tel', label: 'Telefon Numarası (Phone)' },
+                { value: 'email', label: 'E-Posta Adresi (Email)' },
+                { value: 'textarea', label: 'Uzun Metin Kutusu (Textarea)' },
+                { value: 'section_title', label: 'Bölüm / Kısım Başlığı (Section Header)' }
+              ] },
+              { key: 'label', label: 'Görünen Etiket / Metin (Örn: Kampüs Seçimi)', type: 'text' },
+              { key: 'name', label: 'Alan Kimliği / Key (İngilizce/Boşluksuz)', type: 'text' },
+              { key: 'placeholder', label: 'Yer Tutucu Metin (Örn: Kampüs Seçiniz)', type: 'text' },
+              { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)', type: 'textarea' },
+              { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
+              { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
+              { key: 'icon', label: 'İkon (Google Material Icon adı - Bölüm başlıkları için)', type: 'text' },
+            ], "Form Alanları (İnputlar)")}
           </div>
         )}
 

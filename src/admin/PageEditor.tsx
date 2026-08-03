@@ -433,6 +433,7 @@ export default function PageEditor() {
                           { type: 'academic_calendar_hero', label: 'Akademik Takvim Hero' },
                           { type: 'academic_calendar', label: 'Akademik Takvim Modülü' },
                           { type: 'pre_registration_form', label: 'Ön Kayıt Formu' },
+                          { type: 'club_registration_form', label: 'Kulüp Kayıt Formu' },
                         ].map((b, i) => (
                           <button
                             key={i}

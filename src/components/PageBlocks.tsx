@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import IconField, { IconPreview } from "./IconField";
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS } from "../lib/defaultFormInputs";
 
 const ClubsGridBlock = ({
   block,
@@ -141,42 +142,76 @@ const ClubsGridBlock = ({
 };
 
 
-const PreRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
-  const [formData, setFormData] = useState({
-    studentName: "",
-    studentTc: "",
-    studentBirthDate: "",
-    studentGender: "",
-    studentGrade: "",
-    parentName: "",
-    parentTc: "",
-    parentPhone: "",
-    parentEmail: "",
-    parentRelation: "",
-    campus: "",
-    academicYear: "",
-    heardFrom: "",
-    notes: ""
-  });
+
+
+const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
+  const defaultInputs = block.inputs && block.inputs.length > 0 ? block.inputs : (type === 'club_registration_form' ? DEFAULT_CLUB_INPUTS : type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : []);
+
+  const defaultClubs = block.clubs && block.clubs.length > 0 ? block.clubs : (type === 'club_registration_form' ? [
+    { id: "spor", label: "Spor", icon: "sports_basketball" },
+    { id: "sanat", label: "Sanat", icon: "palette" },
+    { id: "bilim", label: "Bilim", icon: "biotech" },
+    { id: "muzik", label: "Müzik", icon: "music_note" },
+    { id: "robotik", label: "Robotik", icon: "smart_toy" },
+    { id: "drama", label: "Drama", icon: "theater_comedy" }
+  ] : []);
+
+  const [formData, setFormData] = useState<any>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // set initial states
+  useEffect(() => {
+    setFormData((prev: any) => {
+      const initData: any = { ...prev };
+      let changed = false;
+      const inputsToProcess = defaultInputs;
+      if (inputsToProcess.length > 0) {
+        inputsToProcess.forEach((inp: any) => {
+          if (inp.type !== 'section_title' && initData[inp.name] === undefined) {
+             initData[inp.name] = inp.type === 'checkbox' ? false : "";
+             changed = true;
+          }
+        });
+        if (type === 'club_registration_form' && defaultClubs.length > 0 && initData['club'] === undefined) {
+          initData['club'] = "";
+          changed = true;
+        }
+      }
+      return changed ? initData : prev;
+    });
+  }, [defaultInputs, defaultClubs, type]);
+
+  const handleChange = (name: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await addDoc(collection(db, "forms"), {
-        type: "pre_registration_form",
-        createdAt: Date.now(),
-        data: formData
-      });
+      if (submitForm) {
+        await submitForm(formData);
+      } else {
+        await addDoc(collection(db, "forms"), {
+          type: type,
+          createdAt: Date.now(),
+          data: formData
+        });
+      }
       setSubmitted(true);
-      setFormData({
-        studentName: "", studentTc: "", studentBirthDate: "", studentGender: "",
-        studentGrade: "", parentName: "", parentTc: "", parentPhone: "", parentEmail: "", 
-        parentRelation: "", campus: "", academicYear: "", heardFrom: "", notes: ""
-      });
-      setTimeout(() => setSubmitted(false), 5000);
+      setTimeout(() => {
+        setSubmitted(false);
+        // reset form
+        const resetData: any = {};
+        defaultInputs.forEach((inp: any) => {
+          if (inp.type !== 'section_title') {
+             resetData[inp.name] = inp.type === 'checkbox' ? false : "";
+          }
+        });
+        if (type === 'club_registration_form') resetData['club'] = "";
+        setFormData(resetData);
+      }, 5000);
     } catch (error) {
       console.error("Form error:", error);
       alert("Bir hata oluştu. Lütfen tekrar deneyiniz.");
@@ -186,210 +221,256 @@ const PreRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSu
   };
 
   return (
-    <section
-      key={index}
-      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8"
-      style={{ backgroundColor: block.styles?.backgroundColor || '#f6f6f8', ...getStyle(block, "container") }}
-    >
-      <div className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative pb-2" style={block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
+    <div className={type === "club_registration_form" ? "bg-surface-card border border-border-subtle rounded-xl p-6 md:p-10 shadow-sm relative form-card" : "relative"} style={type === "club_registration_form" && block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
+      {submitted ? (
+        <div className="p-12 text-center min-h-[400px] flex flex-col items-center justify-center">
+          <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="material-symbols-outlined text-3xl">check_circle</span>
+          </div>
+          <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Başvurunuz Alındı</h3>
+          <p className="font-body-md text-body-md text-text-muted">Kayıt başvurunuz başarıyla alınmıştır.</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className={type === "pre_registration_form" ? "p-6 md:p-10 space-y-10 text-left" : "space-y-8"}>
+          
+          {defaultInputs.length === 0 ? (
+            <div className="p-6 text-center text-text-muted border border-dashed border-border-subtle rounded-lg">
+              Lütfen yönetim panelinden form alanlarını (inputlar) ekleyiniz.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {defaultInputs.map((input: any, i: number) => {
+                const colSpan = (input.type === 'section_title' || input.type === 'textarea' || input.type === 'checkbox' || input.type === 'radio' || input.fullWidth) ? 'md:col-span-2' : '';
+                
+                if (input.type === 'section_title') {
+                  if (type === 'pre_registration_form') {
+                    return (
+                      <div key={i} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
+                        {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
+                        <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider">{input.label}</h2>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={i} className={`flex items-center gap-2 border-b border-border-subtle pb-3 mt-4 first:mt-0 ${colSpan}`}>
+                      {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
+                      <h2 className="font-headline-md text-headline-md text-on-surface">{input.label}</h2>
+                    </div>
+                  );
+                }
+
+                if (input.type === 'checkbox') {
+                  return (
+                    <div key={i} className={`pt-2 border-t border-border-subtle ${colSpan}`}>
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <div className="relative mt-1">
+                          <input 
+                            type="checkbox" required={input.required} 
+                            checked={!!formData[input.name]} 
+                            onChange={e => handleChange(input.name, e.target.checked)}
+                            className="peer h-5 w-5 rounded border-border-subtle text-primary focus:ring-primary/20 transition-all cursor-pointer" 
+                          />
+                        </div>
+                        <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">
+                          <span className="font-bold text-primary">{input.label.split(' ')[0]}</span> {input.label.substring(input.label.indexOf(' ') + 1)}
+                        </span>
+                      </label>
+                    </div>
+                  );
+                }
+
+                if (input.type === 'radio') {
+                  const opts = (input.options || "").split(',').map((o: string) => o.trim());
+                  return (
+                    <div key={i} className={`space-y-2 ${colSpan}`}>
+                      <label className="font-label-md text-label-md text-on-surface-variant block">{input.label}</label>
+                      <div className="space-y-2">
+                        {opts.map((opt: string, optIdx: number) => (
+                          <label key={optIdx} className="flex items-center gap-2 cursor-pointer">
+                            <input 
+                              type="radio" name={input.name} value={opt} required={input.required}
+                              checked={formData[input.name] === opt} 
+                              onChange={e => handleChange(input.name, e.target.value)}
+                              className="text-primary focus:ring-primary/20"
+                            />
+                            <span className="font-body-md text-body-md text-on-surface">{opt}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+                
+                if (input.type === 'textarea') {
+                  return (
+                    <div key={i} className={`space-y-2 ${colSpan}`}>
+                      <label className="font-label-md text-label-md text-on-surface-variant block">{input.label}</label>
+                      <textarea 
+                        required={input.required} rows={4}
+                        value={formData[input.name] || ''} onChange={e => handleChange(input.name, e.target.value)} 
+                        className="w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" 
+                        placeholder={input.placeholder || ""}
+                      />
+                    </div>
+                  );
+                }
+
+                if (input.type === 'select') {
+                  const opts = (input.options || "").split(',').map((o: string) => o.trim());
+                  return (
+                    <div key={i} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                      <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
+                      <select 
+                        required={input.required} 
+                        value={formData[input.name] || ''} onChange={e => handleChange(input.name, e.target.value)} 
+                        className={type === 'pre_registration_form' ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat"}
+                      >
+                        <option disabled value="">{input.placeholder || "Seçiniz"}</option>
+                        {opts.map((opt: string, optIdx: number) => (
+                          <option key={optIdx} value={opt}>{opt}</option>
+                        ))}
+                      </select>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={i} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                    <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
+                    <input 
+                      type={input.type || "text"} required={input.required} 
+                      value={formData[input.name] || ''} onChange={e => handleChange(input.name, e.target.value)} 
+                      className={type === 'pre_registration_form' ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"} 
+                      placeholder={input.placeholder || ""} 
+                    />
+                  </div>
+                );
+              })}
+              
+              {type === 'club_registration_form' && defaultClubs && defaultClubs.length > 0 && (
+                <div className="md:col-span-2 space-y-6 mt-0">
+                  <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
+                    <span className="material-symbols-outlined text-primary">explore</span>
+                    <h2 className="font-headline-md text-headline-md text-on-surface">Kulüp Seçimi</h2>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {defaultClubs.map((clubOpt: any) => (
+                      <div key={clubOpt.id} className="relative">
+                        <input 
+                          type="radio" name="club" id={`club_${clubOpt.id}`} value={clubOpt.label} required
+                          checked={formData.club === clubOpt.label} onChange={e => handleChange('club', e.target.value)}
+                          className="peer hidden" 
+                        />
+                        <label 
+                          htmlFor={`club_${clubOpt.id}`}
+                          className="flex flex-col items-center justify-center p-4 border border-border-subtle rounded-xl cursor-pointer hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/5 transition-all group h-full"
+                        >
+                          <span className={`material-symbols-outlined text-3xl mb-2 transition-colors ${formData.club === clubOpt.label ? 'text-primary' : 'text-text-muted group-hover:text-primary'}`}>
+                            {clubOpt.icon || 'explore'}
+                          </span>
+                          <span className="font-label-md text-label-md text-on-surface text-center">{clubOpt.label}</span>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="pt-6">
+            <button 
+              type="submit" 
+              disabled={submitting}
+              className={type === "pre_registration_form" ? "w-full bg-primary hover:bg-[#002147] text-white font-label-md text-label-md py-4 rounded-lg shadow-sm transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:scale-100" : "w-full py-4 bg-primary text-white font-bold text-label-md rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-70 disabled:cursor-not-allowed"}
+            >
+              {submitting ? (type === "pre_registration_form" ? "Gönderiliyor..." : "İşleniyor...") : (type === "pre_registration_form" ? "Başvuruyu Tamamla" : "Kaydı Tamamla")}
+              {!submitting && <span className="material-symbols-outlined">send</span>}
+              {submitting && (
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+            </button>
+            {type === 'pre_registration_form' && (
+              <p className="mt-4 text-center font-caption text-caption text-text-muted px-4">
+                Gönder butonuna basarak kişisel verilerinizin işlenmesine dair aydınlatma metnini okuduğunuzu ve kabul ettiğinizi beyan etmiş olursunuz.
+              </p>
+            )}
+          </div>
+        </form>
+      )}
+    </div>
+  );
+};
+
+const ClubRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  return (
+    <section key={index} className="py-section-gap w-full flex items-center justify-center p-4 md:p-8" style={getStyle(block, "container")}>
+      <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="mb-8 text-center">
+          <h1 className="font-display-lg text-display-lg text-primary mb-2">{block.title || "Dost Koleji"}</h1>
+          <p className="font-body-lg text-body-lg text-text-muted">{block.subtitle || "Öğrenci Kulüp Kayıt Portalı"}</p>
+        </div>
+        <DynamicFormBuilder block={block} type="club_registration_form" />
+      </div>
+    </section>
+  );
+};
+const PreRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const submitForm = async (formData: any) => {
+    if (block.webhookUrl) {
+      try {
+        await fetch(block.webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+      } catch (err) {
+        console.error("Webhook error", err);
+      }
+    }
+    await addDoc(collection(db, "forms"), {
+      type: "pre_registration_form",
+      createdAt: Date.now(),
+      data: formData
+    });
+  };
+
+  return (
+    <section key={index} className="py-section-gap w-full flex items-center justify-center p-4 md:p-8" style={getStyle(block, "container")}>
+      <div className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative" style={block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
         
         {/* Header */}
-        <div 
-          className="p-8 md:p-12 text-center relative overflow-hidden"
-          style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}
-        >
+        <div className="p-8 md:p-12 text-center relative overflow-hidden" style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
           <div className="relative z-10">
-            <h1 
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide"
-              style={getTitleStyle(block)}
-            >
+            <h1 className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide" style={getTitleStyle(block)}>
               {block.title || "ÖĞRENCİ ÖN KAYIT FORMU"}
             </h1>
-            <p 
-              className="font-body-md text-body-md text-blue-200"
-              style={getSubtitleStyle(block)}
-            >
+            <p className="font-body-md text-body-md text-blue-200" style={getSubtitleStyle(block)}>
               {block.subtitle || "Lütfen Formu Eksiksiz Doldurunuz."}
             </p>
             <div className="mt-6 flex justify-center">
-              <div className="h-1 w-16 bg-[#2b5ec9] rounded-full" style={block.styles?.titlePart1Color ? { backgroundColor: block.styles.titlePart1Color } : {}}></div>
+              <div className="h-1 w-20 bg-primary rounded-full" style={block.styles?.titlePart1Color ? { backgroundColor: block.styles.titlePart1Color } : {}}></div>
             </div>
           </div>
         </div>
         
-        {submitted ? (
-          <div className="p-12 text-center min-h-[400px] flex flex-col items-center justify-center">
-            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-3xl">check_circle</span>
-            </div>
-            <h3 className="text-xl font-bold text-slate-800 mb-2">Başvurunuz Alındı</h3>
-            <p className="text-slate-600">Ön kayıt başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçilecektir.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="p-8 md:p-12 space-y-10 relative">
-            
-            {/* 1. ÖĞRENCİ BİLGİLERİ */}
-            <section>
-              <div className="flex items-center gap-3 mb-6 border-b border-border-subtle pb-2">
-                <span className="material-symbols-outlined text-[#2b5ec9]">school</span>
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">ÖĞRENCİ BİLGİLERİ</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Öğrenci Adı Soyadı</label>
-                  <input type="text" required value={formData.studentName} onChange={e => setFormData({...formData, studentName: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">T.C. Kimlik Numarası</label>
-                  <input type="text" value={formData.studentTc} onChange={e => setFormData({...formData, studentTc: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" maxLength={11} />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Doğum Tarihi</label>
-                  <input type="date" required value={formData.studentBirthDate} onChange={e => setFormData({...formData, studentBirthDate: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Cinsiyet</label>
-                  <select required value={formData.studentGender} onChange={e => setFormData({...formData, studentGender: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    <option value="Kız">Kız</option>
-                    <option value="Erkek">Erkek</option>
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Mevcut Sınıf Seviyesi</label>
-                  <select required value={formData.studentGrade} onChange={e => setFormData({...formData, studentGrade: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    <option value="Anasınıfı">Anasınıfı</option>
-                    <option value="1. Sınıf">1. Sınıf</option>
-                    <option value="2. Sınıf">2. Sınıf</option>
-                    <option value="3. Sınıf">3. Sınıf</option>
-                    <option value="4. Sınıf">4. Sınıf</option>
-                    <option value="5. Sınıf">5. Sınıf</option>
-                    <option value="6. Sınıf">6. Sınıf</option>
-                    <option value="7. Sınıf">7. Sınıf</option>
-                    <option value="8. Sınıf">8. Sınıf</option>
-                    <option value="9. Sınıf">9. Sınıf</option>
-                    <option value="10. Sınıf">10. Sınıf</option>
-                    <option value="11. Sınıf">11. Sınıf</option>
-                    <option value="12. Sınıf">12. Sınıf</option>
-                  </select>
-                </div>
-              </div>
-            </section>
-            
-            {/* 2. VELİ BİLGİLERİ */}
-            <section>
-              <div className="flex items-center gap-3 mb-6 border-b border-border-subtle pb-2">
-                <span className="material-symbols-outlined text-[#2b5ec9]">family_restroom</span>
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">VELİ BİLGİLERİ</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Veli Adı Soyadı</label>
-                  <input type="text" required value={formData.parentName} onChange={e => setFormData({...formData, parentName: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">T.C. Kimlik Numarası</label>
-                  <input type="text" value={formData.parentTc} onChange={e => setFormData({...formData, parentTc: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" maxLength={11} />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Telefon Numarası</label>
-                  <input type="tel" required value={formData.parentPhone} onChange={e => setFormData({...formData, parentPhone: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" placeholder="05XX XXX XX XX" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">E-posta Adresi</label>
-                  <input type="email" value={formData.parentEmail} onChange={e => setFormData({...formData, parentEmail: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm" />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Öğrenciye Yakınlık Derecesi</label>
-                  <select required value={formData.parentRelation} onChange={e => setFormData({...formData, parentRelation: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    <option value="Anne">Anne</option>
-                    <option value="Baba">Baba</option>
-                    <option value="Diğer">Diğer</option>
-                  </select>
-                </div>
-              </div>
-            </section>
-
-            {/* 3. KAMPÜS VE TERCİHLER */}
-            <section>
-              <div className="flex items-center gap-3 mb-6 border-b border-border-subtle pb-2">
-                <span className="material-symbols-outlined text-[#2b5ec9]">location_on</span>
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">KAMPÜS VE TERCİHLER</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Kampüs Seçimi</label>
-                  <select required value={formData.campus} onChange={e => setFormData({...formData, campus: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    <option value="Ümitköy Kampüsü">Ümitköy Kampüsü</option>
-                    <option value="Oran Kampüsü">Oran Kampüsü</option>
-                    <option value="Eryaman Kampüsü">Eryaman Kampüsü</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Akademik Yıl</label>
-                  <select required value={formData.academicYear} onChange={e => setFormData({...formData, academicYear: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    {Array.from({ length: 3 }).map((_, i) => {
-                      const year = new Date().getFullYear() + i;
-                      const nextYear = year + 1;
-                      const label = `${year} - ${nextYear}`;
-                      return <option key={label} value={label}>{label}</option>;
-                    })}
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-bold text-slate-500 mb-2">Bizi nereden duydunuz?</label>
-                  <select value={formData.heardFrom} onChange={e => setFormData({...formData, heardFrom: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 text-sm">
-                    <option value="">Seçiniz</option>
-                    <option value="Sosyal Medya">Sosyal Medya</option>
-                    <option value="Tavsiye / Tanıdık">Tavsiye / Tanıdık</option>
-                    <option value="İnternet Arama (Google vb.)">İnternet Arama (Google vb.)</option>
-                    <option value="Açıkhava Reklamı">Açıkhava Reklamı</option>
-                    <option value="Diğer">Diğer</option>
-                  </select>
-                </div>
-              </div>
-            </section>
-            
-            {/* Ek Bilgiler */}
-            <section className="pt-2">
-              <div>
-                <label className="block text-xs font-bold text-slate-500 mb-2">Eklemek İstedikleriniz (Opsiyonel)</label>
-                <textarea rows={4} value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} className="w-full px-4 py-3 border border-border-subtle rounded-md focus:ring-2 focus:ring-[#2b5ec9] focus:border-[#2b5ec9] outline-none transition-all bg-slate-50 resize-y text-sm"></textarea>
-              </div>
-            </section>
-
-            <div className="pt-6">
-              <button 
-                type="submit" 
-                disabled={submitting}
-                className="w-full py-4 bg-[#2151c8] hover:bg-[#1a409f] text-white rounded-md font-bold text-base transition-all flex items-center justify-center gap-2"
-                style={block.styles?.buttonColor ? { backgroundColor: block.styles.buttonColor } : {}}
-              >
-                {submitting ? 'Gönderiliyor...' : 'Başvuruyu Tamamla'}
-                {!submitting && <span className="material-symbols-outlined">send</span>}
-              </button>
-              
-              <p className="text-center text-xs text-slate-500 mt-6 leading-relaxed px-4">
-                Gönder butonuna basarak kişisel verilerinizin işlenmesine dair aydınlatma metnini okuduğunuzu ve kabul ettiğinizi beyan etmiş olursunuz.
-              </p>
-            </div>
-          </form>
-        )}
+        <DynamicFormBuilder block={block} type="pre_registration_form" submitForm={submitForm} />
         
-        {/* Footer colored bars */}
-        <div className="absolute bottom-0 left-0 w-full h-2 flex">
-          <div className="w-1/3 bg-[#2357c6]"></div>
-          <div className="w-1/3 bg-[#001b3b]"></div>
-          <div className="w-1/3 bg-[#2b5ec9]"></div>
+        {/* Aesthetic Footer Graphic */}
+        <div className="h-2 w-full flex">
+          <div className="h-full flex-1 bg-primary"></div>
+          <div className="h-full flex-1 bg-[#002147]"></div>
+          <div className="h-full flex-1 bg-secondary-fixed-dim"></div>
+          <div className="h-full flex-1 bg-primary"></div>
         </div>
       </div>
     </section>
   );
 };
+
 
 const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const [formData, setFormData] = useState({
@@ -994,6 +1075,9 @@ export const DynamicBlockRenderer = ({
 
         case "pre_registration_form":
           return <PreRegistrationFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "club_registration_form":
+          return <ClubRegistrationFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
 
         case "contact_form":
           return <ContactFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;

@@ -13,7 +13,35 @@ export default function PagesCenter() {
   const [creating, setCreating] = useState(false);
   const navigate = useNavigate();
 
+
+  const seedClubPage = async () => {
+    try {
+      const docRef = doc(db, 'pages', 'kulup-kayit-formu');
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+            title: "Kulüp Kayıt Formu",
+            path: "/kulup-kayit-formu",
+            isDeleted: false,
+            isHidden: false,
+            blocks: [
+                {
+                    type: "club_registration_form",
+                    titlePart1: "Dost Koleji",
+                    titlePart2: "Kulüp Kayıt",
+                    subtitle: "Lütfen Formu Eksiksiz Doldurunuz.",
+                }
+            ],
+            createdAt: Date.now()
+        });
+      }
+    } catch (e) {
+      console.error('Failed to seed club page', e);
+    }
+  };
+
   const fetchPages = async () => {
+    await seedClubPage();
     setLoading(true);
     try {
       const q = query(collection(db, 'pages'), orderBy('createdAt', 'desc'));

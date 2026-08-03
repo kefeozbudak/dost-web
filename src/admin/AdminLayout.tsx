@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { 
   LayoutDashboard, 
@@ -27,6 +27,66 @@ export default function AdminLayout() {
   const [isPagesMenuOpen, setIsPagesMenuOpen] = useState(false);
   const [pagesList, setPagesList] = useState<any[]>([]);
   const { role, allowedPages } = useAuthStore();
+  useEffect(() => {
+    const seedClubPage = async () => {
+      try {
+        const docRef = doc(db, 'pages', 'kulup-kayit-formu');
+        const docSnap = await getDoc(docRef);
+        
+        const defaultBlocks = [
+            {
+                type: "club_registration_form",
+                titlePart1: "Dost Koleji",
+                titlePart2: "Kulüp Kayıt",
+                subtitle: "Öğrenci Kulüp Kayıt Portalı",
+                clubs: [
+                    { id: "spor", label: "Spor", icon: "sports_basketball" },
+                    { id: "sanat", label: "Sanat", icon: "palette" },
+                    { id: "bilim", label: "Bilim", icon: "biotech" },
+                    { id: "muzik", label: "Müzik", icon: "music_note" },
+                    { id: "robotik", label: "Robotik", icon: "smart_toy" },
+                    { id: "drama", label: "Drama", icon: "theater_comedy" }
+                ],
+                inputs: [
+                    { type: 'section_title', label: 'Öğrenci Bilgileri', icon: 'person' },
+                    { type: 'text', name: 'studentName', label: 'Adı Soyadı', placeholder: 'Örn: Ahmet Yılmaz', required: true },
+                    { type: 'select', name: 'studentCampus', label: 'Kampüs Seçimi', options: 'Eryaman Kampüsü, Oran Kampüsü, Ümitköy Kampüsü', required: true },
+                    { type: 'select', name: 'studentClass', label: 'Sınıfı', options: '1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf', required: true },
+                    { type: 'section_title', label: 'Veli İletişim Bilgileri', icon: 'contact_phone' },
+                    { type: 'text', name: 'parentName', label: 'Veli Adı Soyadı', placeholder: 'Örn: Mehmet Yılmaz', required: true },
+                    { type: 'tel', name: 'parentPhone', label: 'Telefon Numarası', placeholder: '0(5xx) xxx xx xx', required: true },
+                    { type: 'checkbox', name: 'kvkkConsent', label: 'KVKK Aydınlatma Metni\'ni okudum, kişisel verilerimin kulüp kaydı amacıyla işlenmesini onaylıyorum.', required: true }
+                ]
+            }
+        ];
+
+        if (!docSnap.exists()) {
+          await setDoc(docRef, {
+              title: "Kulüp Kayıt Formu",
+              path: "/kulup-kayit-formu",
+              isDeleted: false,              
+              isHidden: false,
+              blocks: defaultBlocks,
+              createdAt: Date.now()
+          });
+          console.log("Seeded Kulüp Kayıt Formu");
+        } else {
+          const data = docSnap.data();
+          if (!data.blocks || data.blocks.length === 0 || !data.blocks.some((b: any) => b.type === 'club_registration_form')) {
+            await setDoc(docRef, { blocks: defaultBlocks }, { merge: true });
+            console.log("Updated Kulüp Kayıt Formu blocks");
+          } else if (data.blocks.some((b: any) => b.type === 'club_registration_form' && (!b.clubs || b.clubs.length === 0))) {
+            await setDoc(docRef, { blocks: defaultBlocks }, { merge: true });
+            console.log("Updated Kulüp Kayıt Formu block details");
+          }
+        }
+      } catch (e) {
+        console.error("Failed to seed:", e);
+      }
+    };
+    seedClubPage();
+  }, []);
+
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'pages'), (snapshot) => {

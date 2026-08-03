@@ -705,7 +705,7 @@ export default function ReportCenter() {
            }
            
            const dateStr = rep.createdAt ? new Date(rep.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-           const formName = rep.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : rep.type === 'contact_form' ? 'İletişim Formu' : (rep.data?.formName || 'Veli Asistanı Formu');
+           const formName = rep.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : rep.type === 'contact_form' ? 'İletişim Formu' : ((rep.type === 'chat' || !rep.type) ? 'Veli Asistanı Formu' : (rep.data?.formName || 'Veli Asistanı Formu'));
            
            printContent += `
              <div class="report">
@@ -947,7 +947,7 @@ export default function ReportCenter() {
                           />
                         )}
                         <span className="px-3 py-1 bg-[#004899]/10 text-[#004899] text-xs font-black rounded-lg border border-[#004899]/20">
-                          {report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : report.data?.formName || 'Veli Asistanı Formu'}
+                          {report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
                         </span>
 
                         <button 
