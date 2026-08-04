@@ -309,7 +309,7 @@ export default function PageEditor() {
   if (loading) return <div className="p-8 text-slate-500">Yükleniyor...</div>;
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-slate-50 relative font-sans text-slate-800">
+    <div className="flex-1 flex flex-col h-full bg-slate-50 relative font-sans text-slate-800" translate="no">
       <div className="h-auto sm:h-14 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center py-3 sm:py-0 px-4 sm:px-6 justify-between bg-white z-10 shrink-0 gap-3 sm:gap-0">
         <h1 className="font-bold text-sm text-slate-800 flex items-center flex-wrap gap-2">
           Sayfa Düzenleyici: <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded">{pageId}</span>

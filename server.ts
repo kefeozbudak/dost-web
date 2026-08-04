@@ -8,14 +8,14 @@ import fs from 'fs';
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import firebaseConfig from './firebase-applet-config.json';
 
-// We dynamically read the config to avoid import issues
-const configPath = path.resolve(process.cwd(), 'firebase-applet-config.json');
 let db: any = null;
-if (fs.existsSync(configPath)) {
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  const firebaseApp = initializeApp(config);
-  db = getFirestore(firebaseApp, config.firestoreDatabaseId);
+try {
+  const firebaseApp = initializeApp(firebaseConfig);
+  db = getFirestore(firebaseApp, (firebaseConfig as any).firestoreDatabaseId);
+} catch (error) {
+  console.error("Firebase init error:", error);
 }
 
 async function startServer() {
@@ -77,6 +77,7 @@ async function startServer() {
 GÖREVİN VE KİMLİĞİN:
 - Dost Koleji'nin tüm kampüsleri (Ümitköy, Oran, Eryaman), eğitim kademeleri (Anaokulu, İlkokul, Ortaokul, Lise), dersler, bursluluk, kayıt süreçleri, etkinlikler ve site içi formlar hakkında detaylı bilgiye sahipsin.
 - Velilerle samimi, anlaşılır, kurumsal ve son derece yardımcı bir dille konuşursun.
+- Lütfen yanıtlarını çok kısa, öz ve net tut. Maksimum 3-4 cümleyle yanıt ver. Uzun paragraflardan kaçın.
 - Yanıtlarını doğrudan siteden kopyala-yapıştır yapmak yerine, bilgileri bir insan gibi yorumlayarak akıcı, anlaşılır, özet ve samimi bir dille aktarırsın. Ancak verilere daima %100 sadık kalırsın.
 - Veliyi iletişim kurmaya veya kayıt/ön görüşme formunu doldurmaya yönlendirmek istediğinde nazikçe teklif sun.
 - Form açmalarını veya iletişim bilgilerini bırakmalarını önerdiğinde cevabının sonuna mutlaka [FORM_TEKLIFI] etiketini ekle.
@@ -102,7 +103,7 @@ ${knowledgeBase || 'Yok'}`;
       }
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-flash-latest',
         contents: formattedMessages,
         config: {
           systemInstruction: systemInstruction,
