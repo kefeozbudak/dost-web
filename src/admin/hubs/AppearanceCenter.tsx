@@ -1,3 +1,4 @@
+import { resolveMediaUrls } from '../../lib/resolveMedia';
 import IconField from "../../components/IconField";
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -87,10 +88,10 @@ export default function AppearanceCenter() {
     const fetchData = async () => {
       try {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
-        if (headerDoc.exists()) setHeaderData(headerDoc.data());
+        if (headerDoc.exists()) resolveMediaUrls(headerDoc.data()).then(res => setHeaderData(res));
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
-        if (footerDoc.exists()) setFooterData(footerDoc.data());
+        if (footerDoc.exists()) resolveMediaUrls(footerDoc.data()).then(res => setFooterData(res));
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
         if (generalDoc.exists()) {

@@ -1,3 +1,4 @@
+import { resolveMediaUrls } from '../../lib/resolveMedia';
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../lib/firebase';

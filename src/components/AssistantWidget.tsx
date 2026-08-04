@@ -105,13 +105,15 @@ export default function AssistantWidget() {
           })
         });
         
+        let errData;
         if (!response.ok) {
-          throw new Error('Server returned ' + response.status);
+          errData = await response.json().catch(() => null);
+          throw new Error(errData?.error || 'Server returned ' + response.status);
         }
         data = await response.json();
-      } catch (serverErr) {
+      } catch (serverErr: any) {
         // Fallback to client-side Gemini if server endpoint is unavailable (e.g., static hosting)
-        const clientApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        const clientApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY;
         if (clientApiKey) {
           const { GoogleGenAI } = await import('@google/genai');
           const ai = new GoogleGenAI({ apiKey: clientApiKey });
@@ -152,7 +154,7 @@ ${settings?.knowledgeBase || 'Yok'}`;
           });
           data = { text: r.text };
         } else {
-          throw new Error('VITE_GEMINI_API_KEY is not configured for client-side fallback.');
+          throw serverErr;
         }
       }
 
@@ -171,8 +173,8 @@ ${settings?.knowledgeBase || 'Yok'}`;
       } else if (data.error) {
         setMessages(prev => [...prev, { role: 'assistant', text: typeof data.error === 'string' ? data.error : 'Yanıt alınamadı. Lütfen tekrar deneyin.' }]);
       }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', text: 'Üzgünüm, şu anda bağlantı kuramıyorum. Dilerseniz Hızlı İletişim butonuna tıklayarak bilgilerinizi bırakabilirsiniz.' }]);
+    } catch (error: any) {
+      setMessages(prev => [...prev, { role: 'assistant', text: 'Hata: ' + (error.message || 'Üzgünüm, bağlantı kurulamadı.') }]);
     } finally {
       setLoading(false);
     }

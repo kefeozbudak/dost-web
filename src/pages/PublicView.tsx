@@ -12,39 +12,7 @@ import Footer from '../components/Footer';
 import PopupOverlay from '../components/PopupOverlay';
 import { recordPageView } from '../lib/analytics';
 
-async function resolveMediaUrls(obj: any, db: any): Promise<any> {
-  if (!obj) return obj;
-  if (typeof obj === 'string') {
-    if (obj.startsWith('/api/media/')) {
-      const mediaId = obj.split('/api/media/')[1];
-      if (mediaId) {
-        try {
-          // Import here to avoid top-level issues if not imported
-          const { doc, getDoc } = await import('firebase/firestore');
-          const mediaSnap = await getDoc(doc(db, 'media', mediaId));
-          if (mediaSnap.exists()) {
-            const mediaData = mediaSnap.data();
-            if (mediaData.url) {
-              return mediaData.url;
-            }
-          }
-        } catch(e) {}
-      }
-    }
-    return obj;
-  }
-  if (Array.isArray(obj)) {
-    return Promise.all(obj.map(item => resolveMediaUrls(item, db)));
-  }
-  if (typeof obj === 'object') {
-    const newObj: any = {};
-    for (const key of Object.keys(obj)) {
-      newObj[key] = await resolveMediaUrls(obj[key], db);
-    }
-    return newObj;
-  }
-  return obj;
-}
+import { resolveMediaUrls } from '../lib/resolveMedia';
 
 function cleanBrokenImages(obj: any, contextTitle = ''): any {
   if (!obj) return obj;
@@ -95,12 +63,12 @@ export default function PublicView() {
       try {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
         if (headerDoc.exists()) {
-          setHeaderData(await resolveMediaUrls(headerDoc.data(), db));
+          setHeaderData(await resolveMediaUrls(headerDoc.data()));
         }
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) {
-          setFooterData(await resolveMediaUrls(footerDoc.data(), db));
+          setFooterData(await resolveMediaUrls(footerDoc.data()));
         }
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
@@ -131,7 +99,7 @@ export default function PublicView() {
         let data = docSnap.data();
         
         // Resolve /api/media/ URLs to their actual Firestore URLs
-        data = await resolveMediaUrls(data, db);
+        data = await resolveMediaUrls(data);
         
         if (data.isDeleted || data.isHidden) {
           setPageData(null);

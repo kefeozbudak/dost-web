@@ -1,3 +1,4 @@
+import { resolveMediaUrls } from '../../lib/resolveMedia';
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
@@ -133,7 +134,7 @@ export default function SettingsCenter() {
         const docRef = doc(db, 'settings', 'general');
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setSettings({ ...defaultSettings, ...docSnap.data() });
+          resolveMediaUrls({ ...defaultSettings, ...docSnap.data() }).then(resolved => setSettings(resolved));
         } else {
           // Initialize with default settings if document doesn't exist
           await setDoc(docRef, { ...defaultSettings, createdAt: Date.now() });

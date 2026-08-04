@@ -1,3 +1,4 @@
+import { resolveMediaUrls } from '../lib/resolveMedia';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
