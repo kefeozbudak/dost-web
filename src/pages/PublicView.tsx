@@ -12,6 +12,32 @@ import Footer from '../components/Footer';
 import PopupOverlay from '../components/PopupOverlay';
 import { recordPageView } from '../lib/analytics';
 
+function cleanBrokenImages(obj: any, contextTitle = ''): any {
+  if (!obj) return obj;
+  if (typeof obj === 'string') {
+    if (obj.includes('lh3.googleusercontent.com') || obj.includes('aida-public')) {
+      const lower = contextTitle.toLowerCase();
+      if (lower.includes('eryaman')) return 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80';
+      if (lower.includes('oran')) return 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80';
+      if (lower.includes('ümitköy') || lower.includes('umitkoy')) return 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80';
+      return 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80';
+    }
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(item => cleanBrokenImages(item, contextTitle));
+  }
+  if (typeof obj === 'object') {
+    const title = obj.title || obj.name || contextTitle;
+    const res: any = {};
+    for (const k of Object.keys(obj)) {
+      res[k] = cleanBrokenImages(obj[k], title);
+    }
+    return res;
+  }
+  return obj;
+}
+
 export default function PublicView() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -90,7 +116,7 @@ export default function PublicView() {
                 }
              }
           }
-          setPageData(data);
+          setPageData(cleanBrokenImages(data));
           setLoading(false);
           return;
         }
@@ -105,7 +131,7 @@ export default function PublicView() {
           if (data.isDeleted || data.isHidden) {
             setPageData(null);
           } else {
-            setPageData(data);
+            setPageData(cleanBrokenImages(data));
           }
           setLoading(false);
           return;

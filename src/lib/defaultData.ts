@@ -23,9 +23,9 @@ export const defaultHomePageData = [
     title: '',
     subtitle: 'Modern eğitim yaklaşımları ve köklü değerlerimizle, her öğrencimizin\npotansiyelini zirveye taşıyoruz.',
     items: [
-      { title: 'Eryaman Kampüsü', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC8qIP1ABoe09FATRO4Pj7E6mBOuDgJnB1tvLe6uqNVcTi6mfsEYvB2XH2rrzky0Gi4UUXnUaO_qiKoZeUsFn-CntOlSlzUdC5yjWK8U8AhvsYNqNxP5aO37U0NO3Tfmr0CHJRSC9Q35cbrcEAegl1qOEnhTDvjaDMa-L-uFCGMr32huP2UwRG_39CfFdlX5FI6C3jBHLayks_vh92PvxO4WHTE3Z2xdCwKGIujtGoiSuStdWlHKFj-' },
-      { title: 'Oran Kampüsü', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBjDG8_JX7MULyyExwEfK72LW1u8gclH3Dna__2yYyO7bu61vZzFjocpfViy9CA7YjDQJhJeuw1xmbFl00DYTJRSismY7U2bqM2d9SuTsfYp_hy1dF5dNP0GtZkcNa3qU3MOQwXzr78JTskXa8JK816aJcXU5Owwr_RxmDpm60RrKff19l0JINLnOFznHF6_pBpct_1yePy5adSKReuqc8WOWadrlyiu0E_E-UasPTpZOd642Bx2msr' },
-      { title: 'Ümitköy Kampüsü', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5CIEGWjb5N00w9IoqzRdjl_ii1MbkI7Z1xQkvkffIT-UMMiC1lGzNY8gEffFUaAcOgCIWSqHyjPyVwFA6b8odbabXRT3NpYvqJ9kjlniTj66HVIyK9J_aF_TtcQMqSeWEk6QLzaBua6W-MPgsOuC0ucsq66FIeadv-cd3ld8LK3aTAttcYZmTQtKcrzsqeFk6v6GHydnRqRb34MkLs-EykBN6zKsuX_HayF1xTPq4R8F1NJavFJVK' }
+      { title: 'Eryaman Kampüsü', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Oran Kampüsü', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Ümitköy Kampüsü', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' }
     ],
     buttons: [
       { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '/on-kayit' },
@@ -52,7 +52,7 @@ export const defaultHomePageData = [
         icon: 'verified_user', 
         title: 'Akademik Mükemmellik', 
         desc: 'Uluslararası standartlarda müfredat ve alanında uzman eğitim kadromuzla öğrencilerimizi geleceğe en iyi şekilde hazırlıyoruz.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTwxmJ3LbezFNOURktS-Hlf0ytBO9B7-gTHbCzwxlTlvhs2Fs4FSeYjtpLVxQ5j36ECNaNTfCMi2UCsPnBVa4Z9P7xFzK9vLB81m6msDDahfaCbu8DOMKxa79z82lEpKPrOC7rqodgxidgUNPDIzMjRU9RXwvLdmhSpxiEnqN8nprtwlJuAMDCkgzZmUAXZjNLJ0-NTQVsjDiKnqz9ztQQYTepk6MDKLG1y4MzzP13-rY5lXlp4aadLQ8lUj2e1ZM7wA8Tk-vlISo',
+        image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80',
         rowSpan: true
       },
       { icon: 'translate', title: 'Çift Dilli Eğitim', desc: 'İngilizceyi ana dil yetkinliğinde öğrenen, dünya vatandaşı bireyler yetiştiriyoruz.' },
@@ -72,9 +72,9 @@ export const defaultHomePageData = [
     subtitle: 'Kampüslerimiz',
     viewAllText: 'Tüm Şubeleri Gör',
     items: [
-      { title: 'Ümitköy Kampüsü', desc: 'Anaokulu, İlkokul ve Ortaokul kademelerinde doğayla iç içe bir eğitim ortamı.', buttonText: 'İncele', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC1jWjUCd6OUmVB2QSyrIXrvaJLzfnVkAWqv1BJ3S4StQ_J6GnKv9QA7fuQgE2-Yo-XejdZ35NcMqdymXXKhwAtnV-6x_Lise62aXMCtjaESgZpzL3dntj5Y5uAXpwv1AtuNy0c_18PlRBYcaivptl6GQ_BhrJqTB36RNIysNwNU94RSD70kmquFquOk4E1e7IqzhuAKI4ViK41hEcisSoAvIioaX5JFA_oXmN5OLzB7W-nB600JWhIc4BwmV-S8Msxw3vZe57NNJs' },
-      { title: 'Oran Kampüsü', desc: 'Fen ve Teknoloji Lisemiz ile inovatif projelerin merkezi olan modern şehir kampüsü.', buttonText: 'İncele', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABJkt8OFesxtfEqwU37lXknitdIU8K-wOKfGFW5agj-uLR9N8Q0WXWom8FyhuXooK0LeGmBe4wDgR5Jy2cM_PlGevV_F7br6TbAtgbF38EPpwFVXpF513wV9hAsIu7uCOuSRHl17Hwa7wDO_4o9lAEnDUoTI9cvVew4x_lgBKL8Mqrxsv_wVnk3rmzYDdrrb_2pEc5etxzksZXpBLWQkapISZ0HnM_xHwhkPdUxC4UbEDdXiLTerV5bqR6aRKmRBCo-LfXsKlsH8M' },
-      { title: 'Eryaman Kampüsü', desc: 'Geniş spor alanları ve sanat atölyeleri ile donatılmış, huzurlu bir kampüs hayatı.', buttonText: 'İncele', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqVmB8KLK4pRZRjP6vzqspGrWKyGSWYLz1ZNziR8J2Cz9lFZaWWD9UvShTlolYOXhJ2R1rBz6huoou3DgLSBfCUzFC3gB2MC_iMkd-L2KISyTkkEWMjTIKgb4oKXQbH0SpLom65dcVrNg7LSIRWVzhN6rHs6Q39Z4xCQBtwA11NqXbsjwQ_OVoVrclw_fqC_FY9NyrYuV7PqgshTtyBayH1tDFf7oY266_arpniDAGNBxTpWIYDK4yZV42K_1ThOBlMSbhIj5kSGA' }
+      { title: 'Ümitköy Kampüsü', desc: 'Anaokulu, İlkokul ve Ortaokul kademelerinde doğayla iç içe bir eğitim ortamı.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Oran Kampüsü', desc: 'Fen ve Teknoloji Lisemiz ile inovatif projelerin merkezi olan modern şehir kampüsü.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Eryaman Kampüsü', desc: 'Geniş spor alanları ve sanat atölyeleri ile donatılmış, huzurlu bir kampüs hayatı.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' }
     ]
   },
   {
@@ -83,7 +83,7 @@ export const defaultHomePageData = [
     subtitle: 'Akademik başarılarımızdan kampüs yaşamına kadar bizi biz yapan değerleri keşfedin. Nitelikli eğitim anlayışımızla tanışın.',
     desc: '<p>Alanında uzman kadromuz, modern eğitim teknolojilerimiz ve öğrenci merkezli yaklaşımımız ile çocuklarımızı sadece akademik başarıya değil, hayata hazırlıyoruz.</p><p>Dost Koleji, sadece bir okul değil, büyük bir ailedir.</p>',
     videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    thumbnailUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqVmB8KLK4pRZRjP6vzqspGrWKyGSWYLz1ZNziR8J2Cz9lFZaWWD9UvShTlolYOXhJ2R1rBz6huoou3DgLSBfCUzFC3gB2MC_iMkd-L2KISyTkkEWMjTIKgb4oKXQbH0SpLom65dcVrNg7LSIRWVzhN6rHs6Q39Z4xCQBtwA11NqXbsjwQ_OVoVrclw_fqC_FY9NyrYuV7PqgshTtyBayH1tDFf7oY266_arpniDAGNBxTpWIYDK4yZV42K_1ThOBlMSbhIj5kSGA'
+    thumbnailUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80'
   },
   {
     type: 'stats',
@@ -101,9 +101,9 @@ export const defaultHomePageData = [
     type: 'news',
     title: 'Dost\'tan Haberler',
     items: [
-      { title: '2024 Bilim ve Sanat Festivali Büyük Bir Coşkuyla Gerçekleşti', desc: 'Kampüslerimizde düzenlenen festivalde öğrencilerimiz yıl boyunca hazırladıkları projeleri ailelerine ve ziyaretçilere sundular.', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBUUEEXwI-KNYWwPycQlXu09hBu2TscfEDm3P-gehHpDmMs0a3zGt6hPj2xKnShO4gQjMu77FjSSfTVf40CyZq0BnjdoGGiRdrEDuzCRq4E--YiJJlKDQvyFwcJUOUdnz6etfMay5_9UVQCx8l9NtuCassNqSvgFDkNEIIo8LtstjrD0vPKcGnLbTdfNEjpP5f9__8sCo68dBT3aA5vXP2uKP535b87KFM_MnmBoRsEQHErKTInCNtSI70j3Otb_5ORd60GP0RQSx4', tag: 'Etkinlik', tagColor: 'bg-primary' },
-      { title: 'Robotics Takımımız Dünya Şampiyonası\'ndan Ödülle Döndü', desc: '12 Mayıs 2024', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjwLoj0kh_yOsSd9s54RDmLjfjbpowWD7Qh65FHtb0OwXzzQKutk85UtCYSVn123ulV8Ly6CxukdWk2-Y3XMefAjMGLqazJdQwkG2-JWRpDhKJ6X75lQ4P-EH8W5AC0igvw2K5FdA0Sm2d-FMt0v6hEm1rFFmiD8hUxzMEHFEa81fYzugS88tbUIcYfhuP9Lvvq5dzSKQ7fOC7hW0_hRrGGAP_oK37I5NH_ybq5xz0DAI7y0wimqDYI_3oz38saSH2kpK3WgjPpk0', tag: 'Başarı', tagColor: 'bg-secondary' },
-      { title: 'Yeni Kayıt Dönemi Bilgilendirme Toplantıları Başladı', desc: '08 Mayıs 2024', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCmvxOpXziS01jZY-khwOl3Z4eu8TRYRvBd9AKlaFrpG9h_v66lFnqC189kV8KF_CVVhkiBCf-C8CD7aMOwPke1gyv2UTwZTZRTOnAZLJNeAgAaZG1fw0z_GOv9bo5k6ShWSmwsQKTfhSFRYSu5Pr0w1el-Q01LMSywr-tyQkvDIPbgTS_6KCe_65J_bOjwDEllFI3Y2b8mPjEeOqnOGRPmD4LeMef_NRIBxO5KGzpHb-a20aluE9l7TwAX6fhC-77CEZuZxs_eMks', tag: 'Duyuru', tagColor: 'bg-tertiary-container' }
+      { title: '2024 Bilim ve Sanat Festivali Büyük Bir Coşkuyla Gerçekleşti', desc: 'Kampüslerimizde düzenlenen festivalde öğrencilerimiz yıl boyunca hazırladıkları projeleri ailelerine ve ziyaretçilere sundular.', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', tag: 'Etkinlik', tagColor: 'bg-primary' },
+      { title: 'Robotics Takımımız Dünya Şampiyonası\'ndan Ödülle Döndü', desc: '12 Mayıs 2024', image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80', tag: 'Başarı', tagColor: 'bg-secondary' },
+      { title: 'Yeni Kayıt Dönemi Bilgilendirme Toplantıları Başladı', desc: '08 Mayıs 2024', image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80', tag: 'Duyuru', tagColor: 'bg-tertiary-container' }
     ]
   },
   {
