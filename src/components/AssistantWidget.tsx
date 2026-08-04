@@ -368,7 +368,7 @@ ${settings?.knowledgeBase || 'Yok'}`;
                     ? 'bg-[#004899] text-white rounded-tr-none shadow-sm' 
                     : 'bg-white border border-slate-200 text-slate-800 rounded-tl-none shadow-sm'
                 }`}>
-                  <div className="markdown-body">
+                  <div className="markdown-body" translate="no">
                     <Markdown>{msg.text}</Markdown>
                   </div>
                 </div>

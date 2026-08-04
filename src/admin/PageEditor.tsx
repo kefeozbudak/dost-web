@@ -9,6 +9,39 @@ import { X, Settings, GripHorizontal } from 'lucide-react';
 import BlockFormEditor from './BlockFormEditor';
 import Draggable from 'react-draggable';
 
+async function resolveMediaUrls(obj: any, db: any): Promise<any> {
+  if (!obj) return obj;
+  if (typeof obj === 'string') {
+    if (obj.startsWith('/api/media/')) {
+      const mediaId = obj.split('/api/media/')[1];
+      if (mediaId) {
+        try {
+          const { doc, getDoc } = await import('firebase/firestore');
+          const mediaSnap = await getDoc(doc(db, 'media', mediaId));
+          if (mediaSnap.exists()) {
+            const mediaData = mediaSnap.data();
+            if (mediaData.url) {
+              return mediaData.url;
+            }
+          }
+        } catch(e) {}
+      }
+    }
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return Promise.all(obj.map(item => resolveMediaUrls(item, db)));
+  }
+  if (typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key of Object.keys(obj)) {
+      newObj[key] = await resolveMediaUrls(obj[key], db);
+    }
+    return newObj;
+  }
+  return obj;
+}
+
 export default function PageEditor() {
   const { pageId } = useParams();
   const navigate = useNavigate();

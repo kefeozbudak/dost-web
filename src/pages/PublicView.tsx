@@ -12,6 +12,40 @@ import Footer from '../components/Footer';
 import PopupOverlay from '../components/PopupOverlay';
 import { recordPageView } from '../lib/analytics';
 
+async function resolveMediaUrls(obj: any, db: any): Promise<any> {
+  if (!obj) return obj;
+  if (typeof obj === 'string') {
+    if (obj.startsWith('/api/media/')) {
+      const mediaId = obj.split('/api/media/')[1];
+      if (mediaId) {
+        try {
+          // Import here to avoid top-level issues if not imported
+          const { doc, getDoc } = await import('firebase/firestore');
+          const mediaSnap = await getDoc(doc(db, 'media', mediaId));
+          if (mediaSnap.exists()) {
+            const mediaData = mediaSnap.data();
+            if (mediaData.url) {
+              return mediaData.url;
+            }
+          }
+        } catch(e) {}
+      }
+    }
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return Promise.all(obj.map(item => resolveMediaUrls(item, db)));
+  }
+  if (typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key of Object.keys(obj)) {
+      newObj[key] = await resolveMediaUrls(obj[key], db);
+    }
+    return newObj;
+  }
+  return obj;
+}
+
 function cleanBrokenImages(obj: any, contextTitle = ''): any {
   if (!obj) return obj;
   if (typeof obj === 'string') {
@@ -61,12 +95,12 @@ export default function PublicView() {
       try {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
         if (headerDoc.exists()) {
-          setHeaderData(headerDoc.data());
+          setHeaderData(await resolveMediaUrls(headerDoc.data(), db));
         }
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) {
-          setFooterData(footerDoc.data());
+          setFooterData(await resolveMediaUrls(footerDoc.data(), db));
         }
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
@@ -95,6 +129,9 @@ export default function PublicView() {
     const unsubscribeDoc = onSnapshot(docRef, async (docSnap) => {
       if (docSnap.exists()) {
         let data = docSnap.data();
+        
+        // Resolve /api/media/ URLs to their actual Firestore URLs
+        data = await resolveMediaUrls(data, db);
         
         if (data.isDeleted || data.isHidden) {
           setPageData(null);
