@@ -97,6 +97,16 @@ export default function PageEditor() {
             const defaultData = { title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit', blocks: defaultPreRegistrationData };
             setPageData(defaultData);
           });
+        } else if (pageId === 'bursluluk-basvuru-formu') {
+          import('../lib/defaultData').then(({ defaultScholarshipPageData }) => {
+            const defaultData = { title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu', blocks: defaultScholarshipPageData };
+            setPageData(defaultData);
+          });
+        } else if (pageId === 'bursluluk-basvuru-onay') {
+          import('../lib/defaultData').then(({ defaultScholarshipConfirmationPageData }) => {
+            const defaultData = { title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay', blocks: defaultScholarshipConfirmationPageData };
+            setPageData(defaultData);
+          });
         }
       } catch (e) {
         console.error(e);
@@ -457,6 +467,11 @@ export default function PageEditor() {
                           { type: 'academic_calendar', label: 'Akademik Takvim Modülü' },
                           { type: 'pre_registration_form', label: 'Ön Kayıt Formu' },
                           { type: 'club_registration_form', label: 'Kulüp Kayıt Formu' },
+                          { type: 'bursluluk_hero', label: 'Bursluluk Hero' },
+                          { type: 'bursluluk_exam_form', label: 'Bursluluk Sınav Başvuru Formu' },
+                          { type: 'bursluluk_confirmation', label: 'Bursluluk Sınav Başvuru Onayı ve Giriş Belgesi' },
+                          { type: 'bursluluk_info_cards', label: 'Bursluluk Bilgilendirme Kartları' },
+                          { type: 'bursluluk_result_query', label: 'Bursluluk Sonuç Sorgulama' },
                         ].map((b, i) => (
                           <button
                             key={i}

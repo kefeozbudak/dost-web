@@ -59,6 +59,17 @@
         "url": { "type": "string" },
         "createdAt": { "type": "number" }
       }
+    },
+    "Popup": {
+      "title": "Popup",
+      "description": "Popup campaign configurations",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "status": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" }
+      }
     }
   },
   "firestore": {
@@ -81,6 +92,10 @@
     "media/{mediaId}": {
       "schema": { "$ref": "#/entities/Media" },
       "description": "Uploaded media items"
+    },
+    "popups/{popupId}": {
+      "schema": { "$ref": "#/entities/Popup" },
+      "description": "Popup campaign configurations"
     }
   }
 }

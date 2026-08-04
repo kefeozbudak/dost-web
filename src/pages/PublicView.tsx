@@ -9,6 +9,7 @@ import { defaultHomePageData } from '../lib/defaultData';
 import { onAuthStateChanged } from 'firebase/auth';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PopupOverlay from '../components/PopupOverlay';
 
 export default function PublicView() {
   const location = useLocation();
@@ -149,6 +150,22 @@ export default function PublicView() {
             blocks: defaultPreRegistrationData
           });
         });
+      } else if (docId === 'bursluluk-basvuru-formu' || cleanPath === '/bursluluk-basvuru-formu') {
+        import('../lib/defaultData').then(({ defaultScholarshipPageData }) => {
+          setPageData({
+            title: 'Bursluluk Sınav Başvurusu',
+            path: '/bursluluk-basvuru-formu',
+            blocks: defaultScholarshipPageData
+          });
+        });
+      } else if (docId === 'bursluluk-basvuru-onay' || cleanPath === '/bursluluk-basvuru-onay') {
+        import('../lib/defaultData').then(({ defaultScholarshipConfirmationPageData }) => {
+          setPageData({
+            title: 'Bursluluk Sınav Başvuru Onayı',
+            path: '/bursluluk-basvuru-onay',
+            blocks: defaultScholarshipConfirmationPageData
+          });
+        });
       } else {
         setPageData(null);
       }
@@ -204,6 +221,7 @@ export default function PublicView() {
       </div>
       <Footer data={footerData} />
       <AssistantWidget />
+      <PopupOverlay />
       
       {/* Floating Admin Button */}
       <div className="fixed bottom-6 left-6 z-[999]">

@@ -27,3 +27,19 @@ export const DEFAULT_CLUB_INPUTS = [
   { type: 'tel', name: 'parentPhone', label: 'Telefon Numarası', placeholder: '0(5xx) xxx xx xx', required: true },
   { type: 'checkbox', name: 'kvkkConsent', label: 'KVKK Aydınlatma Metni\'ni okudum, kişisel verilerimin kulüp kaydı amacıyla işlenmesini onaylıyorum.', required: true }
 ];
+
+export const DEFAULT_SCHOLARSHIP_INPUTS = [
+  { type: 'section_title', label: 'Öğrenci Bilgileri', icon: 'school' },
+  { type: 'text', name: 'student_fullname', label: 'Öğrenci Adı Soyadı', placeholder: 'Örn: Ahmet Yılmaz', required: true },
+  { type: 'text', name: 'student_tc', label: 'T.C. Kimlik No', placeholder: '11 haneli kimlik numarası', required: false },
+  { type: 'text', name: 'current_school', label: 'Mevcut Okul', placeholder: 'Halen devam edilen okul', required: false },
+  { type: 'select', name: 'grade_level', label: 'Sınıf Seviyesi', options: '4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf, 10. Sınıf, 11. Sınıf', required: true },
+  { type: 'section_title', label: 'Veli Bilgileri', icon: 'family_restroom' },
+  { type: 'text', name: 'parent_fullname', label: 'Veli Adı Soyadı', placeholder: 'Örn: Mehmet Yılmaz', required: true },
+  { type: 'tel', name: 'parent_phone', label: 'Telefon Numarası', placeholder: '05XX XXX XX XX', required: true },
+  { type: 'email', name: 'parent_email', label: 'E-posta Adresi', placeholder: 'ornek@mail.com', required: false, fullWidth: true },
+  { type: 'select', name: 'discovery_source', label: 'Bizi nereden buldunuz?', options: 'Sosyal Medya, İnternet Reklamları, Tavsiye, Okul Afişleri/Bilboardlar, Diğer', required: false, fullWidth: true },
+  { type: 'section_title', label: 'Sınav Tercihi', icon: 'location_on' },
+  { type: 'select', name: 'campus_preference', label: 'Kampüs Seçimi', options: 'Eryaman Kampüsü, Oran Kampüsü, Ümitköy Kampüsü', required: true },
+  { type: 'select', name: 'exam_session', label: 'Sınav Saati', options: 'Seans 1: 10:00, Seans 2: 14:00', required: false }
+];

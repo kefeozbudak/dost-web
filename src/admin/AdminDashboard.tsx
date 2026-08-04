@@ -35,6 +35,40 @@ export default function AdminDashboard() {
               author: 'system'
            });
         }
+
+        // 1b. Create bursluluk-basvuru-formu page if it doesn't exist or is empty
+        const schPageRef = doc(db, 'pages', 'bursluluk-basvuru-formu');
+        const schPageSnap = await getDoc(schPageRef);
+        if (!schPageSnap.exists() || !schPageSnap.data()?.blocks || schPageSnap.data().blocks.length === 0 || schPageSnap.data().blocks[0]?.type === 'pre_registration_form') {
+           const { defaultScholarshipPageData } = await import('../lib/defaultData');
+           await setDoc(schPageRef, {
+              title: 'Bursluluk Sınav Başvurusu',
+              path: '/bursluluk-basvuru-formu',
+              blocks: defaultScholarshipPageData,
+              isDeleted: false,
+              isHidden: false,
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+              author: 'system'
+           });
+        }
+
+        // 1c. Create bursluluk-basvuru-onay page if it doesn't exist or is empty
+        const schConfPageRef = doc(db, 'pages', 'bursluluk-basvuru-onay');
+        const schConfPageSnap = await getDoc(schConfPageRef);
+        if (!schConfPageSnap.exists() || !schConfPageSnap.data()?.blocks || schConfPageSnap.data().blocks.length === 0) {
+           const { defaultScholarshipConfirmationPageData } = await import('../lib/defaultData');
+           await setDoc(schConfPageRef, {
+              title: 'Bursluluk Sınav Başvuru Onayı',
+              path: '/bursluluk-basvuru-onay',
+              blocks: defaultScholarshipConfirmationPageData,
+              isDeleted: false,
+              isHidden: false,
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+              author: 'system'
+           });
+        }
         
         // 2. Patch home page
         const homeRef = doc(db, 'pages', 'home');

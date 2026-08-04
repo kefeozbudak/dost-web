@@ -511,3 +511,114 @@ export const defaultPreRegistrationData = [
     }
   }
 ];
+
+export const defaultScholarshipPageData = [
+  {
+    type: "bursluluk_hero",
+    badge: "2026-2027 EĞİTİM YILI",
+    title: "Akademik Başarıya Giden Yolunuz",
+    subtitle: "Geleceğin liderlerini yetiştiren Dost Koleji'nde yerinizi ayırtın. Bursluluk sınavımıza katılarak %100'e varan eğitim desteği fırsatlarından yararlanın.",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
+    stats: [
+      { value: "16-17 Mart", label: "Sınav Tarihi" },
+      { value: "4-11. Sınıflar", label: "Katılımcı Seviyesi" },
+      { value: "%100'e Varan", label: "Burs İmkanı" }
+    ],
+    styles: {
+      backgroundColor: "#002147",
+      color: "#ffffff"
+    }
+  },
+  {
+    type: "bursluluk_exam_form",
+    title: "Bursluluk Sınavı Başvuru Formu",
+    subtitle: "Lütfen aşağıdaki bilgileri eksiksiz ve doğru bir şekilde doldurunuz.",
+    styles: {
+      backgroundColor: "#faf8ff"
+    }
+  },
+  {
+    type: "bursluluk_info_cards",
+    title: "Sınav Bilgilendirmeleri",
+    subtitle: "Sınav süreci, gerekli belgeler ve değerlendirme kriterleri hakkında detaylı bilgi alabilirsiniz.",
+    items: [
+      {
+        icon: "history_edu",
+        title: "Sınav Kuralları",
+        rules: [
+          "Sınav saatinden 30 dk önce okulda olunmalıdır.",
+          "Kalem, silgi ve su öğrenci tarafından getirilir."
+        ]
+      },
+      {
+        icon: "content_paste",
+        title: "Gerekli Belgeler",
+        rules: [
+          "Nüfus Cüzdanı veya Kimlik Kartı aslı.",
+          "Sistemden alınan Sınav Giriş Belgesi."
+        ]
+      },
+      {
+        icon: "insights",
+        title: "Puanlama",
+        rules: [
+          "4 yanlış 1 doğruyu götürmektedir.",
+          "Sonuçlar sınavdan 1 hafta sonra açıklanır."
+        ]
+      }
+    ],
+    styles: {
+      backgroundColor: "#ffffff"
+    }
+  },
+  {
+    type: "bursluluk_result_query",
+    title: "Sınav Sonuç Sorgulama",
+    subtitle: "Aşağıdaki butona tıklayarak sınav sonuç sorgulama sayfasına ulaşabilirsiniz.",
+    buttonText: "SINAV SONUCUNU ÖĞREN",
+    buttonUrl: "#",
+    image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80",
+    styles: {
+      backgroundColor: "#e2e1ec"
+    }
+  }
+];
+
+export const defaultScholarshipConfirmationPageData = [
+  {
+    type: "bursluluk_confirmation",
+    successIcon: "check_circle",
+    titlePart1: "Başvurunuz Başarıyla ",
+    titlePart1Color: "#002147",
+    titlePart2: "Alındı!",
+    titlePart2Color: "#002147",
+    title: "Başvurunuz Başarıyla Alındı!",
+    subtitle: "Sınav giriş belgeniz aşağıda oluşturulmuştur. Lütfen sınav günü yanınızda bulundurunuz. Belgenizi indirip yazdırarak sınava getirmeyi unutmayınız.",
+    documentTitle: "Bursluluk Sınavı Giriş Belgesi",
+    documentLogo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAcW18movsC69qnz9zpsbzsrJLWPy_Geo5sAAAi9nqoC0YE-bdMj0AiEUe-Z78NoFFBpFQy5UuXaMmRO0quff6khOovxlJfE1ptuTa38PqzHcJhVeJMUlPxZqHhxVw08UApxaSzgRKctOtlTu4DtjMgzPIZdZ0WMLs8KuA96cHwv2jaeSc1OpVg0rX0eqzr2iTpWL0N0C_Y9PkoQ7IeERePRqYH46NNAxWyoW03nr17RN7GXuwfevi2RYWTPiQtM4pg9fysMIgmkuk",
+    documentNoPrefix: "BELGE NO: ",
+    rules: [
+      "Sınav başlamadan 30 dk. önce salonda hazır bulununuz.",
+      "İlk 30 dk. ve son 15 dk. salondan çıkmak yasaktır.",
+      "Optik formda kodlamaları kurşun kalemle yapınız."
+    ],
+    requiredDocuments: [
+      "Nüfus Cüzdanı veya Kimlik Kartı",
+      "Sınav Giriş Belgesi"
+    ],
+    campusAddresses: {
+      eryaman: "Şehit Osman Avcı Mh. Malazgirt 1071 Cad. No:20 Eryaman / Etimesgut / Ankara",
+      oran: "Oran Mh. Rafet Canıtez Cd. No:8 Çankaya / Ankara",
+      umitkoy: "Ümitköy Mh. 2432. Cd. No:18 Çankaya / Ankara"
+    },
+    buttons: [
+      { label: "İndir (PDF)", action: "download", style: "primary", icon: "download" },
+      { label: "Yazdır", action: "print", style: "outline", icon: "print" }
+    ],
+    styles: {
+      backgroundColor: "#f6f6f8",
+      cardBgColor: "#ffffff"
+    }
+  }
+];
+

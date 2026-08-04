@@ -18,6 +18,7 @@ import {
   Bot,
   ChevronDown,
   ShieldCheck,
+  Layers,
   Image as ImageIcon
 } from 'lucide-react';
 import { logout } from '../lib/firebase';
@@ -97,6 +98,8 @@ export default function AdminLayout() {
           { id: 'lise', title: 'Lise', path: '/lise' },
           { id: 'on-kayit', title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit' },
           { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+          { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
+          { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
           { id: 'umitkoy-kampusu', title: 'Ümitköy Kampüsü', path: '/umitkoy-kampusu' },
           { id: 'eryaman-kampusu', title: 'Eryaman Kampüsü', path: '/eryaman-kampusu' },
           { id: 'oran-kampusu', title: 'Oran Kampüsü', path: '/oran-kampusu' },
@@ -145,6 +148,7 @@ export default function AdminLayout() {
     { id: 'assistant', icon: Bot, label: 'Veli Asistanı', path: '/admin/assistant' },
     { id: 'media', icon: ImageIcon, label: 'Medya Merkezi', path: '/admin/media' },
     { id: 'appearance', icon: Menu, label: 'Görünüm & Menü', path: '/admin/appearance' },
+    { id: 'popups', icon: Layers, label: 'Popup Yönetimi', path: '/admin/popups' },
     { id: 'analytics', icon: BarChart3, label: 'Trafik Analizi', path: '/admin/analytics' },
     { id: 'backups', icon: DatabaseBackup, label: 'Yedekleme & Drive', path: '/admin/backups' },
     { id: 'settings', icon: Settings, label: 'Ayarlar', path: '/admin/settings' },
@@ -174,6 +178,8 @@ export default function AdminLayout() {
   const FORM_SLUGS = [
     { id: 'on-kayit', title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit' },
     { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+    { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
+    { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
   ];
 
   const CAMPUS_SLUGS = [

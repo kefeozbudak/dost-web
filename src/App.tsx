@@ -27,6 +27,7 @@ import AnalyticsCenter from './admin/hubs/AnalyticsCenter';
 import MediaCenter from './admin/hubs/MediaCenter';
 import SettingsCenter from './admin/hubs/SettingsCenter';
 import UsersCenter from './admin/hubs/UsersCenter';
+import PopupCenter from './admin/hubs/PopupCenter';
 import QuickNav from './components/QuickNav';
 
 export default function App() {
@@ -102,6 +103,7 @@ export default function App() {
           <Route path="analytics" element={<AnalyticsCenter />} />
           <Route path="media" element={<MediaCenter />} />
           <Route path="settings" element={<SettingsCenter />} />
+          <Route path="popups" element={<PopupCenter />} />
           <Route path="users" element={<UsersCenter />} />
         </Route>
       </Routes>

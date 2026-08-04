@@ -40,8 +40,50 @@ export default function PagesCenter() {
     }
   };
 
+  const seedScholarshipPage = async () => {
+    try {
+      const { defaultScholarshipPageData } = await import('../../lib/defaultData');
+      const docRef = doc(db, 'pages', 'bursluluk-basvuru-formu');
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0 || docSnap.data().blocks[0]?.type === 'pre_registration_form') {
+        await setDoc(docRef, {
+            title: "Bursluluk Sınav Başvurusu",
+            path: "/bursluluk-basvuru-formu",
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultScholarshipPageData,
+            createdAt: Date.now()
+        });
+      }
+    } catch (e) {
+      console.error('Failed to seed scholarship page', e);
+    }
+  };
+
+  const seedScholarshipConfirmationPage = async () => {
+    try {
+      const { defaultScholarshipConfirmationPageData } = await import('../../lib/defaultData');
+      const docRef = doc(db, 'pages', 'bursluluk-basvuru-onay');
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0) {
+        await setDoc(docRef, {
+            title: "Bursluluk Sınav Başvuru Onayı",
+            path: "/bursluluk-basvuru-onay",
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultScholarshipConfirmationPageData,
+            createdAt: Date.now()
+        });
+      }
+    } catch (e) {
+      console.error('Failed to seed scholarship confirmation page', e);
+    }
+  };
+
   const fetchPages = async () => {
     await seedClubPage();
+    await seedScholarshipPage();
+    await seedScholarshipConfirmationPage();
     setLoading(true);
     try {
       const q = query(collection(db, 'pages'), orderBy('createdAt', 'desc'));

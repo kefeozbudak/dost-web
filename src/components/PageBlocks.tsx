@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
-import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS } from "../lib/defaultFormInputs";
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS } from "../lib/defaultFormInputs";
 
 const ClubsGridBlock = ({
   block,
@@ -146,7 +146,7 @@ const ClubsGridBlock = ({
 
 
 const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
-  const defaultInputs = block.inputs && block.inputs.length > 0 ? block.inputs : (type === 'club_registration_form' ? DEFAULT_CLUB_INPUTS : type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : []);
+  const defaultInputs = block.inputs && block.inputs.length > 0 ? block.inputs : (type === 'club_registration_form' ? DEFAULT_CLUB_INPUTS : type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : DEFAULT_PRE_REGISTRATION_INPUTS);
 
   const defaultClubs = block.clubs && block.clubs.length > 0 ? block.clubs : (type === 'club_registration_form' ? [
     { id: "spor", label: "Spor", icon: "sports_basketball" },
@@ -160,6 +160,8 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
   const [formData, setFormData] = useState<any>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedDocId, setSubmittedDocId] = useState<string>('');
+  const [botValue, setBotValue] = useState("");
 
   // set initial states
   useEffect(() => {
@@ -184,21 +186,51 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
   }, [defaultInputs, defaultClubs, type]);
 
   const handleChange = (name: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [name]: value }));
+    let finalValue = value;
+    const lowerName = name.toLowerCase();
+
+    // Frontend validation: Phone numbers can only contain numbers, spaces, or +
+    if (lowerName.includes('telefon') || lowerName.includes('phone') || lowerName.includes('tel')) {
+      if (typeof value === 'string') {
+        finalValue = value.replace(/[^\d\s+]/g, '');
+      }
+    }
+    
+    // Frontend validation: TC Kimlik can only contain numbers and max 11 chars
+    if (lowerName.includes('tc') || lowerName.includes('kimlik')) {
+      if (typeof value === 'string') {
+        finalValue = value.replace(/[^\d]/g, '').slice(0, 11);
+      }
+    }
+
+    setFormData((prev: any) => ({ ...prev, [name]: finalValue }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // 1. Bot & Spam Protection (Honeypot)
+    if (botValue) {
+      console.log("Bot detected, ignoring submission.");
+      setSubmitted(true);
+      return;
+    }
+    
+    // 2. Double Submit Prevention
+    if (submitting) return;
+
     setSubmitting(true);
     try {
       if (submitForm) {
-        await submitForm(formData);
+        const resId = await submitForm(formData);
+        if (resId) setSubmittedDocId(resId);
       } else {
-        await addDoc(collection(db, "forms"), {
+        const docRef = await addDoc(collection(db, "forms"), {
           type: type,
           createdAt: Date.now(),
           data: formData
         });
+        if (docRef?.id) setSubmittedDocId(docRef.id);
       }
       setSubmitted(true);
       setTimeout(() => {
@@ -212,7 +244,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
         });
         if (type === 'club_registration_form') resetData['club'] = "";
         setFormData(resetData);
-      }, 5000);
+      }, 15000);
     } catch (error) {
       console.error("Form error:", error);
       alert("Bir hata oluştu. Lütfen tekrar deneyiniz.");
@@ -221,19 +253,51 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
     }
   };
 
+  const isStyledForm = type === "pre_registration_form" || type === "bursluluk_exam_form";
+
   return (
     <div className={type === "club_registration_form" ? "bg-surface-card border border-border-subtle rounded-xl p-6 md:p-10 shadow-sm relative form-card" : "relative"} style={type === "club_registration_form" && block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
       {submitted ? (
-        <div className="p-12 text-center min-h-[400px] flex flex-col items-center justify-center">
-          <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="material-symbols-outlined text-3xl">check_circle</span>
+        type === "bursluluk_exam_form" ? (
+          <div className="p-8 md:p-12 text-center min-h-[400px] flex flex-col items-center justify-center space-y-6">
+            <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner">
+              <span className="material-symbols-outlined text-4xl">check_circle</span>
+            </div>
+            <h3 className="text-2xl font-bold text-[#002147]">Bursluluk Sınavı Başvurunuz Başarıyla Alındı!</h3>
+            <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
+              Sınav giriş belgeniz oluşturulmuştur. Belgenizi hemen görüntülemek ve indirmek için aşağıdaki butona tıklayabilirsiniz.
+            </p>
+            <a 
+              href={submittedDocId ? `/bursluluk-basvuru-onay?id=${submittedDocId}` : `/bursluluk-basvuru-onay`}
+              className="px-6 py-3.5 bg-[#002147] text-white font-bold rounded-xl hover:bg-[#002147]/90 transition-all text-sm inline-flex items-center gap-2 shadow-lg hover:shadow-xl cursor-pointer"
+            >
+              <span className="material-symbols-outlined">badge</span>
+              Sınav Giriş Belgesini Görüntüle ve İndir
+            </a>
           </div>
-          <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Başvurunuz Alındı</h3>
-          <p className="font-body-md text-body-md text-text-muted">Kayıt başvurunuz başarıyla alınmıştır.</p>
-        </div>
+        ) : (
+          <div className="p-12 text-center min-h-[400px] flex flex-col items-center justify-center">
+            <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="material-symbols-outlined text-3xl">check_circle</span>
+            </div>
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Başvurunuz Alındı</h3>
+            <p className="font-body-md text-body-md text-text-muted">Kayıt başvurunuz başarıyla alınmıştır.</p>
+          </div>
+        )
       ) : (
-        <form onSubmit={handleSubmit} className={type === "pre_registration_form" ? "p-6 md:p-10 space-y-10 text-left" : "space-y-8"}>
+        <form onSubmit={handleSubmit} className={isStyledForm ? "p-6 md:p-10 space-y-10 text-left" : "space-y-8"}>
           
+          {/* Honeypot field - invisible to real users but bots will fill it */}
+          <input 
+            type="text" 
+            name="honey_pot_email_verify"
+            value={botValue}
+            onChange={(e) => setBotValue(e.target.value)}
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           {defaultInputs.length === 0 ? (
             <div className="p-6 text-center text-text-muted border border-dashed border-border-subtle rounded-lg">
               Lütfen yönetim panelinden form alanlarını (inputlar) ekleyiniz.
@@ -245,7 +309,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 const colSpan = (input.type === 'section_title' || input.type === 'textarea' || input.type === 'checkbox' || input.type === 'radio' || input.fullWidth) ? 'md:col-span-2' : '';
                 
                 if (input.type === 'section_title') {
-                  if (type === 'pre_registration_form') {
+                  if (isStyledForm) {
                     return (
                       <div key={inputKey} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
                         {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
@@ -320,12 +384,12 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 if (input.type === 'select') {
                   const opts = (input.options || "").split(',').map((o: string) => o.trim());
                   return (
-                    <div key={inputKey} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
-                      <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
+                    <div key={inputKey} className={isStyledForm ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                      <label className={isStyledForm ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
                       <select 
                         required={input.required} 
                         value={formData[input.name] || ''} onChange={e => handleChange(input.name, e.target.value)} 
-                        className={type === 'pre_registration_form' ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat"}
+                        className={isStyledForm ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat"}
                       >
                         <option disabled value="">{input.placeholder || "Seçiniz"}</option>
                         {opts.map((opt: string, optIdx: number) => (
@@ -337,12 +401,12 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 }
 
                 return (
-                  <div key={inputKey} className={type === 'pre_registration_form' ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
-                    <label className={type === 'pre_registration_form' ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
+                  <div key={inputKey} className={isStyledForm ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                    <label className={isStyledForm ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
                     <input 
                       type={input.type || "text"} required={input.required} 
                       value={formData[input.name] || ''} onChange={e => handleChange(input.name, e.target.value)} 
-                      className={type === 'pre_registration_form' ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"} 
+                      className={isStyledForm ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"} 
                       placeholder={input.placeholder || ""} 
                     />
                   </div>
@@ -408,9 +472,9 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
             <button 
               type="submit" 
               disabled={submitting}
-              className={type === "pre_registration_form" ? "w-full bg-primary hover:bg-[#002147] text-white font-label-md text-label-md py-4 rounded-lg shadow-sm transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:scale-100" : "w-full py-4 bg-primary text-white font-bold text-label-md rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-70 disabled:cursor-not-allowed"}
+              className={isStyledForm ? "w-full bg-primary hover:bg-[#002147] text-white font-label-md text-label-md py-4 rounded-lg shadow-sm transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:scale-100" : "w-full py-4 bg-primary text-white font-bold text-label-md rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-70 disabled:cursor-not-allowed"}
             >
-              {submitting ? (type === "pre_registration_form" ? "Gönderiliyor..." : "İşleniyor...") : (type === "pre_registration_form" ? "Başvuruyu Tamamla" : "Kaydı Tamamla")}
+              {submitting ? (isStyledForm ? "Gönderiliyor..." : "İşleniyor...") : (isStyledForm ? "Başvuruyu Tamamla" : "Kaydı Tamamla")}
               {!submitting && <span className="material-symbols-outlined">send</span>}
               {submitting && (
                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -419,7 +483,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 </svg>
               )}
             </button>
-            {type === 'pre_registration_form' && (
+            {isStyledForm && (
               <p className="mt-4 text-center font-caption text-caption text-text-muted px-4">
                 Gönder butonuna basarak kişisel verilerinizin işlenmesine dair aydınlatma metnini okuduğunuzu ve kabul ettiğinizi beyan etmiş olursunuz.
               </p>
@@ -497,6 +561,508 @@ const PreRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSu
   );
 };
 
+const BurslulukHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const stats = block.stats || [
+    { value: "16-17 Mart", label: "Sınav Tarihi" },
+    { value: "4-11. Sınıflar", label: "Katılımcı Seviyesi" },
+    { value: "%100'e Varan", label: "Burs İmkanı" }
+  ];
+
+  const heroBg = block.image || "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80";
+
+  return (
+    <section key={index} className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden" style={getStyle(block, "container")}>
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10"></div>
+        <div 
+          className="w-full h-full bg-cover bg-center" 
+          style={{ backgroundImage: `url('${heroBg}')` }}
+        />
+      </div>
+      <div className="relative z-20 max-w-container-max mx-auto px-margin-desktop w-full">
+        <div className="max-w-2xl text-white">
+          <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md">
+            {block.badge || "2026-2027 EĞİTİM YILI"}
+          </span>
+          <h1 className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold" style={getTitleStyle(block)}>
+            {block.title || "Akademik Başarıya Giden Yolunuz"}
+          </h1>
+          <p className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed" style={getSubtitleStyle(block)}>
+            {block.subtitle || "Geleceğin liderlerini yetiştiren Dost Koleji'nde yerinizi ayırtın. Bursluluk sınavımıza katılarak %100'e varan eğitim desteği fırsatlarından yararlanın."}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6">
+            {stats.map((stat: any, idx: number) => (
+              <div key={idx}>
+                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl">{stat.value}</p>
+                <p className="text-sm opacity-80">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const BurslulukExamFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const submitForm = async (formData: any) => {
+    if (block.webhookUrl) {
+      try {
+        await fetch(block.webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+      } catch (err) {
+        console.error("Webhook error", err);
+      }
+    }
+    const formPayload = {
+      type: 'bursluluk_basvuru_formu',
+      formName: 'Bursluluk Sınav Başvurusu',
+      createdAt: Date.now(),
+      data: formData
+    };
+
+    const docRef = await addDoc(collection(db, "forms"), formPayload);
+
+    try {
+      const localBackup = JSON.parse(localStorage.getItem('dost_scholarship_forms_backup') || '[]');
+      localBackup.unshift({ id: docRef.id, ...formPayload });
+      localStorage.setItem('dost_scholarship_forms_backup', JSON.stringify(localBackup));
+    } catch (err) {
+      console.error("Local backup error", err);
+    }
+
+    return docRef.id;
+  };
+
+  return (
+    <section key={index} id="basvuru-formu" className="py-section-gap w-full flex items-center justify-center p-4 md:p-8" style={getStyle(block, "container")}>
+      <div className="w-full max-w-4xl bg-surface-card rounded-xl shadow-sm border border-border-subtle overflow-hidden relative" style={block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
+        
+        {/* Header */}
+        <div className="p-8 md:p-12 text-center relative overflow-hidden" style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
+          <div className="relative z-10">
+            <h1 className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide" style={getTitleStyle(block)}>
+              {block.title || "BURSLULUK SINAVI BAŞVURU FORMU"}
+            </h1>
+            <p className="font-body-md text-body-md text-blue-200" style={getSubtitleStyle(block)}>
+              {block.subtitle || "Lütfen Formu Eksiksiz Doldurunuz."}
+            </p>
+            <div className="mt-6 flex justify-center">
+              <div className="h-1 w-20 bg-primary rounded-full" style={block.styles?.titlePart1Color ? { backgroundColor: block.styles.titlePart1Color } : {}}></div>
+            </div>
+          </div>
+        </div>
+        
+        <DynamicFormBuilder block={block} type="bursluluk_exam_form" submitForm={submitForm} />
+        
+        {/* Aesthetic Footer Graphic */}
+        <div className="h-2 w-full flex">
+          <div className="h-full flex-1 bg-primary"></div>
+          <div className="h-full flex-1 bg-[#002147]"></div>
+          <div className="h-full flex-1 bg-secondary-fixed-dim"></div>
+          <div className="h-full flex-1 bg-primary"></div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const BurslulukInfoCardsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const items = block.items || [
+    {
+      icon: "history_edu",
+      title: "Sınav Kuralları",
+      rules: [
+        "Sınav saatinden 30 dk önce okulda olunmalıdır.",
+        "Kalem, silgi ve su öğrenci tarafından getirilir."
+      ]
+    },
+    {
+      icon: "content_paste",
+      title: "Gerekli Belgeler",
+      rules: [
+        "Nüfus Cüzdanı veya Kimlik Kartı aslı.",
+        "Sistemden alınan Sınav Giriş Belgesi."
+      ]
+    },
+    {
+      icon: "insights",
+      title: "Puanlama",
+      rules: [
+        "4 yanlış 1 doğruyu götürmektedir.",
+        "Sonuçlar sınavdan 1 hafta sonra açıklanır."
+      ]
+    }
+  ];
+
+  return (
+    <section key={index} id="bilgilendirme" className="py-section-gap bg-white" style={getStyle(block, "container")}>
+      <div className="max-w-container-max mx-auto px-margin-desktop">
+        {block.title && (
+          <div className="text-center mb-12">
+            <h2 className="font-headline-xl text-3xl md:text-headline-xl text-[#002147] mb-4 font-bold" style={getTitleStyle(block)}>
+              {block.title}
+            </h2>
+            {block.subtitle && (
+              <p className="text-slate-500 max-w-2xl mx-auto text-sm md:text-base" style={getSubtitleStyle(block)}>
+                {block.subtitle}
+              </p>
+            )}
+          </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {items.map((item: any, idx: number) => (
+            <div key={idx} className="group p-8 rounded-2xl bg-[#f3f2fd] border border-[#e2e8f0] hover:border-[#1d4eca]/30 transition-all shadow-sm hover:shadow-md">
+              <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-[#1d4eca] text-3xl">{item.icon || 'info'}</span>
+              </div>
+              <h4 className="text-xl font-bold text-[#002147] mb-4">{item.title}</h4>
+              <ul className="space-y-3 text-[#434654]">
+                {(item.rules || item.desc || []).map((rule: string, rIdx: number) => (
+                  <li key={rIdx} className="flex items-start gap-2 text-sm leading-relaxed">
+                    <span className="material-symbols-outlined text-[#1d4eca] text-base mt-0.5 shrink-0">check_circle</span>
+                    <span>{rule}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const BurslulukResultQueryBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const [tcQuery, setTcQuery] = useState('');
+  const [queryModal, setQueryModal] = useState(false);
+
+  return (
+    <section key={index} className="py-section-gap bg-[#e2e1ec]/20" style={getStyle(block, "container")}>
+      <div className="max-w-container-max mx-auto px-margin-desktop">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl">
+          <div className="flex-1 p-8 md:p-12 text-white">
+            <h2 className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold" style={getTitleStyle(block)}>
+              {block.title || "Sınav Sonuç Sorgulama"}
+            </h2>
+            <p className="text-base md:text-lg opacity-80 mb-8" style={getSubtitleStyle(block)}>
+              {block.subtitle || "Aşağıdaki butona tıklayarak sınav sonuç sorgulama sayfasına ulaşabilirsiniz."}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md">
+              <button 
+                type="button"
+                onClick={() => setQueryModal(true)}
+                className="w-full bg-[#D4AF37] text-[#002147] font-bold py-4 px-6 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg text-sm md:text-base uppercase tracking-wider cursor-pointer"
+              >
+                <span className="material-symbols-outlined">search</span>
+                {block.buttonText || "SINAV SONUCUNU ÖĞREN"}
+              </button>
+            </div>
+          </div>
+          <div className="w-full md:w-1/3 h-[280px] md:h-[360px] relative shrink-0">
+            <div 
+              className="w-full h-full bg-cover bg-center" 
+              style={{ backgroundImage: `url('${block.image || "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80"}')` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {queryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            <button 
+              type="button"
+              onClick={() => setQueryModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 cursor-pointer"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <h3 className="text-2xl font-bold text-[#002147] mb-2">Sınav Sonuç Sorgulama</h3>
+            <p className="text-slate-500 text-sm mb-6">Lütfen öğrencinin T.C. Kimlik Numarasını giriniz.</p>
+            <input 
+              type="text" 
+              maxLength={11} 
+              value={tcQuery} 
+              onChange={(e) => setTcQuery(e.target.value)}
+              placeholder="11 haneli T.C. Kimlik No" 
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-[#1d4eca] text-sm"
+            />
+            <button 
+              type="button"
+              onClick={() => {
+                if (tcQuery.length !== 11) {
+                  alert("Lütfen 11 haneli T.C. Kimlik No giriniz.");
+                  return;
+                }
+                alert("Sınav sonuçları açıklandığında bu alandan ve SMS ile bilgilendirme yapılacaktır.");
+                setQueryModal(false);
+              }}
+              className="w-full bg-[#1d4eca] text-white py-3.5 rounded-xl font-bold hover:bg-[#1d4eca]/90 transition-all text-sm cursor-pointer"
+            >
+              Sorgula
+            </button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
+
+const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const [submission, setSubmission] = useState<any>(null);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const id = searchParams.get('id');
+    if (id) {
+      const docRef = doc(db, "forms", id);
+      getDoc(docRef).then((snap) => {
+        if (snap.exists()) {
+          setSubmission(snap.data());
+        }
+      }).catch((err) => {
+        console.error("Error fetching submission:", err);
+      });
+    }
+  }, []);
+
+  const subData = submission?.data || submission || {};
+  
+  const studentName = subData.studentName || subData.student_fullname || subData.student_name || "AHMET YILMAZ";
+  const studentTc = subData.studentTc || subData.student_tc || subData.tc || "12345678901";
+  const rawGrade = subData.grade || subData.grade_level || subData.class || "8. Sınıf";
+  const formattedGrade = String(rawGrade).includes("Sınıf") ? rawGrade : `${rawGrade}. Sınıf`;
+
+  const campusVal = String(subData.campus || subData.campus_preference || subData.campus_select || "eryaman").toLowerCase();
+  
+  let campusName = "Eryaman Kampüsü - Ana Bina";
+  if (campusVal.includes("oran")) campusName = "Oran Kampüsü - Ana Bina";
+  else if (campusVal.includes("umitkoy") || campusVal.includes("ümitköy")) campusName = "Ümitköy Kampüsü - Ana Bina";
+  else if (campusVal.includes("eryaman")) campusName = "Eryaman Kampüsü - Ana Bina";
+  else if (subData.campus) campusName = subData.campus;
+
+  const sessionVal = String(subData.examSession || subData.exam_session || "session_1").toLowerCase();
+  let examTime = "10:00";
+  if (sessionVal.includes("14") || sessionVal.includes("2") || sessionVal.includes("14:00")) {
+    examTime = "14:00";
+  } else if (subData.examSession) {
+    examTime = subData.examSession;
+  }
+
+  const examDate = block.examDate || "16 Mart 2026";
+  const docNo = submission ? `2026-${String(submission.createdAt || Date.now()).slice(-4)}` : (block.documentNo || "2026-8842");
+  
+  const formattedDocDate = submission?.createdAt 
+    ? new Date(submission.createdAt).toLocaleDateString('tr-TR') 
+    : new Date().toLocaleDateString('tr-TR');
+
+  const campusAddresses: any = block.campusAddresses || {
+    eryaman: "Şehit Osman Avcı Mh. Malazgirt 1071 Cad. No:20 Eryaman / Etimesgut / Ankara",
+    oran: "Oran Mh. Rafet Canıtez Cd. No:8 Çankaya / Ankara",
+    umitkoy: "Ümitköy Mh. 2432. Cd. No:18 Çankaya / Ankara"
+  };
+
+  let currentCampusAddress = campusAddresses.eryaman;
+  if (campusVal.includes("oran")) currentCampusAddress = campusAddresses.oran;
+  else if (campusVal.includes("umitkoy") || campusVal.includes("ümitköy")) currentCampusAddress = campusAddresses.umitkoy;
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const rulesList = (block.rules && Array.isArray(block.rules)) 
+    ? block.rules.map((r: any) => typeof r === 'string' ? r : (r.rule || r.text || ''))
+    : [
+      "Sınav başlamadan 30 dk. önce salonda hazır bulununuz.",
+      "İlk 30 dk. ve son 15 dk. salondan çıkmak yasaktır.",
+      "Optik formda kodlamaları kurşun kalemle yapınız."
+    ];
+
+  const docsList = (block.requiredDocuments && Array.isArray(block.requiredDocuments))
+    ? block.requiredDocuments.map((d: any) => typeof d === 'string' ? d : (d.docName || d.text || ''))
+    : [
+      "Nüfus Cüzdanı veya Kimlik Kartı",
+      "Sınav Giriş Belgesi"
+    ];
+
+  return (
+    <section key={index} className="py-12 md:py-16 bg-surface-background min-h-screen" style={getStyle(block, "container")}>
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden !important;
+          }
+          #printable-exam-document, #printable-exam-document * {
+            visibility: visible !important;
+          }
+          #printable-exam-document {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 24px !important;
+            box-shadow: none !important;
+            border: none !important;
+            background: white !important;
+          }
+          .no-print {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        {/* Success Header */}
+        <div className="text-center mb-10 no-print">
+          <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+            <span className="material-symbols-outlined text-5xl">{block.successIcon || "check_circle"}</span>
+          </div>
+          <h1 className="font-headline-xl text-3xl md:text-4xl text-[#002147] mb-3 font-bold" style={getTitleStyle(block)}>
+            {block.title || "Başvurunuz Başarıyla Alındı!"}
+          </h1>
+          <p className="text-slate-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed" style={getSubtitleStyle(block)}>
+            {block.subtitle || "Sınav giriş belgeniz aşağıda oluşturulmuştur. Lütfen sınav günü yanınızda bulundurunuz. Belgenizi indirip yazdırarak sınava getirmeyi unutmayınız."}
+          </p>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8 no-print">
+          <button 
+            type="button"
+            onClick={handlePrint}
+            className="flex items-center gap-2 bg-[#002147] text-white px-6 py-3.5 rounded-xl font-bold hover:bg-[#002147]/90 transition-all shadow-md active:scale-95 cursor-pointer text-sm"
+          >
+            <span className="material-symbols-outlined text-xl">download</span> İndir (PDF)
+          </button>
+          <button 
+            type="button"
+            onClick={handlePrint}
+            className="flex items-center gap-2 bg-white text-[#002147] border-2 border-[#002147] px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 cursor-pointer text-sm"
+          >
+            <span className="material-symbols-outlined text-xl">print</span> Yazdır
+          </button>
+        </div>
+
+        {/* PDF Preview Container (A4 Mockup Card) */}
+        <div 
+          id="printable-exam-document"
+          className="bg-white shadow-2xl rounded-2xl mx-auto overflow-hidden border border-slate-200 p-6 md:p-12 relative" 
+          style={{ maxWidth: "800px", minHeight: "550px", ...(block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}) }}
+        >
+          <div className="h-full flex flex-col">
+            
+            {/* Document Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-[#002147] pb-6 mb-8 gap-4">
+              <div className="flex items-center gap-4">
+                <img 
+                  src={block.documentLogo || "/dost-logo-png.png"} 
+                  alt="Dost Koleji Logo" 
+                  className="h-12 w-auto object-contain"
+                  onError={(e: any) => {
+                    e.target.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuAcW18movsC69qnz9zpsbzsrJLWPy_Geo5sAAAi9nqoC0YE-bdMj0AiEUe-Z78NoFFBpFQy5UuXaMmRO0quff6khOovxlJfE1ptuTa38PqzHcJhVeJMUlPxZqHhxVw08UApxaSzgRKctOtlTu4DtjMgzPIZdZ0WMLs8KuA96cHwv2jaeSc1OpVg0rX0eqzr2iTpWL0N0C_Y9PkoQ7IeERePRqYH46NNAxWyoW03nr17RN7GXuwfevi2RYWTPiQtM4pg9fysMIgmkuk";
+                  }}
+                />
+                <div>
+                  <h3 className="font-bold text-[#002147] text-lg uppercase tracking-wider">{block.documentTitle || "Bursluluk Sınavı Giriş Belgesi"}</h3>
+                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold">DOST KOLEJİ EĞİTİM KURUMLARI</p>
+                </div>
+              </div>
+              <div className="text-left sm:text-right border-l sm:border-l-0 border-slate-200 pl-3 sm:pl-0">
+                <p className="text-xs font-bold text-[#002147] tracking-wide">{block.documentNoPrefix || "BELGE NO: "}{docNo}</p>
+                <p className="text-xs text-slate-500">Tarih: {formattedDocDate}</p>
+              </div>
+            </div>
+
+            {/* Document Body - Student & Exam Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-10 bg-slate-50/80 p-6 rounded-xl border border-slate-200/80">
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Adı Soyadı</p>
+                <p className="font-bold text-[#002147] text-lg uppercase">{studentName}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">T.C. Kimlik No</p>
+                <p className="font-bold text-[#002147] text-lg">{studentTc}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Sınıf Seviyesi</p>
+                <p className="font-bold text-[#002147] text-lg">{formattedGrade}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Sınav Tarihi</p>
+                <p className="font-bold text-[#002147] text-lg">{examDate}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Sınav Saati</p>
+                <p className="font-bold text-[#002147] text-lg">{examTime}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Sınav Merkezi</p>
+                <p className="font-bold text-[#002147] text-lg">{campusName}</p>
+              </div>
+            </div>
+
+            {/* Bottom Section - Rules, Required Docs, Campus Address */}
+            <div className="mt-auto border-t border-slate-200 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+              <div>
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-sm text-primary">gavel</span>
+                  Sınav Kuralları
+                </h4>
+                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
+                  {rulesList.map((rule: string, rIdx: number) => (
+                    <li key={rIdx}>{rule}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-sm text-primary">badge</span>
+                  Gerekli Belgeler
+                </h4>
+                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
+                  {docsList.map((docItem: string, dIdx: number) => (
+                    <li key={dIdx}>{docItem}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-sm text-primary">location_on</span>
+                  Kampüs Adresi
+                </h4>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  {currentCampusAddress}
+                </p>
+              </div>
+            </div>
+
+            {/* Watermark / Footer Strip */}
+            <div className="mt-8 pt-4 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+              <span>Dost Koleji Sınav Hizmetleri © 2026</span>
+              <span className="font-mono">VERIFIED OFFICIAL ENTRY TICKET</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary Action Link */}
+        <div className="mt-10 text-center no-print">
+          <a href="/" className="text-primary font-bold inline-flex items-center justify-center gap-2 hover:underline text-sm">
+            <span className="material-symbols-outlined text-lg">home</span> Ana Sayfaya Dön
+          </a>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
 
 const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const [formData, setFormData] = useState({
@@ -507,9 +1073,21 @@ const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSt
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [botValue, setBotValue] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // 1. Bot & Spam Protection (Honeypot)
+    if (botValue) {
+      console.log("Bot detected, ignoring submission.");
+      setSubmitted(true);
+      return;
+    }
+    
+    // 2. Double Submit Prevention
+    if (submitting) return;
+
     setSubmitting(true);
     try {
       await addDoc(collection(db, "forms"), {
@@ -566,6 +1144,16 @@ const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSt
               className="grid grid-cols-1 md:grid-cols-2 gap-6"
               onSubmit={handleSubmit}
             >
+              {/* Honeypot field - invisible to real users but bots will fill it */}
+              <input 
+                type="text" 
+                name="honey_pot_email_verify"
+                value={botValue}
+                onChange={(e) => setBotValue(e.target.value)}
+                style={{ display: 'none' }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
               <div className="flex flex-col gap-2">
                 <label className="font-label-md text-label-md text-on-surface">
                   Adınız Soyadınız
@@ -1101,6 +1689,21 @@ export const DynamicBlockRenderer = ({
 
         case "pre_registration_form":
           return <PreRegistrationFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "bursluluk_hero":
+          return <BurslulukHeroBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "bursluluk_exam_form":
+          return <BurslulukExamFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "bursluluk_info_cards":
+          return <BurslulukInfoCardsBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "bursluluk_result_query":
+          return <BurslulukResultQueryBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+
+        case "bursluluk_confirmation":
+          return <BurslulukConfirmationBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
 
         case "club_registration_form":
           return <ClubRegistrationFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;

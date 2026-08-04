@@ -23,23 +23,25 @@ const PreRegistrationReportView = ({ data }: { data: any }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Öğrenci Adı Soyadı</span>
-              <p className="text-sm font-semibold text-slate-800">{data.studentName || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.student_fullname || data.studentName || '-'}</p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">T.C. Kimlik Numarası</span>
-              <p className="text-sm font-semibold text-slate-800">{data.studentTc || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.student_tc || data.studentTc || '-'}</p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Doğum Tarihi</span>
-              <p className="text-sm font-semibold text-slate-800">{data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">
+                {data.dob ? data.dob.split('-').reverse().join('.') : (data.studentBirthDate ? data.studentBirthDate.split('-').reverse().join('.') : '-')}
+              </p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cinsiyet</span>
-              <p className="text-sm font-semibold text-slate-800">{data.studentGender || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.gender || data.studentGender || '-'}</p>
             </div>
             <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Mevcut Sınıf Seviyesi</span>
-              <p className="text-sm font-semibold text-slate-800">{data.studentGrade || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.grade || data.studentGrade || '-'}</p>
             </div>
           </div>
         </section>
@@ -53,23 +55,23 @@ const PreRegistrationReportView = ({ data }: { data: any }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Veli Adı Soyadı</span>
-              <p className="text-sm font-semibold text-slate-800">{data.parentName || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.parent_fullname || data.parentName || '-'}</p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">T.C. Kimlik Numarası</span>
-              <p className="text-sm font-semibold text-slate-800">{data.parentTc || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.parent_tc || data.parentTc || '-'}</p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Telefon Numarası</span>
-              <p className="text-sm font-semibold text-slate-800">{data.parentPhone || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.phone || data.parentPhone || '-'}</p>
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">E-posta Adresi</span>
-              <p className="text-sm font-semibold text-slate-800">{data.parentEmail || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.email || data.parentEmail || '-'}</p>
             </div>
             <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Öğrenciye Yakınlık Derecesi</span>
-              <p className="text-sm font-semibold text-slate-800">{data.parentRelation || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.relation || data.parentRelation || '-'}</p>
             </div>
           </div>
         </section>
@@ -87,20 +89,20 @@ const PreRegistrationReportView = ({ data }: { data: any }) => {
             </div>
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Akademik Yıl</span>
-              <p className="text-sm font-semibold text-slate-800">{data.academicYear || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.academic_year || data.academicYear || '-'}</p>
             </div>
             <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg border border-slate-100">
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Bizi nereden duydunuz?</span>
-              <p className="text-sm font-semibold text-slate-800">{data.heardFrom || '-'}</p>
+              <p className="text-sm font-semibold text-slate-800">{data.referral || data.heardFrom || '-'}</p>
             </div>
           </div>
         </section>
         
-        {data.notes && (
+        {(data.notes || data.message) && (
           <section>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
               <span className="block text-[10px] font-bold text-[#002147] uppercase mb-1">Eklemek İstedikleriniz</span>
-              <p className="text-sm font-medium text-slate-800 whitespace-pre-wrap">{data.notes}</p>
+              <p className="text-sm font-medium text-slate-800 whitespace-pre-wrap">{data.notes || data.message}</p>
             </div>
           </section>
         )}
@@ -679,7 +681,7 @@ export default function ReportCenter() {
            if (rep.data) {
              const dataKeys = Object.keys(rep.data).filter(k => k !== 'formName' && rep.data[k]);
              
-             const isPreReg = rep.type === 'pre_registration_form' || dataKeys.some(k => k.toLowerCase() === 'studenttc');
+             const isPreReg = rep.type === 'pre_registration_form' || dataKeys.some(k => k.toLowerCase() === 'studenttc' || k.toLowerCase() === 'student_tc');
              const preferredOrder = isPreReg ? orderPreReg : orderContact;
              
              dataKeys.sort((a, b) => {

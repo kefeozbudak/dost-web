@@ -3,7 +3,7 @@ import { Plus, GripVertical } from 'lucide-react';
 import IconField from '../components/IconField';
 import MediaPickerModal from '../components/MediaPickerModal';
 import FieldStylePicker from './components/FieldStylePicker';
-import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS } from '../lib/defaultFormInputs';
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS } from '../lib/defaultFormInputs';
 
 interface BlockFormEditorProps {
   activeArrayItem?: { arrayKey: string, index: number } | null;
@@ -52,6 +52,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
     if (arrayKey === 'inputs' && (!current || current.length === 0)) {
       if (block.type === 'pre_registration_form') return DEFAULT_PRE_REGISTRATION_INPUTS;
       if (block.type === 'club_registration_form') return DEFAULT_CLUB_INPUTS;
+      if (block.type === 'bursluluk_exam_form') return DEFAULT_SCHOLARSHIP_INPUTS;
       return [];
     }
     return current || [];
@@ -468,7 +469,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             type="button"
             onClick={() => {
               if (confirm("Form alanlarını orijinal varsayılan şablona sıfırlamak istediğinize emin misiniz? Yapılan özelleştirmeler sıfırlanacaktır.")) {
-                const defaults = block.type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : DEFAULT_CLUB_INPUTS;
+                const defaults = block.type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : (block.type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : DEFAULT_CLUB_INPUTS);
                 handleChange(arrayKey, defaults);
               }
             }}
@@ -1353,6 +1354,123 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
               { key: 'icon', label: 'İkon', type: 'icon' },
             ], "Form Alanları (İnputlar)")}
+          </div>
+        )}
+
+        {block.type === 'bursluluk_hero' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Rozet / Etiket (Örn: 2026-2027 EĞİTİM YILI)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderImageUpload('Arka Plan Görseli', 'image')}
+            {renderArrayEditor('stats', [
+              { key: 'value', label: 'Değer (Örn: 16-17 Mart)', type: 'text' },
+              { key: 'label', label: 'Etiket (Örn: Sınav Tarihi)', type: 'text' }
+            ], "Öne Çıkan Bilgiler / İstatistikler")}
+          </div>
+        )}
+
+        {block.type === 'bursluluk_exam_form' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Form Başlığı (Örn: Bursluluk Sınavı Başvuru Formu)', 'title')}
+            {renderInputWithStyle('Alt Başlık (Örn: Lütfen bilgilerinizi eksiksiz doldurunuz.)', 'subtitle')}
+            
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">Form Görünüm & CSS Renk Ayarları</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Başlık Bölümü Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.headerBgColor || '#002147'} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.headerBgColor || ''} onChange={(e) => handleStyleChange('headerBgColor', e.target.value)} placeholder="#002147" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Form Kartı Arka Plan Rengi</label>
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={block.styles?.cardBgColor || '#ffffff'} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                    <input type="text" value={block.styles?.cardBgColor || ''} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} placeholder="#ffffff" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {renderArrayEditor('inputs', [
+              { key: 'type', label: 'Alan Tipi (Görev Seçimi)', type: 'select', options: [
+                { value: 'text', label: 'Kısa Metin (Tek Satır Metin)' },
+                { value: 'select', label: 'Açılır Liste / Seçim Kutusu (Dropdown)' },
+                { value: 'radio', label: 'Çoktan Seçmeli (Radyo Butonları)' },
+                { value: 'checkbox', label: 'Onay Kutusu (Checkbox)' },
+                { value: 'date', label: 'Tarih Seçici (Date)' },
+                { value: 'tel', label: 'Telefon Numarası (Phone)' },
+                { value: 'email', label: 'E-Posta Adresi (Email)' },
+                { value: 'textarea', label: 'Uzun Metin Kutusu (Textarea)' },
+                { value: 'section_title', label: 'Bölüm / Kısım Başlığı (Section Header)' }
+              ] },
+              { key: 'label', label: 'Görünen Etiket / Metin (Örn: Sınıf Seviyesi)', type: 'text' },
+              { key: 'name', label: 'Alan Kimliği / Key (İngilizce/Boşluksuz)', type: 'text' },
+              { key: 'placeholder', label: 'Yer Tutucu Metin', type: 'text' },
+              { key: 'options', label: 'Seçenekler (Virgülle ayırın: Örn: 4. Sınıf, 5. Sınıf)', type: 'textarea' },
+              { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
+              { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
+              { key: 'icon', label: 'İkon', type: 'icon' },
+            ], "Form Alanları (İnputlar)")}
+          </div>
+        )}
+
+        {block.type === 'bursluluk_confirmation' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başarı Başlığı (Örn: Başvurunuz Başarıyla Alındı!)', 'title')}
+            {renderTextareaWithStyle('Açıklama Metni (Örn: Sınav giriş belgeniz aşağıda oluşturulmuştur...)', 'subtitle')}
+            {renderInputWithStyle('Belge Başlığı (Örn: Bursluluk Sınavı Giriş Belgesi)', 'documentTitle')}
+            {renderImageUpload('Belge Logosu', 'documentLogo')}
+            {renderInputWithStyle('Belge No Öneki (Örn: BELGE NO: )', 'documentNoPrefix')}
+            {renderInputWithStyle('Sınav Tarihi (Örn: 16 Mart 2026)', 'examDate')}
+            
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">Belge Kartı Görünüm Ayarları</span>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Kart Arka Plan Rengi</label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={block.styles?.cardBgColor || '#ffffff'} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0" />
+                  <input type="text" value={block.styles?.cardBgColor || ''} onChange={(e) => handleStyleChange('cardBgColor', e.target.value)} placeholder="#ffffff" className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                </div>
+              </div>
+            </div>
+
+            {renderArrayEditor('rules', [
+              { key: 'rule', label: 'Sınav Kuralı Metni', type: 'text' }
+            ], "Sınav Kuralları Listesi")}
+
+            {renderArrayEditor('requiredDocuments', [
+              { key: 'docName', label: 'Gerekli Belge Adı', type: 'text' }
+            ], "Gerekli Belgeler Listesi")}
+          </div>
+        )}
+
+        {block.type === 'bursluluk_info_cards' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'icon', label: 'İkon', type: 'icon' },
+              { key: 'title', label: 'Kart Başlığı', type: 'text' },
+              { key: 'rules', label: 'Maddeler / Kurallar (Her satıra veya virgülle ayırın)', type: 'textarea' }
+            ], "Bilgilendirme Kartları")}
+          </div>
+        )}
+
+        {block.type === 'bursluluk_result_query' && (
+          <div className="space-y-4">
+            {renderCommonFields()}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderInputWithStyle('Buton Metni', 'buttonText')}
+            {renderImageUpload('Görsel', 'image')}
           </div>
         )}
 

@@ -1,6 +1,6 @@
 import IconField from "../../components/IconField";
 import { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
 import { Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon } from 'lucide-react';
@@ -81,11 +81,6 @@ export default function AppearanceCenter() {
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) setFooterData(footerDoc.data());
-
-        const pagesQuery = query(collection(db, 'pages'), orderBy('order', 'asc'));
-        const pagesSnapshot = await getDocs(pagesQuery);
-        let fetchedPages = pagesSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        setPagesList(fetchedPages.filter((p: any) => !p.isDeleted));
       } catch (e) {
         console.error(e);
       } finally {
@@ -93,32 +88,75 @@ export default function AppearanceCenter() {
       }
     };
     fetchData();
+
+    // Live listener for pages so all created pages appear in dropdowns instantly
+    const unsubscribePages = onSnapshot(collection(db, 'pages'), (snapshot) => {
+      const fetchedPages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      const validPages = fetchedPages.filter((p: any) => !p.isDeleted);
+
+      const defaultPagesList = [
+        { id: 'home', title: 'Ana Sayfa', path: '/' },
+        { id: 'on-kayit', title: 'Öğrenci Ön Kayıt', path: '/on-kayit' },
+        { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+        { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
+        { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' }
+      ];
+
+      const mergedMap = new Map();
+      defaultPagesList.forEach(dp => mergedMap.set(dp.path, dp));
+      validPages.forEach((p: any) => {
+        const pagePath = p.path || (p.id ? `/${p.id}` : '#');
+        mergedMap.set(pagePath, {
+          id: p.id,
+          title: p.title || p.id,
+          path: pagePath
+        });
+      });
+
+      setPagesList(Array.from(mergedMap.values()));
+    }, (err) => {
+      console.error("Error listening pages:", err);
+    });
+
+    return () => unsubscribePages();
   }, []);
 
-  const renderUrlEditor = (value: string, onChange: (val: string) => void) => (
-    <div className="flex gap-2 w-full mt-1">
-      <select
-        value={value === '/' || pagesList?.find(p => p.path === value) ? value : 'custom'}
-        onChange={(e) => {
-          if (e.target.value !== 'custom') onChange(e.target.value);
-        }}
-        className="w-1/2 px-2 py-1 text-xs border border-slate-200 rounded bg-white text-slate-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-      >
-        <option value="custom">Sayfa Seç</option>
-        <option value="/">Ana Sayfa</option>
-        {pagesList?.map(p => (
-          <option key={p.id} value={p.path}>{p.title}</option>
-        ))}
-      </select>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="URL veya Sayfa Yolu"
-        className="w-1/2 px-2 py-1 text-xs border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-      />
-    </div>
-  );
+  const renderUrlEditor = (value: string, onChange: (val: string) => void) => {
+    const currentVal = value || '';
+    const isKnownPage = pagesList?.some((p: any) => p.path === currentVal || p.path === `/${currentVal.replace(/^\//, '')}`);
+    const isHomePage = currentVal === '/' || currentVal === '';
+    const selectVal = isHomePage ? '/' : (isKnownPage ? currentVal : 'custom');
+
+    return (
+      <div className="flex gap-2 w-full mt-1">
+        <select
+          value={selectVal}
+          onChange={(e) => {
+            if (e.target.value !== 'custom') onChange(e.target.value);
+          }}
+          className="w-1/2 px-2 py-1 text-xs font-medium border border-slate-200 rounded-lg bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm"
+        >
+          <option value="custom">Özel Link / Yönlendirme</option>
+          <option value="/">Ana Sayfa (/)</option>
+          {pagesList?.filter((p: any) => p.path !== '/').map((p: any) => {
+            const pagePath = p.path || (p.id ? `/${p.id}` : '#');
+            return (
+              <option key={p.id || pagePath} value={pagePath}>
+                {p.title} ({pagePath})
+              </option>
+            );
+          })}
+        </select>
+        <input
+          type="text"
+          value={currentVal}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="URL veya Sayfa Yolu (ör: /hakkimizda)"
+          className="w-1/2 px-2 py-1 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+      </div>
+    );
+  };
 
   const handleSave = async () => {
     setSaving(true);
