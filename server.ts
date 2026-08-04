@@ -22,7 +22,7 @@ async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
 
   // Media serving endpoint
   app.get("/api/media/:id", async (req, res) => {
@@ -102,7 +102,7 @@ ${knowledgeBase || 'Yok'}`;
       }
 
       const response = await ai.models.generateContent({
-        model: 'gemini-flash-latest',
+        model: 'gemini-2.5-flash',
         contents: formattedMessages,
         config: {
           systemInstruction: systemInstruction,

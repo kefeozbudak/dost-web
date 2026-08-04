@@ -120,9 +120,15 @@ export const extractAndSaveBase64Images = async (obj: any, db: any): Promise<any
   }
 
   if (typeof obj === 'object') {
+    if (obj.constructor && obj.constructor.name !== 'Object' && obj.constructor.name !== 'Array') {
+      return obj;
+    }
     const newObj: any = {};
     for (const key of Object.keys(obj)) {
-      newObj[key] = await extractAndSaveBase64Images(obj[key], db);
+      const val = await extractAndSaveBase64Images(obj[key], db);
+      if (val !== undefined) {
+        newObj[key] = val;
+      }
     }
     return newObj;
   }
