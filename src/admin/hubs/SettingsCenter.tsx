@@ -24,7 +24,8 @@ import {
   Lock,
   Eye,
   Check,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
 
 interface GeneralSettings {
@@ -60,9 +61,11 @@ interface GeneralSettings {
   // Announcement Bar
   announcementActive: boolean;
   announcementText: string;
+  announcementIcon?: string;
   announcementButtonText: string;
   announcementButtonUrl: string;
   announcementBgColor: string;
+  announcementTextColor: string;
 
   // Forms & Email
   formNotificationEmail: string;
@@ -102,9 +105,11 @@ const defaultSettings: GeneralSettings = {
 
   announcementActive: true,
   announcementText: '🎉 2026 - 2027 Eğitim Öğretim Yılı Erken Kayıt Fırsatları ve Bursluluk Sınavı Başvuruları Başladı!',
+  announcementIcon: '📢',
   announcementButtonText: 'Başvuru Yap',
   announcementButtonUrl: '/bursluluk-basvuru-formu',
-  announcementBgColor: '#0606f9',
+  announcementBgColor: '#0a192f',
+  announcementTextColor: '#ffffff',
 
   formNotificationEmail: 'basvuru@dostkoleji.k12.tr',
   autoReplyText: 'Tarafımıza ulaştırdığınız başvuru formunuz alınmıştır. Eğitim danışmanlarımız en kısa sürede sizinle iletişime geçecektir.',
@@ -600,6 +605,73 @@ export default function SettingsCenter() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2 space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-slate-700 uppercase flex items-center gap-1.5">
+                      <span>Duyuru İkonu / Emoji</span>
+                      {settings.announcementIcon && settings.announcementIcon !== 'none' ? (
+                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-[11px] font-bold">
+                          {settings.announcementIcon} Seçili
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded-md text-[11px] font-bold">
+                          İkon Yok (Sadece Metin)
+                        </span>
+                      )}
+                    </label>
+
+                    {settings.announcementIcon && settings.announcementIcon !== 'none' && (
+                      <button
+                        type="button"
+                        onClick={() => updateField('announcementIcon', 'none')}
+                        className="text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" /> İkonu Kaldır / Sil
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold text-slate-500 mr-1">Hazır İkonlar:</span>
+                    {[
+                      { icon: '📢', label: 'Megafon' },
+                      { icon: '🎉', label: 'Kutlama' },
+                      { icon: '🔔', label: 'Zil' },
+                      { icon: '🔥', label: 'Fırsat' },
+                      { icon: '⭐', label: 'Yıldız' },
+                      { icon: '🚀', label: 'Roket' },
+                      { icon: '🎓', label: 'Eğitim' },
+                      { icon: '🏆', label: 'Başarı' },
+                      { icon: 'none', label: '🚫 İkon Yok' },
+                    ].map((item) => (
+                      <button
+                        key={item.icon}
+                        type="button"
+                        onClick={() => updateField('announcementIcon', item.icon)}
+                        className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs ${
+                          (settings.announcementIcon || '📢') === item.icon
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-105'
+                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100'
+                        }`}
+                      >
+                        <span>{item.icon !== 'none' ? item.icon : ''}</span>
+                        <span>{item.label}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-1 flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-500 shrink-0">Özel Emoji Girin:</span>
+                    <input
+                      type="text"
+                      value={settings.announcementIcon === 'none' ? '' : (settings.announcementIcon || '')}
+                      onChange={(e) => updateField('announcementIcon', e.target.value.trim() || 'none')}
+                      placeholder="İstediğiniz emojiyi kopyalayıp yapıştırın (ör: 🏫, ✏️, 🎯)"
+                      className="flex-1 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
                     Duyuru Metni
@@ -643,18 +715,59 @@ export default function SettingsCenter() {
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
                     Duyuru Bandı Arka Plan Rengi
                   </label>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 mb-2">
                     <input
                       type="color"
-                      value={settings.announcementBgColor || '#0606f9'}
+                      value={settings.announcementBgColor || '#0a192f'}
                       onChange={(e) => updateField('announcementBgColor', e.target.value)}
                       className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5"
                     />
                     <input
                       type="text"
-                      value={settings.announcementBgColor}
+                      value={settings.announcementBgColor || '#0a192f'}
                       onChange={(e) => updateField('announcementBgColor', e.target.value)}
-                      placeholder="#0606f9"
+                      placeholder="#0a192f"
+                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { name: 'Lacivert', hex: '#0a192f' },
+                      { name: 'Gece Mavisi', hex: '#0f172a' },
+                      { name: 'Canlı Mavi', hex: '#1d4ed8' },
+                      { name: 'Zümrüt', hex: '#047857' },
+                      { name: 'Kırmızı', hex: '#991b1b' },
+                      { name: 'Bordo', hex: '#881337' }
+                    ].map((p) => (
+                      <button
+                        key={p.hex}
+                        type="button"
+                        onClick={() => updateField('announcementBgColor', p.hex)}
+                        className="px-2 py-0.5 rounded text-[11px] font-bold text-white shadow-2xs hover:scale-105 transition-all"
+                        style={{ backgroundColor: p.hex }}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
+                    Duyuru Bandı Metin Rengi
+                  </label>
+                  <div className="flex items-center gap-3 mb-2">
+                    <input
+                      type="color"
+                      value={settings.announcementTextColor || '#ffffff'}
+                      onChange={(e) => updateField('announcementTextColor', e.target.value)}
+                      className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5"
+                    />
+                    <input
+                      type="text"
+                      value={settings.announcementTextColor || '#ffffff'}
+                      onChange={(e) => updateField('announcementTextColor', e.target.value)}
+                      placeholder="#ffffff"
                       className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
                     />
                   </div>

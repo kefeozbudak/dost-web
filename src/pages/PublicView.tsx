@@ -255,28 +255,9 @@ export default function PublicView() {
 
   return (
     <div className="min-h-screen bg-surface-background relative text-on-background font-body-md selection:bg-primary/20 flex flex-col">
-      {/* Top Announcement Bar */}
-      {isAnnouncementActive && (
-        <div
-          className="fixed top-0 left-0 right-0 z-[60] py-2 px-4 text-white text-xs font-bold text-center flex items-center justify-center gap-3 shadow-xs"
-          style={{ backgroundColor: generalSettings.announcementBgColor || '#0606f9' }}
-        >
-          <span>{generalSettings.announcementText}</span>
-          {generalSettings.announcementButtonText && (
-            <a
-              href={generalSettings.announcementButtonUrl || '#'}
-              className="px-3 py-1 bg-white text-slate-900 rounded-md text-[11px] font-black hover:bg-slate-100 transition-colors shrink-0 shadow-xs"
-            >
-              {generalSettings.announcementButtonText} →
-            </a>
-          )}
-        </div>
-      )}
+      <Header data={headerData} announcement={generalSettings} />
 
-      <div className={isAnnouncementActive ? 'mt-8' : ''}>
-        <Header data={headerData} />
-      </div>
-      <div className={`flex-1 ${isAnnouncementActive ? 'pt-28' : 'pt-20'}`}>
+      <div className={`flex-1 transition-all duration-300 ${isAnnouncementActive ? 'pt-28 md:pt-32' : 'pt-20'}`}>
         <DynamicBlockRenderer blocks={pageData.blocks || []} />
       </div>
       <Footer data={footerData} />

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { IconPreview } from './IconField';
 import SmartLink from './SmartLink';
 
-export default function Header({ data }: { data?: any }) {
+export default function Header({ data, announcement }: { data?: any; announcement?: any }) {
   const logoSrc = data?.logoUrl?.includes('lh3.googleusercontent.com') ? '/dost-logo-png.png' : (data?.logoUrl || '/dost-logo-png.png');
   
   const links = data?.links || [
@@ -22,6 +22,8 @@ export default function Header({ data }: { data?: any }) {
 
   const hoverColor = data?.hoverColor || '#f97316';
   const logoHeight = data?.logoHeight ? `${data.logoHeight}px` : '48px';
+
+  const isAnnouncementActive = announcement?.announcementActive && announcement?.announcementText;
   
   return (
     <>
@@ -34,99 +36,129 @@ export default function Header({ data }: { data?: any }) {
           color: white !important;
         }
       `}</style>
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-header border-b border-border-subtle shadow-sm transition-all duration-300">
-      <div className="max-w-container-max mx-auto px-margin-desktop h-20 flex justify-between items-center w-full relative">
-        <div className="flex items-center shrink-0">
-          <Link className="block" to="/">
-            <img alt="Dost Koleji Logo" className="w-auto object-contain" style={{ height: logoHeight }} src={logoSrc} />
-          </Link>
-        </div>
-        
-        <nav className="hidden lg:flex items-center gap-8 xl:gap-10 h-full">
-          {links.map((link: any, i: number) => (
-             <div key={i} className="h-full flex items-center group/nav relative"
-                  onMouseEnter={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(i)}
-                  onMouseLeave={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(null)}>
-               <SmartLink 
-                 className="nav-link-underline font-label-md text-label-md text-primary custom-hover-color transition-colors flex items-center gap-1.5" 
-                 url={link.url}
-               >
-                 {link.iconData?.position === 'left' || !link.iconData?.position ? (
-                   <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
-                 ) : null}
-                 {link.iconData?.position === 'top' ? (
-                   <div className="flex flex-col items-center">
-                     <IconPreview data={link.iconData} className="w-5 h-5 mb-1 shrink-0" />
-                     {!link.iconData?.iconOnly && link.label}
-                   </div>
-                 ) : (
-                   !link.iconData?.iconOnly && <span>{link.label}</span>
-                 )}
-                 {link.iconData?.position === 'right' ? (
-                   <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
-                 ) : null}
-                 {(link.type === 'mega' || link.type === 'dropdown') && <span className="material-symbols-outlined text-sm">expand_more</span>}
-               </SmartLink>
-               
-               {link.type === 'mega' && activeMegaMenu === i && (
-                  <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-screen max-w-[1200px] bg-white border border-border-subtle shadow-2xl rounded-b-2xl overflow-hidden transition-all duration-300 opacity-100 visible">
-                    <div className="flex p-8 gap-8">
-                       <div className="flex-1 grid grid-cols-3 gap-8">
-                          {link.megaMenu?.columns?.map((col: any, colIdx: number) => (
-                             <div key={colIdx}>
-                                <h4 className="font-bold text-sm text-primary tracking-wider mb-4 border-b border-border-subtle pb-2">{col.title}</h4>
-                                <ul className="space-y-3">
-                                   {col.links?.map((clink: any, clinkIdx: number) => (
-                                      <li key={clinkIdx}>
-                                         <a href={clink.url} className="group flex items-start gap-3">
-                                            {clink.icon && (
-                                              <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 group-custom-hover-bg group-hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined text-lg">{clink.icon}</span>
-                                              </div>
-                                            )}
-                                            <div>
-                                              <div className="text-sm font-bold text-primary group-custom-hover-color transition-colors">{clink.label}</div>
-                                              {clink.desc && <div className="text-xs text-text-muted mt-0.5">{clink.desc}</div>}
-                                            </div>
-                                         </a>
-                                      </li>
-                                   ))}
-                                </ul>
-                             </div>
-                          ))}
-                       </div>
-                       
-                       {link.megaMenu?.featured && link.megaMenu.featured.title && (
-                         <div className="w-80 shrink-0 bg-surface-container rounded-xl overflow-hidden relative group">
-                            {link.megaMenu.featured.image && (
-                               <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" style={{backgroundImage: `url('${link.megaMenu.featured.image}')`}}></div>
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                            <div className="relative h-full p-6 flex flex-col justify-end text-white min-h-[300px]">
-                               <h4 className="text-xl font-bold mb-2">{link.megaMenu.featured.title}</h4>
-                               <p className="text-sm text-white/80 mb-4">{link.megaMenu.featured.desc}</p>
-                               <a href={link.megaMenu.featured.url || '#'} className="self-start text-sm font-bold bg-primary px-4 py-2 rounded-lg hover:bg-white hover:text-primary transition-colors">
-                                 {link.megaMenu.featured.buttonText || 'Keşfet'}
-                               </a>
-                            </div>
-                         </div>
-                       )}
-                    </div>
-                  </div>
-               )}
-             </div>
-          ))}
-        </nav>
-        
-        <div className="flex items-center gap-4 md:gap-6">
-          {ctaLabel && !ctaHidden && (
-            <SmartLink className="hidden sm:flex items-center bg-primary text-white font-label-md text-label-md px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all" url={ctaUrl}>
-              {ctaLabel}
-            </SmartLink>
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      {/* Top Announcement Bar */}
+      {isAnnouncementActive && (
+        <div 
+          className="w-full py-2.5 px-4 text-xs font-bold text-center flex flex-wrap items-center justify-center gap-2.5 md:gap-4 shadow-xs border-b border-white/10 relative transition-all"
+          style={{ 
+            backgroundColor: announcement.announcementBgColor || '#0a192f',
+            color: announcement.announcementTextColor || '#ffffff'
+          }}
+        >
+          <div className="flex items-center gap-2 max-w-4xl truncate">
+            {announcement?.announcementIcon !== 'none' && announcement?.announcementIcon !== '' && (
+              <span className="shrink-0 text-sm">{announcement?.announcementIcon ?? '📢'}</span>
+            )}
+            <span className="truncate">{announcement.announcementText}</span>
+          </div>
+          {announcement.announcementButtonText && (
+            <a
+              href={announcement.announcementButtonUrl || '#'}
+              className="px-3 py-1 bg-white text-slate-900 rounded-md text-[11px] font-black hover:bg-slate-100 transition-all shrink-0 shadow-xs hover:scale-105 active:scale-95 flex items-center gap-1"
+            >
+              <span>{announcement.announcementButtonText}</span>
+              <span className="text-[10px]">→</span>
+            </a>
           )}
-          <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-2 text-primary">
-            <span className="material-symbols-outlined text-[32px]">menu</span>
-          </button>
+        </div>
+      )}
+
+      {/* Main Header Navigation Container */}
+      <div className="bg-white/95 backdrop-header border-b border-border-subtle shadow-sm">
+        <div className="max-w-container-max mx-auto px-margin-desktop h-20 flex justify-between items-center w-full relative">
+          <div className="flex items-center shrink-0">
+            <Link className="block" to="/">
+              <img alt="Dost Koleji Logo" className="w-auto object-contain" style={{ height: logoHeight }} src={logoSrc} />
+            </Link>
+          </div>
+          
+          <nav className="hidden lg:flex items-center gap-8 xl:gap-10 h-full">
+            {links.map((link: any, i: number) => (
+               <div key={i} className="h-full flex items-center group/nav relative"
+                    onMouseEnter={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(i)}
+                    onMouseLeave={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(null)}>
+                 <SmartLink 
+                   className="nav-link-underline font-label-md text-label-md text-primary custom-hover-color transition-colors flex items-center gap-1.5" 
+                   url={link.url}
+                 >
+                   {link.iconData?.position === 'left' || !link.iconData?.position ? (
+                     <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
+                   ) : null}
+                   {link.iconData?.position === 'top' ? (
+                     <div className="flex flex-col items-center">
+                       <IconPreview data={link.iconData} className="w-5 h-5 mb-1 shrink-0" />
+                       {!link.iconData?.iconOnly && link.label}
+                     </div>
+                   ) : (
+                     !link.iconData?.iconOnly && <span>{link.label}</span>
+                   )}
+                   {link.iconData?.position === 'right' ? (
+                     <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
+                   ) : null}
+                   {(link.type === 'mega' || link.type === 'dropdown') && <span className="material-symbols-outlined text-sm">expand_more</span>}
+                 </SmartLink>
+                 
+                 {link.type === 'mega' && activeMegaMenu === i && (
+                    <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-screen max-w-[1200px] bg-white border border-border-subtle shadow-2xl rounded-b-2xl overflow-hidden transition-all duration-300 opacity-100 visible">
+                      <div className="flex p-8 gap-8">
+                         <div className="flex-1 grid grid-cols-3 gap-8">
+                            {link.megaMenu?.columns?.map((col: any, colIdx: number) => (
+                               <div key={colIdx}>
+                                  <h4 className="font-bold text-sm text-primary tracking-wider mb-4 border-b border-border-subtle pb-2">{col.title}</h4>
+                                  <ul className="space-y-3">
+                                     {col.links?.map((clink: any, clinkIdx: number) => (
+                                        <li key={clinkIdx}>
+                                           <a href={clink.url} className="group flex items-start gap-3">
+                                              {clink.icon && (
+                                                <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 group-custom-hover-bg group-hover:text-white transition-colors">
+                                                  <span className="material-symbols-outlined text-lg">{clink.icon}</span>
+                                                </div>
+                                              )}
+                                              <div>
+                                                <div className="text-sm font-bold text-primary group-custom-hover-color transition-colors">{clink.label}</div>
+                                                {clink.desc && <div className="text-xs text-text-muted mt-0.5">{clink.desc}</div>}
+                                              </div>
+                                           </a>
+                                        </li>
+                                     ))}
+                                  </ul>
+                               </div>
+                            ))}
+                         </div>
+                         
+                         {link.megaMenu?.featured && link.megaMenu.featured.title && (
+                           <div className="w-80 shrink-0 bg-surface-container rounded-xl overflow-hidden relative group">
+                              {link.megaMenu.featured.image && (
+                                 <div className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" style={{backgroundImage: `url('${link.megaMenu.featured.image}')`}}></div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                              <div className="relative h-full p-6 flex flex-col justify-end text-white min-h-[300px]">
+                                 <h4 className="text-xl font-bold mb-2">{link.megaMenu.featured.title}</h4>
+                                 <p className="text-sm text-white/80 mb-4">{link.megaMenu.featured.desc}</p>
+                                 <a href={link.megaMenu.featured.url || '#'} className="self-start text-sm font-bold bg-primary px-4 py-2 rounded-lg hover:bg-white hover:text-primary transition-colors">
+                                   {link.megaMenu.featured.buttonText || 'Keşfet'}
+                                 </a>
+                              </div>
+                           </div>
+                         )}
+                      </div>
+                    </div>
+                 )}
+              </div>
+            ))}
+          </nav>
+          
+          <div className="flex items-center gap-4 md:gap-6">
+            {ctaLabel && !ctaHidden && (
+              <SmartLink className="hidden sm:flex items-center bg-primary text-white font-label-md text-label-md px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all" url={ctaUrl}>
+                {ctaLabel}
+              </SmartLink>
+            )}
+            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-2 text-primary">
+              <span className="material-symbols-outlined text-[32px]">menu</span>
+            </button>
+          </div>
         </div>
       </div>
     
@@ -245,3 +277,4 @@ export default function Header({ data }: { data?: any }) {
     </>
   );
 }
+

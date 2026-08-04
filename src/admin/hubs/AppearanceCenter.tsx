@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
-import { Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon } from 'lucide-react';
+import { Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon, Megaphone, Eye, Check } from 'lucide-react';
 
 
 const compressImage = (file: File, maxWidth = 800, maxHeight = 800, quality = 0.5): Promise<string> => {
@@ -42,11 +42,21 @@ const compressImage = (file: File, maxWidth = 800, maxHeight = 800, quality = 0.
 
 export default function AppearanceCenter() {
   const [mediaPickerConfig, setMediaPickerConfig] = useState<{ isOpen: boolean; onSelect: (url: string) => void }>({ isOpen: false, onSelect: () => {} });
-  const [activeTab, setActiveTab] = useState<'header' | 'footer'>('header');
+  const [activeTab, setActiveTab] = useState<'header' | 'announcement' | 'footer'>('header');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [pagesList, setPagesList] = useState<any[]>([]);
+
+  const [announcementData, setAnnouncementData] = useState<any>({
+    announcementActive: true,
+    announcementText: '🎉 2026 - 2027 Eğitim Öğretim Yılı Erken Kayıt Fırsatları ve Bursluluk Sınavı Başvuruları Başladı!',
+    announcementIcon: '📢',
+    announcementButtonText: 'Başvuru Yap',
+    announcementButtonUrl: '/bursluluk-basvuru-formu',
+    announcementBgColor: '#0a192f',
+    announcementTextColor: '#ffffff'
+  });
   
   const [headerData, setHeaderData] = useState<any>({
     logoUrl: '/dost-logo-png.png',
@@ -81,6 +91,20 @@ export default function AppearanceCenter() {
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) setFooterData(footerDoc.data());
+
+        const generalDoc = await getDoc(doc(db, 'settings', 'general'));
+        if (generalDoc.exists()) {
+          const gData = generalDoc.data();
+          setAnnouncementData({
+            announcementActive: gData.announcementActive ?? true,
+            announcementText: gData.announcementText || '',
+            announcementIcon: gData.announcementIcon !== undefined ? gData.announcementIcon : '📢',
+            announcementButtonText: gData.announcementButtonText || '',
+            announcementButtonUrl: gData.announcementButtonUrl || '',
+            announcementBgColor: gData.announcementBgColor || '#0a192f',
+            announcementTextColor: gData.announcementTextColor || '#ffffff'
+          });
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -164,6 +188,21 @@ export default function AppearanceCenter() {
     try {
       if (activeTab === 'header') {
         await setDoc(doc(db, 'settings', 'header'), headerData);
+      } else if (activeTab === 'announcement') {
+        const generalRef = doc(db, 'settings', 'general');
+        const generalSnap = await getDoc(generalRef);
+        const currentGeneral = generalSnap.exists() ? generalSnap.data() : {};
+        await setDoc(generalRef, {
+          ...currentGeneral,
+          announcementActive: announcementData.announcementActive,
+          announcementText: announcementData.announcementText,
+          announcementIcon: announcementData.announcementIcon,
+          announcementButtonText: announcementData.announcementButtonText,
+          announcementButtonUrl: announcementData.announcementButtonUrl,
+          announcementBgColor: announcementData.announcementBgColor,
+          announcementTextColor: announcementData.announcementTextColor,
+          updatedAt: Date.now()
+        });
       } else {
         await setDoc(doc(db, 'settings', 'footer'), footerData);
       }
@@ -240,6 +279,12 @@ export default function AppearanceCenter() {
             <Layout className="w-4 h-4" /> Header & Menü
           </button>
           <button 
+            onClick={() => setActiveTab('announcement')} 
+            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'announcement' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            <Megaphone className="w-4 h-4" /> Duyuru Bandı
+          </button>
+          <button 
             onClick={() => setActiveTab('footer')} 
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'footer' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
@@ -248,6 +293,314 @@ export default function AppearanceCenter() {
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {activeTab === 'announcement' && (
+            <div className="p-6 md:p-8 space-y-8">
+              {/* Top Banner Header & Toggle */}
+              <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <Megaphone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                      Duyuru Bandı Durumu
+                      {announcementData.announcementActive ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                          Yayında (Aktif)
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700">
+                          <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+                          Pasif (Gizli)
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1 max-w-xl">
+                      Sitenizin en üstünde (header üstünde) öne çıkan başvuru, sınav, kayıt veya özel duyurularınızı sergileyin.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-xs shrink-0 self-start md:self-auto">
+                  <span className="text-xs font-bold text-slate-700">Görünürlük:</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={announcementData.announcementActive}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementActive: e.target.checked })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                  <span className={`text-xs font-black ${announcementData.announcementActive ? 'text-blue-600' : 'text-slate-400'}`}>
+                    {announcementData.announcementActive ? 'AÇIK' : 'KAPALI'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Live Preview Box */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <Eye className="w-4 h-4 text-slate-400" /> Sitede Nasıl Görünecek? (Canlı Önizleme)
+                  </label>
+                  <span className="text-[11px] text-slate-400 font-medium">Anlık Güncellenir</span>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 overflow-hidden bg-slate-100 p-4 shadow-inner">
+                  {announcementData.announcementActive ? (
+                    <div className="space-y-3">
+                      {/* Announcement Bar Preview */}
+                      <div
+                        className="w-full py-2.5 px-4 text-xs font-bold text-center flex flex-wrap items-center justify-center gap-3 rounded-xl shadow-xs transition-all"
+                        style={{
+                          backgroundColor: announcementData.announcementBgColor || '#0a192f',
+                          color: announcementData.announcementTextColor || '#ffffff'
+                        }}
+                      >
+                        <div className="flex items-center gap-2 max-w-xl truncate">
+                          {announcementData.announcementIcon !== 'none' && announcementData.announcementIcon !== '' && (
+                            <span className="shrink-0">{announcementData.announcementIcon ?? '📢'}</span>
+                          )}
+                          <span className="truncate">{announcementData.announcementText || 'Duyuru metni buraya gelecek...'}</span>
+                        </div>
+                        {announcementData.announcementButtonText && (
+                          <span className="px-3 py-1 bg-white text-slate-900 rounded-md text-[11px] font-black shrink-0 shadow-xs flex items-center gap-1">
+                            <span>{announcementData.announcementButtonText}</span>
+                            <span>→</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Mock Header Preview underneath */}
+                      <div className="bg-white border border-slate-200 rounded-xl p-3 flex items-center justify-between opacity-80">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded bg-slate-200"></div>
+                          <div className="text-xs font-bold text-slate-600">Dost Koleji Logo</div>
+                        </div>
+                        <div className="flex gap-4 text-xs font-medium text-slate-400">
+                          <span>Hakkımızda</span>
+                          <span>Akademik</span>
+                          <span>İletişim</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="py-8 text-center bg-white rounded-xl border border-dashed border-slate-300 text-slate-400 text-xs font-bold">
+                      🚫 Duyuru bandı pasif konumda. Sitede ziyaretçilere görünmeyecektir.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Content Form Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                {/* Announcement Icon Selection */}
+                <div className="col-span-1 md:col-span-2 space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-slate-700 uppercase flex items-center gap-1.5">
+                      <span>Duyuru İkonu / Emoji</span>
+                      {announcementData.announcementIcon && announcementData.announcementIcon !== 'none' ? (
+                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md text-[11px] font-bold">
+                          {announcementData.announcementIcon} Seçili
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded-md text-[11px] font-bold">
+                          İkon Yok (Sadece Metin)
+                        </span>
+                      )}
+                    </label>
+
+                    {announcementData.announcementIcon && announcementData.announcementIcon !== 'none' && (
+                      <button
+                        type="button"
+                        onClick={() => setAnnouncementData({ ...announcementData, announcementIcon: 'none' })}
+                        className="text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" /> İkonu Kaldır / Sil
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold text-slate-500 mr-1">Hazır İkonlar:</span>
+                    {[
+                      { icon: '📢', label: 'Megafon' },
+                      { icon: '🎉', label: 'Kutlama' },
+                      { icon: '🔔', label: 'Zil' },
+                      { icon: '🔥', label: 'Fırsat' },
+                      { icon: '⭐', label: 'Yıldız' },
+                      { icon: '🚀', label: 'Roket' },
+                      { icon: '🎓', label: 'Eğitim' },
+                      { icon: '🏆', label: 'Başarı' },
+                      { icon: 'none', label: '🚫 İkon Yok' },
+                    ].map((item) => (
+                      <button
+                        key={item.icon}
+                        type="button"
+                        onClick={() => setAnnouncementData({ ...announcementData, announcementIcon: item.icon })}
+                        className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs ${
+                          (announcementData.announcementIcon || '📢') === item.icon
+                            ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-105'
+                            : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100'
+                        }`}
+                      >
+                        <span>{item.icon !== 'none' ? item.icon : ''}</span>
+                        <span>{item.label}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-1 flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-500 shrink-0">Özel Emoji Girin:</span>
+                    <input
+                      type="text"
+                      value={announcementData.announcementIcon === 'none' ? '' : (announcementData.announcementIcon || '')}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementIcon: e.target.value.trim() || 'none' })}
+                      placeholder="İstediğiniz emojiyi kopyalayıp yapıştırın (ör: 🏫, ✏️, 🎯)"
+                      className="flex-1 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-1 md:col-span-2 space-y-2">
+                  <label className="block text-xs font-bold text-slate-700 uppercase">
+                    Duyuru Metni
+                  </label>
+                  <input
+                    type="text"
+                    value={announcementData.announcementText || ''}
+                    onChange={(e) => setAnnouncementData({ ...announcementData, announcementText: e.target.value })}
+                    placeholder="🎉 2026 - 2027 Eğitim Öğretim Yılı Erken Kayıt Fırsatları Başladı!"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                  />
+                  <p className="text-[11px] text-slate-400">Duyuru bandında görüntülenecek ana metin mesajı.</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-700 uppercase">
+                    Buton Metni (İsteğe Bağlı)
+                  </label>
+                  <input
+                    type="text"
+                    value={announcementData.announcementButtonText || ''}
+                    onChange={(e) => setAnnouncementData({ ...announcementData, announcementButtonText: e.target.value })}
+                    placeholder="Başvuru Yap veya Detaylı Bilgi"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                  />
+                  <p className="text-[11px] text-slate-400">Boş bırakırsanız sadece metin görünür, buton kaldırılır.</p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-700 uppercase">
+                    Buton Yönlendirme Linki (URL)
+                  </label>
+                  {renderUrlEditor(announcementData.announcementButtonUrl || '', (val) => setAnnouncementData({ ...announcementData, announcementButtonUrl: val }))}
+                  <p className="text-[11px] text-slate-400">Ziyaretçi butona tıklandığında açılacak sayfa adresi.</p>
+                </div>
+
+                {/* Background Color Picker & Presets */}
+                <div className="space-y-3">
+                  <label className="block text-xs font-bold text-slate-700 uppercase">
+                    Arka Plan Rengi
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="color"
+                      value={announcementData.announcementBgColor || '#0a192f'}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementBgColor: e.target.value })}
+                      className="w-11 h-11 rounded-xl border border-slate-200 cursor-pointer p-0.5 bg-white shrink-0"
+                    />
+                    <input
+                      type="text"
+                      value={announcementData.announcementBgColor || '#0a192f'}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementBgColor: e.target.value })}
+                      placeholder="#0a192f"
+                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] font-bold text-slate-400 block mb-1.5">Hızlı Renk Şablonları:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { name: 'Lacivert', hex: '#0a192f' },
+                        { name: 'Gece Mavisi', hex: '#0f172a' },
+                        { name: 'Canlı Mavi', hex: '#1d4ed8' },
+                        { name: 'Zümrüt Yeşil', hex: '#047857' },
+                        { name: 'Koyu Kırmızı', hex: '#991b1b' },
+                        { name: 'Bordo', hex: '#881337' },
+                        { name: 'Turuncu', hex: '#c2410c' }
+                      ].map((preset) => (
+                        <button
+                          key={preset.hex}
+                          type="button"
+                          onClick={() => setAnnouncementData({ ...announcementData, announcementBgColor: preset.hex })}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold hover:scale-105 transition-all shadow-2xs"
+                          style={{
+                            borderColor: announcementData.announcementBgColor === preset.hex ? '#3b82f6' : '#e2e8f0',
+                            backgroundColor: preset.hex,
+                            color: '#ffffff'
+                          }}
+                        >
+                          <span>{preset.name}</span>
+                          {announcementData.announcementBgColor === preset.hex && <Check className="w-3 h-3 text-white" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Text Color Picker & Presets */}
+                <div className="space-y-3">
+                  <label className="block text-xs font-bold text-slate-700 uppercase">
+                    Metin & İkon Rengi
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="color"
+                      value={announcementData.announcementTextColor || '#ffffff'}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementTextColor: e.target.value })}
+                      className="w-11 h-11 rounded-xl border border-slate-200 cursor-pointer p-0.5 bg-white shrink-0"
+                    />
+                    <input
+                      type="text"
+                      value={announcementData.announcementTextColor || '#ffffff'}
+                      onChange={(e) => setAnnouncementData({ ...announcementData, announcementTextColor: e.target.value })}
+                      placeholder="#ffffff"
+                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] font-bold text-slate-400 block mb-1.5">Metin Rengi Şablonları:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { name: 'Beyaz', hex: '#ffffff' },
+                        { name: 'Açık Sarı', hex: '#fef08a' },
+                        { name: 'Açık Mavi', hex: '#e0f2fe' }
+                      ].map((preset) => (
+                        <button
+                          key={preset.hex}
+                          type="button"
+                          onClick={() => setAnnouncementData({ ...announcementData, announcementTextColor: preset.hex })}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold hover:scale-105 transition-all shadow-2xs bg-slate-800 text-white"
+                          style={{
+                            borderColor: announcementData.announcementTextColor === preset.hex ? '#3b82f6' : '#475569'
+                          }}
+                        >
+                          <span style={{ color: preset.hex }}>● {preset.name}</span>
+                          {announcementData.announcementTextColor === preset.hex && <Check className="w-3 h-3 text-blue-400" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'header' && (
             <div className="p-6 space-y-8">
               <div>
