@@ -249,7 +249,7 @@ export default function AdminLayout() {
             title="Önizlemeyi Yeni Sekmede Aç"
           >
             <span className="material-symbols-outlined text-[14px]">visibility</span>
-            {currentEditingPageId ? 'Sayfayı Ön İzle' : 'Siteyi Ön İzle'}
+            <span>{currentEditingPageId ? 'Sayfayı Ön İzle' : 'Siteyi Ön İzle'}</span>
           </a>
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
@@ -287,7 +287,7 @@ export default function AdminLayout() {
                   }`}
                 >
                   <LayoutDashboard className={`w-5 h-5 md:w-4 md:h-4 ${location.pathname === '/admin' ? 'text-blue-700' : 'text-slate-500'}`} />
-                  Genel Bakış
+                  <span>Genel Bakış</span>
                 </Link>
               )}
               
@@ -461,7 +461,7 @@ export default function AdminLayout() {
                     }`}
                   >
                     <item.icon className={`w-5 h-5 md:w-4 md:h-4 ${isActive ? 'text-blue-700' : 'text-slate-500'}`} />
-                    {item.label}
+                    <span>{item.label}</span>
                   </Link>
                 );
               })}

@@ -10,6 +10,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PopupOverlay from '../components/PopupOverlay';
+import { recordPageView } from '../lib/analytics';
 
 export default function PublicView() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function PublicView() {
   const [pageData, setPageData] = useState<any>(null);
   const [headerData, setHeaderData] = useState<any>(null);
   const [footerData, setFooterData] = useState<any>(null);
+  const [generalSettings, setGeneralSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
 
@@ -28,7 +30,7 @@ export default function PublicView() {
   }, []);
 
   useEffect(() => {
-    // Fetch Header and Footer settings
+    // Fetch Header, Footer and General settings
     const fetchSettings = async () => {
       try {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
@@ -39,6 +41,15 @@ export default function PublicView() {
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) {
           setFooterData(footerDoc.data());
+        }
+
+        const generalDoc = await getDoc(doc(db, 'settings', 'general'));
+        if (generalDoc.exists()) {
+          const gData = generalDoc.data();
+          setGeneralSettings(gData);
+          if (gData.siteTitle) {
+            document.title = gData.siteTitle;
+          }
         }
       } catch (e) {
         console.error("Error fetching settings:", e);
@@ -186,6 +197,12 @@ export default function PublicView() {
     return () => unsubscribeDoc();
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (pageData && !pageData.isHidden && !pageData.isDeleted) {
+      recordPageView(location.pathname, pageData.title || pageData.name || 'Sayfa');
+    }
+  }, [location.pathname, pageData]);
+
   const handleAdminLogin = async () => {
     try {
       await loginWithGoogle();
@@ -196,6 +213,27 @@ export default function PublicView() {
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-surface-background text-slate-500">Sayfa yükleniyor...</div>;
+
+  if (generalSettings?.maintenanceMode && !user) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white font-sans px-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center mb-6 border border-blue-500/30">
+          <Settings className="w-8 h-8 animate-spin-slow" />
+        </div>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-3">{generalSettings.schoolName || 'Özel Dost Koleji'}</h1>
+        <p className="text-slate-300 max-w-lg mb-8 leading-relaxed text-sm md:text-base">
+          {generalSettings.maintenanceMessage || 'Sitemiz şu anda planlı bakım çalışmasındadır. Kısa süre sonra tekrar hizmetinizde olacağız.'}
+        </p>
+        <button
+          onClick={handleAdminLogin}
+          className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
+        >
+          <Lock className="w-4 h-4" />
+          Yönetici Girişi
+        </button>
+      </div>
+    );
+  }
 
   if (!pageData) {
     return (
@@ -213,10 +251,32 @@ export default function PublicView() {
     );
   }
 
+  const isAnnouncementActive = generalSettings?.announcementActive && generalSettings?.announcementText;
+
   return (
     <div className="min-h-screen bg-surface-background relative text-on-background font-body-md selection:bg-primary/20 flex flex-col">
-      <Header data={headerData} />
-      <div className="pt-20 flex-1">
+      {/* Top Announcement Bar */}
+      {isAnnouncementActive && (
+        <div
+          className="fixed top-0 left-0 right-0 z-[60] py-2 px-4 text-white text-xs font-bold text-center flex items-center justify-center gap-3 shadow-xs"
+          style={{ backgroundColor: generalSettings.announcementBgColor || '#0606f9' }}
+        >
+          <span>{generalSettings.announcementText}</span>
+          {generalSettings.announcementButtonText && (
+            <a
+              href={generalSettings.announcementButtonUrl || '#'}
+              className="px-3 py-1 bg-white text-slate-900 rounded-md text-[11px] font-black hover:bg-slate-100 transition-colors shrink-0 shadow-xs"
+            >
+              {generalSettings.announcementButtonText} →
+            </a>
+          )}
+        </div>
+      )}
+
+      <div className={isAnnouncementActive ? 'mt-8' : ''}>
+        <Header data={headerData} />
+      </div>
+      <div className={`flex-1 ${isAnnouncementActive ? 'pt-28' : 'pt-20'}`}>
         <DynamicBlockRenderer blocks={pageData.blocks || []} />
       </div>
       <Footer data={footerData} />

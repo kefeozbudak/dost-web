@@ -45,6 +45,26 @@ service cloud.firestore {
     match /popups/{popupId} {
       allow read, write: if true;
     }
+
+    match /traffic/{documentId} {
+      allow read, write: if true;
+    }
+
+    match /traffic_logs/{docId} {
+      allow read, write: if true;
+    }
+
+    match /traffic_daily/{docId} {
+      allow read, write: if true;
+    }
+
+    match /traffic_stats/{docId} {
+      allow read, write: if true;
+    }
+
+    match /traffic_pages/{docId} {
+      allow read, write: if true;
+    }
     
     match /users/{userId} {
       allow read: if isAuthenticated();
