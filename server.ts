@@ -56,8 +56,14 @@ async function startServer() {
   app.post("/api/chat", async (req, res) => {
     try {
       const { messages, knowledgeBase, siteContext } = req.body;
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        console.error("GEMINI_API_KEY environment variable is not defined");
+        return res.status(500).json({ error: "GEMINI_API_KEY eksik. Lütfen ortam değişkenlerini kontrol edin." });
+      }
+
       const ai = new GoogleGenAI({ 
-        apiKey: process.env.GEMINI_API_KEY,
+        apiKey: apiKey,
         httpOptions: {
           headers: {
             'User-Agent': 'aistudio-build',
@@ -85,7 +91,7 @@ ${knowledgeBase || 'Yok'}`;
       }));
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: formattedMessages,
         config: {
           systemInstruction: systemInstruction,

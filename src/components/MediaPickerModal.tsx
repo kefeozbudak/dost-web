@@ -68,8 +68,7 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const items = snapshot.docs.map(doc => ({ 
            id: doc.id, 
-           ...doc.data(),
-          serveUrl: `/api/media/${doc.id}`
+           ...doc.data()
         }));
         setMediaItems(items);
         setLoading(false);
@@ -206,12 +205,12 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
               {filteredItems.map(item => (
                 <div 
                   key={item.id} 
-                  onClick={() => { onSelect(item.serveUrl || item.url); onClose(); }}
+                  onClick={() => { onSelect(item.url); onClose(); }}
                   className="group bg-white border border-slate-200 rounded-lg overflow-hidden cursor-pointer hover:border-blue-500 hover:ring-2 hover:ring-blue-200 transition-all shadow-sm"
                 >
                   <div className="aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                    {item.serveUrl || item.url ? (
-                      <img src={item.serveUrl || item.url} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    {item.url ? (
+                      <img src={item.url} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     ) : (
                       <ImageIcon className="w-8 h-8 text-slate-300" />
                     )}

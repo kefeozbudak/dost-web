@@ -66,8 +66,7 @@ export default function MediaCenter() {
       const snapshot = await getDocs(q);
       const items = snapshot.docs.map(doc => ({ 
         id: doc.id, 
-        ...doc.data(),
-        serveUrl: `/api/media/${doc.id}`
+        ...doc.data()
       }));
       setMediaItems(items);
     } catch (err) {
@@ -320,7 +319,7 @@ export default function MediaCenter() {
 
                 <div className="aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center">
                   {item.url ? (
-                    <img src={item.serveUrl || item.url} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
+                    <img src={item.url} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                   ) : (
                     <ImageIcon className="w-10 h-10 text-slate-300" />
                   )}
