@@ -35,14 +35,16 @@ async function startServer() {
       if (snap.exists()) {
         const data = snap.data();
         if (data.url && data.url.startsWith('data:image/')) {
-          const matches = data.url.match(/^data:image\/([a-zA-Z0-9.+]+);base64,(.+)$/);
-          if (matches) {
-             const type = matches[1];
-             const buffer = Buffer.from(matches[2], 'base64');
-             res.set('Content-Type', `image/${type}`);
-             res.set('Cache-Control', 'public, max-age=31536000');
-             return res.send(buffer);
+          const parts = data.url.split(';base64,');
+          if (parts.length === 2) {
+            const mimeType = parts[0].replace('data:', '');
+            const buffer = Buffer.from(parts[1], 'base64');
+            res.set('Content-Type', mimeType);
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
+            return res.send(buffer);
           }
+        } else if (data.url && (data.url.startsWith('http://') || data.url.startsWith('https://'))) {
+          return res.redirect(data.url);
         }
       }
       res.status(404).send('Not found');
@@ -85,13 +87,22 @@ ${siteContext || 'Ümitköy, Oran, Eryaman kampüslerimizde Anaokulu, İlkokul, 
 EK KURUMSAL BİLGİ BANKASI VE NOTLAR:
 ${knowledgeBase || 'Yok'}`;
       
-      const formattedMessages = messages.map((m: any) => ({
+      let formattedMessages = messages.map((m: any) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: m.text }]
+        parts: [{ text: m.text || '' }]
       }));
 
+      // Gemini API requires conversation to start with a 'user' turn
+      while (formattedMessages.length > 0 && formattedMessages[0].role === 'model') {
+        formattedMessages.shift();
+      }
+
+      if (formattedMessages.length === 0) {
+        return res.status(400).json({ error: "Geçerli bir mesaj bulunamadı." });
+      }
+
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-flash-latest',
         contents: formattedMessages,
         config: {
           systemInstruction: systemInstruction,

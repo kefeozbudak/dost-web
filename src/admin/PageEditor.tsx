@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc, collection, getDocs, onSnapshot } from 'firebase/f
 import { db } from '../lib/firebase';
 import { DynamicBlockRenderer } from '../components/PageBlocks';
 import { defaultHomePageData } from '../lib/defaultData';
+import { extractAndSaveBase64Images } from '../lib/imageCompressor';
 import { X, Settings, GripHorizontal } from 'lucide-react';
 import BlockFormEditor from './BlockFormEditor';
 import Draggable from 'react-draggable';
@@ -284,12 +285,15 @@ export default function PageEditor() {
     setSaving(true);
     try {
       const pathToSave = getPagePath();
-      const dataToSave = {
+      let dataToSave = {
         ...pageData,
         path: pathToSave,
         title: pageData?.title || (pageId === 'home' ? 'Ana Sayfa' : pageId),
         updatedAt: Date.now()
       };
+      
+      dataToSave = await extractAndSaveBase64Images(dataToSave, db);
+
       console.log("Saving dataToSave:", dataToSave);
       await setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true });
       setPageData(dataToSave);

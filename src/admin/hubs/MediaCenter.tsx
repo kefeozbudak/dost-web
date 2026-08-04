@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { collection, getDocs, query, orderBy, addDoc, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import { compressImageFile } from '../../lib/imageCompressor';
 import { Image as ImageIcon, Search, Trash2, Upload, CheckCircle, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -94,19 +95,8 @@ export default function MediaCenter() {
         if (!file.type.startsWith('image/')) continue;
         
         try {
-          let base64 = await readFileAsBase64(file);
-          
-          if (base64.length > 1000000) {
-            base64 = await compressImage(file, 1600, 1600, 0.85);
-            
-            if (base64.length > 1000000) {
-              base64 = await compressImage(file, 1200, 1200, 0.8);
-            }
-            if (base64.length > 1000000) {
-              setError(`"${file.name}" çok büyük. Lütfen 700KB altında bir resim seçin.`);
-              continue;
-            }
-          }
+          // High-quality image upload (zero compression if < 950KB)
+          const base64 = await compressImageFile(file, 2000, 2000, 0.88);
           
           await addDoc(collection(db, 'media'), {
             name: file.name,

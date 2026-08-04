@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { collection, getDocs, onSnapshot, query, orderBy, limit, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { compressImageFile } from '../lib/imageCompressor';
 import { Image as ImageIcon, Search, X, Upload, AlertCircle } from 'lucide-react';
 
 interface MediaPickerModalProps {
@@ -93,21 +94,8 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
         if (!file.type.startsWith('image/')) continue;
         
         try {
-          let base64 = await readFileAsBase64(file);
-          
-          // Firestore belgesi için güvenli sınır ~1.000.000 bayt (yaklaşık 750KB binary)
-          if (base64.length > 1000000) {
-            // Eğer dosya çok büyükse sıkıştır
-            base64 = await compressImage(file, 1600, 1600, 0.85);
-            
-            if (base64.length > 1000000) {
-              base64 = await compressImage(file, 1200, 1200, 0.8);
-            }
-            if (base64.length > 1000000) {
-              setErrorMsg(`"${file.name}" çok büyük. Lütfen 700KB'ın altında daha küçük bir resim seçin.`);
-              continue;
-            }
-          }
+          // High-quality image upload (zero compression if < 950KB)
+          const base64 = await compressImageFile(file, 2000, 2000, 0.88);
           
           await addDoc(collection(db, 'media'), {
             name: file.name,
@@ -205,7 +193,13 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
               {filteredItems.map(item => (
                 <div 
                   key={item.id} 
-                  onClick={() => { onSelect(item.url); onClose(); }}
+                  onClick={() => { 
+                    const selectedUrl = (item.url && item.url.startsWith('data:image/')) 
+                      ? `/api/media/${item.id}` 
+                      : item.url;
+                    onSelect(selectedUrl); 
+                    onClose(); 
+                  }}
                   className="group bg-white border border-slate-200 rounded-lg overflow-hidden cursor-pointer hover:border-blue-500 hover:ring-2 hover:ring-blue-200 transition-all shadow-sm"
                 >
                   <div className="aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center">

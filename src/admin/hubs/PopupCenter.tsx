@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import { extractAndSaveBase64Images } from '../../lib/imageCompressor';
 import { PopupData } from '../../components/PopupOverlay';
 
 const DEFAULT_POPUPS: PopupData[] = [
@@ -231,10 +232,12 @@ export default function PopupCenter() {
       sessionStorage.removeItem(`dost_popup_closed_${selectedPopup.id}`);
       localStorage.removeItem(`dost_popup_closed_${selectedPopup.id}`);
 
-      await setDoc(doc(db, 'popups', selectedPopup.id), {
+      const popupToSave = await extractAndSaveBase64Images({
         ...selectedPopup,
         updatedAt: Date.now()
-      });
+      }, db);
+
+      await setDoc(doc(db, 'popups', selectedPopup.id), popupToSave);
 
       if (selectedPopup.status === 'AKTİF') {
         showToast('Popup kaydedildi ve CANLI SİTEDE YAYINLANDI!');

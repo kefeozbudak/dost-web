@@ -116,6 +116,8 @@ export default function AssistantWidget() {
         }
 
         setMessages(prev => [...prev, { role: 'assistant', text, isForm }]);
+      } else if (data.error) {
+        setMessages(prev => [...prev, { role: 'assistant', text: typeof data.error === 'string' ? data.error : 'Yanıt alınamadı. Lütfen tekrar deneyin.' }]);
       }
     } catch (error) {
       setMessages(prev => [...prev, { role: 'assistant', text: 'Üzgünüm, şu anda bağlantı kuramıyorum. Dilerseniz Hızlı İletişim butonuna tıklayarak bilgilerinizi bırakabilirsiniz.' }]);
