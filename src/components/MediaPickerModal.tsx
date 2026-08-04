@@ -97,9 +97,18 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
           // High-quality image upload (zero compression if < 950KB)
           const base64 = await compressImageFile(file, 2000, 2000, 0.88);
           
+          let publicUrl = base64;
+          try {
+            const storageRef = ref(storage, `media/${Date.now()}_${Math.random().toString(36).substring(7)}_${file.name}`);
+            await uploadString(storageRef, base64, 'data_url');
+            publicUrl = await getDownloadURL(storageRef);
+          } catch (storageErr) {
+            console.error("Storage upload failed, falling back to Firestore base64:", storageErr);
+          }
+
           await addDoc(collection(db, 'media'), {
             name: file.name,
-            url: base64,
+            url: publicUrl,
             size: file.size,
             type: file.type,
             createdAt: serverTimestamp()

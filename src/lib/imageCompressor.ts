@@ -1,10 +1,12 @@
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
 
 export const compressImageFile = (
-  file: File, 
-  maxWidth = 2000, 
-  maxHeight = 2000, 
-  quality = 0.88
+  file: File,
+  maxWidth = 2000,
+  maxHeight = 2000,
+  quality = 0.88,
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,20 +33,20 @@ export const compressImageFile = (
           }
         }
 
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         if (!ctx) {
           resolve(rawBase64);
           return;
         }
 
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
 
-        const compressed = canvas.toDataURL('image/jpeg', quality);
+        const compressed = canvas.toDataURL("image/jpeg", quality);
         resolve(compressed);
       };
       img.onerror = () => resolve(rawBase64);
@@ -55,11 +57,14 @@ export const compressImageFile = (
   });
 };
 
-export const extractAndSaveBase64Images = async (obj: any, db: any): Promise<any> => {
+export const extractAndSaveBase64Images = async (
+  obj: any,
+  db: any,
+): Promise<any> => {
   if (!obj) return obj;
 
-  if (typeof obj === 'string') {
-    if (obj.startsWith('data:image/')) {
+  if (typeof obj === "string") {
+    if (obj.startsWith("data:image/")) {
       try {
         let base64ToSave = obj;
         if (base64ToSave.length > 950000) {
@@ -80,31 +85,34 @@ export const extractAndSaveBase64Images = async (obj: any, db: any): Promise<any
                   height = maxHeight;
                 }
               }
-              const canvas = document.createElement('canvas');
+              const canvas = document.createElement("canvas");
               canvas.width = width;
               canvas.height = height;
-              const ctx = canvas.getContext('2d');
-              if (!ctx) { resolve(obj); return; }
-              ctx.fillStyle = '#FFFFFF';
+              const ctx = canvas.getContext("2d");
+              if (!ctx) {
+                resolve(obj);
+                return;
+              }
+              ctx.fillStyle = "#FFFFFF";
               ctx.fillRect(0, 0, width, height);
               ctx.drawImage(img, 0, 0, width, height);
-              resolve(canvas.toDataURL('image/jpeg', 0.88));
+              resolve(canvas.toDataURL("image/jpeg", 0.88));
             };
             img.onerror = () => resolve(obj);
             img.src = obj;
           });
         }
 
-        const docRef = await addDoc(collection(db, 'media'), {
-          name: 'Sayfa Görseli',
+        const docRef = await addDoc(collection(db, "media"), {
+          name: "Sayfa Görseli",
           url: base64ToSave,
-          createdAt: serverTimestamp()
+          createdAt: serverTimestamp(),
         });
 
         console.log(`Auto-extracted Base64 image to media/${docRef.id}`);
         return `/api/media/${docRef.id}`;
       } catch (err) {
-        console.error('Error saving extracted image to media collection:', err);
+        console.error("Error saving extracted image to media collection:", err);
         return obj;
       }
     }
@@ -119,8 +127,12 @@ export const extractAndSaveBase64Images = async (obj: any, db: any): Promise<any
     return newArr;
   }
 
-  if (typeof obj === 'object') {
-    if (obj.constructor && obj.constructor.name !== 'Object' && obj.constructor.name !== 'Array') {
+  if (typeof obj === "object") {
+    if (
+      obj.constructor &&
+      obj.constructor.name !== "Object" &&
+      obj.constructor.name !== "Array"
+    ) {
       return obj;
     }
     const newObj: any = {};

@@ -93,18 +93,70 @@ export default function AssistantWidget() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          messages: newMessages.filter(m => !m.isForm),
-          knowledgeBase: settings?.knowledgeBase || '',
-          siteContext: siteContext
-        })
-      });
-      
-      const data = await response.json();
-      if (data.text) {
+      let data: any = null;
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            messages: newMessages.filter(m => !m.isForm),
+            knowledgeBase: settings?.knowledgeBase || '',
+            siteContext: siteContext
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Server returned ' + response.status);
+        }
+        data = await response.json();
+      } catch (serverErr) {
+        // Fallback to client-side Gemini if server endpoint is unavailable (e.g., static hosting)
+        const clientApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        if (clientApiKey) {
+          const { GoogleGenAI } = await import('@google/genai');
+          const ai = new GoogleGenAI({ apiKey: clientApiKey });
+          
+          let formattedMessages = newMessages.filter(m => !m.isForm).map(m => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.text || '' }]
+          }));
+          while (formattedMessages.length > 0 && formattedMessages[0].role === 'model') {
+            formattedMessages.shift();
+          }
+          if (formattedMessages.length === 0) {
+             formattedMessages = [{ role: 'user', parts: [{ text: 'merhaba' }] }];
+          }
+
+          const systemInstruction = `Sen Dost Koleji'nin kurumsal, güler yüzlü, samimi ve çözüm odaklı Veli Asistanısın.
+
+GÖREVİN VE KİMLİĞİN:
+- Dost Koleji'nin tüm kampüsleri (Ümitköy, Oran, Eryaman), eğitim kademeleri (Anaokulu, İlkokul, Ortaokul, Lise), dersler, bursluluk, kayıt süreçleri, etkinlikler ve site içi formlar hakkında detaylı bilgiye sahipsin.
+- Velilerle samimi, anlaşılır, kurumsal ve son derece yardımcı bir dille konuşursun.
+- Lütfen yanıtlarını çok kısa, öz ve net tut. Maksimum 3-4 cümleyle yanıt ver. Uzun paragraflardan kaçın.
+- Veliyi iletişim kurmaya veya kayıt/ön görüşme formunu doldurmaya yönlendirmek istediğinde nazikçe teklif sun.
+- Form açmalarını veya iletişim bilgilerini bırakmalarını önerdiğinde cevabının sonuna mutlaka [FORM_TEKLIFI] etiketini ekle.
+
+SİTE SAYFA VE BİLGİ İÇERİKLERİ:
+${siteContext || 'Ümitköy, Oran, Eryaman kampüslerimizde Anaokulu, İlkokul, Ortaokul ve Lise kademelerinde eğitim vermekteyiz.'}
+
+EK KURUMSAL BİLGİ BANKASI VE NOTLAR:
+${settings?.knowledgeBase || 'Yok'}`;
+
+          const r = await ai.models.generateContent({
+            model: 'gemini-flash-latest',
+            contents: formattedMessages as any,
+            config: {
+              systemInstruction: systemInstruction,
+              temperature: 0.7,
+            }
+          });
+          data = { text: r.text };
+        } else {
+          throw new Error('VITE_GEMINI_API_KEY is not configured for client-side fallback.');
+        }
+      }
+
+      if (data && data.text) {
         let text = data.text;
         let isForm = false;
         
