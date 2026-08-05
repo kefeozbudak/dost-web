@@ -16,7 +16,7 @@ export function IconPreview({ data, className }: { data?: any; className?: strin
   }
 
   // Fallback to Google Material Symbols
-  return <span className={`material-symbols-outlined ${className || ''}`}>{name}</span>;
+  return <span className={`material-symbols-outlined ${className || ''}`} translate="no" aria-hidden="true">{name}</span>;
 }
 
 export default function IconField({ 

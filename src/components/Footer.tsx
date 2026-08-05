@@ -99,7 +99,7 @@ export default function Footer({ data }: { data?: any }) {
                       {item.icon ? (
                         <IconPreview data={item.icon} className="w-4 h-4" />
                       ) : (
-                        <span className="material-symbols-outlined text-[18px]">public</span>
+                        <span className="material-symbols-outlined text-[18px]" translate="no" aria-hidden="true">public</span>
                       )}
                     </a>
                   ))}
@@ -153,7 +153,7 @@ export default function Footer({ data }: { data?: any }) {
                   }}
                 >
                   <div className="flex-grow relative">
-                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" translate="no" aria-hidden="true">mail</span>
                     <input 
                       className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-inverse-surface border border-slate-200 dark:border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm text-slate-800 dark:text-white" 
                       placeholder={data?.newsletterPlaceholder || 'E-posta adresiniz'} 

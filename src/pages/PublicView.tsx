@@ -73,10 +73,19 @@ export default function PublicView() {
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
         if (generalDoc.exists()) {
-          const gData = generalDoc.data();
+          const gData = await resolveMediaUrls(generalDoc.data());
           setGeneralSettings(gData);
           if (gData.siteTitle) {
             document.title = gData.siteTitle;
+          }
+          if (gData.faviconUrl) {
+            let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+            if (!link) {
+              link = document.createElement('link');
+              link.rel = 'icon';
+              document.head.appendChild(link);
+            }
+            link.href = gData.faviconUrl;
           }
         }
       } catch (e) {

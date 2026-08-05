@@ -317,6 +317,34 @@ export default function SettingsCenter() {
                   />
                   <p className="text-[11px] text-slate-400 mt-1">Tarayıcı sekmesinde ve arama sonuçlarında görünen ana başlık.</p>
                 </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
+                    Favicon & Site İkon Görseli
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+                      {settings.faviconUrl ? (
+                        <img src={settings.faviconUrl} alt="Favicon" className="w-full h-full object-contain p-1" />
+                      ) : (
+                        <Globe className="w-5 h-5 text-slate-400" />
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      value={settings.faviconUrl}
+                      onChange={(e) => updateField('faviconUrl', e.target.value)}
+                      placeholder="/dost-logo-png.png"
+                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMediaPickerOpen(true)}
+                      className="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+                    >
+                      <ImageIcon className="w-4 h-4" /> Seç
+                    </button>
+                  </div>
+                </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
@@ -504,35 +532,7 @@ export default function SettingsCenter() {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
-                      Favicon & Site İkon Görseli
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden shrink-0">
-                        {settings.faviconUrl ? (
-                          <img src={settings.faviconUrl} alt="Favicon" className="w-full h-full object-contain p-1" />
-                        ) : (
-                          <Globe className="w-5 h-5 text-slate-400" />
-                        )}
-                      </div>
-                      <input
-                        type="text"
-                        value={settings.faviconUrl}
-                        onChange={(e) => updateField('faviconUrl', e.target.value)}
-                        placeholder="/dost-logo-png.png"
-                        className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setMediaPickerOpen(true)}
-                        className="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
-                      >
-                        <ImageIcon className="w-4 h-4 text-slate-500" />
-                        Görsel Seç
-                      </button>
-                    </div>
-                  </div>
+                  
                 </div>
 
                 {/* Robots.txt Indexing Toggle */}

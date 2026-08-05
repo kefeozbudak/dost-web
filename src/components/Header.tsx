@@ -99,7 +99,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                     onMouseEnter={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(i)}
                     onMouseLeave={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(null)}>
                  <SmartLink 
-                   className={`nav-link-underline font-label-md text-label-md transition-colors flex items-center gap-1.5 ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
+                   className={`nav-link-underline ${data?.menuTypography?.topMenuFontSize || 'text-sm'} ${data?.menuTypography?.topMenuFontWeight || 'font-bold'} transition-colors flex items-center gap-1.5 ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                    url={link.url}
                  >
                    {link.iconData?.position === 'left' || !link.iconData?.position ? (
@@ -108,7 +108,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                    {link.iconData?.position === 'top' ? (
                      <div className="flex flex-col items-center">
                        <IconPreview data={link.iconData} className="w-5 h-5 mb-1 shrink-0" />
-                       {!link.iconData?.iconOnly && link.label}
+                       {!link.iconData?.iconOnly && <span>{link.label}</span>}
                      </div>
                    ) : (
                      !link.iconData?.iconOnly && <span>{link.label}</span>
@@ -116,7 +116,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                    {link.iconData?.position === 'right' ? (
                      <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />
                    ) : null}
-                   {(link.type === 'mega' || link.type === 'dropdown') && <span className="material-symbols-outlined text-sm">expand_more</span>}
+                   {(link.type === 'mega' || link.type === 'dropdown') && <span className="material-symbols-outlined text-sm" translate="no" aria-hidden="true">expand_more</span>}
                  </SmartLink>
                  
                  {link.type === 'mega' && activeMegaMenu === i && (
@@ -133,11 +133,11 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                                              <a href={clink.url} className="group flex items-start gap-3">
                                                 {clink.icon && (
                                                   <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 group-custom-hover-bg group-hover:text-white transition-colors">
-                                                    <span className="material-symbols-outlined text-lg">{clink.icon}</span>
+                                                    <span className="material-symbols-outlined text-lg" translate="no" aria-hidden="true">{clink.icon}</span>
                                                   </div>
                                                 )}
                                                 <div>
-                                                  <div className={`text-sm font-bold transition-colors ${isLinkActive(clink.url) ? 'nav-link-active' : 'nav-link-normal group-custom-hover-color'}`}>{clink.label}</div>
+                                                  <div className={`${data?.menuTypography?.subMenuFontSize || 'text-sm'} ${data?.menuTypography?.subMenuFontWeight || 'font-bold'} transition-colors ${isLinkActive(clink.url) ? 'nav-link-active' : 'nav-link-normal group-custom-hover-color'}`}><span>{clink.label}</span></div>
                                                   {clink.desc && <div className="text-xs text-text-muted mt-0.5">{clink.desc}</div>}
                                                 </div>
                                              </a>
@@ -171,7 +171,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                               <div className="relative h-full p-6 flex flex-col justify-end text-white min-h-[300px]">
                                  <h4 className="text-xl font-bold mb-2">{link.megaMenu.featured.title}</h4>
                                  <p className="text-sm text-white/80 mb-4">{link.megaMenu.featured.desc}</p>
-                                 <a href={link.megaMenu.featured.url || '#'} className="self-start text-sm font-bold bg-primary px-4 py-2 rounded-lg hover:bg-white hover:text-primary transition-colors">
+                                 <a href={link.megaMenu.featured.url || '#'} className={`self-start ${data?.menuTypography?.subMenuFontSize || 'text-sm'} ${data?.menuTypography?.subMenuFontWeight || 'font-bold'} bg-primary px-4 py-2 rounded-lg hover:bg-white hover:text-primary transition-colors`}>
                                    {link.megaMenu.featured.buttonText || 'Keşfet'}
                                  </a>
                               </div>
@@ -186,8 +186,8 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                          <ul className="flex flex-col">
                             {link.subLinks?.map((sublink: any, subIdx: number) => (
                                <li key={subIdx}>
-                                  <a href={sublink.url || '#'} className={`px-5 py-2.5 flex items-center gap-3 text-sm font-bold transition-colors outline-none focus:outline-none ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal hover:bg-slate-50 custom-hover-color'}`}>
-                                     {sublink.label}
+                                  <a href={sublink.url || '#'} className={`px-5 py-2.5 flex items-center gap-3 ${data?.menuTypography?.subMenuFontSize || 'text-sm'} ${data?.menuTypography?.subMenuFontWeight || 'font-bold'} transition-colors outline-none focus:outline-none ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal hover:bg-slate-50 custom-hover-color'}`}>
+                                     <span>{sublink.label}</span>
                                   </a>
                                </li>
                             ))}
@@ -201,12 +201,12 @@ export default function Header({ data, announcement }: { data?: any; announcemen
           
           <div className="flex items-center gap-4 md:gap-6">
             {ctaLabel && !ctaHidden && (
-              <SmartLink className="hidden sm:flex items-center bg-primary text-white font-label-md text-label-md px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all" url={ctaUrl}>
-                {ctaLabel}
+              <SmartLink className={`hidden sm:flex items-center bg-primary text-white ${data?.menuTypography?.topMenuFontSize || 'text-sm'} ${data?.menuTypography?.topMenuFontWeight || 'font-bold'} px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all`} url={ctaUrl}>
+                <span>{ctaLabel}</span>
               </SmartLink>
             )}
             <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-2 text-primary">
-              <span className="material-symbols-outlined text-[32px]">menu</span>
+              <span className="material-symbols-outlined text-[32px]" translate="no" aria-hidden="true">menu</span>
             </button>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
             <img alt="Logo" className="w-auto object-contain" style={{ height: `calc(${logoHeight} * 0.7)` }} src={logoSrc} />
           </Link>
           <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-primary hover:bg-surface-container rounded-full transition-colors">
-            <span className="material-symbols-outlined">close</span>
+            <span className="material-symbols-outlined" translate="no" aria-hidden="true">close</span>
           </button>
         </div>
         
@@ -234,10 +234,10 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                   <a 
                     href={link.url || '#'} 
                     onClick={() => link.type !== 'mega' && link.type !== 'dropdown' && setMobileMenuOpen(false)}
-                    className={`font-bold flex-1 flex items-center gap-2 ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
+                    className={`flex-1 flex items-center gap-2 ${data?.menuTypography?.topMenuFontSize || 'text-base'} ${data?.menuTypography?.topMenuFontWeight || 'font-bold'} ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                   >
                     {link.iconData && <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />}
-                    {!link.iconData?.iconOnly && link.label}
+                    {!link.iconData?.iconOnly && <span>{link.label}</span>}
                   </a>
                   {(link.type === 'mega' || link.type === 'dropdown') && (
                     <button 
@@ -247,7 +247,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                       }} 
                       className="p-1 rounded bg-surface-container text-primary ml-2"
                     >
-                      <span className={`material-symbols-outlined transition-transform duration-300 ${mobileExpandedMega === i ? 'rotate-180' : ''}`}>
+                      <span className={`material-symbols-outlined transition-transform duration-300 ${mobileExpandedMega === i ? 'rotate-180' : ''}`} translate="no" aria-hidden="true">
                         expand_more
                       </span>
                     </button>
@@ -259,8 +259,8 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                     <ul className="pl-4 space-y-3 pb-2 border-l-2 border-border-subtle ml-2">
                       {link.subLinks?.map((sublink: any, subIdx: number) => (
                         <li key={subIdx}>
-                          <a href={sublink.url || '#'} onClick={() => setMobileMenuOpen(false)} className={`text-sm font-bold block ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}>
-                            {sublink.label}
+                          <a href={sublink.url || '#'} onClick={() => setMobileMenuOpen(false)} className={`${data?.menuTypography?.subMenuFontSize || 'text-sm'} ${data?.menuTypography?.subMenuFontWeight || 'font-bold'} block ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}>
+                            <span>{sublink.label}</span>
                           </a>
                         </li>
                       ))}
@@ -282,8 +282,8 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                                   onClick={() => setMobileMenuOpen(false)}
                                   className={`flex items-center gap-2 text-sm py-1 ${isLinkActive(clink.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                                 >
-                                  {clink.icon && <span className="material-symbols-outlined text-[16px] text-secondary">{clink.icon}</span>}
-                                  {clink.label}
+                                  {clink.icon && <span className="material-symbols-outlined text-[16px] text-secondary" translate="no" aria-hidden="true">{clink.icon}</span>}
+                                  <span>{clink.label}</span>
                                 </a>
                               </li>
                             ))}
@@ -297,7 +297,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                           onClick={() => setMobileMenuOpen(false)}
                           className="block mt-4 p-3 rounded-lg bg-surface-container border border-border-subtle"
                         >
-                          <div className="text-sm font-bold text-primary mb-1">{link.megaMenu.featured.title}</div>
+                          <div className={`${data?.menuTypography?.subMenuFontSize || 'text-sm'} ${data?.menuTypography?.subMenuFontWeight || 'font-bold'} text-primary mb-1`}>{link.megaMenu.featured.title}</div>
                           <div className="text-xs text-text-muted mb-2">{link.megaMenu.featured.desc}</div>
                           <div className="text-xs font-bold text-secondary">{link.megaMenu.featured.buttonText || 'İncele'}</div>
                         </a>
@@ -317,7 +317,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
               onClick={() => setMobileMenuOpen(false)}
               className="flex justify-center items-center w-full bg-primary text-white font-bold px-6 py-3 rounded-lg active:scale-95 transition-all"
             >
-              {ctaLabel}
+              <span>{ctaLabel}</span>
             </a>
           </div>
         )}

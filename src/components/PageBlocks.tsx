@@ -94,7 +94,7 @@ const ClubsGridBlock = ({
                       (typeof item.icon === "string" &&
                       item.icon === item.icon.toLowerCase() ? (
                         <span
-                          className="material-symbols-outlined text-primary text-[24px]"
+                          className="material-symbols-outlined text-primary text-[24px]" translate="no" aria-hidden="true"
                           style={{ fontVariationSettings: "'FILL' 1" }}
                         >
                           {item.icon}
@@ -127,7 +127,7 @@ const ClubsGridBlock = ({
                       className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform"
                     >
                       Detaylı Bilgi
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         arrow_forward
                       </span>
                     </a>
@@ -261,7 +261,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
         type === "bursluluk_exam_form" ? (
           <div className="p-8 md:p-12 text-center min-h-[400px] flex flex-col items-center justify-center space-y-6">
             <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner">
-              <span className="material-symbols-outlined text-4xl">check_circle</span>
+              <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true">check_circle</span>
             </div>
             <h3 className="text-2xl font-bold text-[#002147]">Bursluluk Sınavı Başvurunuz Başarıyla Alındı!</h3>
             <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed">
@@ -271,14 +271,14 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
               href={submittedDocId ? `/bursluluk-basvuru-onay?id=${submittedDocId}` : `/bursluluk-basvuru-onay`}
               className="px-6 py-3.5 bg-[#002147] text-white font-bold rounded-xl hover:bg-[#002147]/90 transition-all text-sm inline-flex items-center gap-2 shadow-lg hover:shadow-xl cursor-pointer"
             >
-              <span className="material-symbols-outlined">badge</span>
+              <span className="material-symbols-outlined" translate="no" aria-hidden="true">badge</span>
               Sınav Giriş Belgesini Görüntüle ve İndir
             </a>
           </div>
         ) : (
           <div className="p-12 text-center min-h-[400px] flex flex-col items-center justify-center">
             <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-3xl">check_circle</span>
+              <span className="material-symbols-outlined text-3xl" translate="no" aria-hidden="true">check_circle</span>
             </div>
             <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Başvurunuz Alındı</h3>
             <p className="font-body-md text-body-md text-text-muted">Kayıt başvurunuz başarıyla alınmıştır.</p>
@@ -312,14 +312,14 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                   if (isStyledForm) {
                     return (
                       <div key={inputKey} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
-                        {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
+                        {input.icon && <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{input.icon}</span>}
                         <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider">{input.label}</h2>
                       </div>
                     );
                   }
                   return (
                     <div key={inputKey} className={`flex items-center gap-2 border-b border-border-subtle pb-3 mt-4 first:mt-0 ${colSpan}`}>
-                      {input.icon && <span className="material-symbols-outlined text-primary">{input.icon}</span>}
+                      {input.icon && <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{input.icon}</span>}
                       <h2 className="font-headline-md text-headline-md text-on-surface">{input.label}</h2>
                     </div>
                   );
@@ -416,7 +416,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
               {type === 'club_registration_form' && defaultClubs && defaultClubs.length > 0 && (
                 <div className="md:col-span-2 space-y-6 mt-0">
                   <div className="flex items-center gap-2 border-b border-border-subtle pb-3">
-                    <span className="material-symbols-outlined text-primary">explore</span>
+                    <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">explore</span>
                     <h2 className="font-headline-md text-headline-md text-on-surface">Kulüp Seçimi</h2>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -443,7 +443,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                           >
                             <div className="mb-2">
                               {isMaterialIcon ? (
-                                <span className={`material-symbols-outlined text-3xl transition-colors ${isSelected ? 'text-white' : 'text-text-muted group-hover:text-primary'}`}>
+                                <span className={`material-symbols-outlined text-3xl transition-colors ${isSelected ? 'text-white' : 'text-text-muted group-hover:text-primary'}`} translate="no" aria-hidden="true">
                                   {iconVal}
                                 </span>
                               ) : (
@@ -475,7 +475,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
               className={isStyledForm ? "w-full bg-primary hover:bg-[#002147] text-white font-label-md text-label-md py-4 rounded-lg shadow-sm transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:scale-100" : "w-full py-4 bg-primary text-white font-bold text-label-md rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-70 disabled:cursor-not-allowed"}
             >
               {submitting ? (isStyledForm ? "Gönderiliyor..." : "İşleniyor...") : (isStyledForm ? "Başvuruyu Tamamla" : "Kaydı Tamamla")}
-              {!submitting && <span className="material-symbols-outlined">send</span>}
+              {!submitting && <span className="material-symbols-outlined" translate="no" aria-hidden="true">send</span>}
               {submitting && (
                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -717,13 +717,13 @@ const BurslulukInfoCardsBlock = ({ block, index, getStyle, getTitleStyle, getSub
           {items.map((item: any, idx: number) => (
             <div key={idx} className="group p-8 rounded-2xl bg-[#f3f2fd] border border-[#e2e8f0] hover:border-[#1d4eca]/30 transition-all shadow-sm hover:shadow-md">
               <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-[#1d4eca] text-3xl">{item.icon || 'info'}</span>
+                <span className="material-symbols-outlined text-[#1d4eca] text-3xl" translate="no" aria-hidden="true">{item.icon || 'info'}</span>
               </div>
               <h4 className="text-xl font-bold text-[#002147] mb-4">{item.title}</h4>
               <ul className="space-y-3 text-[#434654]">
                 {(item.rules || item.desc || []).map((rule: string, rIdx: number) => (
                   <li key={rIdx} className="flex items-start gap-2 text-sm leading-relaxed">
-                    <span className="material-symbols-outlined text-[#1d4eca] text-base mt-0.5 shrink-0">check_circle</span>
+                    <span className="material-symbols-outlined text-[#1d4eca] text-base mt-0.5 shrink-0" translate="no" aria-hidden="true">check_circle</span>
                     <span>{rule}</span>
                   </li>
                 ))}
@@ -757,7 +757,7 @@ const BurslulukResultQueryBlock = ({ block, index, getStyle, getTitleStyle, getS
                 onClick={() => setQueryModal(true)}
                 className="w-full bg-[#D4AF37] text-[#002147] font-bold py-4 px-6 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg text-sm md:text-base uppercase tracking-wider cursor-pointer"
               >
-                <span className="material-symbols-outlined">search</span>
+                <span className="material-symbols-outlined" translate="no" aria-hidden="true">search</span>
                 {block.buttonText || "SINAV SONUCUNU ÖĞREN"}
               </button>
             </div>
@@ -779,7 +779,7 @@ const BurslulukResultQueryBlock = ({ block, index, getStyle, getTitleStyle, getS
               onClick={() => setQueryModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 cursor-pointer"
             >
-              <span className="material-symbols-outlined">close</span>
+              <span className="material-symbols-outlined" translate="no" aria-hidden="true">close</span>
             </button>
             <h3 className="text-2xl font-bold text-[#002147] mb-2">Sınav Sonuç Sorgulama</h3>
             <p className="text-slate-500 text-sm mb-6">Lütfen öğrencinin T.C. Kimlik Numarasını giriniz.</p>
@@ -920,7 +920,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
         {/* Success Header */}
         <div className="text-center mb-10 no-print">
           <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-            <span className="material-symbols-outlined text-5xl">{block.successIcon || "check_circle"}</span>
+            <span className="material-symbols-outlined text-5xl" translate="no" aria-hidden="true">{block.successIcon || "check_circle"}</span>
           </div>
           <h1 className="font-headline-xl text-3xl md:text-4xl text-[#002147] mb-3 font-bold" style={getTitleStyle(block)}>
             {block.title || "Başvurunuz Başarıyla Alındı!"}
@@ -937,14 +937,14 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
             onClick={handlePrint}
             className="flex items-center gap-2 bg-[#002147] text-white px-6 py-3.5 rounded-xl font-bold hover:bg-[#002147]/90 transition-all shadow-md active:scale-95 cursor-pointer text-sm"
           >
-            <span className="material-symbols-outlined text-xl">download</span> İndir (PDF)
+            <span className="material-symbols-outlined text-xl" translate="no" aria-hidden="true">download</span> İndir (PDF)
           </button>
           <button 
             type="button"
             onClick={handlePrint}
             className="flex items-center gap-2 bg-white text-[#002147] border-2 border-[#002147] px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 cursor-pointer text-sm"
           >
-            <span className="material-symbols-outlined text-xl">print</span> Yazdır
+            <span className="material-symbols-outlined text-xl" translate="no" aria-hidden="true">print</span> Yazdır
           </button>
         </div>
 
@@ -1010,7 +1010,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
             <div className="mt-auto border-t border-slate-200 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
               <div>
                 <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-sm text-primary">gavel</span>
+                  <span className="material-symbols-outlined text-sm text-primary" translate="no" aria-hidden="true">gavel</span>
                   Sınav Kuralları
                 </h4>
                 <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
@@ -1022,7 +1022,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
 
               <div>
                 <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-sm text-primary">badge</span>
+                  <span className="material-symbols-outlined text-sm text-primary" translate="no" aria-hidden="true">badge</span>
                   Gerekli Belgeler
                 </h4>
                 <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
@@ -1034,7 +1034,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
 
               <div>
                 <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-sm text-primary">location_on</span>
+                  <span className="material-symbols-outlined text-sm text-primary" translate="no" aria-hidden="true">location_on</span>
                   Kampüs Adresi
                 </h4>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
@@ -1054,7 +1054,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
         {/* Secondary Action Link */}
         <div className="mt-10 text-center no-print">
           <a href="/" className="text-primary font-bold inline-flex items-center justify-center gap-2 hover:underline text-sm">
-            <span className="material-symbols-outlined text-lg">home</span> Ana Sayfaya Dön
+            <span className="material-symbols-outlined text-lg" translate="no" aria-hidden="true">home</span> Ana Sayfaya Dön
           </a>
         </div>
 
@@ -1134,7 +1134,7 @@ const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSt
           {submitted ? (
             <div className="p-8 text-center bg-green-50 rounded-xl border border-green-100">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="material-symbols-outlined text-2xl">check_circle</span>
+                <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">check_circle</span>
               </div>
               <h3 className="text-lg font-bold text-green-800 mb-2">Mesajınız İletildi</h3>
               <p className="text-green-700">Mesajınız başarıyla gönderilmiştir. En kısa sürede sizinle iletişime geçeceğiz.</p>
@@ -1385,7 +1385,7 @@ export const DynamicBlockRenderer = ({
                   <div className="flex gap-4 flex-wrap">
                     {block.buttons.map((btn: any, btnIdx: number) => (
                       <SmartLink key={btnIdx} url={btn.url || btn.buttonUrl || btn.link} className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2" style={getIndividualButtonStyle(btn)}>
-                        {btn.label} {btn.icon && <span className="material-symbols-outlined">{btn.icon}</span>}
+                        {btn.label} {btn.icon && <span className="material-symbols-outlined" translate="no" aria-hidden="true">{btn.icon}</span>}
                       </SmartLink>
                     ))}
                   </div>
@@ -1439,10 +1439,10 @@ export const DynamicBlockRenderer = ({
                 </div>
                 <div className="flex gap-2">
                   <button className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all" onClick={(e) => { const c = e.currentTarget.parentElement?.parentElement?.nextElementSibling; if (c) { c.scrollBy({ left: -350, behavior: 'smooth' }); } }}>
-                    <span className="material-symbols-outlined">chevron_left</span>
+                    <span className="material-symbols-outlined" translate="no" aria-hidden="true">chevron_left</span>
                   </button>
                   <button className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all" onClick={(e) => { const c = e.currentTarget.parentElement?.parentElement?.nextElementSibling; if (c) { c.scrollBy({ left: 350, behavior: 'smooth' }); } }}>
-                    <span className="material-symbols-outlined">chevron_right</span>
+                    <span className="material-symbols-outlined" translate="no" aria-hidden="true">chevron_right</span>
                   </button>
                 </div>
               </div>
@@ -1502,7 +1502,7 @@ export const DynamicBlockRenderer = ({
                   {(block.items || []).map((item: any, i: number) => (
                     <li key={i} className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                        {item.icon && (typeof item.icon === 'string' && item.icon === item.icon.toLowerCase() ? <span className="material-symbols-outlined">{item.icon}</span> : <IconPreview data={item.icon} className="w-6 h-6 fill-current" />)}
+                        {item.icon && (typeof item.icon === 'string' && item.icon === item.icon.toLowerCase() ? <span className="material-symbols-outlined" translate="no" aria-hidden="true">{item.icon}</span> : <IconPreview data={item.icon} className="w-6 h-6 fill-current" />)}
                       </div>
                       <span className="font-label-md text-text-main" style={getCardTitleStyle(item, block)}>{item.title}</span>
                     </li>
@@ -1532,7 +1532,7 @@ export const DynamicBlockRenderer = ({
                   <div className="space-y-6">
                     {(block.items || []).map((item: any, i: number) => (
                       <div key={i} className="flex gap-4 items-start">
-                        <span className="material-symbols-outlined text-primary">{item.icon}</span>
+                        <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{item.icon}</span>
                         <div>
                           <h4 className="font-bold text-text-main" style={getCardTitleStyle(item, block)}>{item.title}</h4>
                           <p className="text-text-muted" style={getCardDescStyle(item, block)}>{item.desc}</p>
@@ -1557,7 +1557,7 @@ export const DynamicBlockRenderer = ({
                         </div>
                         {block.buttons && block.buttons[0] && (
                           <SmartLink url={block.buttons[0].url || block.buttons[0].buttonUrl || block.buttons[0].link} className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
-                            <span className="material-symbols-outlined">{block.buttons[0].icon || 'directions'}</span>
+                            <span className="material-symbols-outlined" translate="no" aria-hidden="true">{block.buttons[0].icon || 'directions'}</span>
                           </SmartLink>
                         )}
                       </div>
@@ -1623,7 +1623,7 @@ export const DynamicBlockRenderer = ({
                         <div className="space-y-4 mb-6">
                           {item.address && (
                             <div className="flex items-start gap-3">
-                              <span className="material-symbols-outlined text-primary text-[24px]">
+                              <span className="material-symbols-outlined text-primary text-[24px]" translate="no" aria-hidden="true">
                                 location_on
                               </span>
                               <p className="font-body-md text-body-md text-on-surface-variant">
@@ -1633,7 +1633,7 @@ export const DynamicBlockRenderer = ({
                           )}
                           {item.phone && (
                             <div className="flex items-start gap-3">
-                              <span className="material-symbols-outlined text-primary text-[24px]">
+                              <span className="material-symbols-outlined text-primary text-[24px]" translate="no" aria-hidden="true">
                                 call
                               </span>
                               <p className="font-body-md text-body-md text-on-surface-variant">
@@ -1647,7 +1647,7 @@ export const DynamicBlockRenderer = ({
                             href={item.url || "#"}
                             className="w-full border-2 border-primary text-primary py-3 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
                           >
-                            <span className="material-symbols-outlined text-[20px]">
+                            <span className="material-symbols-outlined text-[20px]" translate="no" aria-hidden="true">
                               directions
                             </span>{" "}
                             {item.buttonText}
@@ -1743,7 +1743,7 @@ export const DynamicBlockRenderer = ({
                       {item.icon &&
                         (typeof item.icon === "string" &&
                         item.icon === item.icon.toLowerCase() ? (
-                          <span className="material-symbols-outlined text-2xl">
+                          <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">
                             {item.icon}
                           </span>
                         ) : (
@@ -1878,7 +1878,7 @@ export const DynamicBlockRenderer = ({
                         {item.icon &&
                           (typeof item.icon === "string" &&
                           item.icon === item.icon.toLowerCase() ? (
-                            <span className="material-symbols-outlined text-primary text-3xl">
+                            <span className="material-symbols-outlined text-primary text-3xl" translate="no" aria-hidden="true">
                               {item.icon}
                             </span>
                           ) : (
@@ -2073,7 +2073,7 @@ export const DynamicBlockRenderer = ({
                       >
                         {item.date && (
                           <div className="flex items-center gap-2 text-text-muted mb-3 font-label-sm text-xs md:text-label-sm">
-                            <span className="material-symbols-outlined text-[16px] md:text-[18px]">
+                            <span className="material-symbols-outlined text-[16px] md:text-[18px]" translate="no" aria-hidden="true">
                               calendar_today
                             </span>
                             <span>{item.date}</span>
@@ -2111,7 +2111,7 @@ export const DynamicBlockRenderer = ({
                             className="flex items-center gap-2 text-primary font-label-md text-sm md:text-label-md hover:underline group/link"
                           >
                             {item.buttonText || "Devamını Oku"}
-                            <span className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base">
+                            <span className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base" translate="no" aria-hidden="true">
                               arrow_forward
                             </span>
                           </a>
@@ -2124,7 +2124,7 @@ export const DynamicBlockRenderer = ({
                 {block.showPagination && (
                   <div className="mt-12 md:mt-16 flex justify-center items-center gap-2">
                     <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors">
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         chevron_left
                       </span>
                     </button>
@@ -2142,7 +2142,7 @@ export const DynamicBlockRenderer = ({
                       12
                     </button>
                     <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors">
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         chevron_right
                       </span>
                     </button>
@@ -2164,7 +2164,7 @@ export const DynamicBlockRenderer = ({
               >
                 {block.icon && (
                   <span
-                    className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4"
+                    className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4" translate="no" aria-hidden="true"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     {block.icon}
@@ -2379,7 +2379,7 @@ export const DynamicBlockRenderer = ({
                               {btn.icon &&
                                 (typeof btn.icon === "string" &&
                                 btn.icon === btn.icon.toLowerCase() ? (
-                                  <span className="material-symbols-outlined text-[1.1em]">
+                                  <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
                                     {btn.icon}
                                   </span>
                                 ) : (
@@ -2443,7 +2443,7 @@ export const DynamicBlockRenderer = ({
               >
                 <div className="flex flex-row items-center gap-4 mb-10 md:mb-12">
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm">
-                    <span className="material-symbols-outlined text-white text-3xl">
+                    <span className="material-symbols-outlined text-white text-3xl" translate="no" aria-hidden="true">
                       school
                     </span>
                   </div>
@@ -2483,7 +2483,7 @@ export const DynamicBlockRenderer = ({
                             className="text-[#5eead4] w-6 h-6"
                           />
                         ) : (
-                          <span className="material-symbols-outlined text-[#5eead4]">
+                          <span className="material-symbols-outlined text-[#5eead4]" translate="no" aria-hidden="true">
                             {item.icon || "school"}
                           </span>
                         )}
@@ -2575,7 +2575,7 @@ export const DynamicBlockRenderer = ({
                                 >
                                   {item.buttonText}{" "}
                                   {item.buttonIcon && (
-                                    <span className="material-symbols-outlined ml-1 text-[0.9em]">
+                                    <span className="material-symbols-outlined ml-1 text-[0.9em]" translate="no" aria-hidden="true">
                                       {item.buttonIcon}
                                     </span>
                                   )}
@@ -2595,7 +2595,7 @@ export const DynamicBlockRenderer = ({
                                 className="w-6 h-6"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-2xl">
+                              <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">
                                 {item.icon}
                               </span>
                             )}
@@ -2654,7 +2654,7 @@ export const DynamicBlockRenderer = ({
                       className="hidden md:flex items-center gap-2 text-primary text-sm md:text-base font-bold hover:underline"
                     >
                       {block.viewAllText}
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         chevron_right
                       </span>
                     </SmartLink>
@@ -2682,7 +2682,7 @@ export const DynamicBlockRenderer = ({
                           >
                             {item.title}
                           </h3>
-                          <span className="text-primary material-symbols-outlined">
+                          <span className="text-primary material-symbols-outlined" translate="no" aria-hidden="true">
                             location_on
                           </span>
                         </div>
@@ -2699,7 +2699,7 @@ export const DynamicBlockRenderer = ({
                           >
                             {item.buttonText || "İncele"}{" "}
                             {item.buttonIcon && (
-                              <span className="material-symbols-outlined ml-1 text-[0.9em]">
+                              <span className="material-symbols-outlined ml-1 text-[0.9em]" translate="no" aria-hidden="true">
                                 {item.buttonIcon}
                               </span>
                             )}
@@ -2782,7 +2782,7 @@ export const DynamicBlockRenderer = ({
                           className="relative w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 z-10 text-primary"
                         >
                           <span
-                            className="material-symbols-outlined text-4xl md:text-5xl"
+                            className="material-symbols-outlined text-4xl md:text-5xl" translate="no" aria-hidden="true"
                             style={{ fontVariationSettings: "'FILL' 1" }}
                           >
                             play_arrow
@@ -2860,7 +2860,7 @@ export const DynamicBlockRenderer = ({
                           {btn.label}
                           {btn.icon &&
                             (typeof btn.icon === "string" ? (
-                              <span className="material-symbols-outlined">
+                              <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                                 {btn.icon}
                               </span>
                             ) : null)}
@@ -2897,7 +2897,7 @@ export const DynamicBlockRenderer = ({
                         className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -mr-16 -mt-16"
                         style={{ backgroundColor: "rgba(212, 175, 55, 0.05)" }}
                       ></div>
-                      <span className="material-symbols-outlined text-primary text-4xl mb-6">
+                      <span className="material-symbols-outlined text-primary text-4xl mb-6" translate="no" aria-hidden="true">
                         {block.items[0].icon || "school"}
                       </span>
                       <h3 className="font-headline-md text-headline-md mb-2">
@@ -2936,7 +2936,7 @@ export const DynamicBlockRenderer = ({
                     <div className="bg-primary text-on-primary rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2">
                       <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45"></div>
                       <span
-                        className="material-symbols-outlined text-gold text-4xl mb-6"
+                        className="material-symbols-outlined text-gold text-4xl mb-6" translate="no" aria-hidden="true"
                         style={{
                           fontVariationSettings: "'FILL' 1",
                           color: "#D4AF37",
@@ -2981,7 +2981,7 @@ export const DynamicBlockRenderer = ({
                   {block.items && block.items[2] && (
                     <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card flex flex-col justify-between transition-all duration-700 hover:-translate-y-2">
                       <div>
-                        <span className="material-symbols-outlined text-primary text-4xl mb-6">
+                        <span className="material-symbols-outlined text-primary text-4xl mb-6" translate="no" aria-hidden="true">
                           {block.items[2].icon || "analytics"}
                         </span>
                         <h3 className="font-headline-md text-headline-md mb-2">
@@ -3002,7 +3002,7 @@ export const DynamicBlockRenderer = ({
                                 }}
                               >
                                 <span
-                                  className="material-symbols-outlined text-gold text-lg"
+                                  className="material-symbols-outlined text-gold text-lg" translate="no" aria-hidden="true"
                                   style={{ color: "#D4AF37" }}
                                 >
                                   check_circle
@@ -3038,12 +3038,12 @@ export const DynamicBlockRenderer = ({
                   </div>
                   <div className="flex gap-2">
                     <button className="p-3 rounded-full border border-border-subtle hover:bg-surface transition-colors">
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         chevron_left
                       </span>
                     </button>
                     <button className="p-3 rounded-full border border-border-subtle bg-primary text-white hover:opacity-90 transition-colors">
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                         chevron_right
                       </span>
                     </button>
@@ -3114,7 +3114,7 @@ export const DynamicBlockRenderer = ({
                             className="flex gap-4 items-start bg-white/5 p-6 rounded-2xl border border-white/10 hover:border-gold/50 transition-colors"
                           >
                             <span
-                              className="material-symbols-outlined text-gold text-3xl"
+                              className="material-symbols-outlined text-gold text-3xl" translate="no" aria-hidden="true"
                               style={{ color: "#D4AF37" }}
                             >
                               {item.icon || "science"}
@@ -3199,7 +3199,7 @@ export const DynamicBlockRenderer = ({
                     >
                       {block.buttonText}
                       {block.buttonIcon && (
-                        <span className="material-symbols-outlined text-[1.1em]">
+                        <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
                           {block.buttonIcon}
                         </span>
                       )}
@@ -3238,12 +3238,12 @@ export const DynamicBlockRenderer = ({
                   </div>
                   <div className="flex gap-2 md:gap-4">
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors">
-                      <span className="material-symbols-outlined text-xl md:text-2xl">
+                      <span className="material-symbols-outlined text-xl md:text-2xl" translate="no" aria-hidden="true">
                         chevron_left
                       </span>
                     </button>
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors">
-                      <span className="material-symbols-outlined text-xl md:text-2xl">
+                      <span className="material-symbols-outlined text-xl md:text-2xl" translate="no" aria-hidden="true">
                         chevron_right
                       </span>
                     </button>
@@ -3351,7 +3351,7 @@ export const DynamicBlockRenderer = ({
                             {btn.icon &&
                               (typeof btn.icon === "string" &&
                               btn.icon === btn.icon.toLowerCase() ? (
-                                <span className="material-symbols-outlined text-[1.1em]">
+                                <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
                                   {btn.icon}
                                 </span>
                               ) : (
@@ -3465,7 +3465,7 @@ export const DynamicBlockRenderer = ({
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview data={item.icon} className="w-10 h-10" />
                         ) : (
-                          <span className="material-symbols-outlined text-4xl">
+                          <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true">
                             {item.icon || (isSecondary ? "visibility" : "flag")}
                           </span>
                         )}
@@ -3536,7 +3536,7 @@ export const DynamicBlockRenderer = ({
                           />
                         ) : (
                           <span
-                            className={`material-symbols-outlined ${color} text-3xl mb-4`}
+                            className={`material-symbols-outlined ${color} text-3xl mb-4`} translate="no" aria-hidden="true"
                           >
                             {item.icon || "verified_user"}
                           </span>
@@ -3576,7 +3576,7 @@ export const DynamicBlockRenderer = ({
                     ></div>
                   </div>
                   <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-                    <span className="material-symbols-outlined text-primary-fixed text-8xl absolute top-4 md:top-8 left-4 md:left-8 opacity-40">
+                    <span className="material-symbols-outlined text-primary-fixed text-8xl absolute top-4 md:top-8 left-4 md:left-8 opacity-40" translate="no" aria-hidden="true">
                       format_quote
                     </span>
                     <div className="relative z-10">
@@ -3740,7 +3740,7 @@ export const DynamicBlockRenderer = ({
                               />
                             ) : (
                               <span
-                                className="material-symbols-outlined text-[20px]"
+                                className="material-symbols-outlined text-[20px]" translate="no" aria-hidden="true"
                                 style={{ color: "inherit" }}
                               >
                                 {item.icon || "school"}
@@ -3928,7 +3928,7 @@ export const DynamicBlockRenderer = ({
                       className="text-[#bd0f2c] w-6 h-6"
                     />
                   ) : (
-                    <span className="material-symbols-outlined text-[#bd0f2c]">
+                    <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
                       {block.icon || "school"}
                     </span>
                   )}
@@ -3962,7 +3962,7 @@ export const DynamicBlockRenderer = ({
                       </p>
                     </div>
                     <div className="relative">
-                      <span className="material-symbols-outlined absolute -top-4 -left-6 text-slate-200 dark:text-slate-800 text-6xl select-none">
+                      <span className="material-symbols-outlined absolute -top-4 -left-6 text-slate-200 dark:text-slate-800 text-6xl select-none" translate="no" aria-hidden="true">
                         format_quote
                       </span>
                       <p
@@ -3990,7 +3990,7 @@ export const DynamicBlockRenderer = ({
                             {btn.icon &&
                               (typeof btn.icon === "string" &&
                               btn.icon === btn.icon.toLowerCase() ? (
-                                <span className="material-symbols-outlined text-[18px]">
+                                <span className="material-symbols-outlined text-[18px]" translate="no" aria-hidden="true">
                                   {btn.icon}
                                 </span>
                               ) : (
@@ -4025,7 +4025,7 @@ export const DynamicBlockRenderer = ({
                       className="text-[#bd0f2c] w-6 h-6"
                     />
                   ) : (
-                    <span className="material-symbols-outlined text-[#bd0f2c]">
+                    <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
                       {block.icon || "groups"}
                     </span>
                   )}
@@ -4076,7 +4076,7 @@ export const DynamicBlockRenderer = ({
                             href={item.url}
                           >
                             {item.buttonText || "Detaylı Profil"}{" "}
-                            <span className="material-symbols-outlined text-[16px]">
+                            <span className="material-symbols-outlined text-[16px]" translate="no" aria-hidden="true">
                               trending_flat
                             </span>
                           </a>
@@ -4106,7 +4106,7 @@ export const DynamicBlockRenderer = ({
                         className="text-[#bd0f2c] w-6 h-6"
                       />
                     ) : (
-                      <span className="material-symbols-outlined text-[#bd0f2c]">
+                      <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
                         {block.icon || "account_balance"}
                       </span>
                     )}
@@ -4163,7 +4163,7 @@ export const DynamicBlockRenderer = ({
                             href={item.url}
                           >
                             {item.buttonText || "Fakülte Sayfası"}{" "}
-                            <span className="material-symbols-outlined text-[14px]">
+                            <span className="material-symbols-outlined text-[14px]" translate="no" aria-hidden="true">
                               open_in_new
                             </span>
                           </a>
@@ -4187,7 +4187,7 @@ export const DynamicBlockRenderer = ({
                 <div className="space-y-6">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed/20 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider">
-                      <span className="material-symbols-outlined text-[16px]">
+                      <span className="material-symbols-outlined text-[16px]" translate="no" aria-hidden="true">
                         school
                       </span>
                       {block.badge}
@@ -4247,7 +4247,7 @@ export const DynamicBlockRenderer = ({
                     <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                       <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle">
                         <div className="flex items-center gap-3">
-                          <span className="material-symbols-outlined text-secondary text-[32px]">
+                          <span className="material-symbols-outlined text-secondary text-[32px]" translate="no" aria-hidden="true">
                             {block.imageBadgeIcon || "extension"}
                           </span>
                           <div>
@@ -4311,7 +4311,7 @@ export const DynamicBlockRenderer = ({
                                   className="text-secondary-fixed w-[40px] h-[40px] mb-4"
                                 />
                               ) : (
-                                <span className="material-symbols-outlined text-secondary-fixed text-[40px] mb-4">
+                                <span className="material-symbols-outlined text-secondary-fixed text-[40px] mb-4" translate="no" aria-hidden="true">
                                   {item.icon || "forest"}
                                 </span>
                               )}
@@ -4334,7 +4334,7 @@ export const DynamicBlockRenderer = ({
                                 href={item.url}
                               >
                                 {item.buttonText || "İnceleyin"}{" "}
-                                <span className="material-symbols-outlined text-[18px]">
+                                <span className="material-symbols-outlined text-[18px]" translate="no" aria-hidden="true">
                                   arrow_forward
                                 </span>
                               </a>
@@ -4361,7 +4361,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-primary w-[40px] h-[40px] mb-4"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-primary text-[40px] mb-4">
+                              <span className="material-symbols-outlined text-primary text-[40px] mb-4" translate="no" aria-hidden="true">
                                 {item.icon || "psychology"}
                               </span>
                             )}
@@ -4398,7 +4398,7 @@ export const DynamicBlockRenderer = ({
                               className="text-secondary w-[32px] h-[32px] mb-4"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-secondary text-[32px] mb-4">
+                            <span className="material-symbols-outlined text-secondary text-[32px] mb-4" translate="no" aria-hidden="true">
                               {item.icon || "favorite"}
                             </span>
                           )}
@@ -4473,7 +4473,7 @@ export const DynamicBlockRenderer = ({
                               className="text-primary w-6 h-6"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-primary">
+                            <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">
                               {item.icon || "language"}
                             </span>
                           )}
@@ -4517,7 +4517,7 @@ export const DynamicBlockRenderer = ({
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
                       <span
-                        className="material-symbols-outlined text-primary text-sm"
+                        className="material-symbols-outlined text-primary text-sm" translate="no" aria-hidden="true"
                         style={{ fontVariationSettings: "'FILL' 1" }}
                       >
                         star
@@ -4623,7 +4623,7 @@ export const DynamicBlockRenderer = ({
                                 />
                               ) : (
                                 <span
-                                  className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`}
+                                  className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`} translate="no" aria-hidden="true"
                                   style={{ fontVariationSettings: "'FILL' 1" }}
                                 >
                                   {item.icon || "palette"}
@@ -4672,7 +4672,7 @@ export const DynamicBlockRenderer = ({
                                 />
                               ) : (
                                 <span
-                                  className="material-symbols-outlined text-primary"
+                                  className="material-symbols-outlined text-primary" translate="no" aria-hidden="true"
                                   style={{ fontVariationSettings: "'FILL' 1" }}
                                 >
                                   {item.icon || "menu_book"}
@@ -4714,7 +4714,7 @@ export const DynamicBlockRenderer = ({
                             />
                           ) : (
                             <span
-                              className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`}
+                              className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`} translate="no" aria-hidden="true"
                               style={{ fontVariationSettings: "'FILL' 1" }}
                             >
                               {item.icon || "groups"}
@@ -4806,7 +4806,7 @@ export const DynamicBlockRenderer = ({
                       >
                         {btn.label}
                         {!isOutline && (
-                          <span className="material-symbols-outlined text-[18px]">
+                          <span className="material-symbols-outlined text-[18px]" translate="no" aria-hidden="true">
                             arrow_forward
                           </span>
                         )}
@@ -4872,7 +4872,7 @@ export const DynamicBlockRenderer = ({
                               />
                             ) : (
                               <span
-                                className="material-symbols-outlined text-[28px]"
+                                className="material-symbols-outlined text-[28px]" translate="no" aria-hidden="true"
                                 style={{ fontVariationSettings: "'FILL' 1" }}
                               >
                                 {item.icon || "psychology"}
@@ -4988,7 +4988,7 @@ export const DynamicBlockRenderer = ({
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview data={item.icon} className="w-6 h-6" />
                         ) : (
-                          <span className="material-symbols-outlined text-[24px]">
+                          <span className="material-symbols-outlined text-[24px]" translate="no" aria-hidden="true">
                             {item.icon || "menu_book"}
                           </span>
                         )}
@@ -5027,7 +5027,7 @@ export const DynamicBlockRenderer = ({
               <div className="z-10 flex flex-col gap-6">
                 {block.badge && (
                   <div className="inline-flex items-center gap-2 bg-primary-fixed/20 text-primary-container px-3 py-1 rounded-full w-fit">
-                    <span className="material-symbols-outlined text-sm">
+                    <span className="material-symbols-outlined text-sm" translate="no" aria-hidden="true">
                       stars
                     </span>
                     <span className="font-label-sm text-label-sm uppercase tracking-wider">
@@ -5087,7 +5087,7 @@ export const DynamicBlockRenderer = ({
                         >
                           {btn.label}
                           {!isOutline && (
-                            <span className="material-symbols-outlined">
+                            <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                               arrow_forward
                             </span>
                           )}
@@ -5162,7 +5162,7 @@ export const DynamicBlockRenderer = ({
                             />
                           ) : (
                             <span
-                              className="material-symbols-outlined"
+                              className="material-symbols-outlined" translate="no" aria-hidden="true"
                               style={{ fontVariationSettings: "'FILL' 1" }}
                             >
                               {item.icon ||
@@ -5192,7 +5192,7 @@ export const DynamicBlockRenderer = ({
                               className="flex items-start gap-2 text-on-surface-variant"
                             >
                               <span
-                                className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"} text-sm mt-1`}
+                                className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"} text-sm mt-1`} translate="no" aria-hidden="true"
                               >
                                 check_circle
                               </span>
@@ -5208,7 +5208,7 @@ export const DynamicBlockRenderer = ({
                         className={`font-label-md text-label-md ${isPrimary ? "text-primary" : "text-secondary"} group-hover:translate-x-2 transition-transform flex items-center gap-1`}
                       >
                         Detaylı Bilgi{" "}
-                        <span className="material-symbols-outlined text-sm">
+                        <span className="material-symbols-outlined text-sm" translate="no" aria-hidden="true">
                           arrow_forward
                         </span>
                       </div>
@@ -5270,7 +5270,7 @@ export const DynamicBlockRenderer = ({
                         {btn.icon &&
                           (typeof btn.icon === "string" &&
                           btn.icon === btn.icon.toLowerCase() ? (
-                            <span className="material-symbols-outlined text-[1.1em]">
+                            <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
                               {btn.icon}
                             </span>
                           ) : (
@@ -5326,7 +5326,7 @@ export const DynamicBlockRenderer = ({
                             />
                           ) : (
                             <span
-                              className="material-symbols-outlined text-[#D4AF37] text-4xl"
+                              className="material-symbols-outlined text-[#D4AF37] text-4xl" translate="no" aria-hidden="true"
                               style={{ fontVariationSettings: "'FILL' 1" }}
                             >
                               {item.icon || "star"}
@@ -5385,7 +5385,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-[#1d4eca] w-10 h-10"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-[#1d4eca] text-4xl">
+                              <span className="material-symbols-outlined text-[#1d4eca] text-4xl" translate="no" aria-hidden="true">
                                 {item.icon || "analytics"}
                               </span>
                             )}
@@ -5400,7 +5400,7 @@ export const DynamicBlockRenderer = ({
                             {item.listItems.map((li: any, i: number) => (
                               <li key={i} className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-full bg-[#D4AF37]/10 flex items-center justify-center shrink-0">
-                                  <span className="material-symbols-outlined text-[#D4AF37] text-lg">
+                                  <span className="material-symbols-outlined text-[#D4AF37] text-lg" translate="no" aria-hidden="true">
                                     check_circle
                                   </span>
                                 </div>
@@ -5433,7 +5433,7 @@ export const DynamicBlockRenderer = ({
                               className="text-[#1d4eca] w-10 h-10"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-[#1d4eca] text-4xl">
+                            <span className="material-symbols-outlined text-[#1d4eca] text-4xl" translate="no" aria-hidden="true">
                               {item.icon || "school"}
                             </span>
                           )}
@@ -5497,12 +5497,12 @@ export const DynamicBlockRenderer = ({
                 </div>
                 <div className="flex gap-2">
                   <button className="p-3 rounded-full border border-[#e2e8f0] hover:bg-[#faf8ff] transition-colors flex items-center justify-center">
-                    <span className="material-symbols-outlined">
+                    <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                       chevron_left
                     </span>
                   </button>
                   <button className="p-3 rounded-full border border-[#e2e8f0] bg-[#1d4eca] text-white hover:opacity-90 transition-colors flex items-center justify-center">
-                    <span className="material-symbols-outlined">
+                    <span className="material-symbols-outlined" translate="no" aria-hidden="true">
                       chevron_right
                     </span>
                   </button>
@@ -5586,7 +5586,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-[#D4AF37] w-8 h-8"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-[#D4AF37] text-3xl">
+                              <span className="material-symbols-outlined text-[#D4AF37] text-3xl" translate="no" aria-hidden="true">
                                 {item.icon || "science"}
                               </span>
                             )}
@@ -5659,11 +5659,11 @@ export const DynamicBlockRenderer = ({
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm">
                   <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
-                    <span className="material-symbols-outlined text-slate-500">chevron_left</span>
+                    <span className="material-symbols-outlined text-slate-500" translate="no" aria-hidden="true">chevron_left</span>
                   </button>
                   <span className="px-6 font-bold text-slate-800 min-w-[140px] text-center">{block.month || "Ekim 2023"}</span>
                   <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
-                    <span className="material-symbols-outlined text-slate-500">chevron_right</span>
+                    <span className="material-symbols-outlined text-slate-500" translate="no" aria-hidden="true">chevron_right</span>
                   </button>
                 </div>
               </div>
@@ -5767,7 +5767,7 @@ export const DynamicBlockRenderer = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {block.items?.map((item: any, i: number) => (
                 <div key={i} className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4" style={getCardStyle(item)}>
-                  {item.icon && <span className="material-symbols-outlined text-4xl" style={{ color: item.iconColor || 'var(--color-primary)' }}>{item.icon}</span>}
+                  {item.icon && <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true" style={{ color: item.iconColor || 'var(--color-primary)' }}>{item.icon}</span>}
                   <div>
                     <h4 className="font-bold text-slate-800" style={{ color: item.itemTitleColor }}>{item.title}</h4>
                     <p className="text-sm text-slate-500" style={{ color: item.itemDescColor }}>{item.desc}</p>
@@ -5805,17 +5805,17 @@ export const DynamicBlockRenderer = ({
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm">
               <div className="flex items-center space-x-6 mb-4 md:mb-0">
                 <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center">
-                  <span className="material-symbols-outlined">chevron_left</span>
+                  <span className="material-symbols-outlined" translate="no" aria-hidden="true">chevron_left</span>
                 </button>
                 <h2 className="font-headline-xl text-headline-xl text-on-surface">{block.month || "Ekim 2023"}</h2>
                 <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center">
-                  <span className="material-symbols-outlined">chevron_right</span>
+                  <span className="material-symbols-outlined" translate="no" aria-hidden="true">chevron_right</span>
                 </button>
               </div>
               <div className="flex space-x-4">
                 {block.pdfUrl && (
                   <SmartLink url={block.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors">
-                    <span className="material-symbols-outlined text-xl">picture_as_pdf</span>
+                    <span className="material-symbols-outlined text-xl" translate="no" aria-hidden="true">picture_as_pdf</span>
                     <span>{block.pdfButtonText || "PDF İndir"}</span>
                   </SmartLink>
                 )}
@@ -5890,7 +5890,7 @@ export const DynamicBlockRenderer = ({
                   <div key={i} className="bg-surface-card border border-border-subtle rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow" style={getCardStyle(legend)}>
                     <div className="flex items-center space-x-3 mb-4">
                       <div className={`w-8 h-8 rounded flex items-center justify-center ${legend.iconBgClass || 'bg-surface-container'}`}>
-                        <span className={`material-symbols-outlined text-sm ${legend.iconColorClass || 'text-on-surface'}`} style={{ fontVariationSettings: "'FILL' 1" }}>{legend.icon}</span>
+                        <span className={`material-symbols-outlined text-sm ${legend.iconColorClass || 'text-on-surface'}`} translate="no" aria-hidden="true" style={{ fontVariationSettings: "'FILL' 1" }}>{legend.icon}</span>
                       </div>
                       <h3 className="font-headline-md text-headline-md text-on-surface" style={{ color: legend.itemTitleColor }}>{legend.title}</h3>
                     </div>
@@ -5898,7 +5898,7 @@ export const DynamicBlockRenderer = ({
                     {legend.url && !legend.hideButton && (
                       <SmartLink url={legend.url} className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline">
                         <span>{legend.buttonText || "İncele"}</span>
-                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        <span className="material-symbols-outlined text-sm" translate="no" aria-hidden="true">arrow_forward</span>
                       </SmartLink>
                     )}
                   </div>
