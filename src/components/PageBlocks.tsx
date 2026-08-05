@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { db, storage } from "../lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
-import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS } from "../lib/defaultFormInputs";
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS, DEFAULT_CAREER_INPUTS } from "../lib/defaultFormInputs";
 
 const ClubsGridBlock = ({
   block,
@@ -145,9 +146,323 @@ const ClubsGridBlock = ({
 
 
 
-const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
-  const defaultInputs = block.inputs && block.inputs.length > 0 ? block.inputs : (type === 'club_registration_form' ? DEFAULT_CLUB_INPUTS : type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : DEFAULT_PRE_REGISTRATION_INPUTS);
 
+const CareerHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  return (
+    <section key={index} className="relative w-full rounded-2xl overflow-hidden min-h-[400px] flex items-center justify-center mb-8" style={getStyle(block, "container")}>
+      <div 
+        className="absolute inset-0 bg-cover bg-center" 
+        style={{ backgroundImage: `url(${block.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80'})` }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80"></div>
+      <div className="relative z-10 text-center px-6 py-16 md:py-24 text-white max-w-3xl mx-auto">
+        <h1 className="font-display-lg text-[32px] md:text-[48px] font-black text-white mb-6 leading-[1.2] tracking-tight" style={getTitleStyle(block)}>
+          {block.title || "Dost Koleji'nde Kariyer"}
+        </h1>
+        <p className="font-body-lg text-[18px] text-white/90 mb-8 max-w-2xl mx-auto" style={getSubtitleStyle(block)}>
+          {block.subtitle || "Akademik mükemmelliğe, sürekli gelişime ve huzurlu, profesyonel bir ortamda geleceği şekillendirmeye kararlı bir ekibe katılın."}
+        </p>
+        <a 
+          href="#application-form"
+          className="inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-yellow-500 text-[#002147] font-bold text-[14px] px-8 py-3 rounded-full transition-colors shadow-sm"
+        >
+          <span>{block.buttonText || "Açık Pozisyonları Görüntüle"}</span>
+          <span className="material-symbols-outlined" translate="no" aria-hidden="true">arrow_downward</span>
+        </a>
+      </div>
+    </section>
+  );
+};
+
+const CareerBenefitsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const items = block.items || [
+    { title: 'Sürekli Gelişim', desc: 'Eğitim sektöründe sürekli eğitim, atölye çalışmaları ve mesleki gelişim fırsatları ile personelimize yatırım yapıyoruz.', icon: 'psychology', iconColor: 'text-primary', iconBg: 'bg-primary/10' },
+    { title: 'Kurumsal Güven', desc: 'Dürüstlük ve istikrar temeli üzerine kurulmuş, güvenebileceğiniz güvenli ve şeffaf bir çalışma ortamı sunuyoruz.', icon: 'verified_user', iconColor: 'text-[#D4AF37]', iconBg: 'bg-yellow-100', borderTop: 'border-t-4 border-t-[#D4AF37]' },
+    { title: 'Huzurlu Ortam', desc: 'Kampüslerimiz hem öğrenciler hem de personel için refah, işbirliği ve uyumlu bir atmosferi teşvik etmek üzere tasarlanmıştır.', icon: 'spa', iconColor: 'text-emerald-700', iconBg: 'bg-emerald-100' }
+  ];
+
+  return (
+    <section key={index} className="w-full px-4 md:px-0 mb-16" style={getStyle(block, "container")}>
+      <div className="text-center mb-12">
+        <h2 className="font-bold text-[28px] md:text-[36px] text-[#002147] mb-4" style={getTitleStyle(block)}>
+          {block.title || "Neden Bize Katılmalısınız?"}
+        </h2>
+        <p className="font-normal text-[16px] text-slate-500 max-w-2xl mx-auto" style={getSubtitleStyle(block)}>
+          {block.subtitle || "Dost Koleji ailesinin bir parçası olmanın avantajlarını keşfedin."}
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {items.map((item: any, i: number) => (
+          <div key={i} className={`bg-white border border-slate-200 rounded-xl p-6 transition-transform hover:-translate-y-1 hover:shadow-md ${item.borderTop || ''}`}>
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${item.iconBg || 'bg-slate-100'} ${item.iconColor || 'text-slate-700'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }} translate="no" aria-hidden="true">{item.icon || 'star'}</span>
+            </div>
+            <h3 className="font-bold text-[20px] text-slate-900 mb-2">{item.title}</h3>
+            <p className="font-normal text-[16px] text-slate-500">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const CareerApplicationBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const positions = block.items || [];
+  
+  return (
+    <section key={index} id="application-form" className="w-full px-4 md:px-0 mb-16" style={getStyle(block, "container")}>
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+        
+        {/* Left Side: Open Positions */}
+        <div className="lg:w-1/3">
+          <div className="sticky top-24">
+            <h2 className="font-bold text-[28px] text-[#002147] mb-6" style={getTitleStyle(block)}>
+              {block.title || "Açık Pozisyonlar"}
+            </h2>
+            {positions.length > 0 ? (
+              <div className="space-y-4">
+                {positions.map((pos: any, idx: number) => (
+                  <div key={idx} className="bg-white border border-slate-200 rounded-xl p-5 hover:border-[#D4AF37] hover:shadow-md transition-all group">
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="font-bold text-[#002147] group-hover:text-[#D4AF37] transition-colors">{pos.title}</h4>
+                      <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">{pos.type}</span>
+                    </div>
+                    <p className="text-[13px] text-slate-500">{pos.dept}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-slate-50 text-slate-500 p-6 rounded-xl text-center text-sm border border-slate-100">
+                Şu an açık pozisyon bulunmamaktadır. Genel başvuru yapabilirsiniz.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Side: Application Form */}
+        <div className="lg:w-2/3">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 relative">
+             {/* Header */}
+            <div className="bg-[#002147] px-8 py-6 text-white text-center">
+              <h2 className="font-bold text-[24px]">İş Başvurusu</h2>
+              <p className="text-white/80 mt-2">Dost Koleji ailesine katılmak için formu doldurun</p>
+            </div>
+            
+            <div className="p-8">
+              <DynamicFormBuilder block={block} type="career_application" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+const EduSystemHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const bgImage = block.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2850&q=80';
+  const posX = block.image_posX || '50';
+  const posY = block.image_posY || '50';
+  const scale = block.image_scale || '100';
+
+  return (
+    <section key={index} className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden" style={getStyle(block, "container")}>
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-on-background/80 to-on-background/40 z-10"></div>
+        <div 
+          className="w-full h-full bg-cover" 
+          style={{ 
+            backgroundImage: `url('${bgImage}')`,
+            backgroundPosition: `${posX}% ${posY}%`,
+            transform: `scale(${scale / 100})`
+          }}>
+        </div>
+      </div>
+      <div className="relative z-20 w-full max-w-container-max px-margin-mobile md:px-margin-desktop py-20 text-center text-white">
+        <h1 className="font-display-lg text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6" style={getTitleStyle(block)}>
+          {block.title || 'Eğitim Sistemimiz'}
+        </h1>
+        <p className="font-body-lg text-lg md:text-xl max-w-3xl mx-auto text-surface-bright/90" style={getSubtitleStyle(block)}>
+          {block.subtitle || 'Geleceğe Güvenle Hazırlıyoruz'}
+        </p>
+      </div>
+    </section>
+  );
+};
+
+const EduSystemLevelsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  return (
+    <section key={index} className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" style={getStyle(block, "container")}>
+      <div className="text-center mb-16">
+        <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
+        <div className="h-1 w-20 bg-secondary rounded-full mx-auto"></div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {(block.items || []).map((item: any, i: number) => {
+          const isPrimary = i % 2 === 0;
+          const colorClass = isPrimary ? 'primary' : 'secondary';
+          return (
+            <div key={i} className="bg-surface-card rounded-xl border border-border-subtle p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full"
+              style={{
+                backgroundColor: item.cardBgColor || undefined,
+                borderColor: item.cardBorderColor || undefined,
+                borderWidth: item.cardBorderWidth || undefined,
+                borderRadius: item.cardBorderRadius || undefined,
+                padding: item.cardPadding || undefined,
+                boxShadow: item.cardShadow === 'none' ? 'none' : (item.cardShadow ? `var(--tw-shadow-${item.cardShadow})` : undefined),
+              }}
+            >
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-6 transition-colors ${isPrimary ? 'bg-primary/10 group-hover:bg-primary text-primary' : 'bg-secondary/10 group-hover:bg-secondary text-secondary'} group-hover:text-white`}>
+                <span className="material-symbols-outlined text-3xl transition-colors" translate="no" aria-hidden="true">{item.icon || 'school'}</span>
+              </div>
+              <h3 className="font-headline-md text-xl font-bold text-text-main mb-3" style={{color: item.itemTitleColor}}>{item.title}</h3>
+              <p className="font-body-md text-text-muted mb-6 flex-grow" style={{color: item.itemDescColor}}>{item.desc}</p>
+              {item.url && !item.hideButton && (
+                <SmartLink className={`inline-flex items-center font-label-md font-semibold hover:opacity-80 group/link ${isPrimary ? 'text-primary' : 'text-secondary'}`} url={item.url}>
+                  {item.buttonText || 'Detaylı Bilgi'}
+                  <span className="material-symbols-outlined text-sm ml-1 group-hover/link:translate-x-1 transition-transform" translate="no" aria-hidden="true">arrow_forward</span>
+                </SmartLink>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+const EduSystemYadepBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  return (
+    <section key={index} className="py-section-gap bg-surface-container-low" style={getStyle(block, "container")}>
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="text-center mb-16">
+          <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
+          <p className="font-body-lg text-text-muted max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {(block.items || []).map((item: any, i: number) => {
+             let colorClass = 'primary';
+             if (i === 1) colorClass = 'secondary';
+             if (i === 2) colorClass = 'error';
+             
+             return (
+              <div key={i} className="bg-surface-card p-8 rounded-xl shadow-sm border border-border-subtle hover:shadow-md transition-shadow"
+                style={{
+                  backgroundColor: item.cardBgColor || undefined,
+                  borderColor: item.cardBorderColor || undefined,
+                  borderWidth: item.cardBorderWidth || undefined,
+                  borderRadius: item.cardBorderRadius || undefined,
+                  padding: item.cardPadding || undefined,
+                  boxShadow: item.cardShadow === 'none' ? 'none' : (item.cardShadow ? `var(--tw-shadow-${item.cardShadow})` : undefined),
+                }}
+              >
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${
+                  colorClass === 'error' ? 'bg-error-container/30 text-error-red' : 
+                  colorClass === 'secondary' ? 'bg-secondary/10 text-secondary' : 
+                  'bg-primary/10 text-primary'
+                }`}>
+                  <span className="material-symbols-outlined text-3xl" translate="no" aria-hidden="true">{item.icon}</span>
+                </div>
+                <h3 className="font-headline-md text-xl font-bold text-text-main mb-3" style={{color: item.itemTitleColor}}>{item.title}</h3>
+                <p className="font-body-md text-text-muted" style={{color: item.itemDescColor}}>{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const EduSystemPhilosophyBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const bgImage = block.image || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=80';
+  const posX = block.image_posX || '50';
+  const posY = block.image_posY || '50';
+  const scale = block.image_scale || '100';
+
+  return (
+    <section key={index} className="py-section-gap bg-surface-container relative overflow-hidden" style={getStyle(block, "container")}>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
+      
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <div className="flex flex-col lg:flex-row gap-16 items-center">
+          <div className="lg:w-1/2 space-y-8">
+            <div>
+              <span className="text-secondary font-label-md tracking-wider uppercase mb-2 block">{block.badge}</span>
+              <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-text-main" style={getTitleStyle(block)}>{block.title}</h2>
+            </div>
+            <p className="font-body-md text-text-muted text-lg" style={getSubtitleStyle(block)}>
+              {block.subtitle || block.desc}
+            </p>
+            <div className="space-y-6">
+              {(block.items || []).map((item: any, i: number) => {
+                const colorClass = i % 2 === 0 ? 'primary' : 'secondary';
+                return (
+                  <div key={i} className="flex gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-card border border-border-subtle flex items-center justify-center shadow-sm">
+                      <span className={`material-symbols-outlined ${colorClass === 'primary' ? 'text-primary' : 'text-secondary'}`} translate="no" aria-hidden="true">{item.icon}</span>
+                    </div>
+                    <div>
+                      <h4 className="font-headline-md text-lg font-bold text-text-main mb-1" style={{color: item.itemTitleColor}}>{item.title}</h4>
+                      <p className="font-body-md text-text-muted text-sm" style={{color: item.itemDescColor}}>{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          <div className="lg:w-1/2 relative">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+              <div 
+                className="w-full h-full bg-cover" 
+                style={{
+                  backgroundImage: `url('${bgImage}')`,
+                  backgroundPosition: `${posX}% ${posY}%`,
+                  transform: `scale(${scale / 100})`
+                }}
+              ></div>
+            </div>
+            {block.cardTitle && (
+              <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-white/80 backdrop-blur-md p-6 rounded-xl border border-white shadow-lg max-w-xs hidden sm:block">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="material-symbols-outlined text-secondary text-3xl" translate="no" aria-hidden="true">{block.cardIcon || 'emoji_events'}</span>
+                  <span className="font-headline-md font-bold text-text-main">{block.cardTitle}</span>
+                </div>
+                <p className="font-body-md text-sm text-text-muted">{block.cardDesc}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const EduSystemCtaBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  return (
+    <section key={index} className="py-24 bg-primary text-white relative overflow-hidden" style={getStyle(block, "container")}>
+      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
+      <div className="max-w-4xl mx-auto px-margin-mobile text-center relative z-10">
+        <h2 className="font-headline-xl text-3xl md:text-5xl font-bold mb-6" style={getTitleStyle(block)}>{block.title}</h2>
+        <p className="font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl mx-auto" style={getSubtitleStyle(block)}>
+          {block.subtitle || block.desc}
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {(block.buttons || []).map((btn: any, btnIdx: number) => (
+            <SmartLink key={btnIdx} url={btn.url} className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-label-md font-bold rounded-lg hover:bg-surface-bright hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+              {btn.icon && <span className="material-symbols-outlined" translate="no" aria-hidden="true">{btn.icon}</span>}
+              {btn.label || btn.buttonText}
+            </SmartLink>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
+  const defaultInputs = block.inputs && block.inputs.length > 0 ? block.inputs : (type === 'club_registration_form' ? DEFAULT_CLUB_INPUTS : type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : type === 'career_application' ? DEFAULT_CAREER_INPUTS : DEFAULT_PRE_REGISTRATION_INPUTS);
   const defaultClubs = block.clubs && block.clubs.length > 0 ? block.clubs : (type === 'club_registration_form' ? [
     { id: "spor", label: "Spor", icon: "sports_basketball" },
     { id: "sanat", label: "Sanat", icon: "palette" },
@@ -156,7 +471,6 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
     { id: "robotik", label: "Robotik", icon: "smart_toy" },
     { id: "drama", label: "Drama", icon: "theater_comedy" }
   ] : []);
-
   const [formData, setFormData] = useState<any>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -221,14 +535,29 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
 
     setSubmitting(true);
     try {
+      // Clean up files to base64 or drop them if too large
+      const processedData = { ...formData };
+      for (const key of Object.keys(processedData)) {
+        if (processedData[key] instanceof File) {
+          // Just store file name and size for demo purposes as we don't have Storage setup
+          // Or read as DataURL if it's small, but to prevent firestore size limits, just metadata
+          processedData[key] = {
+            name: processedData[key].name,
+            size: processedData[key].size,
+            type: processedData[key].type,
+            isUploaded: true
+          };
+        }
+      }
+
       if (submitForm) {
-        const resId = await submitForm(formData);
+        const resId = await submitForm(processedData);
         if (resId) setSubmittedDocId(resId);
       } else {
         const docRef = await addDoc(collection(db, "forms"), {
           type: type,
           createdAt: Date.now(),
-          data: formData
+          data: processedData
         });
         if (docRef?.id) setSubmittedDocId(docRef.id);
       }
@@ -382,7 +711,14 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                 }
 
                 if (input.type === 'select') {
-                  const opts = (input.options || "").split(',').map((o: string) => o.trim());
+                  let opts = (input.options || "").split(',').map((o: string) => o.trim());
+                  
+                  // Auto-populate career form positions if available
+                  if (type === 'career_application' && input.name === 'position' && block.items && block.items.length > 0) {
+                     opts = block.items.map((pos: any) => pos.title || pos.val || "Pozisyon");
+                     opts.push("Diğer / Genel Başvuru");
+                  }
+
                   return (
                     <div key={inputKey} className={isStyledForm ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
                       <label className={isStyledForm ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
@@ -396,6 +732,20 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                           <option key={`${inputKey}_opt_${optIdx}`} value={opt}>{opt}</option>
                         ))}
                       </select>
+                    </div>
+                  );
+                }
+
+                
+                if (input.type === 'file') {
+                  return (
+                    <div key={inputKey} className={isStyledForm ? `space-y-1 ${colSpan}` : `space-y-2 ${colSpan}`}>
+                      <label className={isStyledForm ? "font-label-sm text-label-sm text-text-muted block" : "font-label-md text-label-md text-on-surface-variant block"}>{input.label}</label>
+                      <input 
+                        type="file" required={input.required} 
+                        onChange={e => handleChange(input.name, e.target.files ? e.target.files[0] : null)} 
+                        className={isStyledForm ? "w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" : "w-full px-4 py-2.5 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"} 
+                      />
                     </div>
                   );
                 }
@@ -605,6 +955,40 @@ const BurslulukHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitle
 };
 
 const BurslulukExamFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+  const [burslulukActive, setBurslulukActive] = useState<boolean>(true);
+  const [burslulukInactiveMessage, setBurslulukInactiveMessage] = useState<string>('');
+  
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const docRef = doc(db, 'settings', 'general');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.burslulukActive !== undefined) {
+            let isActive = data.burslulukActive;
+            
+            if (isActive) {
+               const now = new Date();
+               if (data.burslulukStartDate && new Date(data.burslulukStartDate) > now) {
+                  isActive = false;
+               }
+               if (data.burslulukEndDate && new Date(data.burslulukEndDate) < now) {
+                  isActive = false;
+               }
+            }
+            
+            setBurslulukActive(isActive);
+            setBurslulukInactiveMessage(data.burslulukInactiveMessage || '');
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching bursluluk settings", e);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   const submitForm = async (formData: any) => {
     if (block.webhookUrl) {
       try {
@@ -656,7 +1040,18 @@ const BurslulukExamFormBlock = ({ block, index, getStyle, getTitleStyle, getSubt
           </div>
         </div>
         
-        <DynamicFormBuilder block={block} type="bursluluk_exam_form" submitForm={submitForm} />
+        {burslulukActive ? (
+          <DynamicFormBuilder block={block} type="bursluluk_exam_form" submitForm={submitForm} />
+        ) : (
+          <div className="p-8 md:p-12">
+            <div className="text-center bg-blue-50 border border-blue-100 p-8 rounded-xl">
+              <span className="material-symbols-outlined text-blue-500 text-5xl mb-4" translate="no" aria-hidden="true">info</span>
+              <p className="text-lg text-slate-700 whitespace-pre-line leading-relaxed max-w-2xl mx-auto">
+                {burslulukInactiveMessage || "Değerli Velimiz,\n2026-2027 Eğitim-Öğretim yılı Bursluluk ve Kabul Sınavı başvuru sürecimiz şu an için aktif değildir. Yeni dönem sınav takvimimiz ve başvuru tarihlerimiz belirlendiğinde web sitemiz ve sosyal medya hesaplarımız üzerinden duyurulacaktır. Kurumumuza gösterdiğiniz değerli ilgi için teşekkür ederiz."}
+              </p>
+            </div>
+          </div>
+        )}
         
         {/* Aesthetic Footer Graphic */}
         <div className="h-2 w-full flex">
@@ -1708,6 +2103,22 @@ export const DynamicBlockRenderer = ({
         case "club_registration_form":
           return <ClubRegistrationFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
 
+        case "career_hero":
+          return <CareerHeroBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "career_benefits":
+          return <CareerBenefitsBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "career_application":
+          return <CareerApplicationBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} />;
+        case "edu_system_hero":
+          return <EduSystemHeroBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "edu_system_levels":
+          return <EduSystemLevelsBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "edu_system_yadep":
+          return <EduSystemYadepBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "edu_system_philosophy":
+          return <EduSystemPhilosophyBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
+        case "edu_system_cta":
+          return <EduSystemCtaBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
         case "contact_form":
           return <ContactFormBlock key={index} block={block} index={index} getStyle={getStyle} getTitleStyle={getTitleStyle} getSubtitleStyle={getSubtitleStyle} />;
 

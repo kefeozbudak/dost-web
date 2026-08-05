@@ -1,26 +1,18 @@
 const fs = require('fs');
-let code = fs.readFileSync('src/admin/PageEditor.tsx', 'utf8');
 
-// 1. Remove the local resolveMediaUrls function
-const resolveRegex = /async function resolveMediaUrls[\s\S]*?return obj;\n}/;
-code = code.replace(resolveRegex, "import { resolveMediaUrls } from '../lib/resolveMedia';");
+let content = fs.readFileSync('./src/admin/PageEditor.tsx', 'utf8');
+content = content.replace(
+  /catch \(e: any\) \{\n\s*console.error\("Save error:", e\);/g,
+  `catch (e: any) {
+      console.error("Save error during setDoc or extractAndSaveBase64Images:", e);`
+);
+fs.writeFileSync('./src/admin/PageEditor.tsx', content);
 
-// 2. Fix the fetch logic to remove passing `db` to resolveMediaUrls
-const fetchRegex = /resolveMediaUrls\(data, db\)\.then/g;
-code = code.replace(fetchRegex, "resolveMediaUrls(data).then");
+let mc = fs.readFileSync('./src/admin/hubs/MediaCenter.tsx', 'utf8');
+mc = mc.replace(
+  /catch \(err\) \{\n\s*console.error\("Error fetching media", err\);/g,
+  `catch (err) {
+      console.error("Error fetching media in MediaCenter:", err);`
+);
+fs.writeFileSync('./src/admin/hubs/MediaCenter.tsx', mc);
 
-// 3. Fix handleSave logic to resolve after saving
-const handleSaveTarget = `      console.log("Saving dataToSave:", dataToSave);
-      await setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true });
-      setPageData(dataToSave);
-      alert('Sayfa başarıyla kaydedildi!');`;
-
-const handleSaveReplacement = `      console.log("Saving dataToSave:", dataToSave);
-      await setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true });
-      resolveMediaUrls(dataToSave).then(resolved => setPageData(resolved));
-      alert('Sayfa başarıyla kaydedildi!');`;
-
-code = code.replace(handleSaveTarget, handleSaveReplacement);
-
-fs.writeFileSync('src/admin/PageEditor.tsx', code);
-console.log("Fixed PageEditor");

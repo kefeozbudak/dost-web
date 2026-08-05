@@ -3,7 +3,7 @@ import { Plus, GripVertical } from 'lucide-react';
 import IconField from '../components/IconField';
 import MediaPickerModal from '../components/MediaPickerModal';
 import FieldStylePicker from './components/FieldStylePicker';
-import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS } from '../lib/defaultFormInputs';
+import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS, DEFAULT_CAREER_INPUTS } from '../lib/defaultFormInputs';
 
 interface BlockFormEditorProps {
   activeArrayItem?: { arrayKey: string, index: number } | null;
@@ -52,6 +52,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
     if (arrayKey === 'inputs' && (!current || current.length === 0)) {
       if (block.type === 'pre_registration_form') return DEFAULT_PRE_REGISTRATION_INPUTS;
       if (block.type === 'club_registration_form') return DEFAULT_CLUB_INPUTS;
+      if (block.type === 'career_application') return DEFAULT_CAREER_INPUTS;
       if (block.type === 'bursluluk_exam_form') return DEFAULT_SCHOLARSHIP_INPUTS;
       return [];
     }
@@ -141,7 +142,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
       <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">{label}</label>
       <div className="flex gap-2">
         <input type="text" value={block[key] || ''} onChange={e => handleChange(key, e.target.value)} className="flex-1 px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:ring-1 focus:ring-blue-500 bg-white" placeholder="https://..." />
-        <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleChange(key, url) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md font-bold text-xs whitespace-nowrap shadow-sm transition-colors">Seç</button>
+        <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleChange(key, url || '') })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md font-bold text-xs whitespace-nowrap shadow-sm transition-colors">Seç</button>
       </div>
       {block[key] && (
         <div className="grid grid-cols-1 gap-3 mt-2 pt-3 border-t border-slate-200">
@@ -302,7 +303,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{field.label}</label>
                     <div className="flex gap-2">
                       <input type="text" value={item[field.key] || ''} onChange={(e) => handleArrayChange(arrayKey, idx, field.key, e.target.value)} className="flex-1 text-sm border border-slate-300 rounded p-1.5 focus:ring-1 focus:ring-blue-500 bg-white" placeholder="https://..." />
-                      <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleArrayChange(arrayKey, idx, field.key, url) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-[11px] font-bold shadow-sm transition-colors">Seç</button>
+                      <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleArrayChange(arrayKey, idx, field.key, url || '') })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-[11px] font-bold shadow-sm transition-colors">Seç</button>
                     </div>
                     {item[field.key] && (
                       <div className="grid grid-cols-1 gap-3 mt-3 pt-3 border-t border-slate-200">
@@ -469,7 +470,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
             type="button"
             onClick={() => {
               if (confirm("Form alanlarını orijinal varsayılan şablona sıfırlamak istediğinize emin misiniz? Yapılan özelleştirmeler sıfırlanacaktır.")) {
-                const defaults = block.type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : (block.type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : DEFAULT_CLUB_INPUTS);
+                const defaults = block.type === 'pre_registration_form' ? DEFAULT_PRE_REGISTRATION_INPUTS : (block.type === 'bursluluk_exam_form' ? DEFAULT_SCHOLARSHIP_INPUTS : block.type === 'career_application' ? DEFAULT_CAREER_INPUTS : DEFAULT_CLUB_INPUTS);
                 handleChange(arrayKey, defaults);
               }
             }}
@@ -1350,6 +1351,130 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               { key: 'name', label: 'Alan Kimliği / Key (İngilizce/Boşluksuz)', type: 'text' },
               { key: 'placeholder', label: 'Yer Tutucu Metin (Örn: Kampüs Seçiniz)', type: 'text' },
               { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)', type: 'textarea' },
+              { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
+              { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
+              { key: 'icon', label: 'İkon', type: 'icon' },
+            ], "Form Alanları (İnputlar)")}
+          </div>
+        )}
+
+                {block.type === 'edu_system_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderImageUpload('Arka Plan Görseli', 'image')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_levels' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderArrayEditor('items', [
+              { key: 'title', label: 'Başlık', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+              { key: 'url', label: 'Link URL', type: 'url' },
+              { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+              { key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox' }
+            ], 'Kademeler (Items)')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_yadep' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'title', label: 'Başlık', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'icon', label: 'İkon (Material)', type: 'icon' }
+            ], 'YADEP Kartları (Items)')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_philosophy' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Rozet (Badge)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Alt Başlık (Açıklama)', 'subtitle')}
+            {renderImageUpload('Görsel URL', 'image')}
+            {renderInputWithStyle('Kayan Kart İkonu', 'cardIcon')}
+            {renderInputWithStyle('Kayan Kart Başlığı', 'cardTitle')}
+            {renderInputWithStyle('Kayan Kart Açıklaması', 'cardDesc')}
+            {renderArrayEditor('items', [
+              { key: 'title', label: 'Başlık', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'icon', label: 'İkon (Material)', type: 'icon' }
+            ], 'Özellikler (Items)')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_cta' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('buttons', [
+              { key: 'label', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Link URL', type: 'url' },
+              { key: 'icon', label: 'İkon (Material)', type: 'icon' }
+            ], 'Butonlar')}
+          </div>
+        )}
+
+        {block.type === 'career_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Hero Başlığı', 'title')}
+            {renderInputWithStyle('Hero Alt Başlığı', 'subtitle')}
+            {renderImageUpload('Arka Plan Görseli URL', 'image')}
+            {renderInputWithStyle('Buton Metni', 'buttonText')}
+          </div>
+        )}
+        
+        {block.type === 'career_benefits' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'title', label: 'Başlık', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+              { key: 'iconColor', label: 'İkon Rengi (Sınıf)', type: 'text' },
+              { key: 'iconBg', label: 'İkon Arka Plan (Sınıf)', type: 'text' }
+            ], 'Avantajlar (Items)')}
+          </div>
+        )}
+
+        {block.type === 'career_application' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Pozisyonlar Başlığı', 'title')}
+            {renderArrayEditor('items', [
+              { key: 'title', label: 'Pozisyon Başlığı', type: 'text' },
+              { key: 'type', label: 'Çalışma Tipi (örn: TAM ZAMANLI)', type: 'text' },
+              { key: 'dept', label: 'Bölüm (örn: Lise Bölümü)', type: 'text' },
+              { key: 'val', label: 'Değer / ID', type: 'text' }
+            ], 'Açık Pozisyonlar (Items)')}
+            
+            <div className="border-t border-slate-200 my-6"></div>
+            
+            <h4 className="text-sm font-bold text-slate-800 mb-4">Form Alanları (Inputs)</h4>
+            
+{renderArrayEditor('inputs', [
+              { key: 'type', label: 'Veri Tipi (Giriş Türü)', type: 'select', options: [
+                { value: 'text', label: 'Kısa Metin (Text)' },
+                { value: 'select', label: 'Açılır Liste Seçimi (Select/Dropdown)' },
+                { value: 'radio', label: 'Tekli Seçim (Radio)' },
+                { value: 'checkbox', label: 'Onay Kutusu (Checkbox)' },
+                { value: 'date', label: 'Tarih Seçici (Date)' },
+                { value: 'tel', label: 'Telefon Numarası (Phone)' },
+                { value: 'email', label: 'E-Posta Adresi (Email)' },
+                { value: 'textarea', label: 'Uzun Metin Kutusu (Textarea)' },
+                { value: 'file', label: 'Dosya Yükleme (Örn: CV)' },
+                { value: 'section_title', label: 'Bölüm / Kısım Başlığı (Section Header)' }
+              ] },
+              { key: 'label', label: 'Görünen Etiket / Metin', type: 'text' },
+              { key: 'name', label: 'Alan Kimliği / Key (İngilizce/Boşluksuz)', type: 'text' },
+              { key: 'placeholder', label: 'Yer Tutucu Metin', type: 'text' },
+              { key: 'options', label: 'Seçenekler (Açılır liste veya radio için virgülle ayırın)', type: 'textarea' },
               { key: 'required', label: 'Zorunlu Alan Mı?', type: 'checkbox' },
               { key: 'fullWidth', label: 'Tam Genişlik (2 Sütun Kaplasın Mı?)', type: 'checkbox' },
               { key: 'icon', label: 'İkon', type: 'icon' },

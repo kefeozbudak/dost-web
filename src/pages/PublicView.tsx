@@ -104,7 +104,7 @@ export default function PublicView() {
     const docRef = doc(db, 'pages', docId);
     
     const unsubscribeDoc = onSnapshot(docRef, async (docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
         let data = docSnap.data();
         
         // Resolve /api/media/ URLs to their actual Firestore URLs
@@ -192,6 +192,24 @@ export default function PublicView() {
           setPageData({
             title: 'Hakkımızda',
             blocks: defaultHakkimizdaData
+          });
+        });
+      } else if (docId === 'is-basvuru-formu' || cleanPath === '/is-basvuru-formu' || cleanPath === '/is-basvuru' || cleanPath === '/is-basvurusu' || cleanPath === '/isbasvurusu' || cleanPath === '/isbasvuru') {
+        setPageData({
+          title: 'İş Başvuru Formu',
+          path: '/is-basvuru-formu',
+          blocks: [
+            { type: 'career_hero', title: "Dost Koleji'nde Kariyer" },
+            { type: 'career_benefits', title: "Neden Bize Katılmalısınız?" },
+            { type: 'career_application', title: "Mevcut Açık Pozisyonlar" }
+          ]
+        });
+      } else if (docId === 'egitim-sistemimiz' || cleanPath === '/egitim-sistemimiz') {
+        import('../lib/defaultData').then(({ defaultEgitimSistemiData }) => {
+          setPageData({
+            title: 'Eğitim Sistemimiz',
+            path: '/egitim-sistemimiz',
+            blocks: defaultEgitimSistemiData
           });
         });
       } else if (docId === 'on-kayit' || cleanPath === '/on-kayit') {
@@ -300,7 +318,7 @@ export default function PublicView() {
       <div className={`flex-1 transition-all duration-300 ${isAnnouncementActive ? 'pt-28 md:pt-32' : 'pt-20'}`}>
         <DynamicBlockRenderer blocks={pageData.blocks || []} />
       </div>
-      <Footer data={footerData} />
+      <Footer data={footerData} headerData={headerData} />
       <AssistantWidget />
       <PopupOverlay />
       

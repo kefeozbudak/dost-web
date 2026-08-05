@@ -3,38 +3,84 @@ import { db } from '../lib/firebase';
 import { IconPreview } from './IconField';
 import SmartLink from './SmartLink';
 
-export default function Footer({ data }: { data?: any }) {
+
+// Helper to capitalize words (Turkish support)
+const capitalizeWords = (str: string) => {
+  if (!str) return '';
+  return str.split(' ').map(word => {
+    if (!word) return '';
+    return word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR');
+  }).join(' ');
+};
+
+export default function Footer({ data, headerData }: { data?: any; headerData?: any }) {
   const footerLogo = data?.logoUrl?.includes('lh3.googleusercontent.com') ? '/dost-logo-png.png' : (data?.logoUrl || '/dost-logo-png.png');
   const logoHeight = data?.logoHeight || 64;
 
-  const columns = data?.columns || [
-    {
-      title: 'Kurumsal',
-      links: [
-        { label: 'Hakkımızda', url: '#' },
-        { label: 'Vizyon & Misyon', url: '#' },
-        { label: 'Kurucularımız', url: '#' },
-        { label: 'İnsan Kaynakları', url: '#' }
-      ]
-    },
-    {
-      title: 'Akademik',
-      links: [
-        { label: 'Anaokulu', url: '#' },
-        { label: 'İlkokul', url: '#' },
-        { label: 'Ortaokul', url: '#' },
-        { label: 'Fen ve Anadolu Lisesi', url: '#' }
-      ]
-    },
-    {
-      title: 'Kampüslerimiz',
-      links: [
-        { label: 'Ümitköy Kampüsü', url: '#' },
-        { label: 'Oran Kampüsü', url: '#' },
-        { label: 'Eryaman Kampüsü', url: '#' }
-      ]
-    }
-  ];
+  let columns: any[] = [];
+  
+  // Header'daki mega menü veya alt menüleri al
+  if (headerData && headerData.links) {
+    headerData.links.forEach((link: any) => {
+      if (link.type === 'dropdown' && link.subLinks && link.subLinks.length > 0) {
+        columns.push({
+          title: link.label,
+          links: link.subLinks
+        });
+      } else if (link.type === 'mega' && link.megaMenu && link.megaMenu.columns) {
+        link.megaMenu.columns.forEach((col: any) => {
+          if (col.links && col.links.length > 0) {
+            columns.push({
+              title: col.title || link.label,
+              links: col.links
+            });
+          }
+        });
+      } else if (link.type === 'normal' || !link.type) {
+         // Eğer normal linkler için de bir kolon oluşturmak isterseniz
+         // Şimdilik sadece alt menüsü olanları sütun yapıyoruz (Footer standartı)
+      }
+    });
+  }
+  
+  // Eğer admin menüde görünümden footer'a özel kolon eklediyse onu da sonuna ekle
+  if (data?.columns && data.columns.length > 0) {
+     // Optional: data.columns'u da ekleyebiliriz ama kullanici otomatik sorsun dedi
+     // Eger kullanici tamamen basliktan (header) almasini istiyorsa, asagidaki sekilde
+     // sadece data.columns eger header'dan hicbir sey gelmezse kullanilsin.
+  }
+
+  // Eger hicbir yerden kolon gelmediyse varsayilan:
+  if (columns.length === 0) {
+    columns = data?.columns || [
+      {
+        title: 'Kurumsal',
+        links: [
+          { label: 'Hakkımızda', url: '#' },
+          { label: 'Vizyon & Misyon', url: '#' },
+          { label: 'Kurucularımız', url: '#' },
+          { label: 'İnsan Kaynakları', url: '#' }
+        ]
+      },
+      {
+        title: 'Akademik',
+        links: [
+          { label: 'Anaokulu', url: '#' },
+          { label: 'İlkokul', url: '#' },
+          { label: 'Ortaokul', url: '#' },
+          { label: 'Fen ve Anadolu Lisesi', url: '#' }
+        ]
+      },
+      {
+        title: 'Kampüslerimiz',
+        links: [
+          { label: 'Ümitköy Kampüsü', url: '#' },
+          { label: 'Oran Kampüsü', url: '#' },
+          { label: 'Eryaman Kampüsü', url: '#' }
+        ]
+      }
+    ];
+  }
 
   const legalLinks = data?.legalLinks || [
     { label: 'KVKK', url: '#' },
@@ -179,20 +225,20 @@ export default function Footer({ data }: { data?: any }) {
           <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${Math.min(columns.length, 5)} gap-8 border-t pt-10 pb-14`} style={{ borderColor: customBorderColor || 'rgba(0,0,0,0.08)' }}>
             {columns.map((col: any, i: number) => (
               <div key={i} className="space-y-4">
-                <h5 className="font-bold text-base md:text-lg text-primary dark:text-primary-fixed tracking-wide" style={titleStyle}>
-                  {col.title}
+                <h5 className="font-bold text-base md:text-lg text-primary dark:text-primary-fixed tracking-wide capitalize whitespace-nowrap truncate" style={titleStyle} title={col.title}>
+                  {capitalizeWords(col.title)}
                 </h5>
                 <ul className="flex flex-col gap-2.5">
                   {(col.links || []).map((link: any, j: number) => (
                     <li key={j}>
                       <SmartLink 
-                        className="text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors flex items-center gap-1.5" 
+                        className="text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors flex items-center gap-1.5 capitalize whitespace-nowrap truncate" 
                         style={textStyle}
                         url={link.url}
                         target={link.target || '_self'}
                       >
                         {link.icon && <IconPreview data={link.icon} className="w-4 h-4 text-primary" />}
-                        {link.label}
+                        <span title={capitalizeWords(link.label)} className="truncate">{capitalizeWords(link.label)}</span>
                       </SmartLink>
                     </li>
                   ))}

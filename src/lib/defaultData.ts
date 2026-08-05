@@ -622,3 +622,113 @@ export const defaultScholarshipConfirmationPageData = [
   }
 ];
 
+
+export const defaultEgitimSistemiData = [
+  {
+    type: "edu_system_hero",
+    title: "Eğitim Sistemimiz: Geleceğe Güvenle Hazırlıyoruz",
+    subtitle: "Öğrencilerimizi sadece akademik olarak değil, sosyal, duygusal ve fiziksel olarak da destekleyen bütüncül (holistik) ve öğrenci odaklı bir eğitim modeli uyguluyoruz.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDXrfv9nG993CiDepWkpLVnJsyr4V4H0omhGEazGnoozOFIBn416oFqVDB0cU2KMjZ42WLGbfxzwGkfZpQB7RDZU2nFk6r0Fp-P8_EpALDAsjOzJHSwfSFekrpfepwCYUqWG1JJjcVg9rT4GSdexOGAcEsZnaVtgQft5ukI1hgqV4oaWwSUZ6m8mrcmxvj_9faGCMhX5JcOze8sYGkCVEgCW0So_2_F8TpGVXCuwJASLPt9t0rS8TSw",
+    image_posX: "50",
+    image_posY: "50",
+    image_scale: "100"
+  },
+  {
+    type: "edu_system_levels",
+    title: "Eğitim Kademelerimiz",
+    items: [
+      {
+        icon: "child_care",
+        title: "Anaokulu",
+        desc: "Oyun temelli öğrenme ile çocukların merak duygusunu besleyerek ilköğretime sağlam bir temel atıyoruz.",
+        buttonText: "Detaylı Bilgi",
+        url: "#"
+      },
+      {
+        icon: "school",
+        title: "İlkokul",
+        desc: "Temel akademik becerilerin yanı sıra, karakter eğitimi ve değerler eğitimini merkeze alarak birey olma yolculuğunu destekliyoruz.",
+        buttonText: "Detaylı Bilgi",
+        url: "#"
+      },
+      {
+        icon: "local_library",
+        title: "Ortaokul",
+        desc: "Liselere geçiş sınavlarına (LGS) profesyonel hazırlık sürecini, yoğun dil eğitimi ve kulüp faaliyetleriyle zenginleştiriyoruz.",
+        buttonText: "Detaylı Bilgi",
+        url: "#"
+      },
+      {
+        icon: "account_balance",
+        title: "Lise",
+        desc: "Üniversite hedeflerine yönelik yoğun akademik program, kariyer danışmanlığı ve uluslararası geçerliliği olan sertifika programları sunuyoruz.",
+        buttonText: "Detaylı Bilgi",
+        url: "#"
+      }
+    ]
+  },
+  {
+    type: "edu_system_yadep",
+    title: "YADEP: Yaşam Becerileri ve Değerler Eğitimi",
+    subtitle: "Öğrencilerimizi sadece sınavlara değil, hayata hazırlayan özgün programımız.",
+    items: [
+      {
+        icon: "psychology",
+        title: "Eleştirel Düşünme",
+        desc: "Bilgiyi sorgulama, analiz etme ve bağımsız fikirler üretebilme yetkinliği kazandırılır."
+      },
+      {
+        icon: "schedule",
+        title: "Zaman Yönetimi",
+        desc: "Öğrenciler, önceliklendirme ve planlama becerileriyle verimli çalışma alışkanlıkları edinir."
+      },
+      {
+        icon: "favorite",
+        title: "Duygusal Zeka",
+        desc: "Empati kurma, kriz yönetimi ve sağlıklı iletişim becerileriyle güçlü karakter inşası desteklenir."
+      }
+    ]
+  },
+  {
+    type: "edu_system_philosophy",
+    badge: "Pedagojik Felsefemiz",
+    title: "Öğrenci Odaklı Eğitim Felsefesi",
+    desc: "Her öğrencinin öğrenme hızı, ilgi alanları ve yetenekleri farklıdır. Bu bilinçle, standartlaşmış kalıplar yerine, her bireyin potansiyelini en üst düzeye çıkaracak kişiselleştirilmiş yaklaşımlar benimsiyoruz.",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiIc6awQpL3bVLsx7HUW7LAV6Is3Ys8NSNkcy59GGWgLaFiHU7BuvUjE3W0_Q6BpQw5jmtD7KM__i88i9ce-GrN8JLIQiiXxqaVd2c9Vm6pWKB8UKyWxLaatni_MGolw8vhxtABCIR4-FZlTBzPMi_B5a16-jJhBQc6CJSZ96pAyLXZPy9ydJBFEPJ1jhObunc_PtMYK_ySR7Ivtsy6dgw91uc_5IWsS6lZcegAbP8ji_jOrA1xNVG",
+    image_posX: "50",
+    image_posY: "50",
+    image_scale: "100",
+    cardIcon: "emoji_events",
+    cardTitle: "Ödüllü Yaklaşım",
+    cardDesc: "Modern eğitim standartlarına tam uyum sağlayan yenilikçi müfredat.",
+    items: [
+      {
+        icon: "psychology",
+        title: "Bireyselleştirilmiş Takip",
+        desc: "Düzenli akademik ve psikolojik değerlendirmelerle öğrencinin gelişimini adım adım izliyor, ihtiyaçlarına özel destek programları oluşturuyoruz."
+      },
+      {
+        icon: "rocket_launch",
+        title: "Girişimci Ruh",
+        desc: "Öğrencilerimizi proje bazlı çalışmalar, atölyeler ve kulüpler aracılığıyla inovatif düşünmeye ve problem çözmeye teşvik ediyoruz."
+      },
+      {
+        icon: "diversity_1",
+        title: "Sosyal Duygusal Öğrenme",
+        desc: "Empati, öz-farkındalık, iletişim becerileri ve zorluklarla başa çıkma gibi 21. yüzyıl yaşam becerilerini müfredatımızın merkezine koyuyoruz."
+      }
+    ]
+  },
+  {
+    type: "edu_system_cta",
+    title: "Okulumuzu Daha Yakından Tanımak İster misiniz?",
+    desc: "Eğitim felsefemiz, kampüs olanaklarımız ve kayıt süreçlerimiz hakkında detaylı bilgi almak için bizimle iletişime geçin veya e-kataloğumuzu inceleyin.",
+    buttons: [
+      {
+        label: "Tanışma Randevusu Al",
+        url: "#",
+        icon: "calendar_month"
+      }
+    ]
+  }
+];

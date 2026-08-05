@@ -43,3 +43,16 @@ export const DEFAULT_SCHOLARSHIP_INPUTS = [
   { type: 'select', name: 'campus_preference', label: 'Kampüs Seçimi', options: 'Eryaman Kampüsü, Oran Kampüsü, Ümitköy Kampüsü', required: true },
   { type: 'select', name: 'exam_session', label: 'Sınav Saati', options: 'Seans 1: 10:00, Seans 2: 14:00', required: false }
 ];
+
+export const DEFAULT_CAREER_INPUTS = [
+  { type: 'section_title', label: 'Kişisel Bilgiler', icon: 'person' },
+  { type: 'text', name: 'firstName', label: 'Adınız', placeholder: 'Örn: Ahmet', required: true },
+  { type: 'text', name: 'lastName', label: 'Soyadınız', placeholder: 'Örn: Yılmaz', required: true },
+  { type: 'email', name: 'email', label: 'E-posta Adresi', placeholder: 'ornek@email.com', required: true },
+  { type: 'tel', name: 'phone', label: 'Telefon Numarası', placeholder: '05XX XXX XX XX', required: true },
+  { type: 'section_title', label: 'Başvuru Detayları', icon: 'work' },
+  { type: 'select', name: 'position', label: 'Başvurduğunuz Pozisyon', options: 'Öğretmen, İdari Personel, Destek Personeli, Diğer / Genel Başvuru', required: true, fullWidth: true },
+  { type: 'file', name: 'cv', label: 'CV (Özgeçmiş) Yükle', required: true, fullWidth: true },
+  { type: 'textarea', name: 'coverLetter', label: 'Ön Yazı (Neden Biz?)', placeholder: 'Kendinizden ve hedeflerinizden kısaca bahsedin...', required: false, fullWidth: true },
+  { type: 'checkbox', name: 'kvkk', label: 'KVKK Aydınlatma Metni\'ni okudum, kişisel verilerimin iş başvuru süreçleri kapsamında işlenmesini onaylıyorum.', required: true, fullWidth: true }
+];

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
-import { Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon, Megaphone, Eye, Check } from 'lucide-react';
+import { ChevronUp, ChevronDown, Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon, Megaphone, Eye, Check , ArrowUp, ArrowDown} from 'lucide-react';
 
 
 
@@ -140,6 +140,8 @@ export default function AppearanceCenter() {
         { id: 'home', title: 'Ana Sayfa', path: '/' },
         { id: 'on-kayit', title: 'Öğrenci Ön Kayıt', path: '/on-kayit' },
         { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+          { id: 'is-basvuru-formu', title: 'İş Başvuru Formu', path: '/is-basvuru-formu' },
+        { id: 'egitim-sistemimiz', title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz' },
         { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
         { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' }
       ];
@@ -246,6 +248,7 @@ export default function AppearanceCenter() {
       setMessage({ type: 'success', text: 'Ayarlar başarıyla kaydedildi!' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (e) {
+      console.error("Error saving settings:", e);
       setMessage({ type: 'error', text: 'Kaydedilirken hata oluştu: ' + (e as any).message });
     } finally {
       setSaving(false);
@@ -277,8 +280,8 @@ export default function AppearanceCenter() {
         setFooterData({ ...footerData, logoUrl: base64 });
       }
     } catch (e) {
-      console.error(e);
-      console.error('Resim yüklenirken hata oluştu');
+      console.error("Error uploading image to media:", e);
+      alert("Görsel yüklenirken bir hata oluştu: " + ((e as any).message || "Bilinmeyen hata"));
     }
   };
 
@@ -803,6 +806,32 @@ export default function AppearanceCenter() {
                     <div key={index} className="flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3">
+                          
+                          <div className="flex flex-col gap-1 mr-2">
+                            <button onClick={() => {
+                                const newLinks = [...(headerData.links || [])];
+                                if (index > 0) {
+                                  const temp = newLinks[index - 1];
+                                  newLinks[index - 1] = newLinks[index];
+                                  newLinks[index] = temp;
+                                  setHeaderData({ ...headerData, links: newLinks });
+                                }
+                            }} disabled={index === 0} className="p-1 text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-slate-400">
+                                <ArrowUp className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => {
+                                const newLinks = [...(headerData.links || [])];
+                                if (index < newLinks.length - 1) {
+                                  const temp = newLinks[index + 1];
+                                  newLinks[index + 1] = newLinks[index];
+                                  newLinks[index] = temp;
+                                  setHeaderData({ ...headerData, links: newLinks });
+                                }
+                            }} disabled={index === (headerData.links || []).length - 1} className="p-1 text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-slate-400">
+                                <ArrowDown className="w-4 h-4" />
+                            </button>
+                          </div>
+
                           <div className="flex-1 grid grid-cols-2 gap-3">
                             <input type="text" value={link.label || ''} onChange={(e) => handleHeaderLinkChange(index, 'label', e.target.value)} placeholder="Menü Adı" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
                             {renderUrlEditor(link.url || "", (val) => handleHeaderLinkChange(index, "url", val))}
@@ -839,7 +868,61 @@ export default function AppearanceCenter() {
                            </div>
                            <div className="space-y-2">
                              {(link.subLinks || []).map((sublink: any, subIdx: number) => (
-                               <div key={subIdx} className="flex gap-2 bg-white p-2 border border-slate-200 rounded">
+                               <div key={subIdx} className="flex gap-2 bg-white p-2 border border-slate-200 rounded items-center">
+                                 
+                                 <div className="flex flex-col gap-1 shrink-0 mr-1">
+                                    <button onClick={() => {
+                                      const newLinks = [...(headerData.links || [])];
+                                      if (subIdx > 0) {
+                                        const temp = newLinks[index].subLinks[subIdx - 1];
+                                        newLinks[index].subLinks[subIdx - 1] = newLinks[index].subLinks[subIdx];
+                                        newLinks[index].subLinks[subIdx] = temp;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                      }
+                                    }} disabled={subIdx === 0} className="p-0.5 text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-slate-400">
+                                        <ArrowUp className="w-3 h-3" />
+                                    </button>
+                                    <button onClick={() => {
+                                      const newLinks = [...(headerData.links || [])];
+                                      if (subIdx < newLinks[index].subLinks.length - 1) {
+                                        const temp = newLinks[index].subLinks[subIdx + 1];
+                                        newLinks[index].subLinks[subIdx + 1] = newLinks[index].subLinks[subIdx];
+                                        newLinks[index].subLinks[subIdx] = temp;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                      }
+                                    }} disabled={subIdx === (headerData.links?.[index]?.subLinks?.length || 0) - 1} className="p-0.5 text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-slate-400">
+                                        <ArrowDown className="w-3 h-3" />
+                                    </button>
+                                 </div>
+
+                                 <div className="flex flex-col gap-1 w-full flex-1">
+                                   <button 
+                                      onClick={() => {
+                                        if (subIdx === 0) return;
+                                        const newLinks = [...(headerData.links || [])];
+                                        const temp = newLinks[index].subLinks[subIdx];
+                                        newLinks[index].subLinks[subIdx] = newLinks[index].subLinks[subIdx - 1];
+                                        newLinks[index].subLinks[subIdx - 1] = temp;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                      }} 
+                                      disabled={subIdx === 0}
+                                      className={`p-0.5 rounded ${subIdx === 0 ? 'text-slate-300' : 'text-slate-500 hover:bg-slate-100'}`}>
+                                      <ChevronUp className="w-3.5 h-3.5" />
+                                   </button>
+                                   <button 
+                                      onClick={() => {
+                                        if (subIdx === link.subLinks.length - 1) return;
+                                        const newLinks = [...(headerData.links || [])];
+                                        const temp = newLinks[index].subLinks[subIdx];
+                                        newLinks[index].subLinks[subIdx] = newLinks[index].subLinks[subIdx + 1];
+                                        newLinks[index].subLinks[subIdx + 1] = temp;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                      }} 
+                                      disabled={subIdx === link.subLinks.length - 1}
+                                      className={`p-0.5 rounded ${subIdx === link.subLinks.length - 1 ? 'text-slate-300' : 'text-slate-500 hover:bg-slate-100'}`}>
+                                      <ChevronDown className="w-3.5 h-3.5" />
+                                   </button>
+                                 </div>
                                  <input type="text" value={sublink.label || ''} onChange={(e) => {
                                     const newLinks = [...(headerData.links || [])];
                                     newLinks[index].subLinks[subIdx].label = e.target.value;
@@ -856,7 +939,7 @@ export default function AppearanceCenter() {
                                     const newLinks = [...(headerData.links || [])];
                                     newLinks[index].subLinks.splice(subIdx, 1);
                                     setHeaderData({ ...headerData, links: newLinks });
-                                 }} className="p-1 text-red-500 hover:bg-red-50 rounded">
+                                 }} className="p-1.5 text-red-500 hover:bg-red-50 rounded bg-red-50/50">
                                    <Trash2 className="w-4 h-4" />
                                  </button>
                                </div>
@@ -990,7 +1073,45 @@ export default function AppearanceCenter() {
                                   </div>
                                   <div className="space-y-2">
                                     {(col.links || []).map((clink: any, clinkIdx: number) => (
-                                      <div key={clinkIdx} className="bg-slate-50 p-2 rounded border border-slate-100 relative group">
+                                      <div key={clinkIdx} className="bg-slate-50 p-2 rounded border border-slate-100 relative">
+                                         <div className="flex justify-between items-center mb-2">
+                                            <div className="flex items-center gap-1">
+                                              <button 
+                                                onClick={() => {
+                                                  if (clinkIdx === 0) return;
+                                                  const newLinks = [...(headerData.links || [])];
+                                                  const temp = newLinks[index].megaMenu.columns[colIdx].links[clinkIdx];
+                                                  newLinks[index].megaMenu.columns[colIdx].links[clinkIdx] = newLinks[index].megaMenu.columns[colIdx].links[clinkIdx - 1];
+                                                  newLinks[index].megaMenu.columns[colIdx].links[clinkIdx - 1] = temp;
+                                                  setHeaderData({ ...headerData, links: newLinks });
+                                                }}
+                                                disabled={clinkIdx === 0}
+                                                className={`p-1 rounded ${clinkIdx === 0 ? 'text-slate-300' : 'text-slate-600 hover:bg-slate-200'}`}>
+                                                <ChevronUp className="w-3.5 h-3.5" />
+                                              </button>
+                                              <button 
+                                                onClick={() => {
+                                                  if (clinkIdx === col.links.length - 1) return;
+                                                  const newLinks = [...(headerData.links || [])];
+                                                  const temp = newLinks[index].megaMenu.columns[colIdx].links[clinkIdx];
+                                                  newLinks[index].megaMenu.columns[colIdx].links[clinkIdx] = newLinks[index].megaMenu.columns[colIdx].links[clinkIdx + 1];
+                                                  newLinks[index].megaMenu.columns[colIdx].links[clinkIdx + 1] = temp;
+                                                  setHeaderData({ ...headerData, links: newLinks });
+                                                }}
+                                                disabled={clinkIdx === col.links.length - 1}
+                                                className={`p-1 rounded ${clinkIdx === col.links.length - 1 ? 'text-slate-300' : 'text-slate-600 hover:bg-slate-200'}`}>
+                                                <ChevronDown className="w-3.5 h-3.5" />
+                                              </button>
+                                              <span className="text-[10px] font-bold text-slate-400 uppercase ml-1">Sıra: {clinkIdx + 1}</span>
+                                            </div>
+                                            <button onClick={() => {
+                                                const newLinks = [...(headerData.links || [])];
+                                                newLinks[index].megaMenu.columns[colIdx].links.splice(clinkIdx, 1);
+                                                setHeaderData({ ...headerData, links: newLinks });
+                                            }} className="bg-red-50 text-red-600 p-1.5 rounded hover:bg-red-100 transition-colors flex items-center gap-1">
+                                              <Trash2 className="w-3.5 h-3.5" /> <span className="text-[10px] font-bold uppercase">Sil</span>
+                                            </button>
+                                         </div>
                                          <input type="text" value={clink.label || ''} onChange={(e) => {
                                             const newLinks = [...(headerData.links || [])];
                                             newLinks[index].megaMenu.columns[colIdx].links[clinkIdx].label = e.target.value;
@@ -1001,19 +1122,12 @@ export default function AppearanceCenter() {
                                             const newLinks = [...(headerData.links || [])];
                                             newLinks[index].megaMenu.columns[colIdx].links[clinkIdx].desc = e.target.value;
                                             setHeaderData({ ...headerData, links: newLinks });
-                                         }} placeholder="Kısa Açıklama (Opsiyonel)" className="w-full px-2 py-1 mb-1 text-xs border rounded" />
+                                         }} placeholder="Kısa Açıklama (Opsiyonel)" className="w-full px-2 py-1 mb-1 text-xs border rounded mt-1" />
                                          <input type="text" value={clink.icon || ''} onChange={(e) => {
                                             const newLinks = [...(headerData.links || [])];
                                             newLinks[index].megaMenu.columns[colIdx].links[clinkIdx].icon = e.target.value;
                                             setHeaderData({ ...headerData, links: newLinks });
-                                         }} placeholder="İkon (Opsiyonel, örn: school)" className="w-full px-2 py-1 text-xs border rounded" />
-                                         <button onClick={() => {
-                                            const newLinks = [...(headerData.links || [])];
-                                            newLinks[index].megaMenu.columns[colIdx].links.splice(clinkIdx, 1);
-                                            setHeaderData({ ...headerData, links: newLinks });
-                                         }} className="absolute -top-2 -right-2 bg-red-100 text-red-600 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                           <Trash2 className="w-3 h-3" />
-                                         </button>
+                                         }} placeholder="İkon (Opsiyonel, örn: school)" className="w-full px-2 py-1 text-xs border rounded mt-1" />
                                       </div>
                                     ))}
                                     <button onClick={() => {

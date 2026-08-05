@@ -60,6 +60,27 @@ export default function PagesCenter() {
     }
   };
 
+
+  const seedEduSystemPage = async () => {
+    try {
+      const { defaultEgitimSistemiData } = await import('../../lib/defaultData');
+      const docRef = doc(db, 'pages', 'egitim-sistemimiz');
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0) {
+        await setDoc(docRef, {
+            title: "Eğitim Sistemimiz",
+            path: "/egitim-sistemimiz",
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultEgitimSistemiData,
+            createdAt: Date.now()
+        });
+      }
+    } catch (e) {
+      console.error('Failed to seed edu system page', e);
+    }
+  };
+
   const seedScholarshipConfirmationPage = async () => {
     try {
       const { defaultScholarshipConfirmationPageData } = await import('../../lib/defaultData');
@@ -84,6 +105,7 @@ export default function PagesCenter() {
     await seedClubPage();
     await seedScholarshipPage();
     await seedScholarshipConfirmationPage();
+    await seedEduSystemPage();
     setLoading(true);
     try {
       const q = query(collection(db, 'pages'), orderBy('createdAt', 'desc'));
@@ -112,6 +134,12 @@ export default function PagesCenter() {
     
     // Format ID
     const pageId = formattedPath.substring(1).replace(/[^a-zA-Z0-9-]/g, '-') || 'home';
+    if (!pageId) {
+      console.error("Failed to generate page ID from path:", formattedPath);
+      alert("Geçersiz yol formatı.");
+      setCreating(false);
+      return;
+    }
 
     try {
       // 1. Save Page

@@ -71,7 +71,7 @@ export default function MediaCenter() {
       }));
       setMediaItems(items);
     } catch (err) {
-      console.error("Error fetching media", err);
+      console.error("Error fetching media in MediaCenter:", err);
       setError("Medyalar yüklenirken hata oluştu.");
     } finally {
       setLoading(false);

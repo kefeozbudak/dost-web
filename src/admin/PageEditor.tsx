@@ -75,10 +75,26 @@ export default function PageEditor() {
         const docRef = doc(db, 'pages', pageId);
         const docSnap = await getDoc(docRef);
         
-        if (docSnap.exists()) {
+        if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
           const data = docSnap.data(); 
           data.blocks = data.blocks?.filter((b: any) => b.type !== "header" && b.type !== "footer"); 
           resolveMediaUrls(data).then(resolved => setPageData(resolved));
+                } else if (pageId === 'egitim-sistemimiz') {
+          import('../lib/defaultData').then((module) => {
+            const defaultData = { title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz', blocks: module.defaultEgitimSistemiData };
+            setPageData(defaultData);
+          });
+        } else if (pageId === 'is-basvuru-formu') {
+          const defaultData = {
+            title: 'İş Başvuru Formu',
+            path: '/is-basvuru-formu',
+            blocks: [
+              { type: 'career_hero', title: "Dost Koleji'nde Kariyer" },
+              { type: 'career_benefits', title: "Neden Bize Katılmalısınız?" },
+              { type: 'career_application', title: "Mevcut Açık Pozisyonlar" }
+            ]
+          };
+          setPageData(defaultData);
         } else if (pageId === 'home') {
           const defaultData = { title: 'Ana Sayfa', path: '/', blocks: defaultHomePageData.filter(b => b.type !== "header" && b.type !== "footer") };
           setPageData(defaultData);
@@ -303,7 +319,7 @@ export default function PageEditor() {
       resolveMediaUrls(dataToSave).then(resolved => setPageData(resolved));
       alert('Sayfa başarıyla kaydedildi!');
     } catch (e: any) {
-      console.error("Save error:", e);
+      console.error("Save error during setDoc or extractAndSaveBase64Images:", e);
       alert('Kaydedilirken hata oluştu: ' + (e.message || 'Bilinmeyen hata'));
     } finally {
       setSaving(false);
@@ -476,6 +492,14 @@ export default function PageEditor() {
                           { type: 'pre_registration_form', label: 'Ön Kayıt Formu' },
                           { type: 'club_registration_form', label: 'Kulüp Kayıt Formu' },
                           { type: 'bursluluk_hero', label: 'Bursluluk Hero' },
+                          { type: 'career_hero', label: 'Kariyer Hero' },
+                          { type: 'career_benefits', label: 'Kariyer Avantajları' },
+                          { type: 'career_application', label: 'İş Başvuru Formu' },
+                          { type: 'edu_system_hero', label: 'Eğitim Sistemi Hero' },
+                          { type: 'edu_system_levels', label: 'Eğitim Kademeleri' },
+                          { type: 'edu_system_yadep', label: 'YADEP Modülü' },
+                          { type: 'edu_system_philosophy', label: 'Pedagojik Felsefe' },
+                          { type: 'edu_system_cta', label: 'Eğitim CTA' },
                           { type: 'bursluluk_exam_form', label: 'Bursluluk Sınav Başvuru Formu' },
                           { type: 'bursluluk_confirmation', label: 'Bursluluk Sınav Başvuru Onayı ve Giriş Belgesi' },
                           { type: 'bursluluk_info_cards', label: 'Bursluluk Bilgilendirme Kartları' },

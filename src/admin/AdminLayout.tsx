@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { logout } from '../lib/firebase';
 import { useAuthStore } from '../store/authStore';
+import { defaultEgitimSistemiData } from '../lib/defaultData';
 
 export default function AdminLayout() {
   const location = useLocation();
@@ -98,6 +99,8 @@ export default function AdminLayout() {
           { id: 'lise', title: 'Lise', path: '/lise' },
           { id: 'on-kayit', title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit' },
           { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+    { id: 'is-basvuru-formu', title: 'İş Başvuru Formu', path: '/is-basvuru-formu' },
+          { id: 'egitim-sistemimiz', title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz' },
           { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
           { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
           { id: 'umitkoy-kampusu', title: 'Ümitköy Kampüsü', path: '/umitkoy-kampusu' },
@@ -107,15 +110,26 @@ export default function AdminLayout() {
         for (const item of pagesToSeed) {
           const pageRef = doc(db, 'pages', item.id);
           const pageSnap = await getDoc(pageRef);
+          
+          let initialBlocks = [];
+          if (item.id === 'egitim-sistemimiz') {
+             initialBlocks = defaultEgitimSistemiData;
+          }
+
           if (!pageSnap.exists()) {
             await setDoc(pageRef, {
               title: item.title,
               path: item.path,
               isDeleted: false,
               isHidden: false,
-              blocks: [],
+              blocks: initialBlocks,
               createdAt: Date.now()
             });
+          } else if (item.id === 'egitim-sistemimiz') {
+            const data = pageSnap.data();
+            if (!data.blocks || data.blocks.length === 0) {
+              await setDoc(pageRef, { blocks: initialBlocks }, { merge: true });
+            }
           }
         }
       } catch (e) {
@@ -130,7 +144,11 @@ export default function AdminLayout() {
     const unsubscribe = onSnapshot(collection(db, 'pages'), (snapshot) => {
       try {
         let fetched = snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as any) }));
-        setPagesList(fetched.filter((p: any) => !p.isDeleted));
+        let filtered = fetched.filter((p: any) => !p.isDeleted);
+        if (!filtered.find(p => p.id === 'egitim-sistemimiz')) {
+          filtered.push({ id: 'egitim-sistemimiz', title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz' });
+        }
+        setPagesList(filtered);
       } catch (e) {
         console.error("Error processing pages:", e);
       }
@@ -178,6 +196,7 @@ export default function AdminLayout() {
   const FORM_SLUGS = [
     { id: 'on-kayit', title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit' },
     { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
+    { id: 'is-basvuru-formu', title: 'İş Başvuru Formu', path: '/is-basvuru-formu' },
     { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
     { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
   ];
@@ -221,7 +240,9 @@ export default function AdminLayout() {
   const eduIds = eduPages.map(p => p.id);
   const formIds = formPages.map(p => p.id);
   const campusIds = campusPages.map(p => p.id);
-  const otherPages = pagesList.filter(p => !eduIds.includes(p.id) && !formIds.includes(p.id) && !campusIds.includes(p.id));
+  const otherPages = pagesList
+    .filter(p => !eduIds.includes(p.id) && !formIds.includes(p.id) && !campusIds.includes(p.id))
+    .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">

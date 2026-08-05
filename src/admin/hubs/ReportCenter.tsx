@@ -1,14 +1,79 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { 
-  FileText, Calendar, Trash2, CheckCircle2, Clock, Printer, 
+import { Briefcase, FileCheck, FileText, Calendar, Trash2, CheckCircle2, Clock, Printer, 
   User, Phone, Mail, MapPin, GraduationCap, Search, X, MessageSquare,
   ChevronDown, ChevronUp
 } from 'lucide-react';
 import { format } from 'date-fns';
 
 
+
+
+const CareerReportView = ({ data }: { data: any }) => {
+  return (
+    <div className="bg-white rounded-xl overflow-hidden border border-slate-200/80 shadow-sm w-full max-w-4xl mx-auto my-4">
+      <div className="p-6 space-y-8">
+        <section>
+          <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+            <span className="material-symbols-outlined text-[#002147] text-xl">work</span>
+            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">İŞ BAŞVURU BİLGİLERİ</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ad Soyad</span>
+              <p className="text-sm font-semibold text-slate-800">{data.firstName} {data.lastName}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">E-Posta</span>
+              <p className="text-sm font-semibold text-slate-800">{data.email || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Telefon</span>
+              <p className="text-sm font-semibold text-slate-800">{data.phone || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Başvurulan Pozisyon</span>
+              <p className="text-sm font-semibold text-slate-800">
+                {data.position === 'math_teacher' ? 'Matematik Öğretmeni' : 
+                 data.position === 'academic_coordinator' ? 'Akademik Koordinatör' :
+                 data.position === 'guidance_counselor' ? 'Rehber Danışman' :
+                 data.position === 'general' ? 'Genel Başvuru' : data.position || '-'}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-2">
+            <span className="material-symbols-outlined text-[#002147] text-xl">description</span>
+            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">CV & ÖN YAZI</h3>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ön Yazı</span>
+              <p className="text-sm text-slate-700 whitespace-pre-wrap">{data.coverLetter || '-'}</p>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
+              <div>
+                <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Özgeçmiş Dosyası</span>
+                <p className="text-sm font-semibold text-slate-800">{data.fileName || 'Yüklenmiş CV'}</p>
+              </div>
+              {data.cvUrl ? (
+                <a href={data.cvUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#002147] text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-900 transition">
+                  <span className="material-symbols-outlined text-[16px]">download</span>
+                  Görüntüle / İndir
+                </a>
+              ) : (
+                <span className="text-xs text-red-500 font-bold">Dosya Yok</span>
+              )}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
 
 const PreRegistrationReportView = ({ data }: { data: any }) => {
   return (
@@ -232,7 +297,7 @@ const PreRegistrationPrintView = ({ data, date, index }: { data: any, date: numb
 export default function ReportCenter() {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'chat' | 'pre_registration' | 'contact' | 'all'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'pre_registration' | 'contact' | 'career' | 'newsletter' | 'all'>('chat');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterKampus, setFilterKampus] = useState('');
   const [filterKademe, setFilterKademe] = useState('');
@@ -553,7 +618,7 @@ export default function ReportCenter() {
     });
 
     return {
-      name: name || 'Belirtilmedi',
+      name: name || email || 'Belirtilmedi',
       phone,
       email,
       kampus,
@@ -569,6 +634,8 @@ export default function ReportCenter() {
     if (activeTab === 'chat' && !(r.type === 'chat' || !r.type || r.data?.formName)) return false;
     if (activeTab === 'pre_registration' && r.type !== 'pre_registration_form') return false;
     if (activeTab === 'contact' && r.type !== 'contact_form') return false;
+    if (activeTab === 'career' && r.type !== 'is_basvuru_formu') return false;
+    if (activeTab === 'newsletter' && r.type !== 'newsletter') return false;
     
     const sender = extractSenderInfo(r.data);
 
@@ -842,7 +909,36 @@ export default function ReportCenter() {
                     {reports.filter(r => r.type === 'contact_form').length}
                   </span>
                 </button>
-                <button 
+                
+                <button
+                  onClick={() => setActiveTab('career')}
+                  className={`relative px-4 py-3 flex items-center justify-center gap-2 text-sm font-bold transition-all whitespace-nowrap ${
+                    activeTab === 'career' 
+                      ? 'text-[#38C1D2] border-b-2 border-[#38C1D2]' 
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <Briefcase className="w-4 h-4" />
+                  İş Başvuruları
+                  <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'career' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {reports.filter(r => r.type === 'is_basvuru_formu').length}
+                  </span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('newsletter')}
+                  className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'newsletter' 
+                      ? 'bg-[#004899] text-white shadow-sm' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  <Mail className="w-4 h-4" />
+                  E-Bülten
+                  <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'newsletter' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {reports.filter(r => r.type === 'newsletter').length}
+                  </span>
+                </button>
+                <button
                   onClick={() => setActiveTab('all')}
                   className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
                     activeTab === 'all' 
@@ -949,7 +1045,7 @@ export default function ReportCenter() {
                           />
                         )}
                         <span className="px-3 py-1 bg-[#004899]/10 text-[#004899] text-xs font-black rounded-lg border border-[#004899]/20">
-                          {report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
+                          {report.type === 'newsletter' ? 'E-Bülten Aboneliği' : report.type === 'is_basvuru_formu' ? 'İş Başvurusu' : report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
                         </span>
 
                         <button 
@@ -1041,7 +1137,7 @@ export default function ReportCenter() {
 
                     {/* EXPANDABLE DETAILS AREA */}
                     {isExpanded && (
-                      report.type === 'pre_registration_form' ? <PreRegistrationReportView data={report.data} /> : (
+                      report.type === 'is_basvuru_formu' ? <CareerReportView data={report.data} /> : report.type === 'pre_registration_form' ? <PreRegistrationReportView data={report.data} /> : (
                       <div className="bg-gradient-to-b from-blue-50/50 to-slate-50 border border-slate-200 rounded-xl p-4.5 space-y-3.5 shadow-2xs">
                         
                         {/* 1. Gönderen & WhatsApp */}
