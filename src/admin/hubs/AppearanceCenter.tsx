@@ -1,4 +1,4 @@
-import { resolveMediaUrls } from '../../lib/resolveMedia';
+
 import IconField from "../../components/IconField";
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -6,6 +6,23 @@ import { db } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
 import { Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon, Megaphone, Eye, Check } from 'lucide-react';
 
+
+
+const PreviewImage = ({ src, alt, className, style }: any) => {
+  const [resolved, setResolved] = useState(src);
+  useEffect(() => {
+    if (src && typeof src === 'string' && src.startsWith('/api/media/')) {
+      const mediaId = src.split('/api/media/')[1];
+      getDoc(doc(db, 'media', mediaId)).then(snap => {
+        if (snap.exists() && snap.data().url) setResolved(snap.data().url);
+      }).catch(()=>{});
+    } else {
+      setResolved(src);
+    }
+  }, [src]);
+  if (!resolved) return null;
+  return <img src={resolved} alt={alt} className={className} style={style} />;
+};
 
 const compressImage = (file: File, maxWidth = 800, maxHeight = 800, quality = 0.5): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -88,10 +105,10 @@ export default function AppearanceCenter() {
     const fetchData = async () => {
       try {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
-        if (headerDoc.exists()) resolveMediaUrls(headerDoc.data()).then(res => setHeaderData(res));
+        if (headerDoc.exists()) setHeaderData(headerDoc.data());
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
-        if (footerDoc.exists()) resolveMediaUrls(footerDoc.data()).then(res => setFooterData(res));
+        if (footerDoc.exists()) setFooterData(footerDoc.data());
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
         if (generalDoc.exists()) {
@@ -183,6 +200,25 @@ export default function AppearanceCenter() {
     );
   };
 
+  
+  const sanitizeData = (obj: any): any => {
+    if (typeof obj === 'string') {
+      if (obj.startsWith('data:image/')) return '';
+      return obj;
+    }
+    if (Array.isArray(obj)) return obj.map(sanitizeData);
+    if (typeof obj === 'object' && obj !== null) {
+      const newObj: any = {};
+      for (const key of Object.keys(obj)) {
+        if (obj[key] !== undefined) {
+           newObj[key] = sanitizeData(obj[key]);
+        }
+      }
+      return newObj;
+    }
+    return obj;
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setMessage({ type: '', text: '' });
@@ -210,7 +246,7 @@ export default function AppearanceCenter() {
       setMessage({ type: 'success', text: 'Ayarlar başarıyla kaydedildi!' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (e) {
-      setMessage({ type: 'error', text: 'Kaydedilirken hata oluştu.' });
+      setMessage({ type: 'error', text: 'Kaydedilirken hata oluştu: ' + (e as any).message });
     } finally {
       setSaving(false);
     }
@@ -610,7 +646,7 @@ export default function AppearanceCenter() {
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Logo Yükle</label>
                     <div className="flex flex-wrap items-center gap-4 mb-4">
-                      {headerData.logoUrl && <img src={headerData.logoUrl} alt="Logo" className="h-12 object-contain bg-slate-100 p-2 rounded border" />}
+                      {headerData.logoUrl && <PreviewImage src={headerData.logoUrl} alt="Logo" className="h-12 object-contain bg-slate-100 p-2 rounded border" />}
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => setHeaderData({ ...headerData, logoUrl: url }) })}
@@ -649,6 +685,33 @@ export default function AppearanceCenter() {
                     <div className={headerData.ctaButton?.hidden ? 'opacity-50 pointer-events-none' : ''}>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Aksiyon Butonu Linki</label>
                       {renderUrlEditor(headerData.ctaButton?.url || "", (val) => setHeaderData({...headerData, ctaButton: {...headerData.ctaButton, url: val}}))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-bold mb-4 border-b pb-2 flex items-center gap-2"><Layout className="w-5 h-5 text-slate-400" /> Menü Renkleri (Global)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Normal Renk</label>
+                    <div className="flex items-center gap-3">
+                      <input type="color" value={headerData.menuColors?.normal || '#475569'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), normal: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
+                      <input type="text" value={headerData.menuColors?.normal || '#475569'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), normal: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Hover Rengi</label>
+                    <div className="flex items-center gap-3">
+                      <input type="color" value={headerData.menuColors?.hover || '#2563eb'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), hover: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
+                      <input type="text" value={headerData.menuColors?.hover || '#2563eb'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), hover: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Aktif Renk</label>
+                    <div className="flex items-center gap-3">
+                      <input type="color" value={headerData.menuColors?.active || '#1d4ed8'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), active: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
+                      <input type="text" value={headerData.menuColors?.active || '#1d4ed8'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), active: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
                     </div>
                   </div>
                 </div>
@@ -759,6 +822,99 @@ export default function AppearanceCenter() {
                                     }} className="p-1.5 text-red-500 hover:bg-red-50 rounded">
                                       <Trash2 className="w-3.5 h-3.5" />
                                     </button>
+                                  </div>
+                                  <div className="bg-slate-50 border border-slate-200 p-3 rounded space-y-2">
+                                    <h5 className="text-[11px] font-bold text-slate-500 uppercase">Sütun Görseli (Opsiyonel)</h5>
+                                    <div className="flex gap-2">
+                                      <input type="text" value={col.image || ''} onChange={(e) => {
+                                        const newLinks = [...(headerData.links || [])];
+                                        newLinks[index].megaMenu.columns[colIdx].image = e.target.value;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                      }} placeholder="Görsel URL (Örn: /img.jpg)" className="flex-1 px-2 py-1.5 text-xs border rounded" />
+                                      <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => {
+                                        const newLinks = [...(headerData.links || [])];
+                                        newLinks[index].megaMenu.columns[colIdx].image = url;
+                                        setHeaderData({ ...headerData, links: newLinks });
+                                        setMediaPickerConfig({ isOpen: false, onSelect: () => {} });
+                                      }})} className="px-3 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded border border-blue-200 hover:bg-blue-100 flex items-center gap-1 shrink-0">
+                                        <ImageIcon className="w-3.5 h-3.5" /> Seç
+                                      </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-3">
+                                      <div>
+                                        <label className="block text-[10px] text-slate-500 mb-0.5">Konum</label>
+                                        <select value={col.imagePosition || 'top'} onChange={(e) => {
+                                          const newLinks = [...(headerData.links || [])];
+                                          newLinks[index].megaMenu.columns[colIdx].imagePosition = e.target.value;
+                                          setHeaderData({ ...headerData, links: newLinks });
+                                        }} className="w-full px-2 py-1 text-xs border rounded">
+                                          <option value="top">Başlık ile Menü Arası</option>
+                                          <option value="bottom">Menünün Altı</option>
+                                          <option value="left">Menünün Solu</option>
+                                          <option value="right">Menünün Sağı</option>
+                                        </select>
+                                      </div>
+                                      
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                          <label className="block text-[10px] text-slate-500 mb-0.5">Büyütme % ({col.imageScale || 100})</label>
+                                          <input type="range" min="10" max="300" value={col.imageScale || 100} onChange={(e) => {
+                                            const newLinks = [...(headerData.links || [])];
+                                            newLinks[index].megaMenu.columns[colIdx].imageScale = e.target.value;
+                                            setHeaderData({ ...headerData, links: newLinks });
+                                          }} className="w-full" />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] text-slate-500 mb-0.5">X Konumu ({col.imageX || 0}px)</label>
+                                          <input type="range" min="-300" max="300" value={col.imageX || 0} onChange={(e) => {
+                                            const newLinks = [...(headerData.links || [])];
+                                            newLinks[index].megaMenu.columns[colIdx].imageX = e.target.value;
+                                            setHeaderData({ ...headerData, links: newLinks });
+                                          }} className="w-full" />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] text-slate-500 mb-0.5">Y Konumu ({col.imageY || 0}px)</label>
+                                          <input type="range" min="-300" max="300" value={col.imageY || 0} onChange={(e) => {
+                                            const newLinks = [...(headerData.links || [])];
+                                            newLinks[index].megaMenu.columns[colIdx].imageY = e.target.value;
+                                            setHeaderData({ ...headerData, links: newLinks });
+                                          }} className="w-full" />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] text-slate-500 mb-0.5">Genişlik (px, boş=Varsayılan)</label>
+                                          <input type="number" value={col.imageWidth || ''} onChange={(e) => {
+                                            const newLinks = [...(headerData.links || [])];
+                                            newLinks[index].megaMenu.columns[colIdx].imageWidth = e.target.value;
+                                            setHeaderData({ ...headerData, links: newLinks });
+                                          }} className="w-full px-2 py-1 text-xs border rounded" placeholder="100%" />
+                                        </div>
+                                        <div>
+                                          <label className="block text-[10px] text-slate-500 mb-0.5">Yükseklik (px, boş=Varsayılan)</label>
+                                          <input type="number" value={col.imageHeight || ''} onChange={(e) => {
+                                            const newLinks = [...(headerData.links || [])];
+                                            newLinks[index].megaMenu.columns[colIdx].imageHeight = e.target.value;
+                                            setHeaderData({ ...headerData, links: newLinks });
+                                          }} className="w-full px-2 py-1 text-xs border rounded" placeholder="Oto" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    {col.image && (
+                                      <div className="mt-2 border border-slate-200 rounded p-2 bg-white">
+                                        <p className="text-[10px] font-bold text-slate-500 mb-2 uppercase">Canlı Önizleme</p>
+                                        <div className="relative overflow-hidden rounded bg-slate-50 border border-slate-200" style={{ 
+                                          width: col.imageWidth ? `${col.imageWidth}px` : '100%',
+                                          height: col.imageHeight ? `${col.imageHeight}px` : '120px', 
+                                          minHeight: '80px' 
+                                        }}>
+                                          <PreviewImage src={col.image} alt="Önizleme" className="absolute max-w-none" style={{
+                                            width: `${col.imageScale || 100}%`,
+                                            left: `${col.imageX || 0}px`,
+                                            top: `${col.imageY || 0}px`,
+                                          }} />
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                   <div className="space-y-2">
                                     {(col.links || []).map((clink: any, clinkIdx: number) => (
@@ -885,8 +1041,7 @@ export default function AppearanceCenter() {
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Footer Logo</label>
                       <div className="flex flex-wrap items-center gap-4 mb-4">
                         {footerData.logoUrl && (
-                          <img 
-                            src={footerData.logoUrl} 
+                          <PreviewImage src={footerData.logoUrl} 
                             alt="Logo" 
                             className="h-12 object-contain bg-slate-800 p-2 rounded border border-slate-700" 
                           />
@@ -1460,6 +1615,11 @@ export default function AppearanceCenter() {
           )}
         </div>
       </div>
+      <MediaPickerModal 
+         isOpen={mediaPickerConfig.isOpen} 
+         onClose={() => setMediaPickerConfig({ isOpen: false, onSelect: () => {} })} 
+         onSelect={(url) => { mediaPickerConfig.onSelect(url); }} 
+      />
     </div>
   );
 }

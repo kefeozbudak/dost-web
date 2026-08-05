@@ -2692,17 +2692,19 @@ export const DynamicBlockRenderer = ({
                         >
                           {item.desc}
                         </p>
-                        <SmartLink
-                          url={item.buttonUrl || item.url || item.link}
-                          className="w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto text-center block"
-                        >
-                          {item.buttonText || "İncele"}{" "}
-                          {item.buttonIcon && (
-                            <span className="material-symbols-outlined ml-1 text-[0.9em]">
-                              {item.buttonIcon}
-                            </span>
-                          )}
-                        </SmartLink>
+                        {!item.hideButton && (
+                          <SmartLink
+                            url={item.buttonUrl || item.url || item.link}
+                            className="w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto text-center block"
+                          >
+                            {item.buttonText || "İncele"}{" "}
+                            {item.buttonIcon && (
+                              <span className="material-symbols-outlined ml-1 text-[0.9em]">
+                                {item.buttonIcon}
+                              </span>
+                            )}
+                          </SmartLink>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -4326,7 +4328,7 @@ export const DynamicBlockRenderer = ({
                                 {item.desc}
                               </p>
                             </div>
-                            {item.url && (
+                            {item.url && !item.hideButton && (
                               <a
                                 className="inline-flex items-center gap-2 font-label-md text-label-md font-bold mt-4 hover:text-secondary-fixed transition-colors w-fit"
                                 href={item.url}
@@ -5893,7 +5895,7 @@ export const DynamicBlockRenderer = ({
                       <h3 className="font-headline-md text-headline-md text-on-surface" style={{ color: legend.itemTitleColor }}>{legend.title}</h3>
                     </div>
                     <p className="font-body-md text-body-md text-on-surface-variant mb-4" style={{ color: legend.itemDescColor }}>{legend.desc}</p>
-                    {legend.url && (
+                    {legend.url && !legend.hideButton && (
                       <SmartLink url={legend.url} className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline">
                         <span>{legend.buttonText || "İncele"}</span>
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>

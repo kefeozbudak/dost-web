@@ -205,7 +205,7 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
                 <div 
                   key={item.id} 
                   onClick={() => { 
-                    const selectedUrl = item.url;
+                    const selectedUrl = item.url && item.url.startsWith('data:image/') ? '/api/media/' + item.id : item.url;
                     onSelect(selectedUrl); 
                     onClose(); 
                   }}

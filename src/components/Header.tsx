@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { IconPreview } from './IconField';
 import SmartLink from './SmartLink';
@@ -20,16 +20,36 @@ export default function Header({ data, announcement }: { data?: any; announcemen
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMega, setMobileExpandedMega] = useState<number | null>(null);
 
-  const hoverColor = data?.hoverColor || '#f97316';
+  const normalColor = data?.menuColors?.normal || '#475569';
+  const hoverColor = data?.menuColors?.hover || data?.hoverColor || '#f97316';
+  const activeColor = data?.menuColors?.active || '#1d4ed8';
+  
   const logoHeight = data?.logoHeight ? `${data.logoHeight}px` : '48px';
 
   const isAnnouncementActive = announcement?.announcementActive && announcement?.announcementText;
   
+  const location = useLocation();
+
+  const isLinkActive = (url: string) => {
+    if (!url || url === '#') return false;
+    let internalPath = url;
+    if (!internalPath.startsWith('/')) {
+      internalPath = '/' + internalPath;
+    }
+    return location.pathname === internalPath;
+  };
+  
   return (
     <>
       <style>{`
-        .custom-hover-color:hover, .group:hover .custom-hover-color {
+        .nav-link-normal {
+          color: ${normalColor} !important;
+        }
+        .nav-link-normal:hover, .custom-hover-color:hover, .group:hover .custom-hover-color, .group:hover .group-custom-hover-color {
           color: ${hoverColor} !important;
+        }
+        .nav-link-active {
+          color: ${activeColor} !important;
         }
         .custom-hover-bg:hover, .group:hover .custom-hover-bg {
           background-color: ${hoverColor} !important;
@@ -79,7 +99,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                     onMouseEnter={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(i)}
                     onMouseLeave={() => (link.type === 'mega' || link.type === 'dropdown') && setActiveMegaMenu(null)}>
                  <SmartLink 
-                   className="nav-link-underline font-label-md text-label-md text-primary custom-hover-color transition-colors flex items-center gap-1.5" 
+                   className={`nav-link-underline font-label-md text-label-md transition-colors flex items-center gap-1.5 ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                    url={link.url}
                  >
                    {link.iconData?.position === 'left' || !link.iconData?.position ? (
@@ -100,29 +120,44 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                  </SmartLink>
                  
                  {link.type === 'mega' && activeMegaMenu === i && (
-                    <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-screen max-w-[1200px] bg-white border border-border-subtle shadow-2xl rounded-b-2xl overflow-hidden transition-all duration-300 opacity-100 visible">
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-screen max-w-[1200px] bg-white border border-border-subtle shadow-2xl rounded-b-2xl overflow-hidden transition-all duration-300 opacity-100 visible">
                       <div className="flex p-8 gap-8">
                          <div className="flex-1 grid grid-cols-3 gap-8">
                             {link.megaMenu?.columns?.map((col: any, colIdx: number) => (
-                               <div key={colIdx}>
+                               <div key={colIdx} className="flex flex-col">
                                   <h4 className="font-bold text-sm text-primary tracking-wider mb-4 border-b border-border-subtle pb-2">{col.title}</h4>
-                                  <ul className="space-y-3">
-                                     {col.links?.map((clink: any, clinkIdx: number) => (
-                                        <li key={clinkIdx}>
-                                           <a href={clink.url} className="group flex items-start gap-3">
-                                              {clink.icon && (
-                                                <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 group-custom-hover-bg group-hover:text-white transition-colors">
-                                                  <span className="material-symbols-outlined text-lg">{clink.icon}</span>
+                                  <div className={`flex flex-1 ${col.imagePosition === 'left' ? 'flex-row' : col.imagePosition === 'right' ? 'flex-row-reverse' : col.imagePosition === 'bottom' ? 'flex-col' : 'flex-col-reverse'} gap-4`}>
+                                    <ul className="space-y-3 flex-1">
+                                       {col.links?.map((clink: any, clinkIdx: number) => (
+                                          <li key={clinkIdx}>
+                                             <a href={clink.url} className="group flex items-start gap-3">
+                                                {clink.icon && (
+                                                  <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 group-custom-hover-bg group-hover:text-white transition-colors">
+                                                    <span className="material-symbols-outlined text-lg">{clink.icon}</span>
+                                                  </div>
+                                                )}
+                                                <div>
+                                                  <div className={`text-sm font-bold transition-colors ${isLinkActive(clink.url) ? 'nav-link-active' : 'nav-link-normal group-custom-hover-color'}`}>{clink.label}</div>
+                                                  {clink.desc && <div className="text-xs text-text-muted mt-0.5">{clink.desc}</div>}
                                                 </div>
-                                              )}
-                                              <div>
-                                                <div className="text-sm font-bold text-primary group-custom-hover-color transition-colors">{clink.label}</div>
-                                                {clink.desc && <div className="text-xs text-text-muted mt-0.5">{clink.desc}</div>}
-                                              </div>
-                                           </a>
-                                        </li>
-                                     ))}
-                                  </ul>
+                                             </a>
+                                          </li>
+                                       ))}
+                                    </ul>
+                                    {col.image && (
+                                      <div className="relative overflow-hidden rounded-lg bg-slate-50 border border-border-subtle shrink-0" style={{ 
+                                        width: col.imageWidth ? `${col.imageWidth}px` : ((col.imagePosition === 'left' || col.imagePosition === 'right') ? '120px' : '100%'), 
+                                        height: col.imageHeight ? `${col.imageHeight}px` : ((col.imagePosition === 'top' || col.imagePosition === 'bottom') ? '120px' : 'auto'), 
+                                        minHeight: '100px' 
+                                      }}>
+                                        <img src={col.image} alt="" className="absolute max-w-none" style={{
+                                          width: `${col.imageScale || 100}%`,
+                                          left: `${col.imageX || 0}px`,
+                                          top: `${col.imageY || 0}px`,
+                                        }} />
+                                      </div>
+                                    )}
+                                  </div>
                                </div>
                             ))}
                          </div>
@@ -143,6 +178,21 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                            </div>
                          )}
                       </div>
+                    </div>
+                 )}
+                 {link.type === 'dropdown' && activeMegaMenu === i && (
+                    <div className="absolute top-full left-0 pt-4 opacity-100 visible z-50">
+                       <div className="min-w-[240px] bg-white border border-border-subtle shadow-xl rounded-xl py-3">
+                         <ul className="flex flex-col">
+                            {link.subLinks?.map((sublink: any, subIdx: number) => (
+                               <li key={subIdx}>
+                                  <a href={sublink.url || '#'} className={`px-5 py-2.5 flex items-center gap-3 text-sm font-bold transition-colors outline-none focus:outline-none ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal hover:bg-slate-50 custom-hover-color'}`}>
+                                     {sublink.label}
+                                  </a>
+                               </li>
+                            ))}
+                         </ul>
+                       </div>
                     </div>
                  )}
               </div>
@@ -184,7 +234,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                   <a 
                     href={link.url || '#'} 
                     onClick={() => link.type !== 'mega' && link.type !== 'dropdown' && setMobileMenuOpen(false)}
-                    className="text-primary font-bold flex-1 flex items-center gap-2"
+                    className={`font-bold flex-1 flex items-center gap-2 ${isLinkActive(link.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                   >
                     {link.iconData && <IconPreview data={link.iconData} className="w-5 h-5 shrink-0" />}
                     {!link.iconData?.iconOnly && link.label}
@@ -209,7 +259,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                     <ul className="pl-4 space-y-3 pb-2 border-l-2 border-border-subtle ml-2">
                       {link.subLinks?.map((sublink: any, subIdx: number) => (
                         <li key={subIdx}>
-                          <a href={sublink.url || '#'} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold text-primary custom-hover-color block">
+                          <a href={sublink.url || '#'} onClick={() => setMobileMenuOpen(false)} className={`text-sm font-bold block ${isLinkActive(sublink.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}>
                             {sublink.label}
                           </a>
                         </li>
@@ -230,7 +280,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
                                 <a 
                                   href={clink.url} 
                                   onClick={() => setMobileMenuOpen(false)}
-                                  className="flex items-center gap-2 text-sm text-primary custom-hover-color py-1"
+                                  className={`flex items-center gap-2 text-sm py-1 ${isLinkActive(clink.url) ? 'nav-link-active' : 'nav-link-normal custom-hover-color'}`}
                                 >
                                   {clink.icon && <span className="material-symbols-outlined text-[16px] text-secondary">{clink.icon}</span>}
                                   {clink.label}

@@ -715,7 +715,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'}
             ], "Görseller")}
                         {renderArrayEditor('buttons', [
               {key: 'label', label: 'Buton Metni', type: 'text'},
@@ -828,7 +828,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'tag', label: 'Etiket (Örn: Bilgisayar Müh.)', type: 'text'},
               {key: 'tagColor', label: 'Etiket Rengi', type: 'color'},
               {key: 'url', label: 'Profil URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'},
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'},
               {key: 'cardBgColor', label: 'Kart Arka Plan Rengi', type: 'color'},
               {key: 'cardBorderColor', label: 'Kart Kenarlık Rengi', type: 'color'},
               {key: 'itemTitleColor', label: 'İsim Metin Rengi', type: 'color'},
@@ -885,7 +885,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'badge', label: 'Sorumluluk (Badge)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'url', label: 'Profil Linki', type: 'url'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'}
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'}
             ], "Yöneticiler")}
           </div>
         )}
@@ -901,7 +901,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'badge', label: 'Fakülte (Badge)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'url', label: 'Fakülte Linki', type: 'url'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'}
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'}
             ], "Dekanlar")}
           </div>
         )}
@@ -990,7 +990,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'image', label: 'Görsel', type: 'image'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}
+              {key: 'buttonText', label: 'Buton Yazısı (Örn: Detaylı Bilgi)', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'}
             ], "Öğeler", true)}
           </div>
         )}
@@ -1030,7 +1030,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'rowSpan', label: 'Geniş Kart', type: 'checkbox'},
               {key: 'highlight', label: 'Mavi Temalı (Primary)', type: 'checkbox'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'}
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'}
             ], "Bento Kartları")}
           </div>
         )}
@@ -1238,7 +1238,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'phone', label: 'Telefon', type: 'text'},
               {key: 'image', label: 'Harita Görseli (Yedek)', type: 'image'},
               {key: 'mapCode', label: 'Harita Kodu (iframe, Google Maps vs.)', type: 'textarea'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'},
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'},
               {key: 'url', label: 'Yol Tarifi Linki', type: 'url'}
             ], "Kampüs Kartları")}
           </div>
@@ -1623,7 +1623,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'stat', label: 'İstatistik (Kart 1)', type: 'text'},
               {key: 'statLabel', label: 'İstatistik Etiketi (Kart 1)', type: 'text'},
               {key: 'tag', label: 'Rozet/Etiket (Kart 1)', type: 'text'},
-              {key: 'buttonText', label: 'Buton Metni (Kart 2)', type: 'text'},
+              {key: 'buttonText', label: 'Buton Metni (Kart 2)', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'},
               {key: 'url', label: 'Buton URL (Kart 2)', type: 'url'}
             ], "Öğeler (Max 3, Özel Tasarım)")}
           </div>
@@ -1682,7 +1682,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'tag', label: 'Kategori Seç (Rozet)', type: 'select', options: (block.categories || []).filter((c: any) => c.label !== 'Tümü').map((c: any) => ({value: c.label || c, label: c.label || c}))},
               {key: 'tagColor', label: 'Etiket Rengi (Tailwind class)', type: 'text'},
               {key: 'image', label: 'Görsel', type: 'image'},
-              {key: 'buttonText', label: 'Buton Metni', type: 'text'},
+              {key: 'buttonText', label: 'Buton Metni', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'},
               {key: 'url', label: 'Buton URL', type: 'url'}
             ,
               {key: 'cardBgColor', label: 'Kart Arka Plan Rengi', type: 'color'},
@@ -1771,7 +1771,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
               {key: 'url', label: 'Link URL', type: 'url'},
-              {key: 'buttonText', label: 'Link Metni (İncele)', type: 'text'},
+              {key: 'buttonText', label: 'Link Metni (İncele)', type: 'text'}, {key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox'},
               {key: 'itemTitleColor', label: 'Özel Başlık Rengi', type: 'color'},
               {key: 'itemDescColor', label: 'Özel Açıklama Rengi', type: 'color'}
             ], "Lejant (Açıklama) Kartları")}
