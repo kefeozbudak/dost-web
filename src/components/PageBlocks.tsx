@@ -94,12 +94,7 @@ const ClubsGridBlock = ({
                     {item.icon &&
                       (typeof item.icon === "string" &&
                       item.icon === item.icon.toLowerCase() ? (
-                        <span
-                          className="material-symbols-outlined text-primary text-[24px]" translate="no" aria-hidden="true"
-                          style={{ fontVariationSettings: "'FILL' 1" }}
-                        >
-                          {item.icon}
-                        </span>
+                        <IconPreview data={item.icon} className="text-primary text-[24px]" style={{ fontVariationSettings: "'FILL' 1"  }} />
                       ) : (
                         <IconPreview
                           data={item.icon}
@@ -195,7 +190,7 @@ const CareerBenefitsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitl
         {items.map((item: any, i: number) => (
           <div key={i} className={`bg-white border border-slate-200 rounded-xl p-6 transition-transform hover:-translate-y-1 hover:shadow-md ${item.borderTop || ''}`}>
             <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${item.iconBg || 'bg-slate-100'} ${item.iconColor || 'text-slate-700'}`}>
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }} translate="no" aria-hidden="true">{item.icon || 'star'}</span>
+              <IconPreview data={item.icon || 'star'} style={{ fontVariationSettings: "'FILL' 1"  }} />
             </div>
             <h3 className="font-bold text-[20px] text-slate-900 mb-2">{item.title}</h3>
             <p className="font-normal text-[16px] text-slate-500">{item.desc}</p>
@@ -313,7 +308,7 @@ const EduSystemLevelsBlock = ({ block, index, getStyle, getTitleStyle, getSubtit
               }}
             >
               <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-6 transition-colors ${isPrimary ? 'bg-primary/10 group-hover:bg-primary text-primary' : 'bg-secondary/10 group-hover:bg-secondary text-secondary'} group-hover:text-white`}>
-                <span className="material-symbols-outlined text-3xl transition-colors" translate="no" aria-hidden="true">{item.icon || 'school'}</span>
+                <IconPreview data={item.icon || 'school'} className="text-3xl transition-colors" />
               </div>
               <h3 className="font-headline-md text-xl font-bold text-text-main mb-3" style={{color: item.itemTitleColor}}>{item.title}</h3>
               <p className="font-body-md text-text-muted mb-6 flex-grow" style={{color: item.itemDescColor}}>{item.desc}</p>
@@ -361,7 +356,7 @@ const EduSystemYadepBlock = ({ block, index, getStyle, getTitleStyle, getSubtitl
                   colorClass === 'secondary' ? 'bg-secondary/10 text-secondary' : 
                   'bg-primary/10 text-primary'
                 }`}>
-                  <span className="material-symbols-outlined text-3xl" translate="no" aria-hidden="true">{item.icon}</span>
+                  <IconPreview data={item.icon} className="text-3xl" />
                 </div>
                 <h3 className="font-headline-md text-xl font-bold text-text-main mb-3" style={{color: item.itemTitleColor}}>{item.title}</h3>
                 <p className="font-body-md text-text-muted" style={{color: item.itemDescColor}}>{item.desc}</p>
@@ -401,7 +396,7 @@ const EduSystemPhilosophyBlock = ({ block, index, getStyle, getTitleStyle, getSu
                 return (
                   <div key={i} className="flex gap-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-card border border-border-subtle flex items-center justify-center shadow-sm">
-                      <span className={`material-symbols-outlined ${colorClass === 'primary' ? 'text-primary' : 'text-secondary'}`} translate="no" aria-hidden="true">{item.icon}</span>
+                      <IconPreview data={item.icon}  />
                     </div>
                     <div>
                       <h4 className="font-headline-md text-lg font-bold text-text-main mb-1" style={{color: item.itemTitleColor}}>{item.title}</h4>
@@ -452,7 +447,7 @@ const EduSystemCtaBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleS
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           {(block.buttons || []).map((btn: any, btnIdx: number) => (
             <SmartLink key={btnIdx} url={btn.url} className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-label-md font-bold rounded-lg hover:bg-surface-bright hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
-              {btn.icon && <span className="material-symbols-outlined" translate="no" aria-hidden="true">{btn.icon}</span>}
+              {btn.icon && <IconPreview data={btn.icon}  />}
               {btn.label || btn.buttonText}
             </SmartLink>
           ))}
@@ -641,14 +636,14 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
                   if (isStyledForm) {
                     return (
                       <div key={inputKey} className={`flex items-center gap-3 mb-6 border-b border-border-subtle pb-2 mt-4 first:mt-0 ${colSpan}`}>
-                        {input.icon && <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{input.icon}</span>}
+                        {input.icon && <IconPreview data={input.icon} className="text-primary" />}
                         <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider">{input.label}</h2>
                       </div>
                     );
                   }
                   return (
                     <div key={inputKey} className={`flex items-center gap-2 border-b border-border-subtle pb-3 mt-4 first:mt-0 ${colSpan}`}>
-                      {input.icon && <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{input.icon}</span>}
+                      {input.icon && <IconPreview data={input.icon} className="text-primary" />}
                       <h2 className="font-headline-md text-headline-md text-on-surface">{input.label}</h2>
                     </div>
                   );
@@ -1112,7 +1107,7 @@ const BurslulukInfoCardsBlock = ({ block, index, getStyle, getTitleStyle, getSub
           {items.map((item: any, idx: number) => (
             <div key={idx} className="group p-8 rounded-2xl bg-[#f3f2fd] border border-[#e2e8f0] hover:border-[#1d4eca]/30 transition-all shadow-sm hover:shadow-md">
               <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-[#1d4eca] text-3xl" translate="no" aria-hidden="true">{item.icon || 'info'}</span>
+                <IconPreview data={item.icon || 'info'} className="text-[#1d4eca] text-3xl" />
               </div>
               <h4 className="text-xl font-bold text-[#002147] mb-4">{item.title}</h4>
               <ul className="space-y-3 text-[#434654]">
@@ -1780,7 +1775,7 @@ export const DynamicBlockRenderer = ({
                   <div className="flex gap-4 flex-wrap">
                     {block.buttons.map((btn: any, btnIdx: number) => (
                       <SmartLink key={btnIdx} url={btn.url || btn.buttonUrl || btn.link} className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2" style={getIndividualButtonStyle(btn)}>
-                        {btn.label} {btn.icon && <span className="material-symbols-outlined" translate="no" aria-hidden="true">{btn.icon}</span>}
+                        {btn.label} {btn.icon && <IconPreview data={btn.icon}  />}
                       </SmartLink>
                     ))}
                   </div>
@@ -1897,7 +1892,7 @@ export const DynamicBlockRenderer = ({
                   {(block.items || []).map((item: any, i: number) => (
                     <li key={i} className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                        {item.icon && (typeof item.icon === 'string' && item.icon === item.icon.toLowerCase() ? <span className="material-symbols-outlined" translate="no" aria-hidden="true">{item.icon}</span> : <IconPreview data={item.icon} className="w-6 h-6 fill-current" />)}
+                        {item.icon && (typeof item.icon === 'string' && item.icon === item.icon.toLowerCase() ? <IconPreview data={item.icon}  /> : <IconPreview data={item.icon} className="w-6 h-6 fill-current" />)}
                       </div>
                       <span className="font-label-md text-text-main" style={getCardTitleStyle(item, block)}>{item.title}</span>
                     </li>
@@ -1927,7 +1922,7 @@ export const DynamicBlockRenderer = ({
                   <div className="space-y-6">
                     {(block.items || []).map((item: any, i: number) => (
                       <div key={i} className="flex gap-4 items-start">
-                        <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">{item.icon}</span>
+                        <IconPreview data={item.icon} className="text-primary" />
                         <div>
                           <h4 className="font-bold text-text-main" style={getCardTitleStyle(item, block)}>{item.title}</h4>
                           <p className="text-text-muted" style={getCardDescStyle(item, block)}>{item.desc}</p>
@@ -1952,7 +1947,7 @@ export const DynamicBlockRenderer = ({
                         </div>
                         {block.buttons && block.buttons[0] && (
                           <SmartLink url={block.buttons[0].url || block.buttons[0].buttonUrl || block.buttons[0].link} className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
-                            <span className="material-symbols-outlined" translate="no" aria-hidden="true">{block.buttons[0].icon || 'directions'}</span>
+                            <IconPreview data={block.buttons[0].icon || 'directions'}  />
                           </SmartLink>
                         )}
                       </div>
@@ -2154,9 +2149,7 @@ export const DynamicBlockRenderer = ({
                       {item.icon &&
                         (typeof item.icon === "string" &&
                         item.icon === item.icon.toLowerCase() ? (
-                          <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">
-                            {item.icon}
-                          </span>
+                          <IconPreview data={item.icon} className="text-2xl" />
                         ) : (
                           <IconPreview
                             data={item.icon}
@@ -2289,9 +2282,7 @@ export const DynamicBlockRenderer = ({
                         {item.icon &&
                           (typeof item.icon === "string" &&
                           item.icon === item.icon.toLowerCase() ? (
-                            <span className="material-symbols-outlined text-primary text-3xl" translate="no" aria-hidden="true">
-                              {item.icon}
-                            </span>
+                            <IconPreview data={item.icon} className="text-primary text-3xl" />
                           ) : (
                             <IconPreview
                               data={item.icon}
@@ -2574,12 +2565,7 @@ export const DynamicBlockRenderer = ({
                 className={`max-w-4xl mx-auto text-center ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
               >
                 {block.icon && (
-                  <span
-                    className="material-symbols-outlined text-primary text-4xl md:text-5xl mb-4" translate="no" aria-hidden="true"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    {block.icon}
-                  </span>
+                  <IconPreview data={block.icon} className="text-primary text-4xl md:text-5xl mb-4" style={{ fontVariationSettings: "'FILL' 1"  }} />
                 )}
                 {block.title && (
                   <h2
@@ -2790,9 +2776,7 @@ export const DynamicBlockRenderer = ({
                               {btn.icon &&
                                 (typeof btn.icon === "string" &&
                                 btn.icon === btn.icon.toLowerCase() ? (
-                                  <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
-                                    {btn.icon}
-                                  </span>
+                                  <IconPreview data={btn.icon} className="text-[1.1em]" />
                                 ) : (
                                   <IconPreview
                                     data={btn.icon}
@@ -2894,9 +2878,7 @@ export const DynamicBlockRenderer = ({
                             className="text-[#5eead4] w-6 h-6"
                           />
                         ) : (
-                          <span className="material-symbols-outlined text-[#5eead4]" translate="no" aria-hidden="true">
-                            {item.icon || "school"}
-                          </span>
+                          <IconPreview data={item.icon || "school"} className="text-[#5eead4]" />
                         )}
                       </div>
                       <h3
@@ -3006,9 +2988,7 @@ export const DynamicBlockRenderer = ({
                                 className="w-6 h-6"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">
-                                {item.icon}
-                              </span>
+                              <IconPreview data={item.icon} className="text-2xl" />
                             )}
                           </div>
                           <h3
@@ -3271,9 +3251,7 @@ export const DynamicBlockRenderer = ({
                           {btn.label}
                           {btn.icon &&
                             (typeof btn.icon === "string" ? (
-                              <span className="material-symbols-outlined" translate="no" aria-hidden="true">
-                                {btn.icon}
-                              </span>
+                              <IconPreview data={btn.icon}  />
                             ) : null)}
                         </a>
                       ))}
@@ -3308,9 +3286,7 @@ export const DynamicBlockRenderer = ({
                         className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -mr-16 -mt-16"
                         style={{ backgroundColor: "rgba(212, 175, 55, 0.05)" }}
                       ></div>
-                      <span className="material-symbols-outlined text-primary text-4xl mb-6" translate="no" aria-hidden="true">
-                        {block.items[0].icon || "school"}
-                      </span>
+                      <IconPreview data={block.items[0].icon || "school"} className="text-primary text-4xl mb-6" />
                       <h3 className="font-headline-md text-headline-md mb-2">
                         {block.items[0].title}
                       </h3>
@@ -3346,15 +3322,9 @@ export const DynamicBlockRenderer = ({
                   {block.items && block.items[1] && (
                     <div className="bg-primary text-on-primary rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2">
                       <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45"></div>
-                      <span
-                        className="material-symbols-outlined text-gold text-4xl mb-6" translate="no" aria-hidden="true"
-                        style={{
-                          fontVariationSettings: "'FILL' 1",
+                      <IconPreview data={block.items[1].icon || "star"} className="text-gold text-4xl mb-6" style={{ fontVariationSettings: "'FILL' 1",
                           color: "#D4AF37",
-                        }}
-                      >
-                        {block.items[1].icon || "star"}
-                      </span>
+                         }} />
                       <h3 className="font-headline-md text-headline-md mb-2 text-white">
                         {block.items[1].title}
                       </h3>
@@ -3392,9 +3362,7 @@ export const DynamicBlockRenderer = ({
                   {block.items && block.items[2] && (
                     <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card flex flex-col justify-between transition-all duration-700 hover:-translate-y-2">
                       <div>
-                        <span className="material-symbols-outlined text-primary text-4xl mb-6" translate="no" aria-hidden="true">
-                          {block.items[2].icon || "analytics"}
-                        </span>
+                        <IconPreview data={block.items[2].icon || "analytics"} className="text-primary text-4xl mb-6" />
                         <h3 className="font-headline-md text-headline-md mb-2">
                           {block.items[2].title}
                         </h3>
@@ -3524,12 +3492,7 @@ export const DynamicBlockRenderer = ({
                             key={i}
                             className="flex gap-4 items-start bg-white/5 p-6 rounded-2xl border border-white/10 hover:border-gold/50 transition-colors"
                           >
-                            <span
-                              className="material-symbols-outlined text-gold text-3xl" translate="no" aria-hidden="true"
-                              style={{ color: "#D4AF37" }}
-                            >
-                              {item.icon || "science"}
-                            </span>
+                            <IconPreview data={item.icon || "science"} className="text-gold text-3xl" style={{ color: "#D4AF37"  }} />
                             <div>
                               <h4 className="font-bold mb-1">{item.title}</h4>
                               <p className="text-sm opacity-70">{item.desc}</p>
@@ -3762,9 +3725,7 @@ export const DynamicBlockRenderer = ({
                             {btn.icon &&
                               (typeof btn.icon === "string" &&
                               btn.icon === btn.icon.toLowerCase() ? (
-                                <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
-                                  {btn.icon}
-                                </span>
+                                <IconPreview data={btn.icon} className="text-[1.1em]" />
                               ) : (
                                 <IconPreview
                                   data={btn.icon}
@@ -3876,9 +3837,7 @@ export const DynamicBlockRenderer = ({
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview data={item.icon} className="w-10 h-10" />
                         ) : (
-                          <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true">
-                            {item.icon || (isSecondary ? "visibility" : "flag")}
-                          </span>
+                          <IconPreview data={item.icon || (isSecondary ? "visibility" : "flag")} className="text-4xl" />
                         )}
                       </div>
                       <h2
@@ -3946,11 +3905,7 @@ export const DynamicBlockRenderer = ({
                             className={`${color} w-8 h-8 mb-4`}
                           />
                         ) : (
-                          <span
-                            className={`material-symbols-outlined ${color} text-3xl mb-4`} translate="no" aria-hidden="true"
-                          >
-                            {item.icon || "verified_user"}
-                          </span>
+                          <IconPreview data={item.icon || "verified_user"}  />
                         )}
                         <h4
                           style={getItemTitleStyle(block)}
@@ -4150,12 +4105,7 @@ export const DynamicBlockRenderer = ({
                                 className="w-[20px] h-[20px]"
                               />
                             ) : (
-                              <span
-                                className="material-symbols-outlined text-[20px]" translate="no" aria-hidden="true"
-                                style={{ color: "inherit" }}
-                              >
-                                {item.icon || "school"}
-                              </span>
+                              <IconPreview data={item.icon || "school"} className="text-[20px]" style={{ color: "inherit"  }} />
                             )}
                             <span>{item.label}</span>
                           </a>
@@ -4339,9 +4289,7 @@ export const DynamicBlockRenderer = ({
                       className="text-[#bd0f2c] w-6 h-6"
                     />
                   ) : (
-                    <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
-                      {block.icon || "school"}
-                    </span>
+                    <IconPreview data={block.icon || "school"} className="text-[#bd0f2c]" />
                   )}
                   <h2
                     className="text-2xl font-bold text-slate-900 dark:text-white"
@@ -4401,9 +4349,7 @@ export const DynamicBlockRenderer = ({
                             {btn.icon &&
                               (typeof btn.icon === "string" &&
                               btn.icon === btn.icon.toLowerCase() ? (
-                                <span className="material-symbols-outlined text-[18px]" translate="no" aria-hidden="true">
-                                  {btn.icon}
-                                </span>
+                                <IconPreview data={btn.icon} className="text-[18px]" />
                               ) : (
                                 <IconPreview
                                   data={btn.icon}
@@ -4436,9 +4382,7 @@ export const DynamicBlockRenderer = ({
                       className="text-[#bd0f2c] w-6 h-6"
                     />
                   ) : (
-                    <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
-                      {block.icon || "groups"}
-                    </span>
+                    <IconPreview data={block.icon || "groups"} className="text-[#bd0f2c]" />
                   )}
                   <h2
                     className="text-2xl font-bold text-slate-900 dark:text-white"
@@ -4517,9 +4461,7 @@ export const DynamicBlockRenderer = ({
                         className="text-[#bd0f2c] w-6 h-6"
                       />
                     ) : (
-                      <span className="material-symbols-outlined text-[#bd0f2c]" translate="no" aria-hidden="true">
-                        {block.icon || "account_balance"}
-                      </span>
+                      <IconPreview data={block.icon || "account_balance"} className="text-[#bd0f2c]" />
                     )}
                     <h2
                       className="text-2xl font-bold text-slate-900 dark:text-white"
@@ -4722,9 +4664,7 @@ export const DynamicBlockRenderer = ({
                                   className="text-secondary-fixed w-[40px] h-[40px] mb-4"
                                 />
                               ) : (
-                                <span className="material-symbols-outlined text-secondary-fixed text-[40px] mb-4" translate="no" aria-hidden="true">
-                                  {item.icon || "forest"}
-                                </span>
+                                <IconPreview data={item.icon || "forest"} className="text-secondary-fixed text-[40px] mb-4" />
                               )}
                               <h3
                                 className="font-headline-md text-headline-md text-on-primary mb-2"
@@ -4772,9 +4712,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-primary w-[40px] h-[40px] mb-4"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-primary text-[40px] mb-4" translate="no" aria-hidden="true">
-                                {item.icon || "psychology"}
-                              </span>
+                              <IconPreview data={item.icon || "psychology"} className="text-primary text-[40px] mb-4" />
                             )}
                             <h3
                               className="font-headline-md text-headline-md text-on-background mb-2"
@@ -4809,9 +4747,7 @@ export const DynamicBlockRenderer = ({
                               className="text-secondary w-[32px] h-[32px] mb-4"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-secondary text-[32px] mb-4" translate="no" aria-hidden="true">
-                              {item.icon || "favorite"}
-                            </span>
+                            <IconPreview data={item.icon || "favorite"} className="text-secondary text-[32px] mb-4" />
                           )}
                           <h3
                             className="font-label-md text-label-md text-on-background font-bold mb-2"
@@ -4884,9 +4820,7 @@ export const DynamicBlockRenderer = ({
                               className="text-primary w-6 h-6"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-primary" translate="no" aria-hidden="true">
-                              {item.icon || "language"}
-                            </span>
+                            <IconPreview data={item.icon || "language"} className="text-primary" />
                           )}
                           <h3
                             className="font-label-md text-label-md font-bold text-on-background text-lg"
@@ -5033,12 +4967,7 @@ export const DynamicBlockRenderer = ({
                                   className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
                                 />
                               ) : (
-                                <span
-                                  className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`} translate="no" aria-hidden="true"
-                                  style={{ fontVariationSettings: "'FILL' 1" }}
-                                >
-                                  {item.icon || "palette"}
-                                </span>
+                                <IconPreview data={item.icon || "palette"} style={{ fontVariationSettings: "'FILL' 1"  }} />
                               )}
                             </div>
                             <h3
@@ -5082,12 +5011,7 @@ export const DynamicBlockRenderer = ({
                                   className="text-primary w-6 h-6"
                                 />
                               ) : (
-                                <span
-                                  className="material-symbols-outlined text-primary" translate="no" aria-hidden="true"
-                                  style={{ fontVariationSettings: "'FILL' 1" }}
-                                >
-                                  {item.icon || "menu_book"}
-                                </span>
+                                <IconPreview data={item.icon || "menu_book"} className="text-primary" style={{ fontVariationSettings: "'FILL' 1"  }} />
                               )}
                             </div>
                             <h3
@@ -5124,12 +5048,7 @@ export const DynamicBlockRenderer = ({
                               className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
                             />
                           ) : (
-                            <span
-                              className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"}`} translate="no" aria-hidden="true"
-                              style={{ fontVariationSettings: "'FILL' 1" }}
-                            >
-                              {item.icon || "groups"}
-                            </span>
+                            <IconPreview data={item.icon || "groups"} style={{ fontVariationSettings: "'FILL' 1"  }} />
                           )}
                         </div>
                         <div>
@@ -5282,12 +5201,7 @@ export const DynamicBlockRenderer = ({
                                 className="w-[28px] h-[28px]"
                               />
                             ) : (
-                              <span
-                                className="material-symbols-outlined text-[28px]" translate="no" aria-hidden="true"
-                                style={{ fontVariationSettings: "'FILL' 1" }}
-                              >
-                                {item.icon || "psychology"}
-                              </span>
+                              <IconPreview data={item.icon || "psychology"} className="text-[28px]" style={{ fontVariationSettings: "'FILL' 1"  }} />
                             )}
                           </div>
                           <h3
@@ -5399,9 +5313,7 @@ export const DynamicBlockRenderer = ({
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview data={item.icon} className="w-6 h-6" />
                         ) : (
-                          <span className="material-symbols-outlined text-[24px]" translate="no" aria-hidden="true">
-                            {item.icon || "menu_book"}
-                          </span>
+                          <IconPreview data={item.icon || "menu_book"} className="text-[24px]" />
                         )}
                       </div>
                       <div>
@@ -5572,13 +5484,8 @@ export const DynamicBlockRenderer = ({
                               className="w-[24px] h-[24px]"
                             />
                           ) : (
-                            <span
-                              className="material-symbols-outlined" translate="no" aria-hidden="true"
-                              style={{ fontVariationSettings: "'FILL' 1" }}
-                            >
-                              {item.icon ||
-                                (isPrimary ? "account_balance" : "science")}
-                            </span>
+                            <IconPreview data={item.icon ||
+                                (isPrimary ? "account_balance" : "science")} style={{ fontVariationSettings: "'FILL' 1"  }} />
                           )}
                         </div>
                         <h3
@@ -5681,9 +5588,7 @@ export const DynamicBlockRenderer = ({
                         {btn.icon &&
                           (typeof btn.icon === "string" &&
                           btn.icon === btn.icon.toLowerCase() ? (
-                            <span className="material-symbols-outlined text-[1.1em]" translate="no" aria-hidden="true">
-                              {btn.icon}
-                            </span>
+                            <IconPreview data={btn.icon} className="text-[1.1em]" />
                           ) : (
                             <IconPreview
                               data={btn.icon}
@@ -5736,12 +5641,7 @@ export const DynamicBlockRenderer = ({
                               className="text-[#D4AF37] w-10 h-10"
                             />
                           ) : (
-                            <span
-                              className="material-symbols-outlined text-[#D4AF37] text-4xl" translate="no" aria-hidden="true"
-                              style={{ fontVariationSettings: "'FILL' 1" }}
-                            >
-                              {item.icon || "star"}
-                            </span>
+                            <IconPreview data={item.icon || "star"} className="text-[#D4AF37] text-4xl" style={{ fontVariationSettings: "'FILL' 1"  }} />
                           )}
                         </div>
                         <h3 className="font-bold text-[24px] mb-2 text-white">
@@ -5796,9 +5696,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-[#1d4eca] w-10 h-10"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-[#1d4eca] text-4xl" translate="no" aria-hidden="true">
-                                {item.icon || "analytics"}
-                              </span>
+                              <IconPreview data={item.icon || "analytics"} className="text-[#1d4eca] text-4xl" />
                             )}
                           </div>
                           <h3 className="font-bold text-[24px] mb-2">
@@ -5844,9 +5742,7 @@ export const DynamicBlockRenderer = ({
                               className="text-[#1d4eca] w-10 h-10"
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-[#1d4eca] text-4xl" translate="no" aria-hidden="true">
-                              {item.icon || "school"}
-                            </span>
+                            <IconPreview data={item.icon || "school"} className="text-[#1d4eca] text-4xl" />
                           )}
                         </div>
                         <h3 className="font-bold text-[24px] mb-2">
@@ -5997,9 +5893,7 @@ export const DynamicBlockRenderer = ({
                                 className="text-[#D4AF37] w-8 h-8"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-[#D4AF37] text-3xl" translate="no" aria-hidden="true">
-                                {item.icon || "science"}
-                              </span>
+                              <IconPreview data={item.icon || "science"} className="text-[#D4AF37] text-3xl" />
                             )}
                           </div>
                           <div>
@@ -6178,7 +6072,7 @@ export const DynamicBlockRenderer = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {block.items?.map((item: any, i: number) => (
                 <div key={i} className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4" style={getCardStyle(item)}>
-                  {item.icon && <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true" style={{ color: item.iconColor || 'var(--color-primary)' }}>{item.icon}</span>}
+                  {item.icon && <IconPreview data={item.icon} className="text-4xl" style={{ color: item.iconColor || 'var(--color-primary)'  }} />}
                   <div>
                     <h4 className="font-bold text-slate-800" style={{ color: item.itemTitleColor }}>{item.title}</h4>
                     <p className="text-sm text-slate-500" style={{ color: item.itemDescColor }}>{item.desc}</p>
@@ -6301,7 +6195,7 @@ export const DynamicBlockRenderer = ({
                   <div key={i} className="bg-surface-card border border-border-subtle rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow" style={getCardStyle(legend)}>
                     <div className="flex items-center space-x-3 mb-4">
                       <div className={`w-8 h-8 rounded flex items-center justify-center ${legend.iconBgClass || 'bg-surface-container'}`}>
-                        <span className={`material-symbols-outlined text-sm ${legend.iconColorClass || 'text-on-surface'}`} translate="no" aria-hidden="true" style={{ fontVariationSettings: "'FILL' 1" }}>{legend.icon}</span>
+                        <IconPreview data={legend.icon} className={`text-sm ${legend.iconColorClass || 'text-on-surface'}`} style={{ fontVariationSettings: "'FILL' 1"  }} />
                       </div>
                       <h3 className="font-headline-md text-headline-md text-on-surface" style={{ color: legend.itemTitleColor }}>{legend.title}</h3>
                     </div>

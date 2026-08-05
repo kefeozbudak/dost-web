@@ -84,17 +84,15 @@ export default function PageEditor() {
             const defaultData = { title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz', blocks: module.defaultEgitimSistemiData };
             setPageData(defaultData);
           });
-        } else if (pageId === 'is-basvuru-formu') {
-          const defaultData = {
-            title: 'İş Başvuru Formu',
-            path: '/is-basvuru-formu',
-            blocks: [
-              { type: 'career_hero', title: "Dost Koleji'nde Kariyer" },
-              { type: 'career_benefits', title: "Neden Bize Katılmalısınız?" },
-              { type: 'career_application', title: "Mevcut Açık Pozisyonlar" }
-            ]
-          };
-          setPageData(defaultData);
+        } else if (pageId === 'is-basvuru-formu' || pageId === 'is-basvurusu') {
+          import('../lib/defaultData').then(({ defaultCareerPageData }) => {
+            const defaultData = {
+              title: 'İş Başvurusu',
+              path: '/is-basvurusu',
+              blocks: defaultCareerPageData
+            };
+            setPageData(defaultData);
+          });
         } else if (pageId === 'home') {
           const defaultData = { title: 'Ana Sayfa', path: '/', blocks: defaultHomePageData.filter(b => b.type !== "header" && b.type !== "footer") };
           setPageData(defaultData);

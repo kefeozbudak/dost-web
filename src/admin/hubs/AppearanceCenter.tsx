@@ -140,7 +140,7 @@ export default function AppearanceCenter() {
         { id: 'home', title: 'Ana Sayfa', path: '/' },
         { id: 'on-kayit', title: 'Öğrenci Ön Kayıt', path: '/on-kayit' },
         { id: 'kulup-kayit-formu', title: 'Kulüp Kayıt Formu', path: '/kulup-kayit-formu' },
-          { id: 'is-basvuru-formu', title: 'İş Başvuru Formu', path: '/is-basvuru-formu' },
+          { id: 'is-basvurusu', title: 'İş Başvurusu', path: '/is-basvurusu' },
         { id: 'egitim-sistemimiz', title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz' },
         { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
         { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' }

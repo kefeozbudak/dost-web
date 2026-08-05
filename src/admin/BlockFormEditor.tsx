@@ -49,6 +49,14 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
   const getEffectiveArray = (arrayKey: string) => {
     let current = block[arrayKey];
+    if (arrayKey === 'items' && (!current || current.length === 0)) {
+      if (block.type === 'career_benefits') return [
+        { title: 'Sürekli Gelişim', desc: 'Eğitim sektöründe sürekli eğitim...', icon: 'psychology', iconColor: 'text-primary', iconBg: 'bg-primary/10' },
+        { title: 'Kurumsal Güven', desc: 'Dürüstlük ve istikrar temeli...', icon: 'verified_user', iconColor: 'text-[#D4AF37]', iconBg: 'bg-yellow-100' },
+        { title: 'Huzurlu Ortam', desc: 'Kampüslerimiz hem öğrenciler...', icon: 'spa', iconColor: 'text-emerald-700', iconBg: 'bg-emerald-100' }
+      ];
+      if (block.type === 'career_application') return [];
+    }
     if (arrayKey === 'inputs' && (!current || current.length === 0)) {
       if (block.type === 'pre_registration_form') return DEFAULT_PRE_REGISTRATION_INPUTS;
       if (block.type === 'club_registration_form') return DEFAULT_CLUB_INPUTS;

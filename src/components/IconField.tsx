@@ -3,20 +3,22 @@ import { Type, Palette, MoveHorizontal, Maximize, LayoutGrid, X } from 'lucide-r
 import * as LucideIcons from 'lucide-react';
 import IconPickerModal from './IconPickerModal';
 
-export function IconPreview({ data, className }: { data?: any; className?: string }) {
+export function IconPreview({ data, className, style }: { data?: any; className?: string; style?: any }) {
   if (!data) return null;
   const name = typeof data === 'string' ? data : data.name;
   if (!name) return null;
   
-  const Icon = (LucideIcons as any)[name];
+  const cleanName = name.replace(/^lucide:/i, '');
+  
+  const Icon = (LucideIcons as any)[cleanName];
   if (Icon) {
     const color = data.color && data.color !== 'currentColor' ? data.color : undefined;
     const size = data.size || undefined;
-    return <Icon className={className} color={color} size={size} />;
+    return <Icon className={className} color={color} size={size} style={style} />;
   }
 
   // Fallback to Google Material Symbols
-  return <span className={`material-symbols-outlined ${className || ''}`} translate="no" aria-hidden="true">{name}</span>;
+  return <span className={`material-symbols-outlined ${className || ''}`} style={style} translate="no" aria-hidden="true">{cleanName}</span>;
 }
 
 export default function IconField({ 

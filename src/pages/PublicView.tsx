@@ -13,6 +13,7 @@ import PopupOverlay from '../components/PopupOverlay';
 import { recordPageView } from '../lib/analytics';
 
 import { resolveMediaUrls } from '../lib/resolveMedia';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function cleanBrokenImages(obj: any, contextTitle = ''): any {
   if (!obj) return obj;
@@ -99,7 +100,8 @@ export default function PublicView() {
     setLoading(true);
     const rawPath = location.pathname;
     const cleanPath = rawPath.startsWith('/') ? rawPath : '/' + rawPath;
-    const docId = rawPath === '/' ? 'home' : rawPath.substring(1);
+    const docIdRaw = rawPath === '/' ? 'home' : rawPath.substring(1);
+    const docId = ['is-basvuru-formu', 'is-basvuru', 'isbasvurusu', 'isbasvuru'].includes(docIdRaw) ? 'is-basvurusu' : docIdRaw;
 
     const docRef = doc(db, 'pages', docId);
     
@@ -144,11 +146,13 @@ export default function PublicView() {
           let data = snapshot.docs[0].data();
           if (data.isDeleted || data.isHidden) {
             setPageData(null);
+          } else if ((!data.blocks || data.blocks.length === 0) && (cleanPath === '/is-basvuru-formu' || cleanPath === '/is-basvuru' || cleanPath === '/is-basvurusu' || cleanPath === '/isbasvurusu' || cleanPath === '/isbasvuru' || cleanPath === '/kulup-kayit-formu' || cleanPath === '/bursluluk-basvuru-formu')) {
+            // Let it fall through to default fallbacks below
           } else {
             setPageData(cleanBrokenImages(data));
+            setLoading(false);
+            return;
           }
-          setLoading(false);
-          return;
         }
       } catch (err) {
         console.error("Query by path error:", err);
@@ -195,16 +199,14 @@ export default function PublicView() {
           });
         });
       } else if (docId === 'is-basvuru-formu' || cleanPath === '/is-basvuru-formu' || cleanPath === '/is-basvuru' || cleanPath === '/is-basvurusu' || cleanPath === '/isbasvurusu' || cleanPath === '/isbasvuru') {
-        setPageData({
-          title: 'İş Başvuru Formu',
-          path: '/is-basvuru-formu',
-          blocks: [
-            { type: 'career_hero', title: "Dost Koleji'nde Kariyer" },
-            { type: 'career_benefits', title: "Neden Bize Katılmalısınız?" },
-            { type: 'career_application', title: "Mevcut Açık Pozisyonlar" }
-          ]
+        import('../lib/defaultData').then(({ defaultCareerPageData }) => {
+          setPageData({
+            title: 'İş Başvurusu',
+            path: '/is-basvurusu',
+            blocks: defaultCareerPageData
+          });
         });
-      } else if (docId === 'egitim-sistemimiz' || cleanPath === '/egitim-sistemimiz') {
+            } else if (docId === 'egitim-sistemimiz' || cleanPath === '/egitim-sistemimiz') {
         import('../lib/defaultData').then(({ defaultEgitimSistemiData }) => {
           setPageData({
             title: 'Eğitim Sistemimiz',
@@ -316,7 +318,17 @@ export default function PublicView() {
       <Header data={headerData} announcement={generalSettings} />
 
       <div className={`flex-1 transition-all duration-300 ${isAnnouncementActive ? 'pt-28 md:pt-32' : 'pt-20'}`}>
-        <DynamicBlockRenderer blocks={pageData.blocks || []} />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <DynamicBlockRenderer blocks={pageData.blocks || []} />
+          </motion.div>
+        </AnimatePresence>
       </div>
       <Footer data={footerData} headerData={headerData} />
       <AssistantWidget />

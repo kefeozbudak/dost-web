@@ -1,0 +1,45 @@
+const fs = require('fs');
+
+let content = fs.readFileSync('src/lib/defaultData.ts', 'utf8');
+
+const careerData = `
+export const defaultCareerPageData = [
+  {
+    type: 'career_hero',
+    title: 'Dost Koleji\\'nde Kariyer',
+    subtitle: 'Geleceği birlikte inşa edelim.',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80'
+  },
+  {
+    type: 'career_benefits',
+    items: [
+      {
+        title: 'Sürekli Gelişim',
+        desc: 'Eğitim sektöründe sürekli eğitim, atölye çalışmaları ve mesleki gelişim fırsatları ile personelimize yatırım yapıyoruz.',
+        icon: 'lucide:GraduationCap'
+      },
+      {
+        title: 'Kurumsal Güven',
+        desc: 'Dürüstlük ve istikrar temeli üzerine kurulmuş, güvenebileceğiniz güvenli ve şeffaf bir çalışma ortamı sunuyoruz.',
+        icon: 'lucide:Shield'
+      },
+      {
+        title: 'Huzurlu Ortam',
+        desc: 'Kampüslerimiz hem öğrenciler hem de personel için refah, işbirliği ve uyumlu bir atmosferi teşvik etmek üzere tasarlanmıştır.',
+        icon: 'lucide:Leaf'
+      }
+    ]
+  },
+  {
+    type: 'career_application',
+    title: 'İş Başvurusu',
+    items: [
+      { title: 'Sınıf Öğretmeni', type: 'Tam Zamanlı', dept: 'İlkokul' },
+      { title: 'İngilizce Öğretmeni', type: 'Tam Zamanlı', dept: 'Ortaokul' }
+    ]
+  }
+];
+`;
+
+content += careerData;
+fs.writeFileSync('src/lib/defaultData.ts', content);
