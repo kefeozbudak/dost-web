@@ -313,6 +313,7 @@ export default function AdminLayout() {
               )}
               
               {hasPagesAccess && (
+                <>
                 <div>
                   <button
                     onClick={() => setIsPagesMenuOpen(!isPagesMenuOpen)}
@@ -345,25 +346,37 @@ export default function AdminLayout() {
                         </Link>
                       ))}
 
-                      {/* Eğitim Kademeleri Dropdown Submenu */}
+                          <Link
+                        to="/admin/pages"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors mt-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100`}
+                      >
+                        + Yeni Sayfa / Yönetim
+                      </Link>
+                    </div>
+                  )}
+                </div>
+                
+                <div>
+{/* Eğitim Kademeleri Dropdown Submenu */}
                       <div className="pt-1">
                         <button
                           onClick={() => setIsEduMenuOpen(!isEduMenuOpen)}
-                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-bold transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2.5 md:py-2 rounded-md text-sm md:text-xs font-semibold transition-colors ${
                             eduPages.some(p => location.pathname === `/admin/editor/${p.id}`)
-                              ? 'text-blue-700 bg-blue-50/80 font-bold'
-                              : 'text-slate-700 hover:bg-slate-200/60'
+                              ? 'bg-white text-blue-700 shadow-sm border border-blue-100 font-bold'
+                              : 'text-slate-600 hover:bg-slate-200'
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <GraduationCap className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            <GraduationCap className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Eğitim Kademeleri</span>
                           </div>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isEduMenuOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isEduMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
                         {isEduMenuOpen && (
-                          <div className="mt-1 ml-3 pl-3 border-l border-blue-200 space-y-1">
+                          <div className="mt-1 ml-3 pl-3 border-l border-slate-200 space-y-1">
                             {eduPages.map((page) => (
                               <Link
                                 key={page.id}
@@ -382,25 +395,28 @@ export default function AdminLayout() {
                         )}
                       </div>
 
-                      {/* Formlar Dropdown Submenu */}
+                    
+                </div>
+                <div>
+{/* Formlar Dropdown Submenu */}
                       <div className="pt-1">
                         <button
                           onClick={() => setIsFormsMenuOpen(!isFormsMenuOpen)}
-                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-bold transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2.5 md:py-2 rounded-md text-sm md:text-xs font-semibold transition-colors ${
                             formPages.some(p => location.pathname === `/admin/editor/${p.id}`)
-                              ? 'text-blue-700 bg-blue-50/80 font-bold'
-                              : 'text-slate-700 hover:bg-slate-200/60'
+                              ? 'bg-white text-blue-700 shadow-sm border border-blue-100 font-bold'
+                              : 'text-slate-600 hover:bg-slate-200'
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <ClipboardList className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            <ClipboardList className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Formlar</span>
                           </div>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isFormsMenuOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isFormsMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
                         {isFormsMenuOpen && (
-                          <div className="mt-1 ml-3 pl-3 border-l border-blue-200 space-y-1">
+                          <div className="mt-1 ml-3 pl-3 border-l border-slate-200 space-y-1">
                             {formPages.map((page) => (
                               <Link
                                 key={page.id}
@@ -419,25 +435,28 @@ export default function AdminLayout() {
                         )}
                       </div>
 
-                      {/* Kampüsler Dropdown Submenu */}
+                    
+                </div>
+                <div>
+{/* Kampüsler Dropdown Submenu */}
                       <div className="pt-1">
                         <button
                           onClick={() => setIsCampusMenuOpen(!isCampusMenuOpen)}
-                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-bold transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2.5 md:py-2 rounded-md text-sm md:text-xs font-semibold transition-colors ${
                             campusPages.some(p => location.pathname === `/admin/editor/${p.id}`)
-                              ? 'text-blue-700 bg-blue-50/80 font-bold'
-                              : 'text-slate-700 hover:bg-slate-200/60'
+                              ? 'bg-white text-blue-700 shadow-sm border border-blue-100 font-bold'
+                              : 'text-slate-600 hover:bg-slate-200'
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <Building2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            <Building2 className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Kampüsler</span>
                           </div>
-                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isCampusMenuOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isCampusMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
                         {isCampusMenuOpen && (
-                          <div className="mt-1 ml-3 pl-3 border-l border-blue-200 space-y-1">
+                          <div className="mt-1 ml-3 pl-3 border-l border-slate-200 space-y-1">
                             {campusPages.map((page) => (
                               <Link
                                 key={page.id}
@@ -456,18 +475,10 @@ export default function AdminLayout() {
                         )}
                       </div>
 
-                      <Link
-                        to="/admin/pages"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors mt-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100`}
-                      >
-                        + Yeni Sayfa / Yönetim
-                      </Link>
-                    </div>
-                  )}
+                      
                 </div>
+                </>
               )}
-
               {filteredMenuItems.filter(i => i.id !== 'dashboard').map((item) => {
                 const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
                 return (

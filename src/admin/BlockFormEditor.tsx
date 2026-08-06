@@ -494,7 +494,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
   const renderCommonFields = () => (
     <div className="space-y-4">
-      {renderInputWithStyle('Başlık', 'title')}
+      {renderTextareaWithStyle('Başlık', 'title')}
       {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
     </div>
   );
@@ -567,6 +567,69 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
                   className="flex-1 text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
                 />
               </div>
+            </div>
+            
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Arkaplan Görseli</label>
+              <div className="flex gap-2">
+                <input type="text" value={block.styles?.backgroundImage || ''} onChange={e => handleChange('styles', { ...block.styles, backgroundImage: e.target.value })} className="flex-1 px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:ring-1 focus:ring-blue-500 bg-white" placeholder="https://..." />
+                <button type="button" onClick={() => setMediaPickerConfig({ isOpen: true, onSelect: (url) => handleChange('styles', { ...block.styles, backgroundImage: url || '' }) })} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md font-bold text-xs whitespace-nowrap shadow-sm transition-colors">Seç</button>
+              </div>
+            </div>
+
+            <div>
+                          {block.type.includes('hero') && (
+              <div className="col-span-2 grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 mt-1">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Hero İçerik Yatay Konumu</label>
+                  <select 
+                    value={block.styles?.heroAlignX || ''}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), heroAlignX: e.target.value };
+                      handleChange('styles', newStyles);
+                    }}
+                    className="w-full text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
+                  >
+                    <option value="">Varsayılan (Sola Dayalı)</option>
+                    <option value="left">Sola Dayalı</option>
+                    <option value="center">Ortala</option>
+                    <option value="right">Sağa Dayalı</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Hero İçerik Dikey Konumu</label>
+                  <select 
+                    value={block.styles?.heroAlignY || ''}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), heroAlignY: e.target.value };
+                      handleChange('styles', newStyles);
+                    }}
+                    className="w-full text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
+                  >
+                    <option value="">Varsayılan (Ortala)</option>
+                    <option value="top">Üste Yakın</option>
+                    <option value="center">Ortala</option>
+                    <option value="bottom">Alta Yakın</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Genel Metin Hizalaması</label>
+              <select 
+                value={block.styles?.textAlign || ''}
+                onChange={(e) => {
+                  const newStyles = { ...(block.styles || {}), textAlign: e.target.value };
+                  handleChange('styles', newStyles);
+                }}
+                className="w-full text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
+              >
+                <option value="">Varsayılan</option>
+                <option value="left">Sola Hizala</option>
+                <option value="center">Ortaya Hizala</option>
+                <option value="right">Sağa Hizala</option>
+                <option value="justify">İki Yana Yasla</option>
+              </select>
             </div>
             <div className="flex items-end">
               <label className="flex items-center gap-2 text-sm font-bold text-slate-600 mb-1.5 cursor-pointer bg-slate-50 px-3 py-1.5 rounded border border-slate-200 w-full">
@@ -902,7 +965,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'management_deans' && (
           <div className="space-y-4">
             {renderInputWithStyle('Bölüm Başlığı', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderInputWithStyle('Bölüm İkonu', 'icon')}
             {renderArrayEditor('items', [
               {key: 'name', label: 'Dekan Adı', type: 'text'},
@@ -971,7 +1034,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'quote_image' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alıntı Metni (Quote)', 'quote')}
             <div className="grid grid-cols-2 gap-4">
               {renderInputWithStyle('Yazar Adı', 'authorName')}
@@ -1146,7 +1209,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'campus_hero' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arkaplan Görseli', 'image')}
             {renderArrayEditor('buttons', [
@@ -1160,7 +1223,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'campus_bento' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Kart Başlığı', type: 'text'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
@@ -1173,7 +1236,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'campus_gallery' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Kart Başlığı', type: 'text'},
@@ -1187,8 +1250,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle('Rozet (Örn: Kampüs Yaşamı)', 'badge')}
-            {renderInputWithStyle('Başlık (1. Kısım)', 'titlePart1')}
-            {renderInputWithStyle('Başlık (2. Kısım)', 'titlePart2')}
+            {renderTextareaWithStyle('Başlık (1. Kısım)', 'titlePart1')}
+            {renderTextareaWithStyle('Başlık (2. Kısım)', 'titlePart2')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             <div className="grid grid-cols-2 gap-4">
               {renderImageUpload('Görsel 1 (Sol Üst)', 'image1')}
@@ -1211,7 +1274,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'campus_contact' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderArrayEditor('items', [
               {key: 'icon', label: 'İkon', type: 'icon'},
               {key: 'title', label: 'Başlık (Adres/Telefon vb.)', type: 'text'},
@@ -1232,7 +1295,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'contact_hero' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
           </div>
         )}
@@ -1256,7 +1319,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'contact_form' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
           </div>
         )}
@@ -1265,7 +1328,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle('Form Başlığı', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             
             <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">Form Görünüm & CSS Renk Ayarları</span>
@@ -1368,15 +1431,15 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
                 {block.type === 'edu_system_hero' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli', 'image')}
           </div>
         )}
 
         {block.type === 'edu_system_levels' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderArrayEditor('items', [
               { key: 'title', label: 'Başlık', type: 'text' },
               { key: 'desc', label: 'Açıklama', type: 'textarea' },
@@ -1390,8 +1453,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'edu_system_yadep' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               { key: 'title', label: 'Başlık', type: 'text' },
               { key: 'desc', label: 'Açıklama', type: 'textarea' },
@@ -1403,7 +1466,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'edu_system_philosophy' && (
           <div className="space-y-4">
             {renderInputWithStyle('Rozet (Badge)', 'badge')}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderInputWithStyle('Alt Başlık (Açıklama)', 'subtitle')}
             {renderImageUpload('Görsel URL', 'image')}
             {renderInputWithStyle('Kayan Kart İkonu', 'cardIcon')}
@@ -1419,8 +1482,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'edu_system_cta' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('buttons', [
               { key: 'label', label: 'Buton Metni', type: 'text' },
               { key: 'url', label: 'Link URL', type: 'url' },
@@ -1431,8 +1494,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'career_hero' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Hero Başlığı', 'title')}
-            {renderInputWithStyle('Hero Alt Başlığı', 'subtitle')}
+            {renderTextareaWithStyle('Hero Başlığı', 'title')}
+            {renderTextareaWithStyle('Hero Alt Başlığı', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli URL', 'image')}
             {renderInputWithStyle('Buton Metni', 'buttonText')}
           </div>
@@ -1440,8 +1503,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         
         {block.type === 'career_benefits' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               { key: 'title', label: 'Başlık', type: 'text' },
               { key: 'desc', label: 'Açıklama', type: 'textarea' },
@@ -1494,7 +1557,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle('Rozet / Etiket (Örn: 2026-2027 EĞİTİM YILI)', 'badge')}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli', 'image')}
             {renderArrayEditor('stats', [
@@ -1587,7 +1650,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'bursluluk_info_cards' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               { key: 'icon', label: 'İkon', type: 'icon' },
@@ -1600,7 +1663,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'bursluluk_result_query' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderInputWithStyle('Buton Metni', 'buttonText')}
             {renderImageUpload('Görsel', 'image')}
@@ -1610,7 +1673,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'social_media' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               {key: 'icon', label: 'İkon (SVG Kodu)', type: 'icon'},
@@ -1622,7 +1685,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'clubs_hero' && (
           <div className="space-y-4">
             {renderCommonFields()}
-            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
+            {renderTextareaWithStyle('Başlık Bölüm 1', 'titlePart1')}
             {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arkaplan Görseli', 'image')}
@@ -1691,8 +1754,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle('Üst Başlık (Rozet)', 'badge')}
-            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
-            {renderInputWithStyle('Başlık Bölüm 2 (Renkli)', 'titlePart2')}
+            {renderTextareaWithStyle('Başlık Bölüm 1', 'titlePart1')}
+            {renderTextareaWithStyle('Başlık Bölüm 2 (Renkli)', 'titlePart2')}
             {renderInputWithStyle('Başlık Bölüm 2 Rengi', 'titlePart2Color')}
             {renderTextareaWithStyle('Açıklama Metni', 'subtitle')}
             {renderImageUpload('Görsel (Sağ Kısım)', 'image')}
@@ -1727,8 +1790,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'achievements_hero' && (
           <div className="space-y-4">
             {renderInputWithStyle('Rozet (Badge)', 'badge')}
-            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
-            {renderInputWithStyle('Başlık Bölüm 2 (Renkli)', 'titlePart2')}
+            {renderTextareaWithStyle('Başlık Bölüm 1', 'titlePart1')}
+            {renderTextareaWithStyle('Başlık Bölüm 2 (Renkli)', 'titlePart2')}
             {renderInputWithStyle('Başlık Bölüm 2 Rengi', 'titlePart2Color')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arkaplan Görseli', 'image')}
@@ -1748,7 +1811,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'bento_academic' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'desc', label: 'Açıklama', type: 'textarea'},
@@ -1764,8 +1827,8 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'achievements_grid' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
-            {renderInputWithStyle('Alt Başlık', 'subtitle')}
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderArrayEditor('items', [
               {key: 'title', label: 'Başlık', type: 'text'},
               {key: 'subtitle', label: 'Alt Başlık', type: 'text'},
@@ -1778,7 +1841,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'achievements_science' && (
           <div className="space-y-4">
             {renderInputWithStyle('Rozet (Badge)', 'badge')}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Görsel', 'image')}
             {renderInputWithStyle('Görsel Üzeri Rozet', 'highlightTag')}
@@ -1793,7 +1856,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
         {block.type === 'news_hero' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Arkaplan Görseli', 'image')}
           </div>
@@ -1831,7 +1894,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'newsletter' && (
           <div className="space-y-4">
             {renderInputWithStyle('İkon', 'icon')}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'desc')}
             {renderInputWithStyle('Input Placeholder', 'inputPlaceholder')}
             {renderInputWithStyle('Buton Metni', 'buttonText')}
@@ -1841,14 +1904,14 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         {block.type === 'menu_hero' && (
           <div className="space-y-4">
             {renderInputWithStyle('Badge (Etiket)', 'badge')}
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderImageUpload('Arkaplan Resmi', 'image')}
           </div>
         )}
         {block.type === 'menu_calendar' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderInputWithStyle('Ay (örn: Ekim 2023)', 'month')}
             {renderArrayEditor('days', [
@@ -1875,7 +1938,7 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         )}
         {block.type === 'academic_calendar_hero' && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderImageUpload('Arkaplan Resmi', 'image')}
           </div>

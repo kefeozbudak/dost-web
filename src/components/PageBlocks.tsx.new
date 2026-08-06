@@ -6,42 +6,6 @@ import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
 import { DEFAULT_PRE_REGISTRATION_INPUTS, DEFAULT_CLUB_INPUTS, DEFAULT_SCHOLARSHIP_INPUTS, DEFAULT_CAREER_INPUTS } from "../lib/defaultFormInputs";
 
-
-export const getHeroAlignStyle = (block: any): React.CSSProperties => {
-  if (!block.type || !block.type.includes('hero')) return {};
-  const alignY = block.styles?.heroAlignY;
-  const style: React.CSSProperties = {};
-  
-  if (alignY === 'top') {
-    style.justifyContent = 'flex-start';
-    style.alignItems = 'flex-start'; // for flex-row
-  } else if (alignY === 'bottom') {
-    style.justifyContent = 'flex-end';
-    style.alignItems = 'flex-end'; // for flex-row
-  } else if (alignY === 'center') {
-    style.justifyContent = 'center';
-    style.alignItems = 'center';
-  }
-  return style;
-};
-
-export const getHeroInnerClass = (block: any, defaultClasses: string = '') => {
-  if (!block.type || !block.type.includes('hero')) return defaultClasses;
-  const alignX = block.styles?.heroAlignX;
-  let alignClass = '';
-  if (alignX === 'center') alignClass = 'mx-auto text-center items-center';
-  else if (alignX === 'right') alignClass = 'ml-auto text-right items-end';
-  else if (alignX === 'left') alignClass = 'mr-auto text-left items-start';
-  
-  // ensure it's a flex column so items-start/end aligns the buttons
-  if (alignClass && !defaultClasses.includes('flex-col')) {
-    alignClass = 'flex flex-col ' + alignClass;
-  }
-  
-  return `${defaultClasses} ${alignClass}`.trim();
-};
-
-
 const ClubsGridBlock = ({
   block,
   getStyle,
@@ -76,7 +40,7 @@ const ClubsGridBlock = ({
         className="py-12 bg-white border-b border-border-subtle sticky top-20 z-40"
         id="clubs"
       >
-        <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}>
+        <div className="max-w-container-max mx-auto px-gutter">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <h2
               className="font-headline-md text-headline-md text-primary"
@@ -99,7 +63,7 @@ const ClubsGridBlock = ({
         </div>
       </section>
 
-      <section className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}>
+      <section className="py-section-gap max-w-container-max mx-auto px-gutter">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item: any, i: number) => {
             const isError = item.badgeColor === "error";
@@ -186,7 +150,7 @@ const CareerHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSty
         style={{ backgroundImage: `url(${block.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80'})` }}
       ></div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80"></div>
-      <div className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl mx-auto`}>
+      <div className={`relative z-10 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} px-6 py-16 md:py-24 text-white max-w-3xl mx-auto`}>
         <h1 className="font-display-lg text-[32px] md:text-[48px] font-black text-white mb-6 leading-[1.2] tracking-tight" style={getTitleStyle(block)}>
           {block.title || "Dost Koleji'nde Kariyer"}
         </h1>
@@ -214,7 +178,7 @@ const CareerBenefitsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitl
 
   return (
     <section key={index} className="w-full px-4 md:px-0 mb-16" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
+      <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-12`}>
         <h2 className="font-bold text-[28px] md:text-[36px] text-[#002147] mb-4" style={getTitleStyle(block)}>
           {block.title || "Neden Bize Katılmalısınız?"}
         </h2>
@@ -242,7 +206,7 @@ const CareerApplicationBlock = ({ block, index, getStyle, getTitleStyle, getSubt
   
   return (
     <section key={index} id="application-form" className="w-full px-4 md:px-0 mb-16" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto flex flex-col lg:flex-row gap-12`}>
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
         
         {/* Left Side: Open Positions */}
         <div className="lg:w-1/3">
@@ -263,7 +227,7 @@ const CareerApplicationBlock = ({ block, index, getStyle, getTitleStyle, getSubt
                 ))}
               </div>
             ) : (
-              <div className={`bg-slate-50 text-slate-500 p-6 rounded-xl ${block.styles?.textAlign ? "" : "text-center"} text-sm border border-slate-100`}>
+              <div className={`bg-slate-50 text-slate-500 p-6 rounded-xl ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-sm border border-slate-100`}>
                 Şu an açık pozisyon bulunmamaktadır. Genel başvuru yapabilirsiniz.
               </div>
             )}
@@ -274,7 +238,7 @@ const CareerApplicationBlock = ({ block, index, getStyle, getTitleStyle, getSubt
         <div className="lg:w-2/3">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 relative">
              {/* Header */}
-            <div className={`bg-[#002147] px-8 py-6 text-white ${block.styles?.textAlign ? "" : "text-center"}`}>
+            <div className={`bg-[#002147] px-8 py-6 text-white ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>
               <h2 className="font-bold text-[24px]">İş Başvurusu</h2>
               <p className="text-white/80 mt-2">Dost Koleji ailesine katılmak için formu doldurun</p>
             </div>
@@ -309,7 +273,7 @@ const EduSystemHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitle
           }}>
         </div>
       </div>
-      <div className={`relative z-20 w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} px-margin-mobile md:px-margin-desktop py-20 ${block.styles?.textAlign ? "" : "text-center"} text-white`}>
+      <div className={`relative z-20 w-full max-w-container-max px-margin-mobile md:px-margin-desktop py-20 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-white`}>
         <h1 className="font-display-lg text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6" style={getTitleStyle(block)}>
           {block.title || 'Eğitim Sistemimiz'}
         </h1>
@@ -323,8 +287,8 @@ const EduSystemHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitle
 
 const EduSystemLevelsBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <section key={index} className={`py-section-gap px-margin-mobile md:px-margin-desktop ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`} style={getStyle(block, "container")}>
-      <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+    <section key={index} className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" style={getStyle(block, "container")}>
+      <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
         <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
         <div className="h-1 w-20 bg-secondary rounded-full mx-auto"></div>
       </div>
@@ -365,8 +329,8 @@ const EduSystemLevelsBlock = ({ block, index, getStyle, getTitleStyle, getSubtit
 const EduSystemYadepBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section key={index} className="py-section-gap bg-surface-container-low" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}>
-        <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
           <h2 className="font-headline-xl text-3xl md:text-4xl font-bold text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
           <p className="font-body-lg text-text-muted max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>
         </div>
@@ -416,7 +380,7 @@ const EduSystemPhilosophyBlock = ({ block, index, getStyle, getTitleStyle, getSu
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
       
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop relative z-10`}>
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           <div className="lg:w-1/2 space-y-8">
             <div>
@@ -475,7 +439,7 @@ const EduSystemCtaBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleS
   return (
     <section key={index} className="py-24 bg-primary text-white relative overflow-hidden" style={getStyle(block, "container")}>
       <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
-      <div className={`max-w-4xl mx-auto px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}>
+      <div className={`max-w-4xl mx-auto px-margin-mobile ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} relative z-10`}>
         <h2 className="font-headline-xl text-3xl md:text-5xl font-bold mb-6" style={getTitleStyle(block)}>{block.title}</h2>
         <p className="font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl mx-auto" style={getSubtitleStyle(block)}>
           {block.subtitle || block.desc}
@@ -619,7 +583,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
     <div className={type === "club_registration_form" ? "bg-surface-card border border-border-subtle rounded-xl p-6 md:p-10 shadow-sm relative form-card" : "relative"} style={type === "club_registration_form" && block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
       {submitted ? (
         type === "bursluluk_exam_form" ? (
-          <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} min-h-[400px] flex flex-col items-center justify-center space-y-6`}>
+          <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} min-h-[400px] flex flex-col items-center justify-center space-y-6`}>
             <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner">
               <span className="material-symbols-outlined text-4xl" translate="no" aria-hidden="true">check_circle</span>
             </div>
@@ -636,7 +600,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
             </a>
           </div>
         ) : (
-          <div className={`p-12 ${block.styles?.textAlign ? "" : "text-center"} min-h-[400px] flex flex-col items-center justify-center`}>
+          <div className={`p-12 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} min-h-[400px] flex flex-col items-center justify-center`}>
             <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="material-symbols-outlined text-3xl" translate="no" aria-hidden="true">check_circle</span>
             </div>
@@ -659,7 +623,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
           />
 
           {defaultInputs.length === 0 ? (
-            <div className={`p-6 ${block.styles?.textAlign ? "" : "text-center"} text-text-muted border border-dashed border-border-subtle rounded-lg`}>
+            <div className={`p-6 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-text-muted border border-dashed border-border-subtle rounded-lg`}>
               Lütfen yönetim panelinden form alanlarını (inputlar) ekleyiniz.
             </div>
           ) : (
@@ -865,7 +829,7 @@ const DynamicFormBuilder = ({ block, type, submitForm }: any) => {
               )}
             </button>
             {isStyledForm && (
-              <p className={`mt-4 ${block.styles?.textAlign ? "" : "text-center"} font-caption text-caption text-text-muted px-4`}>
+              <p className={`mt-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-caption text-caption text-text-muted px-4`}>
                 Gönder butonuna basarak kişisel verilerinizin işlenmesine dair aydınlatma metnini okuduğunuzu ve kabul ettiğinizi beyan etmiş olursunuz.
               </p>
             )}
@@ -880,7 +844,7 @@ const ClubRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getS
   return (
     <section key={index} className="py-section-gap w-full flex items-center justify-center p-4 md:p-8" style={getStyle(block, "container")}>
       <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className={`mb-8 ${block.styles?.textAlign ? "" : "text-center"}`}>
+        <div className={`mb-8 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>
           <h1 className="font-display-lg text-display-lg text-primary mb-2">{block.title || "Dost Koleji"}</h1>
           <p className="font-body-lg text-body-lg text-text-muted">{block.subtitle || "Öğrenci Kulüp Kayıt Portalı"}</p>
         </div>
@@ -914,7 +878,7 @@ const PreRegistrationFormBlock = ({ block, index, getStyle, getTitleStyle, getSu
       <div className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative" style={block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
         
         {/* Header */}
-        <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} relative overflow-hidden`} style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
+        <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} relative overflow-hidden`} style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
           <div className="relative z-10">
             <h1 className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide" style={getTitleStyle(block)}>
               {block.title || "ÖĞRENCİ ÖN KAYIT FORMU"}
@@ -960,8 +924,8 @@ const BurslulukHeroBlock = ({ block, index, getStyle, getTitleStyle, getSubtitle
           style={{ backgroundImage: `url('${heroBg}')` }}
         />
       </div>
-      <div className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}>
-        <div className={getHeroInnerClass(block, "max-w-2xl text-white")}>
+      <div className="relative z-20 max-w-container-max mx-auto px-margin-desktop w-full">
+        <div className="max-w-2xl text-white">
           <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md">
             {block.badge || "2026-2027 EĞİTİM YILI"}
           </span>
@@ -1057,7 +1021,7 @@ const BurslulukExamFormBlock = ({ block, index, getStyle, getTitleStyle, getSubt
       <div className="w-full max-w-4xl bg-surface-card rounded-xl shadow-sm border border-border-subtle overflow-hidden relative" style={block.styles?.cardBgColor ? { backgroundColor: block.styles.cardBgColor } : {}}>
         
         {/* Header */}
-        <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} relative overflow-hidden`} style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
+        <div className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} relative overflow-hidden`} style={{ backgroundColor: block.styles?.headerBgColor || '#002147' }}>
           <div className="relative z-10">
             <h1 className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide" style={getTitleStyle(block)}>
               {block.title || "BURSLULUK SINAVI BAŞVURU FORMU"}
@@ -1075,7 +1039,7 @@ const BurslulukExamFormBlock = ({ block, index, getStyle, getTitleStyle, getSubt
           <DynamicFormBuilder block={block} type="bursluluk_exam_form" submitForm={submitForm} />
         ) : (
           <div className="p-8 md:p-12">
-            <div className={`${block.styles?.textAlign ? "" : "text-center"} bg-blue-50 border border-blue-100 p-8 rounded-xl`}>
+            <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} bg-blue-50 border border-blue-100 p-8 rounded-xl`}>
               <span className="material-symbols-outlined text-blue-500 text-5xl mb-4" translate="no" aria-hidden="true">info</span>
               <p className="text-lg text-slate-700 whitespace-pre-line leading-relaxed max-w-2xl mx-auto">
                 {burslulukInactiveMessage || "Değerli Velimiz,\n2026-2027 Eğitim-Öğretim yılı Bursluluk ve Kabul Sınavı başvuru sürecimiz şu an için aktif değildir. Yeni dönem sınav takvimimiz ve başvuru tarihlerimiz belirlendiğinde web sitemiz ve sosyal medya hesaplarımız üzerinden duyurulacaktır. Kurumumuza gösterdiğiniz değerli ilgi için teşekkür ederiz."}
@@ -1126,9 +1090,9 @@ const BurslulukInfoCardsBlock = ({ block, index, getStyle, getTitleStyle, getSub
 
   return (
     <section key={index} id="bilgilendirme" className="py-section-gap bg-white" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+      <div className="max-w-container-max mx-auto px-margin-desktop">
         {block.title && (
-          <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
+          <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-12`}>
             <h2 className="font-headline-xl text-3xl md:text-headline-xl text-[#002147] mb-4 font-bold" style={getTitleStyle(block)}>
               {block.title}
             </h2>
@@ -1168,7 +1132,7 @@ const BurslulukResultQueryBlock = ({ block, index, getStyle, getTitleStyle, getS
 
   return (
     <section key={index} className="py-section-gap bg-[#e2e1ec]/20" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+      <div className="max-w-container-max mx-auto px-margin-desktop">
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl">
           <div className="flex-1 p-8 md:p-12 text-white">
             <h2 className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold" style={getTitleStyle(block)}>
@@ -1344,7 +1308,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
         {/* Success Header */}
-        <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-10 no-print`}>
+        <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-10 no-print`}>
           <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
             <span className="material-symbols-outlined text-5xl" translate="no" aria-hidden="true">{block.successIcon || "check_circle"}</span>
           </div>
@@ -1478,7 +1442,7 @@ const BurslulukConfirmationBlock = ({ block, index, getStyle, getTitleStyle, get
         </div>
 
         {/* Secondary Action Link */}
-        <div className={`mt-10 ${block.styles?.textAlign ? "" : "text-center"} no-print`}>
+        <div className={`mt-10 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} no-print`}>
           <a href="/" className="text-primary font-bold inline-flex items-center justify-center gap-2 hover:underline text-sm">
             <span className="material-symbols-outlined text-lg" translate="no" aria-hidden="true">home</span> Ana Sayfaya Dön
           </a>
@@ -1538,7 +1502,7 @@ const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSt
       className="py-section-gap bg-surface-container-low"
       style={getStyle(block, "container")}
     >
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+      <div className="max-w-container-max mx-auto px-margin-desktop">
         <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border-subtle">
           <div className="mb-8">
             <h2
@@ -1558,7 +1522,7 @@ const ContactFormBlock = ({ block, index, getStyle, getTitleStyle, getSubtitleSt
           </div>
           
           {submitted ? (
-            <div className={`p-8 ${block.styles?.textAlign ? "" : "text-center"} bg-green-50 rounded-xl border border-green-100`}>
+            <div className={`p-8 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} bg-green-50 rounded-xl border border-green-100`}>
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="material-symbols-outlined text-2xl" translate="no" aria-hidden="true">check_circle</span>
               </div>
@@ -1688,30 +1652,23 @@ export const DynamicBlockRenderer = ({
       borderRadius: block.styles?.[prefix + "BorderRadius"]
         ? block.styles[prefix + "BorderRadius"] + "px"
         : undefined,
-      backgroundImage: (prefix === "" || prefix === "container") && block.styles?.backgroundImage ? `url(${block.styles.backgroundImage})` : undefined,
-      backgroundSize: (prefix === "" || prefix === "container") && block.styles?.backgroundImage ? 'cover' : undefined,
-      backgroundPosition: (prefix === "" || prefix === "container") && block.styles?.backgroundImage ? 'center' : undefined,
-      width: block.styles?.fullWidth && (prefix === "" || prefix === "container") ? "100%" : undefined,
-      maxWidth: block.styles?.fullWidth && (prefix === "" || prefix === "container") ? "100%" : undefined,
     };
   };
 
-  const getTitleStyle = (block: any) => ({ ...getStyle(block, "title"), whiteSpace: "pre-line" as const });
-  const getSubtitleStyle = (block: any) => ({ ...getStyle(block, "subtitle"), whiteSpace: "pre-line" as const });
+  const getTitleStyle = (block: any) => getStyle(block, "title");
+  const getSubtitleStyle = (block: any) => getStyle(block, "subtitle");
   const getBadgeStyle = (block: any) => getStyle(block, "badge");
   const getButtonStyle = (block: any) => getStyle(block, "buttons");
   const getItemContainerStyle = (block: any) =>
     getStyle(block, "itemContainer");
-  const getItemTitleStyle = (block: any) => ({ ...getStyle(block, "itemTitle"), whiteSpace: "pre-line" as const });
-  const getItemDescStyle = (block: any) => ({ ...getStyle(block, "itemDesc"), whiteSpace: "pre-line" as const });
+  const getItemTitleStyle = (block: any) => getStyle(block, "itemTitle");
+  const getItemDescStyle = (block: any) => getStyle(block, "itemDesc");
   const getItemButtonStyle = (block: any) => getStyle(block, "itemButton");
   const getTitlePart1Style = (block: any) => ({
-    whiteSpace: "pre-line" as const,
     ...getStyle(block, "titlePart1"),
     color: block.styles?.titlePart1Color || block.titlePart1Color || undefined,
   });
   const getTitlePart2Style = (block: any) => ({
-    whiteSpace: "pre-line" as const,
     ...getStyle(block, "titlePart2"),
     color: block.styles?.titlePart2Color || block.titlePart2Color || undefined,
   });
@@ -1808,8 +1765,8 @@ export const DynamicBlockRenderer = ({
               <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10"></div>
               {block.image && <img className="w-full h-full object-cover" src={block.image} alt="" style={{...getImageStyle(block, 'image'), backgroundSize: 'cover', backgroundPosition: 'center center'}} />}
             </div>
-            <div className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}>
-              <div className={getHeroInnerClass(block, "max-w-2xl")}>
+            <div className="relative z-20 max-w-container-max mx-auto px-margin-desktop w-full">
+              <div className="max-w-2xl">
                 <h1 className="font-display-lg text-display-lg text-white mb-6" style={getTitleStyle(block)}>{block.title}</h1>
                 <p className="font-body-md text-body-lg text-white/90 mb-8 leading-relaxed" style={getSubtitleStyle(block)}>
                   {block.subtitle}
@@ -1831,8 +1788,8 @@ export const DynamicBlockRenderer = ({
       case 'campus_bento':
         // Tailwind safelist: col-span-12 md:col-span-6 lg:col-span-4 lg:col-span-8
         return (
-          <section key={index} className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`} style={getStyle(block, 'container')}>
-            <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+          <section key={index} className="py-section-gap max-w-container-max mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0" style={getStyle(block, 'container')}>
+            <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
               <h2 className="font-headline-xl text-headline-xl text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
               <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
@@ -1864,7 +1821,7 @@ export const DynamicBlockRenderer = ({
       case 'campus_gallery':
         return (
           <section key={index} className="bg-surface-container-low py-section-gap transition-all duration-1000 opacity-100 translate-y-0" style={getStyle(block, 'container')}>
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
               <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
                   <h2 className="font-headline-xl text-headline-xl text-text-main mb-4" style={getTitleStyle(block)}>{block.title}</h2>
@@ -1901,7 +1858,7 @@ export const DynamicBlockRenderer = ({
 
       case 'campus_life':
         return (
-          <section key={index} className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`} style={getStyle(block, 'container')}>
+          <section key={index} className="py-section-gap max-w-container-max mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0" style={getStyle(block, 'container')}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1">
                 <div className="grid grid-cols-2 gap-6 items-center">
@@ -1958,7 +1915,7 @@ export const DynamicBlockRenderer = ({
       case 'campus_contact':
         return (
           <section key={index} className="py-section-gap bg-surface-dim/30 transition-all duration-1000 opacity-100 translate-y-0" style={getStyle(block, 'container')}>
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
               <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
                 <div className="p-12 lg:w-1/2 space-y-8 flex flex-col justify-center">
                   <h2 className="font-headline-xl text-headline-xl" style={getTitleStyle(block)}>{block.title}</h2>
@@ -2009,7 +1966,7 @@ export const DynamicBlockRenderer = ({
               className="bg-white py-16"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}>
+              <div className={`max-w-container-max mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>
                 <h1
                   className="font-display-lg text-display-lg text-primary mb-4"
                   style={getTitleStyle(block)}
@@ -2033,7 +1990,7 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface-background"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
                 <div className="flex flex-col gap-12">
                   {(block.items || []).map((item: any, i: number) => (
                     <div
@@ -2167,7 +2124,7 @@ export const DynamicBlockRenderer = ({
               className="py-12 bg-white border-t border-border-subtle"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}>
+              <div className={`max-w-container-max mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>
                 <h3
                   className="font-headline-md text-headline-md text-on-surface mb-6"
                   style={getTitleStyle(block)}
@@ -2220,8 +2177,8 @@ export const DynamicBlockRenderer = ({
                 ></div>
                 <div className="absolute inset-0 bg-primary/60 mix-blend-multiply"></div>
               </div>
-              <div className={getHeroInnerClass(block, `relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-gutter max-w-4xl`)}>
-                    <h1
+              <div className={`relative z-10 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} px-gutter max-w-4xl`}>
+                <h1
                   className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg"
                   style={getTitleStyle(block)}
                 >
@@ -2297,8 +2254,8 @@ export const DynamicBlockRenderer = ({
               id="benefits"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+              <div className="max-w-container-max mx-auto px-gutter">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                   <h2
                     className="font-headline-xl text-headline-xl text-primary mb-4"
                     style={getTitleStyle(block)}
@@ -2318,7 +2275,7 @@ export const DynamicBlockRenderer = ({
                   {(block.items || []).map((item: any, i: number) => (
                     <div
                       key={i}
-                      className={`bg-white p-8 rounded-2xl border border-border-subtle ${block.styles?.textAlign ? "" : "text-center"} hover:-translate-y-1 transition-transform shadow-sm`}
+                      className={`bg-white p-8 rounded-2xl border border-border-subtle ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} hover:-translate-y-1 transition-transform shadow-sm`}
                       style={getCardStyle(item)}
                     >
                       <div className="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -2359,9 +2316,9 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}>
+              <div className="max-w-container-max mx-auto px-gutter">
                 <div className="bg-primary rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-md">
-                  <div className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}>
+                  <div className={`relative z-10 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} md:text-left`}>
                     <h2
                       className="font-headline-xl text-headline-xl text-on-primary mb-4"
                       style={getTitleStyle(block)}
@@ -2429,7 +2386,7 @@ export const DynamicBlockRenderer = ({
               <div
                 className={`relative z-20 px-margin-mobile md:px-margin-desktop ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
               >
-                <div className={getHeroInnerClass(block, "max-w-2xl text-on-primary")}>
+                <div className="max-w-2xl text-on-primary">
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
@@ -2760,7 +2717,7 @@ export const DynamicBlockRenderer = ({
                                 },
                               ];
                         return (
-                          <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto w-full flex flex-col md:flex-row gap-3 md:gap-6 relative z-10 px-4 md:px-0 h-[560px] md:h-[480px]`}>
+                          <div className="max-w-container-max mx-auto w-full flex flex-col md:flex-row gap-3 md:gap-6 relative z-10 px-4 md:px-0 h-[560px] md:h-[480px]">
                             {itemsToRender.map((item: any, i: number) => (
                               <div
                                 key={i}
@@ -2778,14 +2735,14 @@ export const DynamicBlockRenderer = ({
                                     <a
                                       href={item.url}
                                       style={getItemTitleStyle(block)}
-                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300 hover:bg-primary hover:text-white cursor-pointer`}
+                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} transition-transform group-hover:-translate-y-1 duration-300 hover:bg-primary hover:text-white cursor-pointer`}
                                     >
                                       {item.title}
                                     </a>
                                   ) : (
                                     <span
                                       style={getItemTitleStyle(block)}
-                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300`}
+                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} transition-transform group-hover:-translate-y-1 duration-300`}
                                     >
                                       {item.title}
                                     </span>
@@ -2801,7 +2758,7 @@ export const DynamicBlockRenderer = ({
 
                   const buttonsContent =
                     block.buttons && block.buttons.length > 0 ? (
-                      <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto relative z-10`}>
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-container-max mx-auto relative z-10">
                         {block.buttons.map((btn: any, i: number) => {
                           const isCustomColors = btn.bgColor || btn.textColor;
                           const defaultClasses = btn.primary
@@ -2939,7 +2896,7 @@ export const DynamicBlockRenderer = ({
                       {(item.buttonText || item.buttonUrl || item.url) && (
                         <SmartLink
                           url={item.buttonUrl || item.url || item.link}
-                          className={`w-full py-3.5 px-4 rounded-xl bg-[#5eead4] text-[#0f172a] font-bold text-sm ${block.styles?.textAlign ? "" : "text-center"} hover:opacity-90 hover:shadow-lg transition-all duration-300 block`}
+                          className={`w-full py-3.5 px-4 rounded-xl bg-[#5eead4] text-[#0f172a] font-bold text-sm ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} hover:opacity-90 hover:shadow-lg transition-all duration-300 block`}
                           style={{
                               ...getItemButtonStyle(block),
                               backgroundColor: item.buttonBgColor || getItemButtonStyle(block)?.backgroundColor,
@@ -2970,7 +2927,7 @@ export const DynamicBlockRenderer = ({
                     : "w-full"
                 }
               >
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-10 md:mb-16`}>
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-10 md:mb-16`}>
                   <span
                     style={getSubtitleStyle(block)}
                     className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
@@ -2990,7 +2947,7 @@ export const DynamicBlockRenderer = ({
                     >
                       {item.highlight ? (
                         <>
-                          <div className={`relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}>
+                          <div className={`relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} md:text-left`}>
                             <div className="flex-1">
                               <h3
                                 style={getItemTitleStyle(block)}
@@ -3129,7 +3086,7 @@ export const DynamicBlockRenderer = ({
                         {!item.hideButton && (
                           <SmartLink
                             url={item.buttonUrl || item.url || item.link}
-                            className={`w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto ${block.styles?.textAlign ? "" : "text-center"} block`}
+                            className={`w-full border-2 border-primary/20 text-primary text-sm md:text-base font-bold py-2.5 md:py-3 rounded-xl hover:bg-primary hover:text-white transition-all mt-auto ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} block`}
                           >
                             {item.buttonText || "İncele"}{" "}
                             {item.buttonIcon && (
@@ -3242,15 +3199,15 @@ export const DynamicBlockRenderer = ({
                 backgroundPosition: "center center",
               }}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center`}>
-                <div className={getHeroInnerClass(block, `space-y-6 ${block.styles?.textAlign ? "" : "text-center"} mx-auto`)}>
+              <div className="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center">
+                <div className={`space-y-6 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mx-auto`}>
                   {block.badge && (
                     <span className="inline-block bg-primary-container/20 text-inverse-primary px-4 py-1 rounded-full text-label-sm font-label-sm">
                       {block.badge}
                     </span>
                   )}
                   {block.titlePart1 || block.titlePart2 ? (
-                    <h1 className="font-display-lg text-display-lg leading-tight" style={getTitleStyle(block)}>
+                    <h1 className="font-display-lg text-display-lg leading-tight">
                       {block.titlePart1}
                       {block.titlePart1 && block.titlePart2 && " "}
                       {block.titlePart2 && (
@@ -3267,7 +3224,10 @@ export const DynamicBlockRenderer = ({
                       )}
                     </h1>
                   ) : (
-                    <h1 className="font-display-lg text-display-lg leading-tight" style={getTitleStyle(block)} dangerouslySetInnerHTML={{ __html: block.title || "" }}></h1>
+                    <h1
+                      className="font-display-lg text-display-lg leading-tight"
+                      dangerouslySetInnerHTML={{ __html: block.title || "" }}
+                    ></h1>
                   )}
                   {block.subtitle && (
                     <p
@@ -3308,8 +3268,8 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                   <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4">
                     {block.title}
                   </h2>
@@ -3389,7 +3349,7 @@ export const DynamicBlockRenderer = ({
                       {block.items[1].buttonText && (
                         <a
                           href={block.items[1].url || "#"}
-                          className={`mt-8 block ${block.styles?.textAlign ? "" : "text-center"} w-full py-3 bg-gold text-[#00164f] font-bold rounded-xl hover:opacity-90 transition-opacity`}
+                          className={`mt-8 block ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} w-full py-3 bg-gold text-[#00164f] font-bold rounded-xl hover:opacity-90 transition-opacity`}
                           style={{ backgroundColor: "#D4AF37" }}
                         >
                           {block.items[1].buttonText}
@@ -3445,9 +3405,9 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-white"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
-                  <div className={getHeroInnerClass(block, "max-w-2xl")}>
+                  <div className="max-w-2xl">
                     <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4">
                       {block.title}
                     </h2>
@@ -3504,7 +3464,7 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface-container-low overflow-hidden"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
                 <div className="bg-[#0f172a] rounded-[40px] p-12 md:p-20 relative overflow-hidden text-white">
                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px]"></div>
                   <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -3719,7 +3679,7 @@ export const DynamicBlockRenderer = ({
                   ></div>
                 </div>
               </div>
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-20 w-full`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop relative z-20 w-full">
                 <div className="max-w-2xl text-white">
                   {block.badge && (
                     <span
@@ -3788,8 +3748,8 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface"
               style={getStyle(block, "")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
@@ -3860,7 +3820,7 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface-container-low"
               style={getStyle(block, "")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop grid md:grid-cols-2 gap-6`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-2 gap-6">
                 {block.items?.map((item: any, i: number) => {
                   const isSecondary = i % 2 !== 0;
                   return (
@@ -3905,8 +3865,8 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap"
               style={getStyle(block, "")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
@@ -3973,7 +3933,7 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap bg-surface-container-highest/30"
               style={getStyle(block, "")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+              <div className="max-w-container-max mx-auto px-margin-desktop">
                 <div className="bg-surface-card rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl">
                   <div className="md:w-1/2 h-64 md:h-auto min-h-[350px] relative overflow-hidden">
                     <div
@@ -4035,7 +3995,7 @@ export const DynamicBlockRenderer = ({
                 ></div>
               </div>
               <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-10 lg:px-20">
-                <div className={getHeroInnerClass(block, "max-w-3xl")}>
+                <div className="max-w-3xl">
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
                       className="text-white text-4xl md:text-5xl font-black mb-4 tracking-tight"
@@ -4297,7 +4257,7 @@ export const DynamicBlockRenderer = ({
                     : {}
                 }
               ></div>
-              <div className={`relative z-10 layout-content-container w-full max-w-[1200px] px-6 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}>
+              <div className={`relative z-10 layout-content-container w-full max-w-[1200px] px-6 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} md:text-left`}>
                 <h1
                   className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight"
                   style={getTitleStyle(block)}
@@ -4576,7 +4536,7 @@ export const DynamicBlockRenderer = ({
               className="relative pt-32 pb-section-gap px-margin-desktop bg-surface-bright overflow-hidden"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center relative z-10`}>
+              <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center relative z-10">
                 <div className="space-y-6">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed/20 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider">
@@ -4668,8 +4628,8 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap px-margin-desktop bg-surface-background"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl mx-auto`}>
+              <div className="max-w-container-max mx-auto">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16 max-w-2xl mx-auto`}>
                   <h2
                     className="font-headline-xl text-headline-xl text-on-background mb-4"
                     style={getTitleStyle(block)}
@@ -4817,9 +4777,9 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap px-margin-desktop bg-surface-bright border-t border-border-subtle"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}>
+              <div className="max-w-container-max mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                  <div className={getHeroInnerClass(block, "max-w-2xl")}>
+                  <div className="max-w-2xl">
                     <h2
                       className="font-headline-xl text-headline-xl text-on-background mb-4"
                       style={getTitleStyle(block)}
@@ -4897,7 +4857,7 @@ export const DynamicBlockRenderer = ({
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-surface-background via-surface-background/80 to-transparent"></div>
               </div>
-              <div className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center`}>
+              <div className="relative z-10 max-w-container-max mx-auto px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                 <div className="col-span-1 md:col-span-7 lg:col-span-6 space-y-6">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
@@ -4967,8 +4927,8 @@ export const DynamicBlockRenderer = ({
               className="py-section-gap px-margin-desktop bg-surface-background"
               style={getStyle(block, "container")}
             >
-              <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}>
-                <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+              <div className="max-w-container-max mx-auto">
+                <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                   <h2
                     className="font-headline-xl text-headline-xl text-on-surface mb-4"
                     style={getTitleStyle(block)}
@@ -5128,7 +5088,7 @@ export const DynamicBlockRenderer = ({
                 style={getImageStyle(block, "image")}
               ></div>
             </div>
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 flex flex-col items-start w-full md:w-2/3`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop relative z-10 flex flex-col items-start w-full md:w-2/3">
               {block.badge && (
                 <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-label-md text-label-md mb-6 border border-primary/20">
                   {block.badge}
@@ -5197,7 +5157,7 @@ export const DynamicBlockRenderer = ({
             className="py-section-gap bg-surface"
             style={getStyle(block, "container")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                 <div className="md:col-span-5 order-2 md:order-1 relative">
                   <div className="absolute -inset-4 bg-secondary/5 rounded-2xl -z-10"></div>
@@ -5275,8 +5235,8 @@ export const DynamicBlockRenderer = ({
             id="lgs-hazirlik"
             style={getStyle(block, "container")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
-              <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl mx-auto`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
+              <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16 max-w-3xl mx-auto`}>
                 <h2
                   className="font-headline-xl text-headline-xl text-on-surface mb-4"
                   style={getTitleStyle(block)}
@@ -5386,7 +5346,7 @@ export const DynamicBlockRenderer = ({
             className="relative w-full py-section-gap overflow-hidden bg-surface-card border-b border-border-subtle"
             style={getStyle(block, "container")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop grid md:grid-cols-2 gap-12 items-center`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-2 gap-12 items-center">
               <div className="z-10 flex flex-col gap-6">
                 {block.badge && (
                   <div className="inline-flex items-center gap-2 bg-primary-fixed/20 text-primary-container px-3 py-1 rounded-full w-fit">
@@ -5479,8 +5439,8 @@ export const DynamicBlockRenderer = ({
             className="py-section-gap bg-surface-background"
             style={getStyle(block, "container")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
-              <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
+              <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                 <h2
                   className="font-headline-xl text-headline-xl text-main mb-4"
                   style={getTitleStyle(block)}
@@ -5594,14 +5554,14 @@ export const DynamicBlockRenderer = ({
                 : {}
             }
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8 grid grid-cols-1 gap-6 relative z-10 py-20 items-center w-full`}>
-              <div className={`space-y-6 ${block.styles?.textAlign ? "" : "text-center"} mx-auto`}>
+            <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 gap-6 relative z-10 py-20 items-center w-full">
+              <div className={`space-y-6 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mx-auto`}>
                 {block.badge && (
                   <span className="inline-block bg-[#3f68e4]/20 text-[#b6c4ff] px-4 py-1 rounded-full text-[12px] font-bold tracking-[0.05em]">
                     {block.badge}
                   </span>
                 )}
-                <h1 className="font-bold text-4xl md:text-[48px] leading-tight tracking-[-0.02em]" style={getTitleStyle(block)}>
+                <h1 className="font-bold text-4xl md:text-[48px] leading-tight tracking-[-0.02em]">
                   {block.titlePart1}{" "}
                   {block.titlePart2 && (
                     <span style={{ color: block.titlePart2Color || "#D4AF37" }}>
@@ -5610,7 +5570,7 @@ export const DynamicBlockRenderer = ({
                   )}
                 </h1>
                 {block.subtitle && (
-                  <p className="text-lg md:text-[18px] text-[#dce1ff] max-w-xl mx-auto" style={getSubtitleStyle(block)}>
+                  <p className="text-lg md:text-[18px] text-[#dce1ff] max-w-xl mx-auto">
                     {block.subtitle}
                   </p>
                 )}
@@ -5652,8 +5612,8 @@ export const DynamicBlockRenderer = ({
             className="py-20 bg-[#faf8ff]"
             style={getStyle(block, "")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}>
-              <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
+            <div className="max-w-7xl mx-auto px-8">
+              <div className={`${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} mb-16`}>
                 <h2 className="font-bold text-[36px] text-[#1a1b23] mb-4">
                   {block.title}
                 </h2>
@@ -5709,7 +5669,7 @@ export const DynamicBlockRenderer = ({
                         {item.buttonText && (
                           <a
                             href={item.url || "#"}
-                            className={`mt-8 block w-full ${block.styles?.textAlign ? "" : "text-center"} py-3 bg-[#D4AF37] text-[#00164f] font-bold rounded-xl hover:bg-[#D4AF37]/90 transition-colors`}
+                            className={`mt-8 block w-full ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} py-3 bg-[#D4AF37] text-[#00164f] font-bold rounded-xl hover:bg-[#D4AF37]/90 transition-colors`}
                           >
                             {item.buttonText}
                           </a>
@@ -5830,9 +5790,9 @@ export const DynamicBlockRenderer = ({
             className="py-20 bg-white"
             style={getStyle(block, "")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}>
+            <div className="max-w-7xl mx-auto px-8">
               <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
-                <div className={getHeroInnerClass(block, "max-w-2xl")}>
+                <div className="max-w-2xl">
                   <h2 className="font-bold text-[36px] text-[#1a1b23] mb-4">
                     {block.title}
                   </h2>
@@ -5895,7 +5855,7 @@ export const DynamicBlockRenderer = ({
             className="py-20 bg-[#f3f2fd] overflow-hidden"
             style={getStyle(block, "")}
           >
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}>
+            <div className="max-w-7xl mx-auto px-8">
               <div className="bg-[#0f172a] rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#1d4eca]/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px]"></div>
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -5974,8 +5934,8 @@ export const DynamicBlockRenderer = ({
           <section key={index} className="relative h-[400px] flex items-center overflow-hidden" style={getStyle(block, 'container')}>
             {block.image && <img alt="" className="absolute inset-0 w-full h-full object-cover" src={block.image} style={getImageStyle(block, 'image', index)} />}
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 w-full`}>
-              <div className={getHeroInnerClass(block, "max-w-2xl")}>
+            <div className="max-w-container-max mx-auto px-margin-desktop relative z-10 w-full">
+              <div className="max-w-2xl">
                 {block.badge && (
                   <span className="inline-block py-1 px-3 rounded-full bg-primary/20 text-[#b6c4ff] text-sm font-semibold mb-4 backdrop-blur-sm border border-white/10" style={getBadgeStyle(block)}>
                     {block.badge}
@@ -5996,7 +5956,7 @@ export const DynamicBlockRenderer = ({
       if (block.type === 'menu_calendar') {
         return (
           <section key={index} className="py-12 bg-surface-background" style={getStyle(block, 'container')}>
-            <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 max-w-container-max mx-auto px-margin-desktop">
               <div>
                 <h2 className="text-2xl font-bold text-slate-800" style={getTitleStyle(block)}>{block.title}</h2>
                 {block.subtitle && <p className="text-slate-500">{block.subtitle}</p>}
@@ -6006,7 +5966,7 @@ export const DynamicBlockRenderer = ({
                   <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
                     <span className="material-symbols-outlined text-slate-500" translate="no" aria-hidden="true">chevron_left</span>
                   </button>
-                  <span className={`px-6 font-bold text-slate-800 min-w-[140px] ${block.styles?.textAlign ? "" : "text-center"}`}>{block.month || "Ekim 2023"}</span>
+                  <span className={`px-6 font-bold text-slate-800 min-w-[140px] ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>{block.month || "Ekim 2023"}</span>
                   <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
                     <span className="material-symbols-outlined text-slate-500" translate="no" aria-hidden="true">chevron_right</span>
                   </button>
@@ -6014,24 +5974,24 @@ export const DynamicBlockRenderer = ({
               </div>
             </div>
 
-            <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}>
+            <div className="max-w-container-max mx-auto px-margin-desktop">
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
                 <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200">
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Pazartesi</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Salı</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Çarşamba</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Perşembe</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Cuma</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-primary uppercase tracking-widest hidden md:block`}>Cumartesi</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-red-500 uppercase tracking-widest hidden md:block`}>Pazar</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Pazartesi</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Salı</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Çarşamba</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Perşembe</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}>Cuma</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-primary uppercase tracking-widest hidden md:block`}>Cumartesi</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-red-500 uppercase tracking-widest hidden md:block`}>Pazar</div>
                   
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Pzt</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Sal</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Çar</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Per</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Cum</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-primary uppercase tracking-widest md:hidden`}>Cmt</div>
-                  <div className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-red-500 uppercase tracking-widest md:hidden`}>Paz</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Pzt</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Sal</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Çar</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Per</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-slate-600 uppercase tracking-widest md:hidden`}>Cum</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-primary uppercase tracking-widest md:hidden`}>Cmt</div>
+                  <div className={`py-5 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-xs font-black text-red-500 uppercase tracking-widest md:hidden`}>Paz</div>
                 </div>
                 
                 <div className="grid grid-cols-7 divide-x divide-y divide-slate-200">
@@ -6049,7 +6009,7 @@ export const DynamicBlockRenderer = ({
                         <div key={i} className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30">
                           <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3">
                             <span className="text-sm md:text-xl font-black text-slate-800">{day.date}</span>
-                            <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"} w-full md:w-auto`}>Kapalı</span>
+                            <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} w-full md:w-auto`}>Kapalı</span>
                           </div>
                         </div>
                       );
@@ -6066,7 +6026,7 @@ export const DynamicBlockRenderer = ({
                           </div>
                           <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3">
                             <span className="text-sm md:text-xl font-black text-primary">{day.date}</span>
-                            <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-primary text-white uppercase ${block.styles?.textAlign ? "" : "text-center"} w-full xl:w-auto`}>Bugün</span>
+                            <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-primary text-white uppercase ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} w-full xl:w-auto`}>Bugün</span>
                           </div>
                           <ul className="space-y-1 md:space-y-2">
                             {(Array.isArray(day.meals) ? day.meals : typeof day.meals === 'string' ? day.meals.split(/[,\n]+/).map((s: string) => s.trim()).filter(Boolean) : [])?.map((meal: string, mIndex: number) => (
@@ -6083,7 +6043,7 @@ export const DynamicBlockRenderer = ({
                       <div key={i} className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px]">
                         <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3">
                           <span className="text-sm md:text-xl font-black text-slate-800">{day.date}</span>
-                          {day.kcal && <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] uppercase ${block.styles?.textAlign ? "" : "text-center"} w-full xl:w-auto`}>{day.kcal}</span>}
+                          {day.kcal && <span className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] uppercase ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} w-full xl:w-auto`}>{day.kcal}</span>}
                         </div>
                         <ul className="space-y-1 md:space-y-2">
                           {(Array.isArray(day.meals) ? day.meals : typeof day.meals === 'string' ? day.meals.split(/[,\n]+/).map((s: string) => s.trim()).filter(Boolean) : [])?.map((meal: string, mIndex: number) => (
@@ -6108,7 +6068,7 @@ export const DynamicBlockRenderer = ({
 
       if (block.type === 'menu_features') {
         return (
-          <section key={index} className={`py-8 bg-surface-background ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`} style={getStyle(block, 'container')}>
+          <section key={index} className="py-8 bg-surface-background max-w-container-max mx-auto px-margin-desktop" style={getStyle(block, 'container')}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {block.items?.map((item: any, i: number) => (
                 <div key={i} className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4" style={getCardStyle(item)}>
@@ -6132,7 +6092,7 @@ export const DynamicBlockRenderer = ({
                 style={getImageStyle(block, 'image', index)} 
               />
             </div>
-            <div className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"}`}>
+            <div className={`relative z-10 max-w-container-max mx-auto px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"}`}>
               <h1 className="font-display-lg text-display-lg text-on-primary mb-6" style={getTitleStyle(block)}>{block.title}</h1>
               {block.subtitle && (
                 <p className="font-body-lg text-body-lg text-on-primary-container max-w-2xl" style={getSubtitleStyle(block)}>
@@ -6146,7 +6106,7 @@ export const DynamicBlockRenderer = ({
 
       if (block.type === 'academic_calendar') {
         return (
-          <div key={index} className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap`} style={getStyle(block, 'container')}>
+          <div key={index} className="max-w-container-max mx-auto px-margin-desktop py-section-gap" style={getStyle(block, 'container')}>
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm">
               <div className="flex items-center space-x-6 mb-4 md:mb-0">
                 <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center">
@@ -6169,21 +6129,21 @@ export const DynamicBlockRenderer = ({
 
             <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-section-gap">
               <div className="grid grid-cols-7 border-b border-border-subtle bg-surface-container-low">
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Pazartesi</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Salı</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Çarşamba</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Perşembe</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Cuma</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant text-error hidden md:block`}>Cumartesi</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant text-error hidden md:block`}>Pazar</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Pazartesi</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Salı</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Çarşamba</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Perşembe</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant hidden md:block`}>Cuma</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant text-error hidden md:block`}>Cumartesi</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant text-error hidden md:block`}>Pazar</div>
                 
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Pzt</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Sal</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Çar</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Per</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Cum</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant text-error md:hidden`}>Cmt</div>
-                <div className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant text-error md:hidden`}>Paz</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Pzt</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Sal</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Çar</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Per</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant md:hidden`}>Cum</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant text-error md:hidden`}>Cmt</div>
+                <div className={`py-4 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} font-label-md text-label-md text-on-surface-variant text-error md:hidden`}>Paz</div>
               </div>
 
               <div className="grid grid-cols-7 border-l border-t border-border-subtle">
@@ -6200,7 +6160,7 @@ export const DynamicBlockRenderer = ({
                     return (
                       <div key={i} className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container-high relative">
                         <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2">{day.date}</span>
-                        <div className={`mt-8 ${block.styles?.textAlign ? "" : "text-center"} text-on-surface-variant font-caption text-[8px] md:text-caption opacity-50`}>Hafta Sonu</div>
+                        <div className={`mt-8 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} text-on-surface-variant font-caption text-[8px] md:text-caption opacity-50`}>Hafta Sonu</div>
                       </div>
                     );
                   }
@@ -6214,12 +6174,12 @@ export const DynamicBlockRenderer = ({
                         {day.events && day.events.length > 0 ? day.events.map((event: any, eIndex: number) => (
                           <div key={eIndex} className={`px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[10px] font-bold leading-tight truncate border ${event.colorClass || "bg-surface-container text-on-surface border-border-subtle"}`}>
                             {event.title}
-                            {event.subtitle && <><br /><span className={`font-normal opacity-90 ${block.styles?.textAlign ? "" : "text-center"} block`}>{event.subtitle}</span></>}
+                            {event.subtitle && <><br /><span className={`font-normal opacity-90 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} block`}>{event.subtitle}</span></>}
                           </div>
                         )) : day.eventTitle ? (
                           <div className={`px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[10px] font-bold leading-tight truncate border ${day.eventColorClass || "bg-surface-container text-on-surface border-border-subtle"}`}>
                             {day.eventTitle}
-                            {day.eventSubtitle && <><br /><span className={`font-normal opacity-90 ${block.styles?.textAlign ? "" : "text-center"} block`}>{day.eventSubtitle}</span></>}
+                            {day.eventSubtitle && <><br /><span className={`font-normal opacity-90 ${block.styles?.textAlign ? "" : "${block.styles?.textAlign ? "" : "text-center"}"} block`}>{day.eventSubtitle}</span></>}
                           </div>
                         ) : null}
                       </div>

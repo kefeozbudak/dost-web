@@ -193,7 +193,7 @@ export default function MediaCenter() {
             ) : (
               <Upload className="w-4 h-4" />
             )}
-            {uploading ? 'Yükleniyor...' : 'Yeni Dosya Yükle'}
+            <span>{uploading ? 'Yükleniyor...' : 'Yeni Dosya Yükle'}</span>
           </button>
         </div>
       </div>
@@ -251,7 +251,7 @@ export default function MediaCenter() {
                 onClick={() => setDeleteDialog({ isOpen: true, isBulk: true })}
                 className="flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded transition-colors"
               >
-                <Trash2 className="w-3.5 h-3.5" /> {selectedIds.length} Seçili Öğeyi Sil
+                <Trash2 className="w-3.5 h-3.5" /> <span>{selectedIds.length} Seçili Öğeyi Sil</span>
               </button>
             )}
           </div>
