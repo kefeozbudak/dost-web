@@ -351,7 +351,7 @@ export default function AssistantWidget() {
                       return (
                         <div key={idx} className="space-y-1">
                           <label className="block text-[11px] font-bold text-slate-600">
-                            {fieldLabel} {isRequired && <span className="text-red-500">*</span>}
+                            <span key={fieldLabel}>{fieldLabel}</span> {isRequired && <span key="req" className="text-red-500">*</span>}
                           </label>
 
                           {fieldType === 'select' ? (

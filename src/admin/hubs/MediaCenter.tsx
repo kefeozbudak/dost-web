@@ -193,7 +193,7 @@ export default function MediaCenter() {
             ) : (
               <Upload className="w-4 h-4" />
             )}
-            <span>{uploading ? 'Yükleniyor...' : 'Yeni Dosya Yükle'}</span>
+            <span key={uploading ? '1' : '0'}>{uploading ? 'Yükleniyor...' : 'Yeni Dosya Yükle'}</span>
           </button>
         </div>
       </div>

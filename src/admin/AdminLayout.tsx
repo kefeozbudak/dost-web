@@ -270,7 +270,7 @@ export default function AdminLayout() {
             title="Önizlemeyi Yeni Sekmede Aç"
           >
             <span className="material-symbols-outlined text-[14px]">visibility</span>
-            <span>{currentEditingPageId ? 'Sayfayı Ön İzle' : 'Siteyi Ön İzle'}</span>
+            <span key={currentEditingPageId ? '1' : '0'}>{currentEditingPageId ? 'Sayfayı Ön İzle' : 'Siteyi Ön İzle'}</span>
           </a>
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">

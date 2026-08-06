@@ -443,7 +443,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex justify-between items-end mb-1.5">
                   <span className="text-xs font-bold text-slate-500 uppercase">Bugünkü Ziyaretçi</span>
-                  <span className="text-lg font-black text-slate-900">{trafficSummary.todayVisitors}</span>
+                  <span key={trafficSummary.todayVisitors} className="text-lg font-black text-slate-900">{trafficSummary.todayVisitors}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2">
                   <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${Math.min((trafficSummary.todayVisitors / (trafficSummary.weeklyViews || 1)) * 100, 100)}%` }}></div>
@@ -456,7 +456,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex justify-between items-end mb-1.5">
                   <span className="text-xs font-bold text-slate-500 uppercase">Son 7 Günlük Görüntüleme</span>
-                  <span className="text-lg font-black text-slate-900">{trafficSummary.weeklyViews}</span>
+                  <span key={trafficSummary.weeklyViews} className="text-lg font-black text-slate-900">{trafficSummary.weeklyViews}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2">
                   <div className="bg-indigo-600 h-2 rounded-full" style={{ width: `${Math.min((trafficSummary.weeklyViews / (trafficSummary.totalViews || 1)) * 100, 100)}%` }}></div>
@@ -469,7 +469,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="flex justify-between items-end mb-1.5">
                   <span className="text-xs font-bold text-slate-500 uppercase">Toplam Sayfa Görüntüleme</span>
-                  <span className="text-lg font-black text-slate-900">{trafficSummary.totalViews}</span>
+                  <span key={trafficSummary.totalViews} className="text-lg font-black text-slate-900">{trafficSummary.totalViews}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2">
                   <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '100%' }}></div>
