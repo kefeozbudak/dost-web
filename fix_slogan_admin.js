@@ -1,0 +1,1 @@
+// If we can't write, let's instruct the user to change it via Admin, OR we can deploy rules temporarily to allow writes, OR we can generate a small component to do it from the frontend once when the admin logs in.

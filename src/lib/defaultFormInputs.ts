@@ -56,3 +56,13 @@ export const DEFAULT_CAREER_INPUTS = [
   { type: 'textarea', name: 'coverLetter', label: 'Ön Yazı (Neden Biz?)', placeholder: 'Kendinizden ve hedeflerinizden kısaca bahsedin...', required: false, fullWidth: true },
   { type: 'checkbox', name: 'kvkk', label: 'KVKK Aydınlatma Metni\'ni okudum, kişisel verilerimin iş başvuru süreçleri kapsamında işlenmesini onaylıyorum.', required: true, fullWidth: true }
 ];
+
+export const DEFAULT_CONTACT_INPUTS = [
+  { type: 'text', name: 'name', label: 'Adınız Soyadınız', placeholder: 'Örn: Ahmet Yılmaz', required: true },
+  { type: 'email', name: 'email', label: 'E-posta Adresiniz', placeholder: 'ornek@email.com', required: true },
+  { type: 'tel', name: 'phone', label: 'Telefon Numarası', placeholder: '05XX XXX XX XX', required: true, fullWidth: true },
+  { type: 'select', name: 'campus', label: 'Kampüs Seçin', options: 'Eryaman Kampüsü, Ümitköy Kampüsü, Oran Kampüsü', required: true },
+  { type: 'select', name: 'educationLevel', label: 'Eğitim Kademesi', options: 'Anaokulu, İlkokul, Ortaokul, Anadolu Lisesi, Fen Lisesi', required: true },
+  { type: 'text', name: 'subject', label: 'Konu', placeholder: 'Mesajınızın konusu', required: true, fullWidth: true },
+  { type: 'textarea', name: 'message', label: 'Mesajınız', placeholder: 'Size nasıl yardımcı olabiliriz?', required: true, fullWidth: true }
+];

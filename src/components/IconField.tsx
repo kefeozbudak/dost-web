@@ -7,9 +7,13 @@ export function IconPreview({ data, className, style }: { data?: any; className?
   if (!data) return null;
   const name = typeof data === 'string' ? data : data.name;
   if (!name) return null;
-  
+
   const cleanName = name.replace(/^lucide:/i, '');
   
+  if (cleanName.trim().toLowerCase().includes('<svg')) {
+    return <span className={`inline-flex items-center justify-center ${className || ''}`} style={style} dangerouslySetInnerHTML={{ __html: cleanName }} />;
+  }
+
   const Icon = (LucideIcons as any)[cleanName];
   if (Icon) {
     const color = data.color && data.color !== 'currentColor' ? data.color : undefined;

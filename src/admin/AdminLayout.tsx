@@ -245,7 +245,7 @@ export default function AdminLayout() {
     .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">
+    <div className="flex flex-col h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden" translate="no">
       {/* Top Header */}
       <header className="h-14 bg-slate-900 text-white flex items-center justify-between px-4 md:px-6 border-b border-slate-700 shrink-0 relative z-20">
         <div className="flex items-center gap-3">

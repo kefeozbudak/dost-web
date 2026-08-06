@@ -211,9 +211,9 @@ export default function MediaCenter() {
           <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6 animate-in fade-in zoom-in-95">
             <h3 className="text-lg font-bold text-slate-800 mb-2">Emin misiniz?</h3>
             <p className="text-slate-600 text-sm mb-6">
-              {deleteDialog.isBulk 
+              <span>{deleteDialog.isBulk 
                 ? `${selectedIds.length} adet dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`
-                : 'Bu dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.'}
+                : 'Bu dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.'}</span>
             </p>
             <div className="flex items-center justify-end gap-3">
               <button 
@@ -279,7 +279,7 @@ export default function MediaCenter() {
             </div>
             <h3 className="text-lg font-bold text-slate-700 mb-1">Medya Bulunamadı</h3>
             <p className="text-slate-500 text-sm max-w-md mx-auto">
-              {searchTerm ? 'Aramanıza uygun dosya bulunamadı.' : 'Henüz hiç medya yüklenmemiş. Resim yükleyerek başlayabilirsiniz.'}
+              <span>{searchTerm ? 'Aramanıza uygun dosya bulunamadı.' : 'Henüz hiç medya yüklenmemiş. Resim yükleyerek başlayabilirsiniz.'}</span>
             </p>
           </div>
         ) : (

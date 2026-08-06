@@ -93,96 +93,36 @@ export default function AssistantWidget() {
     setLoading(true);
 
     try {
-      let data: any = null;
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            messages: newMessages.filter(m => !m.isForm),
-            knowledgeBase: settings?.knowledgeBase || '',
-            siteContext: siteContext
-          })
-        });
-        
-        let errData;
-        if (!response.ok) {
-          errData = await response.json().catch(() => null);
-          throw new Error(errData?.error || 'Server returned ' + response.status);
-        }
-        data = await response.json();
-      } catch (serverErr: any) {
-        // Fallback to client-side Gemini if server endpoint is unavailable (e.g., static hosting)
-        const clientApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY;
-        if (clientApiKey) {
-          const { GoogleGenAI } = await import('@google/genai');
-          const ai = new GoogleGenAI({ apiKey: clientApiKey });
-          
-          let formattedMessages = newMessages.filter(m => !m.isForm).map(m => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.text || '' }]
-          }));
-          while (formattedMessages.length > 0 && formattedMessages[0].role === 'model') {
-            formattedMessages.shift();
-          }
-          if (formattedMessages.length === 0) {
-             formattedMessages = [{ role: 'user', parts: [{ text: 'merhaba' }] }];
-          }
-
-          const systemInstruction = `SİSTEM VE MİMARİ BAĞLAMI:
-Bu uygulama, web sitesinde yer alan mevcut canlı destek penceresi modülünün arka plan mantığının yenilenmiş halidir.
-- Arayüz Tasarımı: Sitedeki mevcut asistan penceresi ve görsel modül tasarımı birebir korunmaktadır.
-- Yönetim Paneli: Yönetim paneli tarafı, bilgi tabanını (JSON/Veritabanı) ve yanıt kurallarını güncelleyecek şekilde bu yeni yapıya entegre edilmiştir.
-- Çalışma Mantığı: Sistem iki aşamalıdır. İlk aşamada yönetim panelinden tanımlanan veriler yerel olarak taranır; yanıt bulunamadığında ikinci aşamada sen devreye girersin.
-
-SENİN ROLÜN VE KURALLARIN:
-Sen, mevcut canlı destek penceresi arayüzünde kullanıcı sorularını yanıtlayan arka plan asistanısın.
-
-1. Bilgi Tabanına Sadakat: Yönetim paneli üzerinden sana aktarılan bilgi tabanı (context) dışına çıkma. Bilmediğin veya bilgi tabanında karşılığı olmayan konularda kesinlikle uydurma cevap verme.
-2. Modül Arayüzüne Yönlendirme: Bir sorunun yanıtı bilgi tabanında yoksa veya canlı yetkili gerekiyorsa, bunu dürüstçe belirt ve kullanıcıyı mevcut asistan penceresinde yer alan ilgili butonlara (örneğin: "WhatsApp ile İletişim", "İletişim Formu" veya "Yetkiliye Bağlan") yönlendir. (Not: Form açmasını önermek istersen cevabının sonuna [FORM_TEKLIFI] yaz).
-3. Arayüz Tasarımına Uyum: Yanıtların mevcut sohbet penceresi tasarımını bozmayacak şekilde kısa, öz, anlaşılır ve yapıcı olsun.
-
-ÖRNEK YANIT YAKLAŞIMLARI:
-- Bilgi mevcutsa: "Siparişleriniz 1-3 iş günü içerisinde kargoya teslim edilmektedir."
-- Bilgi mevcut değilse: "Bu konu hakkında sistemimde kayıtlı bilgi bulunmamaktadır. Dilerseniz penceredeki 'İletişim Formu' veya 'WhatsApp' butonlarını kullanarak ekibimize ulaşabilirsiniz. [FORM_TEKLIFI]"
-
-SİTE SAYFA VE BİLGİ İÇERİKLERİ:
-${siteContext || 'Yok'}
-
-EK KURUMSAL BİLGİ BANKASI VE NOTLAR:
-${settings?.knowledgeBase || 'Yok'}`;
-
-          const r = await ai.models.generateContent({
-            model: 'gemini-flash-latest',
-            contents: formattedMessages as any,
-            config: {
-              systemInstruction: systemInstruction,
-              temperature: 0.7,
-            }
-          });
-          data = { text: r.text };
-        } else {
-          throw serverErr;
-        }
+      // Rule-based fallback instead of AI
+      const lowerInput = input.toLowerCase();
+      let responseText = "Sorunuzu tam olarak anlayamadım. Lütfen hızlı iletişim formunu doldurarak veya aşağıdaki menüden ilgili sayfaları inceleyerek detaylı bilgi alabilirsiniz. [FORM_TEKLIFI]";
+      
+      const knowledge = ((settings?.knowledgeBase || '') + ' ' + (siteContext || '')).toLowerCase();
+      
+      if (lowerInput.includes('kampüs') || lowerInput.includes('okul') || lowerInput.includes('şube')) {
+        responseText = "Kampüslerimiz: Dost Koleji İstanbul genelinde modern kampüsleri ile eğitim vermektedir. Size en yakın kampüsümüzü öğrenmek veya eğitim kademelerimiz (Anaokulu, İlkokul, Ortaokul, Lise) hakkında detaylı bilgi almak için lütfen 'Kampüslerimiz' sayfasını ziyaret edin veya iletişim formunu doldurun. [FORM_TEKLIFI]";
+      } else if (lowerInput.includes('fiyat') || lowerInput.includes('ücret') || lowerInput.includes('kayıt')) {
+        responseText = "Kayıt ve ücret bilgileri döneme ve eğitim kademesine göre değişiklik göstermektedir. Detaylı ve size özel bir fiyat teklifi alabilmek için lütfen kayıt formumuzu veya iletişim formumuzu doldurun, ilgili birimimiz size en kısa sürede ulaşacaktır. [FORM_TEKLIFI]";
+      } else if (lowerInput.includes('iletişim') || lowerInput.includes('telefon') || lowerInput.includes('adres')) {
+        responseText = "Bizimle iletişime geçmek için iletişim sayfamızı ziyaret edebilir veya hızlı iletişim formunu kullanabilirsiniz. [FORM_TEKLIFI]";
+      } else if (lowerInput.includes('burs') || lowerInput.includes('sınav')) {
+        responseText = "Bursluluk sınavlarımız ve güncel tarihler hakkında bilgi almak için 'Bursluluk Sınavı' sayfamızı ziyaret edebilir veya formu doldurarak detaylı bilgi talep edebilirsiniz. [FORM_TEKLIFI]";
+      } else if (lowerInput.includes('merhaba') || lowerInput.includes('selam')) {
+        responseText = "Merhaba! Size kurumumuz, kampüslerimiz ve eğitim programlarımız hakkında nasıl yardımcı olabilirim?";
       }
 
-      if (data && data.text) {
-        let text = data.text;
-        let isForm = false;
-        
-        // Handle form proposal
-        if (text.includes('[FORM_TEKLIFI]')) {
-          text = text.replace('[FORM_TEKLIFI]', '').trim();
-          isForm = true;
-          openQuickContact();
-        }
+      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate thinking delay
 
-        setMessages(prev => [...prev, { role: 'assistant', text, isForm }]);
-      } else if (data.error) {
-        setMessages(prev => [...prev, { role: 'assistant', text: typeof data.error === 'string' ? data.error : 'Yanıt alınamadı. Lütfen tekrar deneyin.' }]);
+      let isForm = false;
+      if (responseText.includes('[FORM_TEKLIFI]')) {
+        responseText = responseText.replace('[FORM_TEKLIFI]', '').trim();
+        isForm = true;
+        openQuickContact();
       }
+
+      setMessages(prev => [...prev, { role: 'assistant', text: responseText, isForm }]);
     } catch (error: any) {
-      setMessages(prev => [...prev, { role: 'assistant', text: 'Hata: ' + (error.message || 'Üzgünüm, bağlantı kurulamadı.') }]);
+      setMessages(prev => [...prev, { role: 'assistant', text: 'Hata oluştu. Lütfen tekrar deneyin.' }]);
     } finally {
       setLoading(false);
     }
