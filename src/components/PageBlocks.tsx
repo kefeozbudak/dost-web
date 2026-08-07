@@ -1,5 +1,6 @@
 import ErrorBoundary from "./ErrorBoundary";
 import React, { useState, useEffect } from "react";
+import LgsCalculator from "./LgsCalculator";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, storage } from "../lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -2738,7 +2739,6 @@ export const DynamicBlockRenderer = ({
   };
 
   const renderBlock = (block: any, index: number) => {
-
     const renderContent = () => {
       switch (block.type) {
         case "campus_hero":
@@ -3531,6 +3531,8 @@ export const DynamicBlockRenderer = ({
               getSubtitleStyle={getSubtitleStyle}
             />
           );
+        case "lgs_calculator":
+          return <LgsCalculator key={index} block={block} />;
 
         case "social_media":
           const validItems = (block.items || []).filter(
@@ -8770,7 +8772,7 @@ export const DynamicBlockRenderer = ({
     );
   };
 
-    return (
+  return (
     <>{blocks.map((block: any, index: number) => renderBlock(block, index))}</>
   );
 };

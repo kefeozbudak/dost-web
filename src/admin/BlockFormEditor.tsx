@@ -1973,6 +1973,13 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
 
       </div>
 
+        {block.type === 'lgs_calculator' && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık / Açıklama', 'subtitle')}
+          </div>
+        )}
+
         {block.type === 'tuition_fees' && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}

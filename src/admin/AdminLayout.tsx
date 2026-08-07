@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { logout } from '../lib/firebase';
 import { useAuthStore } from '../store/authStore';
-import { defaultEgitimSistemiData } from '../lib/defaultData';
+import { defaultEgitimSistemiData, defaultLgsCalculatorData } from '../lib/defaultData';
 
 export default function AdminLayout() {
   const location = useLocation();
@@ -40,6 +40,32 @@ export default function AdminLayout() {
   const [isCampusMenuOpen, setIsCampusMenuOpen] = useState(true);
   const [pagesList, setPagesList] = useState<any[]>([]);
   const { role, allowedPages } = useAuthStore();
+
+
+  // Auto-seed lgs-puan-hesaplama
+  useEffect(() => {
+    const seedLgs = async () => {
+      try {
+        const docRef = doc(db, 'pages', 'lgs-puan-hesaplama');
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists() || docSnap.data().isDeleted) {
+          const { defaultLgsCalculatorData } = await import('../lib/defaultData');
+          await setDoc(docRef, {
+            title: 'LGS Puan Hesaplama Modülü',
+            path: '/lgs-puan-hesaplama',
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultLgsCalculatorData,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }, { merge: true });
+        }
+      } catch (e) {
+        console.error("Auto-seed error:", e);
+      }
+    };
+    seedLgs();
+  }, []);
 
   // Auto-seed kayit-fiyatlari
   useEffect(() => {
@@ -129,6 +155,7 @@ export default function AdminLayout() {
           { id: 'egitim-sistemimiz', title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz' },
           { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
           { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
+    { id: 'lgs-puan-hesaplama', title: 'LGS Puan Hesaplama Modülü', path: '/lgs-puan-hesaplama' },
           { id: 'umitkoy-kampusu', title: 'Ümitköy Kampüsü', path: '/umitkoy-kampusu' },
           { id: 'eryaman-kampusu', title: 'Eryaman Kampüsü', path: '/eryaman-kampusu' },
           { id: 'oran-kampusu', title: 'Oran Kampüsü', path: '/oran-kampusu' },
@@ -140,6 +167,8 @@ export default function AdminLayout() {
           let initialBlocks = [];
           if (item.id === 'egitim-sistemimiz') {
              initialBlocks = defaultEgitimSistemiData;
+          } else if (item.id === 'lgs-puan-hesaplama') {
+             initialBlocks = defaultLgsCalculatorData;
           }
 
           if (!pageSnap.exists()) {
@@ -151,7 +180,7 @@ export default function AdminLayout() {
               blocks: initialBlocks,
               createdAt: Date.now()
             });
-          } else if (item.id === 'egitim-sistemimiz') {
+          } else if (item.id === 'egitim-sistemimiz' || item.id === 'lgs-puan-hesaplama') {
             const data = pageSnap.data();
             if (!data.blocks || data.blocks.length === 0) {
               await setDoc(pageRef, { blocks: initialBlocks }, { merge: true });
@@ -225,6 +254,7 @@ export default function AdminLayout() {
     { id: 'is-basvuru-formu', title: 'İş Başvuru Formu', path: '/is-basvuru-formu' },
     { id: 'bursluluk-basvuru-formu', title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu' },
     { id: 'bursluluk-basvuru-onay', title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay' },
+    { id: 'lgs-puan-hesaplama', title: 'LGS Puan Hesaplama Modülü', path: '/lgs-puan-hesaplama' },
   ];
 
   const CAMPUS_SLUGS = [

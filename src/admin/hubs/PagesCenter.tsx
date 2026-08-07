@@ -26,7 +26,8 @@ export default function PagesCenter() {
         defaultScholarshipConfirmationPageData,
         defaultEgitimSistemiData,
         defaultCareerPageData,
-        defaultTuitionFeesData
+        defaultTuitionFeesData,
+        defaultLgsCalculatorData
       } = await import('../../lib/defaultData');
 
       const defaultPagesMap: Record<string, { title: string; path: string; blocks: any[] }> = {
@@ -74,6 +75,11 @@ export default function PagesCenter() {
           title: 'Bursluluk Sınav Başvuru Onayı',
           path: '/bursluluk-basvuru-onay',
           blocks: defaultScholarshipConfirmationPageData
+        },
+        'lgs-puan-hesaplama': {
+          title: 'LGS Puan Hesaplama Modülü',
+          path: '/lgs-puan-hesaplama',
+          blocks: defaultLgsCalculatorData
         },
         
         'kayit-fiyatlari': {
@@ -154,6 +160,33 @@ export default function PagesCenter() {
 
   useEffect(() => {
     fetchPages();
+  }, []);
+
+
+  // Auto-seed lgs-puan-hesaplama if missing
+  useEffect(() => {
+    const seedLgs = async () => {
+      try {
+        const docRef = doc(db, 'pages', 'lgs-puan-hesaplama');
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists() || docSnap.data().isDeleted) {
+          const { defaultLgsCalculatorData } = await import('../../lib/defaultData');
+          await setDoc(docRef, {
+            title: 'LGS Puan Hesaplama Modülü',
+            path: '/lgs-puan-hesaplama',
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultLgsCalculatorData,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }, { merge: true });
+          fetchPages();
+        }
+      } catch (e) {
+        console.error("Auto-seed error:", e);
+      }
+    };
+    seedLgs();
   }, []);
 
   // Auto-seed kayit-fiyatlari if missing

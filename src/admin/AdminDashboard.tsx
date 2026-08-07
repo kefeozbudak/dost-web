@@ -77,6 +77,23 @@ export default function AdminDashboard() {
               author: 'system'
            });
         }
+
+        // 1d. Create lgs-puan-hesaplama page if it doesn't exist or is empty
+        const lgsPageRef = doc(db, 'pages', 'lgs-puan-hesaplama');
+        const lgsPageSnap = await getDoc(lgsPageRef);
+        if (!lgsPageSnap.exists() || !lgsPageSnap.data()?.blocks || lgsPageSnap.data().blocks.length === 0) {
+           const { defaultLgsCalculatorData } = await import('../lib/defaultData');
+           await setDoc(lgsPageRef, {
+              title: 'LGS Puan Hesaplama Modülü',
+              path: '/lgs-puan-hesaplama',
+              blocks: defaultLgsCalculatorData,
+              isDeleted: false,
+              isHidden: false,
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+              author: 'system'
+           });
+        }
         
         // 2. Patch home page
         const homeRef = doc(db, 'pages', 'home');

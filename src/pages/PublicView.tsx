@@ -15,7 +15,8 @@ import {
   defaultScholarshipPageData,
   defaultScholarshipConfirmationPageData,
   defaultEgitimSistemiData,
-  defaultCareerPageData
+  defaultCareerPageData,
+  defaultLgsCalculatorData
 } from '../lib/defaultData';
 import { onAuthStateChanged } from 'firebase/auth';
 import Header from '../components/Header';
@@ -232,6 +233,12 @@ export default function PublicView() {
           title: 'Bursluluk Sınav Başvuru Onayı',
           path: '/bursluluk-basvuru-onay',
           blocks: defaultScholarshipConfirmationPageData
+        });
+      } else if (docId === 'lgs-puan-hesaplama' || normalizedPath === '/lgs-puan-hesaplama') {
+        setPageData({
+          title: 'LGS Puan Hesaplama Modülü',
+          path: '/lgs-puan-hesaplama',
+          blocks: defaultLgsCalculatorData
         });
       } else {
         setPageData(null);

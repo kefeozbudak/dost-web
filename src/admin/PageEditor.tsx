@@ -126,6 +126,11 @@ export default function PageEditor() {
             const defaultData = { title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay', blocks: defaultScholarshipConfirmationPageData };
             setPageData(defaultData);
           });
+        } else if (pageId === 'lgs-puan-hesaplama') {
+          import('../lib/defaultData').then(({ defaultLgsCalculatorData }) => {
+            const defaultData = { title: 'LGS Puan Hesaplama Modülü', path: '/lgs-puan-hesaplama', blocks: defaultLgsCalculatorData };
+            setPageData(defaultData);
+          });
         }
       } catch (e) {
         console.error(e);
@@ -503,6 +508,7 @@ export default function PageEditor() {
                           { type: 'bursluluk_confirmation', label: 'Bursluluk Sınav Başvuru Onayı ve Giriş Belgesi' },
                           { type: 'bursluluk_info_cards', label: 'Bursluluk Bilgilendirme Kartları' },
                           { type: 'bursluluk_result_query', label: 'Bursluluk Sonuç Sorgulama' },
+                          { type: 'lgs_calculator', label: 'LGS Puan Hesaplama Modülü' },
                         ].map((b, i) => (
                           <button
                             key={i}

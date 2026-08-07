@@ -827,3 +827,14 @@ export const defaultTuitionFeesData = [
     ]
   }
 ];
+
+export const defaultLgsCalculatorData = [
+  {
+    type: "lgs_calculator",
+    title: "LGS Puan Hesaplama Modülü",
+    subtitle: "2026 güncel katsayılarına göre tahmini LGS puanınızı ve yüzdelik diliminizi hesaplayın.",
+    styles: {
+      backgroundColor: "#faf8ff"
+    }
+  }
+];
