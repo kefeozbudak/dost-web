@@ -40,6 +40,32 @@ export default function AdminLayout() {
   const [isCampusMenuOpen, setIsCampusMenuOpen] = useState(true);
   const [pagesList, setPagesList] = useState<any[]>([]);
   const { role, allowedPages } = useAuthStore();
+
+  // Auto-seed kayit-fiyatlari
+  useEffect(() => {
+    const seedKayit = async () => {
+      try {
+        const docRef = doc(db, 'pages', 'kayit-fiyatlari');
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists() || docSnap.data().isDeleted) {
+          const { defaultTuitionFeesData } = await import('../lib/defaultData');
+          await setDoc(docRef, {
+            title: 'Kayıt Fiyatları',
+            path: '/kayit-fiyatlari',
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultTuitionFeesData,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }, { merge: true });
+        }
+      } catch (e) {
+        console.error("Auto-seed error:", e);
+      }
+    };
+    seedKayit();
+  }, []);
+
   useEffect(() => {
     const seedPages = async () => {
       try {

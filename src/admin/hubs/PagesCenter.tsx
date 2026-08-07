@@ -14,128 +14,139 @@ export default function PagesCenter() {
   const navigate = useNavigate();
 
 
-  const seedClubPage = async () => {
+  const seedAllDefaults = async () => {
     try {
-      const docRef = doc(db, 'pages', 'kulup-kayit-formu');
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists()) {
-        await setDoc(docRef, {
-            title: "Kulüp Kayıt Formu",
-            path: "/kulup-kayit-formu",
-            isDeleted: false,
-            isHidden: false,
-            blocks: [
-                {
-                    type: "club_registration_form",
-                    titlePart1: "Dost Koleji",
-                    titlePart2: "Kulüp Kayıt",
-                    subtitle: "Lütfen Formu Eksiksiz Doldurunuz.",
-                }
-            ],
-            createdAt: Date.now()
-        });
+      const {
+        defaultHomePageData,
+        defaultHakkimizdaData,
+        defaultBasarilarimizData,
+        defaultDuyurularData,
+        defaultPreRegistrationData,
+        defaultScholarshipPageData,
+        defaultScholarshipConfirmationPageData,
+        defaultEgitimSistemiData,
+        defaultCareerPageData,
+        defaultTuitionFeesData
+      } = await import('../../lib/defaultData');
+
+      const defaultPagesMap: Record<string, { title: string; path: string; blocks: any[] }> = {
+        'home': {
+          title: 'Ana Sayfa',
+          path: '/',
+          blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
+        },
+        'hakkimizda': {
+          title: 'Hakkımızda',
+          path: '/hakkimizda',
+          blocks: defaultHakkimizdaData
+        },
+        'egitim-sistemimiz': {
+          title: 'Eğitim Sistemimiz',
+          path: '/egitim-sistemimiz',
+          blocks: defaultEgitimSistemiData
+        },
+        'basarilarimiz': {
+          title: 'Başarılarımız',
+          path: '/basarilarimiz',
+          blocks: defaultBasarilarimizData
+        },
+        'duyurular': {
+          title: 'Duyurular',
+          path: '/duyurular',
+          blocks: defaultDuyurularData
+        },
+        'on-kayit': {
+          title: 'Öğrenci Ön Kayıt',
+          path: '/on-kayit',
+          blocks: defaultPreRegistrationData
+        },
+        'is-basvurusu': {
+          title: 'İş Başvurusu',
+          path: '/is-basvurusu',
+          blocks: defaultCareerPageData
+        },
+        'bursluluk-basvuru-formu': {
+          title: 'Bursluluk Sınav Başvurusu',
+          path: '/bursluluk-basvuru-formu',
+          blocks: defaultScholarshipPageData
+        },
+        'bursluluk-basvuru-onay': {
+          title: 'Bursluluk Sınav Başvuru Onayı',
+          path: '/bursluluk-basvuru-onay',
+          blocks: defaultScholarshipConfirmationPageData
+        },
+        
+        'kayit-fiyatlari': {
+          title: 'Kayıt Fiyatları',
+          path: '/kayit-fiyatlari',
+          blocks: defaultTuitionFeesData
+        },
+        'kulup-kayit-formu': {
+
+          title: 'Kulüp Kayıt Formu',
+          path: '/kulup-kayit-formu',
+          blocks: [
+            {
+              type: 'club_registration_form',
+              titlePart1: 'Dost Koleji',
+              titlePart2: 'Kulüp Kayıt',
+              subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.'
+            }
+          ]
+        }
+      };
+
+      for (const [id, page] of Object.entries(defaultPagesMap)) {
+        try {
+          const docRef = doc(db, 'pages', id);
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0 || docSnap.data()?.isDeleted) {
+            await setDoc(docRef, {
+              title: page.title,
+              path: page.path,
+              isDeleted: false,
+              isHidden: false,
+              blocks: page.blocks,
+              createdAt: Date.now(),
+              updatedAt: Date.now()
+            }, { merge: true });
+          }
+        } catch (err) {
+          console.error(`Error seeding ${id}:`, err);
+        }
       }
     } catch (e) {
-      console.error('Failed to seed club page', e);
-    }
-  };
-
-  const seedScholarshipPage = async () => {
-    try {
-      const { defaultScholarshipPageData } = await import('../../lib/defaultData');
-      const docRef = doc(db, 'pages', 'bursluluk-basvuru-formu');
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0 || docSnap.data().blocks[0]?.type === 'pre_registration_form') {
-        await setDoc(docRef, {
-            title: "Bursluluk Sınav Başvurusu",
-            path: "/bursluluk-basvuru-formu",
-            isDeleted: false,
-            isHidden: false,
-            blocks: defaultScholarshipPageData,
-            createdAt: Date.now()
-        });
-      }
-    } catch (e) {
-      console.error('Failed to seed scholarship page', e);
-    }
-  };
-
-
-  const seedEduSystemPage = async () => {
-    try {
-      const { defaultEgitimSistemiData } = await import('../../lib/defaultData');
-      const docRef = doc(db, 'pages', 'egitim-sistemimiz');
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0) {
-        await setDoc(docRef, {
-            title: "Eğitim Sistemimiz",
-            path: "/egitim-sistemimiz",
-            isDeleted: false,
-            isHidden: false,
-            blocks: defaultEgitimSistemiData,
-            createdAt: Date.now()
-        });
-      }
-    } catch (e) {
-      console.error('Failed to seed edu system page', e);
-    }
-  };
-
-  const seedScholarshipConfirmationPage = async () => {
-    try {
-      const { defaultScholarshipConfirmationPageData } = await import('../../lib/defaultData');
-      const docRef = doc(db, 'pages', 'bursluluk-basvuru-onay');
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0) {
-        await setDoc(docRef, {
-            title: "Bursluluk Sınav Başvuru Onayı",
-            path: "/bursluluk-basvuru-onay",
-            isDeleted: false,
-            isHidden: false,
-            blocks: defaultScholarshipConfirmationPageData,
-            createdAt: Date.now()
-        });
-      }
-    } catch (e) {
-      console.error('Failed to seed scholarship confirmation page', e);
-    }
-  };
-
-  
-  const seedCareerPage = async () => {
-    try {
-      const { defaultCareerPageData } = await import('../../lib/defaultData');
-      const docRef = doc(db, 'pages', 'is-basvurusu');
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() || !docSnap.data()?.blocks || docSnap.data().blocks.length === 0) {
-        await setDoc(docRef, {
-            title: "İş Başvurusu",
-            path: "/is-basvurusu",
-            isDeleted: false,
-            isHidden: false,
-            blocks: defaultCareerPageData,
-            createdAt: Date.now()
-        });
-      }
-    } catch (e) {
-      console.error('Failed to seed career page', e);
+      console.error('Failed to seed defaults', e);
     }
   };
 
   const fetchPages = async () => {
-    await seedClubPage();
-    await seedScholarshipPage();
-    await seedScholarshipConfirmationPage();
-    await seedEduSystemPage();
-    await seedCareerPage();
     setLoading(true);
     try {
-      const q = query(collection(db, 'pages'), orderBy('createdAt', 'desc'));
-      const snapshot = await getDocs(q);
+      const snapshot = await getDocs(collection(db, 'pages'));
       let fetchedPages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        setPages(fetchedPages.filter((p: any) => !p.isDeleted));
+      
+      // If after fetching we have 0 non-deleted pages, try seeding defaults
+      if (fetchedPages.filter((p: any) => !p.isDeleted).length === 0) {
+        try { await seedAllDefaults(); } catch (err) { console.error('Seed error', err); }
+        const snap2 = await getDocs(collection(db, 'pages'));
+        fetchedPages = snap2.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+
+      fetchedPages.sort((a: any, b: any) => {
+        const getTime = (val: any) => {
+          if (!val) return 0;
+          if (typeof val === 'number') return val;
+          if (val.toMillis) return val.toMillis();
+          if (val.seconds) return val.seconds * 1000;
+          return new Date(val).getTime() || 0;
+        };
+        return getTime(b.createdAt) - getTime(a.createdAt);
+      });
+
+      setPages(fetchedPages.filter((p: any) => !p.isDeleted));
     } catch (e) {
-      console.error(e);
+      console.error("fetchPages error:", e);
     } finally {
       setLoading(false);
     }
@@ -144,6 +155,33 @@ export default function PagesCenter() {
   useEffect(() => {
     fetchPages();
   }, []);
+
+  // Auto-seed kayit-fiyatlari if missing
+  useEffect(() => {
+    const seedKayit = async () => {
+      try {
+        const docRef = doc(db, 'pages', 'kayit-fiyatlari');
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists() || docSnap.data().isDeleted) {
+          const { defaultTuitionFeesData } = await import('../../lib/defaultData');
+          await setDoc(docRef, {
+            title: 'Kayıt Fiyatları',
+            path: '/kayit-fiyatlari',
+            isDeleted: false,
+            isHidden: false,
+            blocks: defaultTuitionFeesData,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }, { merge: true });
+          fetchPages();
+        }
+      } catch (e) {
+        console.error("Auto-seed error:", e);
+      }
+    };
+    seedKayit();
+  }, []);
+
 
   const handleCreatePage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -229,23 +267,11 @@ export default function PagesCenter() {
           </div>
           <button
             onClick={async () => {
-              if (window.confirm('Eksik varsayılan sayfaları (Örn: Ön Kayıt) oluşturmak ister misiniz?')) {
-                const docRef = doc(db, 'pages', 'on-kayit');
-                const docSnap = await getDoc(docRef);
-                if (!docSnap.exists()) {
-                  await setDoc(docRef, {
-                    title: 'Öğrenci Ön Kayıt',
-                    path: '/on-kayit',
-                    blocks: defaultPreRegistrationData,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    author: auth.currentUser?.email || 'admin'
-                  });
-                  alert('Ön Kayıt sayfası başarıyla oluşturuldu!');
-                  window.location.reload();
-                } else {
-                  alert('Ön Kayıt sayfası zaten mevcut.');
-                }
+              if (window.confirm('Eksik tüm varsayılan sayfaları (Ana Sayfa, Hakkımızda, Eğitim Sistemimiz, Başarılarımız, Duyurular, Ön Kayıt, Bursluluk, İş Başvurusu vb.) yüklemek/yenilemek istiyor musunuz?')) {
+                setLoading(true);
+                await seedAllDefaults();
+                await fetchPages();
+                alert('Tüm varsayılan sayfalar başarıyla kontrol edildi ve yüklendi.');
               }
             }}
             className="flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-sm font-bold transition-colors shadow-sm"
@@ -359,13 +385,8 @@ export default function PagesCenter() {
                           href={page.path || (page.id === 'home' ? '/' : `/${page.id}`)} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            const url = page.path || (page.id === 'home' ? '/' : `/${page.id}`);
-                            window.open(url, '_blank');
-                          }}
                           className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
-                          title="Önizle"
+                          title="Önizle (Yeni Sekmede Aç)"
                         >
                           <ExternalLink className="w-4 h-4" />
                         </a>

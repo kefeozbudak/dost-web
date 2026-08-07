@@ -1,3 +1,4 @@
+import ErrorBoundary from "../components/ErrorBoundary";
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { collection, query, where, onSnapshot, doc, getDoc, getDocs } from 'firebase/firestore';
@@ -5,7 +6,17 @@ import { db, loginWithGoogle, auth } from '../lib/firebase';
 import { Lock, Settings } from 'lucide-react';
 import AssistantWidget from '../components/AssistantWidget';
 import { DynamicBlockRenderer } from '../components/PageBlocks';
-import { defaultHomePageData } from '../lib/defaultData';
+import {
+  defaultHomePageData,
+  defaultHakkimizdaData,
+  defaultBasarilarimizData,
+  defaultDuyurularData,
+  defaultPreRegistrationData,
+  defaultScholarshipPageData,
+  defaultScholarshipConfirmationPageData,
+  defaultEgitimSistemiData,
+  defaultCareerPageData
+} from '../lib/defaultData';
 import { onAuthStateChanged } from 'firebase/auth';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -146,8 +157,8 @@ export default function PublicView() {
           let data = snapshot.docs[0].data();
           if (data.isDeleted || data.isHidden) {
             setPageData(null);
-          } else if ((!data.blocks || data.blocks.length === 0) && (cleanPath === '/is-basvuru-formu' || cleanPath === '/is-basvuru' || cleanPath === '/is-basvurusu' || cleanPath === '/isbasvurusu' || cleanPath === '/isbasvuru' || cleanPath === '/kulup-kayit-formu' || cleanPath === '/bursluluk-basvuru-formu')) {
-            // Let it fall through to default fallbacks below
+          } else if (!data.blocks || data.blocks.length === 0) {
+            // Empty blocks in Firestore document -> Fall through to default page templates below
           } else {
             setPageData(cleanBrokenImages(data));
             setLoading(false);
@@ -159,12 +170,13 @@ export default function PublicView() {
       }
 
       // Default built-in fallbacks if no doc in Firestore
+      const normalizedPath = cleanPath.toLowerCase();
       if (rawPath === '/' || docId === 'home') {
         setPageData({
           title: 'Ana Sayfa',
           blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
         });
-      } else if (docId === 'kulup-kayit-formu' || cleanPath === '/kulup-kayit-formu') {
+      } else if (docId === 'kulup-kayit-formu' || normalizedPath === '/kulup-kayit-formu') {
         setPageData({
           title: 'Kulüp Kayıt Formu',
           path: '/kulup-kayit-formu',
@@ -177,65 +189,49 @@ export default function PublicView() {
             }
           ]
         });
-      } else if (docId === 'duyurular' || cleanPath === '/duyurular') {
-        import('../lib/defaultData').then((module) => {
-          setPageData({
-            title: 'Duyurular',
-            blocks: module.defaultDuyurularData
-          });
+      } else if (docId === 'duyurular' || normalizedPath === '/duyurular') {
+        setPageData({
+          title: 'Duyurular',
+          blocks: defaultDuyurularData
         });
-      } else if (docId === 'basarilarimiz' || cleanPath === '/basarilarimiz') {
-        import('../lib/defaultData').then((module) => {
-          setPageData({
-            title: 'Başarılarımız',
-            blocks: module.defaultBasarilarimizData
-          });
+      } else if (docId === 'basarilarimiz' || normalizedPath === '/basarilarimiz') {
+        setPageData({
+          title: 'Başarılarımız',
+          blocks: defaultBasarilarimizData
         });
-      } else if (docId === 'hakkimizda' || cleanPath === '/hakkimizda') {
-        import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
-          setPageData({
-            title: 'Hakkımızda',
-            blocks: defaultHakkimizdaData
-          });
+      } else if (docId === 'hakkimizda' || normalizedPath === '/hakkimizda') {
+        setPageData({
+          title: 'Hakkımızda',
+          blocks: defaultHakkimizdaData
         });
-      } else if (docId === 'is-basvuru-formu' || cleanPath === '/is-basvuru-formu' || cleanPath === '/is-basvuru' || cleanPath === '/is-basvurusu' || cleanPath === '/isbasvurusu' || cleanPath === '/isbasvuru') {
-        import('../lib/defaultData').then(({ defaultCareerPageData }) => {
-          setPageData({
-            title: 'İş Başvurusu',
-            path: '/is-basvurusu',
-            blocks: defaultCareerPageData
-          });
+      } else if (docId === 'is-basvuru-formu' || docId === 'is-basvurusu' || ['/is-basvuru-formu', '/is-basvuru', '/is-basvurusu', '/isbasvurusu', '/isbasvuru'].includes(normalizedPath)) {
+        setPageData({
+          title: 'İş Başvurusu',
+          path: '/is-basvurusu',
+          blocks: defaultCareerPageData
         });
-            } else if (docId === 'egitim-sistemimiz' || cleanPath === '/egitim-sistemimiz') {
-        import('../lib/defaultData').then(({ defaultEgitimSistemiData }) => {
-          setPageData({
-            title: 'Eğitim Sistemimiz',
-            path: '/egitim-sistemimiz',
-            blocks: defaultEgitimSistemiData
-          });
+      } else if (docId === 'egitim-sistemimiz' || normalizedPath === '/egitim-sistemimiz') {
+        setPageData({
+          title: 'Eğitim Sistemimiz',
+          path: '/egitim-sistemimiz',
+          blocks: defaultEgitimSistemiData
         });
-      } else if (docId === 'on-kayit' || cleanPath === '/on-kayit') {
-        import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
-          setPageData({
-            title: 'Öğrenci Ön Kayıt Formu',
-            blocks: defaultPreRegistrationData
-          });
+      } else if (docId === 'on-kayit' || normalizedPath === '/on-kayit') {
+        setPageData({
+          title: 'Öğrenci Ön Kayıt Formu',
+          blocks: defaultPreRegistrationData
         });
-      } else if (docId === 'bursluluk-basvuru-formu' || cleanPath === '/bursluluk-basvuru-formu') {
-        import('../lib/defaultData').then(({ defaultScholarshipPageData }) => {
-          setPageData({
-            title: 'Bursluluk Sınav Başvurusu',
-            path: '/bursluluk-basvuru-formu',
-            blocks: defaultScholarshipPageData
-          });
+      } else if (docId === 'bursluluk-basvuru-formu' || normalizedPath === '/bursluluk-basvuru-formu') {
+        setPageData({
+          title: 'Bursluluk Sınav Başvurusu',
+          path: '/bursluluk-basvuru-formu',
+          blocks: defaultScholarshipPageData
         });
-      } else if (docId === 'bursluluk-basvuru-onay' || cleanPath === '/bursluluk-basvuru-onay') {
-        import('../lib/defaultData').then(({ defaultScholarshipConfirmationPageData }) => {
-          setPageData({
-            title: 'Bursluluk Sınav Başvuru Onayı',
-            path: '/bursluluk-basvuru-onay',
-            blocks: defaultScholarshipConfirmationPageData
-          });
+      } else if (docId === 'bursluluk-basvuru-onay' || normalizedPath === '/bursluluk-basvuru-onay') {
+        setPageData({
+          title: 'Bursluluk Sınav Başvuru Onayı',
+          path: '/bursluluk-basvuru-onay',
+          blocks: defaultScholarshipConfirmationPageData
         });
       } else {
         setPageData(null);
@@ -326,7 +322,7 @@ export default function PublicView() {
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <DynamicBlockRenderer blocks={pageData.blocks || []} />
+            <ErrorBoundary><DynamicBlockRenderer blocks={pageData.blocks || []} /></ErrorBoundary>
           </motion.div>
         </AnimatePresence>
       </div>

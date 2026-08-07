@@ -376,7 +376,7 @@ export default function ScholarshipCenter() {
   // Eryaman & All: 4, 5, 6, 7, 8, 9, 10, 11
   const availableGradeList = selectedCampusTab === 'eryaman' || selectedCampusTab === 'all'
     ? ['4', '5', '6', '7', '8', '9', '10', '11']
-    : ['4', '5', '6', '7', '8'];
+    : ['4', '5', '6', '7'];
 
   // Calculate grade counts for the currently selected campus
   const getGradeCount = (gradeNum: string) => {
@@ -455,6 +455,56 @@ export default function ScholarshipCenter() {
       console.error(e);
       alert('Yazdırılamadı.');
     }
+  };
+
+  const downloadCSV = () => {
+    const campusName = selectedCampusTab === 'all' ? 'Tum-Kampusler' : selectedCampusTab;
+    const gradeName = selectedGradeFilter === 'all' ? 'Tum-Kademeler' : `${selectedGradeFilter}-Sinif`;
+    const fileName = `Bursluluk-Basvurulari_${campusName}_${gradeName}_${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    
+    const headers = [
+      "Öğrenci Adı Soyadı",
+      "TC Kimlik",
+      "Sınıf Seviyesi",
+      "Kampüs Tercihi",
+      "Veli Adı Soyadı",
+      "Telefon",
+      "E-Posta",
+      "Başvuru Tarihi"
+    ];
+    
+    const rows = filteredReports.map(report => {
+      const sender = extractSenderInfo(report.data);
+      const studentName = report.data?.student_fullname || report.data?.studentName || '';
+      const tc = report.data?.student_tc || report.data?.studentTc || '';
+      const grade = sender.kademe || report.data?.grade || report.data?.studentGrade || '';
+      const campus = sender.kampus || report.data?.campus || report.data?.campus_preference || '';
+      const parentName = report.data?.parent_fullname || report.data?.parentName || '';
+      const phone = sender.phone || '';
+      const email = sender.email || '';
+      const date = format(report.createdAt, 'dd.MM.yyyy HH:mm');
+      
+      return [
+        `"${studentName}"`,
+        `"${tc}"`,
+        `"${grade}"`,
+        `"${campus}"`,
+        `"${parentName}"`,
+        `"${phone}"`,
+        `"${email}"`,
+        `"${date}"`
+      ].join(',');
+    });
+    
+    const csvContent = "﻿" + headers.join(',') + '\n' + rows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -631,6 +681,10 @@ export default function ScholarshipCenter() {
                 </button>
               )}
             </div>
+            <button onClick={downloadCSV} className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 whitespace-nowrap">
+              <Download className="w-4 h-4" />
+              CSV İndir
+            </button>
           </div>
 
           {/* Sub Bar: Sınıf Kademeleri Filter Chips */}

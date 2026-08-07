@@ -1972,6 +1972,45 @@ export default function BlockFormEditor({ block, onChange, pagesList, onSave, sa
         )}
 
       </div>
+
+        {block.type === 'tuition_fees' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderInputWithStyle('Tablo Başlığı', 'tableTitle')}
+            
+            <div className="border-t border-slate-200 pt-4 mt-6">
+              <h4 className="font-bold text-slate-700 mb-2">Eğitim Ücretleri (Kartlar)</h4>
+              {renderArrayEditor('items', [
+                {key: 'title', label: 'Başlık (örn: Anaokulu)', type: 'text'},
+                {key: 'icon', label: 'İkon', type: 'icon'},
+                {key: 'tuitionFee', label: 'Eğitim Ücreti (örn: ₺120,000)', type: 'text'},
+                {key: 'foodFee', label: 'Yemek Ücreti (örn: ₺35,000)', type: 'text'},
+                {key: 'totalFee', label: 'Toplam', type: 'text'},
+                {key: 'vatText', label: 'Ek Metin (örn: *KDV Dahildir)', type: 'text'}
+              ], "Ücret Kartları")}
+            </div>
+
+            <div className="border-t border-slate-200 pt-4 mt-6">
+              {renderInputWithStyle('İndirimler Başlığı', 'discountsTitle')}
+              {renderArrayEditor('discounts', [
+                {key: 'title', label: 'Başlık', type: 'text'},
+                {key: 'desc', label: 'Açıklama', type: 'textarea'},
+                {key: 'icon', label: 'İkon', type: 'icon'}
+              ], "İndirimler")}
+            </div>
+
+            <div className="border-t border-slate-200 pt-4 mt-6">
+              {renderInputWithStyle('Ödeme Seçenekleri Başlığı', 'paymentsTitle')}
+              {renderArrayEditor('payments', [
+                {key: 'title', label: 'Başlık', type: 'text'},
+                {key: 'desc', label: 'Açıklama', type: 'textarea'},
+                {key: 'icon', label: 'İkon', type: 'icon'},
+                {key: 'banks', label: 'Anlaşmalı Kurumlar (Virgülle Ayırın)', type: 'text'}
+              ], "Ödeme Seçenekleri")}
+            </div>
+          </div>
+        )}
       <MediaPickerModal 
         isOpen={mediaPickerConfig.isOpen} 
         onClose={() => setMediaPickerConfig(prev => ({ ...prev, isOpen: false }))} 

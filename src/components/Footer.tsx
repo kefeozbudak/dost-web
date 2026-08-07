@@ -56,27 +56,27 @@ export default function Footer({ data, headerData }: { data?: any; headerData?: 
       {
         title: 'Kurumsal',
         links: [
-          { label: 'Hakkımızda', url: '#' },
-          { label: 'Vizyon & Misyon', url: '#' },
-          { label: 'Kurucularımız', url: '#' },
-          { label: 'İnsan Kaynakları', url: '#' }
+          { label: 'Hakkımızda', url: '/hakkimizda' },
+          { label: 'Başarılarımız', url: '/basarilarimiz' },
+          { label: 'Duyurular', url: '/duyurular' },
+          { label: 'İş Başvurusu', url: '/is-basvurusu' }
         ]
       },
       {
         title: 'Akademik',
         links: [
-          { label: 'Anaokulu', url: '#' },
-          { label: 'İlkokul', url: '#' },
-          { label: 'Ortaokul', url: '#' },
-          { label: 'Fen ve Anadolu Lisesi', url: '#' }
+          { label: 'Eğitim Sistemimiz', url: '/egitim-sistemimiz' },
+          { label: 'Kulüp Kayıt Formu', url: '/kulup-kayit-formu' },
+          { label: 'Öğrenci Ön Kayıt Formu', url: '/on-kayit' },
+          { label: 'Bursluluk Başvurusu', url: '/bursluluk-basvuru-formu' }
         ]
       },
       {
         title: 'Kampüslerimiz',
         links: [
-          { label: 'Ümitköy Kampüsü', url: '#' },
-          { label: 'Oran Kampüsü', url: '#' },
-          { label: 'Eryaman Kampüsü', url: '#' }
+          { label: 'Ümitköy Kampüsü', url: '/' },
+          { label: 'Oran Kampüsü', url: '/' },
+          { label: 'Eryaman Kampüsü', url: '/' }
         ]
       }
     ];

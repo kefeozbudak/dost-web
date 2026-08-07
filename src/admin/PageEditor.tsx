@@ -467,6 +467,7 @@ export default function PageEditor() {
                           { type: 'contact_form', label: 'İletişim Formu' },
                           { type: 'social_media', label: 'Sosyal Medya Linkleri' },
 
+                          { type: 'tuition_fees', label: 'Kayıt Ücretleri' },
                           { type: 'clubs_hero', label: 'Kulüp Hero' },
                           { type: 'clubs_grid', label: 'Kulüp Grid (Kartlar)' },
                           { type: 'clubs_benefits', label: 'Kulüp Avantajlar' },
