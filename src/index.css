@@ -195,3 +195,137 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  @page {
+    margin: 1cm;
+  }
+}
+
+@media print {
+  header, nav, footer, .sidebar, .admin-controls {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE FIXES
+   ========================================================================== */
+@media (max-width: 1024px) {
+  /* 1. Restore hidden images on mobile and tablet */
+  .hidden-mobile, .hidden-tablet, .d-none-mobile, .d-none-tablet, .elementor-hidden-mobile, .elementor-hidden-tablet {
+    display: block !important;
+  }
+  
+  /* Selectively restore hidden Tailwind wrappers ONLY if they contain images */
+  img.hidden.md\:block, img.hidden.lg\:block, img.hidden.sm\:block,
+  .hidden.md\:block[style*="background-image"], .hidden.lg\:block[style*="background-image"], .hidden.sm\:block[style*="background-image"],
+  .hidden.md\:block:has(img), .hidden.lg\:block:has(img),
+  .hidden.md\:block:has(picture), .hidden.lg\:block:has(picture),
+  .hidden.sm\:block:has(img) {
+    display: block !important;
+  }
+  .hidden.md\:flex:has(img), .hidden.lg\:flex:has(img) {
+    display: flex !important;
+  }
+  .hidden.md\:grid:has(img), .hidden.lg\:grid:has(img) {
+    display: grid !important;
+  }
+
+  img.mobile-restored, .responsive-img-wrapper img, .elementor-hidden-mobile img, .elementor-hidden-tablet img, .hidden-mobile img, .hidden-tablet img {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+
+  /* 2. Fix text overflow in cards */
+  .card, .service-box, .campus-card, .elementor-widget-container, .education-card,
+  [class*="card"], [class*="box"] {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    box-sizing: border-box;
+    padding: 1.25rem 1rem !important;
+    height: auto !important;
+    min-height: 100%;
+  }
+
+  /* 3. Compress excessive vertical padding between sections */
+  section, .elementor-section, .page-section, main > div, .py-16, .py-20, .py-24, .md\:py-24, .lg\:py-24 {
+    padding-top: 35px !important;
+    padding-bottom: 35px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* 4. Fluid Typography for oversized headings */
+  h1, .elementor-heading-title.h1, .text-4xl, .text-5xl, .text-6xl, .md\:text-5xl, .md\:text-6xl, .lg\:text-5xl, .lg\:text-6xl, .text-display-lg, .font-display-lg { 
+    font-size: clamp(1.25rem, 4vw + 0.5rem, 2.3rem) !important; 
+    line-height: 1.25 !important; 
+  }
+  h2, .elementor-heading-title.h2, .text-3xl, .md\:text-4xl, .lg\:text-4xl, .text-headline-xl, .font-headline-xl { 
+    font-size: clamp(1.2rem, 3.5vw + 0.5rem, 1.85rem) !important; 
+    line-height: 1.3 !important; 
+  }
+  h3, .elementor-heading-title.h3, .text-2xl, .md\:text-3xl, .lg\:text-3xl, .text-headline-md, .font-headline-md { 
+    font-size: clamp(1.05rem, 3vw + 0.4rem, 1.45rem) !important; 
+    line-height: 1.35 !important; 
+  }
+  
+  /* Fix for form and floating buttons overlapping */
+  form, .form-container {
+    padding-bottom: 80px;
+  }
+}
+
+/* 5. Sticky Header & Menu Transparency/Z-Index */
+header.scrolled, .sticky-header.scrolled {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-nav-drawer, .elementor-menu-toggle-container, [role="dialog"] {
+  z-index: 99999 !important;
+}
+
+body.menu-open .fixed-widget, body.menu-open .floating-btn, body.menu-open .fixed.bottom-6 {
+  display: none !important;
+}
+
+/* 6. Touch Targets */
+@media (max-width: 480px) {
+  button, a.button, input[type="submit"], select, .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+/* Responsive Dynamic Styles for Blocks */
+[style*="--desktop-text-align"] { text-align: var(--mobile-text-align, var(--desktop-text-align)) !important; }
+[style*="--desktop-font-size"] { font-size: var(--mobile-font-size, var(--desktop-font-size)) !important; }
+[style*="--desktop-padding-top"] { padding-top: var(--mobile-padding-top, var(--desktop-padding-top)) !important; }
+[style*="--desktop-padding-bottom"] { padding-bottom: var(--mobile-padding-bottom, var(--desktop-padding-bottom)) !important; }
+[style*="--desktop-padding-left"] { padding-left: var(--mobile-padding-left, var(--desktop-padding-left)) !important; }
+[style*="--desktop-padding-right"] { padding-right: var(--mobile-padding-right, var(--desktop-padding-right)) !important; }
+[style*="--desktop-margin-top"] { margin-top: var(--mobile-margin-top, var(--desktop-margin-top)) !important; }
+[style*="--desktop-margin-bottom"] { margin-bottom: var(--mobile-margin-bottom, var(--desktop-margin-bottom)) !important; }
+
+@media (min-width: 1025px) {
+  [style*="--desktop-text-align"] { text-align: var(--desktop-text-align) !important; }
+  [style*="--desktop-font-size"] { font-size: var(--desktop-font-size) !important; }
+  [style*="--desktop-padding-top"] { padding-top: var(--desktop-padding-top) !important; }
+  [style*="--desktop-padding-bottom"] { padding-bottom: var(--desktop-padding-bottom) !important; }
+  [style*="--desktop-padding-left"] { padding-left: var(--desktop-padding-left) !important; }
+  [style*="--desktop-padding-right"] { padding-right: var(--desktop-padding-right) !important; }
+  [style*="--desktop-margin-top"] { margin-top: var(--desktop-margin-top) !important; }
+  [style*="--desktop-margin-bottom"] { margin-bottom: var(--desktop-margin-bottom) !important; }
+}

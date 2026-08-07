@@ -1,15 +1,20 @@
 import re
 
 with open("src/App.tsx", "r") as f:
-    content = f.read()
+    c = f.read()
 
-target_import = r"import AnalyticsCenter from '\./admin/hubs/AnalyticsCenter';"
-replacement_import = r"import AnalyticsCenter from './admin/hubs/AnalyticsCenter';\nimport MediaCenter from './admin/hubs/MediaCenter';"
-content = re.sub(target_import, replacement_import, content)
+c = re.sub(
+    r"import ReportCenter from './admin/hubs/ReportCenter';",
+    "import ReportCenter from './admin/hubs/ReportCenter';\nimport LgsCenter from './admin/hubs/LgsCenter';",
+    c, count=1
+)
 
-target_route = r'<Route path="analytics" element=\{<AnalyticsCenter />\} />'
-replacement_route = r'<Route path="analytics" element={<AnalyticsCenter />} />\n          <Route path="media" element={<MediaCenter />} />'
-content = re.sub(target_route, replacement_route, content)
+c = re.sub(
+    r'<Route path="reports" element=\{<ReportCenter />\} />',
+    '<Route path="reports" element={<ReportCenter />} />\n          <Route path="lgs-center" element={<LgsCenter />} />',
+    c, count=1
+)
 
 with open("src/App.tsx", "w") as f:
-    f.write(content)
+    f.write(c)
+

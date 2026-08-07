@@ -81,6 +81,16 @@ export default function FieldStylePicker({
   const bgColor = styles[`${fieldKey}BackgroundColor`] || '';
   const size = styles[`${fieldKey}Size`] || '';
   const weight = styles[`${fieldKey}Weight`] || '';
+
+  const mobileSize = styles[`${fieldKey}MobileSize`] || '';
+  const mobileAlign = styles[`${fieldKey}MobileAlign`] || '';
+  const mobileMarginTop = styles[`${fieldKey}MobileMarginTop`] || '';
+  const mobileMarginBottom = styles[`${fieldKey}MobileMarginBottom`] || '';
+  const mobilePaddingTop = styles[`${fieldKey}MobilePaddingTop`] || '';
+  const mobilePaddingBottom = styles[`${fieldKey}MobilePaddingBottom`] || '';
+  const mobilePaddingLeft = styles[`${fieldKey}MobilePaddingLeft`] || '';
+  const mobilePaddingRight = styles[`${fieldKey}MobilePaddingRight`] || '';
+
   const align = styles[`${fieldKey}Align`] || '';
   const marginTop = styles[`${fieldKey}MarginTop`] || '';
   const marginBottom = styles[`${fieldKey}MarginBottom`] || '';
@@ -171,20 +181,28 @@ export default function FieldStylePicker({
                   <Type className="w-3 h-3" /> Yazı Tipi
                 </label>
                 <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="grid grid-cols-2 gap-3 mb-3">
                   <SliderInput 
-                    label="Boyut (px)" 
+                    label="Boyut (Masaüstü, px)" 
                     value={size ? parseInt(size as string) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}Size`, val ? val + 'px' : '')} 
                     min={10} max={72} 
                   />
-                  
-                  <div>
-                    <span className="text-[9px] text-slate-400 block mb-1">Kalınlık</span>
-                    <select 
-                      value={weight}
-                      onChange={e => handleChange(`${fieldKey}Weight`, e.target.value)}
-                      className="w-full text-xs p-1 border border-slate-200 rounded bg-white"
-                    >
+                  <SliderInput 
+                    label="Boyut (Mobil, px)" 
+                    value={mobileSize ? parseInt(mobileSize as string) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobileSize`, val ? val + 'px' : '')} 
+                    min={10} max={72} 
+                  />
+                </div>
+                
+                <div className="mb-3">
+                  <span className="text-[9px] text-slate-400 block mb-1">Kalınlık</span>
+                  <select 
+                    value={weight}
+                    onChange={e => handleChange(`${fieldKey}Weight`, e.target.value)}
+                    className="w-full text-xs p-1 border border-slate-200 rounded bg-white"
+                  >
                       <option value="">Varsayılan</option>
                       <option value="normal">Normal (400)</option>
                       <option value="medium">Orta (500)</option>
@@ -197,10 +215,24 @@ export default function FieldStylePicker({
                 </div>
 
                 <div>
-                  <span className="text-[9px] text-slate-400 block mb-1">Hizalama</span>
+                  <span className="text-[9px] text-slate-400 block mb-1">Hizalama (Masaüstü)</span>
                   <select 
                     value={align}
                     onChange={e => handleChange(`${fieldKey}Align`, e.target.value)}
+                    className="w-full text-xs p-1 border border-slate-200 rounded bg-white"
+                  >
+                    <option value="">Varsayılan</option>
+                    <option value="left">Sola</option>
+                    <option value="center">Ortaya</option>
+                    <option value="right">Sağa</option>
+                    <option value="justify">Yasla</option>
+                  </select>
+                </div>
+                <div>
+                  <span className="text-[9px] text-slate-400 block mb-1">Hizalama (Mobil)</span>
+                  <select 
+                    value={mobileAlign}
+                    onChange={e => handleChange(`${fieldKey}MobileAlign`, e.target.value)}
                     className="w-full text-xs p-1 border border-slate-200 rounded bg-white"
                   >
                     <option value="">Varsayılan</option>
@@ -230,15 +262,27 @@ export default function FieldStylePicker({
                 </label>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   <SliderInput 
-                    label="Üst (px)" 
+                    label="Üst (Masaüstü, px)" 
                     value={marginTop ? parseInt(marginTop as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}MarginTop`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
-                    label="Alt (px)" 
+                    label="Alt (Masaüstü, px)" 
                     value={marginBottom ? parseInt(marginBottom as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}MarginBottom`, val)} 
+                    min={0} max={120} 
+                  />
+                  <SliderInput 
+                    label="Üst (Mobil, px)" 
+                    value={mobileMarginTop ? parseInt(mobileMarginTop as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobileMarginTop`, val)} 
+                    min={0} max={120} 
+                  />
+                  <SliderInput 
+                    label="Alt (Mobil, px)" 
+                    value={mobileMarginBottom ? parseInt(mobileMarginBottom as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobileMarginBottom`, val)} 
                     min={0} max={120} 
                   />
                 </div>
@@ -250,27 +294,54 @@ export default function FieldStylePicker({
                 </label>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   <SliderInput 
-                    label="Üst (px)" 
+                    label="Üst (Masaüstü, px)" 
                     value={paddingTop ? parseInt(paddingTop as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingTop`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
-                    label="Alt (px)" 
+                    label="Üst (Mobil, px)" 
+                    value={mobilePaddingTop ? parseInt(mobilePaddingTop as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingTop`, val)} 
+                    min={0} max={120} 
+                  />
+                  
+                  <SliderInput 
+                    label="Alt (Masaüstü, px)" 
                     value={paddingBottom ? parseInt(paddingBottom as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingBottom`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
-                    label="Sol (px)" 
+                    label="Alt (Mobil, px)" 
+                    value={mobilePaddingBottom ? parseInt(mobilePaddingBottom as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingBottom`, val)} 
+                    min={0} max={120} 
+                  />
+                  
+                  <SliderInput 
+                    label="Sol (Masaüstü, px)" 
                     value={paddingLeft ? parseInt(paddingLeft as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingLeft`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
-                    label="Sağ (px)" 
+                    label="Sol (Mobil, px)" 
+                    value={mobilePaddingLeft ? parseInt(mobilePaddingLeft as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingLeft`, val)} 
+                    min={0} max={120} 
+                  />
+                  
+                  <SliderInput 
+                    label="Sağ (Masaüstü, px)" 
                     value={paddingRight ? parseInt(paddingRight as string, 10) || 0 : ''} 
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingRight`, val)} 
+                    min={0} max={120} 
+                  />
+                  <SliderInput 
+                    label="Sağ (Mobil, px)" 
+                    value={mobilePaddingRight ? parseInt(mobilePaddingRight as string, 10) || 0 : ''} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingRight`, val)} 
                     min={0} max={120} 
                   />
                 </div>

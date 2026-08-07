@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IconPreview } from './IconField';
 import SmartLink from './SmartLink';
 
@@ -22,6 +22,23 @@ export default function Header({ data, announcement }: { data?: any; announcemen
   const [activeMegaMenu, setActiveMegaMenu] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedMega, setMobileExpandedMega] = useState<number | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+  }, [mobileMenuOpen]);
 
   const normalColor = data?.menuColors?.normal || '#475569';
   const hoverColor = data?.menuColors?.hover || data?.hoverColor || '#f97316';
@@ -59,7 +76,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
           color: white !important;
         }
       `}</style>
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'scrolled' : ''}`}>
       {/* Top Announcement Bar */}
       {isAnnouncementActive && (
         <div 

@@ -1,17 +1,21 @@
 import re
 
 with open("firestore.rules", "r") as f:
-    content = f.read()
+    c = f.read()
 
-target = r"    match /users/\{userId\} \{"
-replacement = r"""    match /media/{mediaId} {
-      allow read: if true;
-      allow write: if isAdmin();
+rules = """
+    match /reports/{reportId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
     }
-    
-    match /users/{userId} {"""
+"""
 
-content = re.sub(target, replacement, content)
+c = re.sub(
+    r'match /forms/\{formId\} \{',
+    rules + '\n    match /forms/{formId} {',
+    c, count=1
+)
 
 with open("firestore.rules", "w") as f:
-    f.write(content)
+    f.write(c)
+

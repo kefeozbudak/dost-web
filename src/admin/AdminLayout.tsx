@@ -19,7 +19,8 @@ import {
   ChevronDown,
   ShieldCheck,
   Layers,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Calculator
 } from 'lucide-react';
 import { logout } from '../lib/firebase';
 import { useAuthStore } from '../store/authStore';
@@ -216,6 +217,7 @@ export default function AdminLayout() {
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Genel Bakış', path: '/admin' },
     { id: 'reports', icon: MessageSquare, label: 'Rapor Merkezi', path: '/admin/reports' },
+    { id: 'lgs-center', icon: Calculator, label: 'LGS Merkezi', path: '/admin/lgs-center' },
     { id: 'clubs', icon: Users, label: 'Kulüp Merkezi', path: '/admin/clubs' },
     { id: 'scholarship', icon: GraduationCap, label: 'Bursluluk Merkezi', path: '/admin/scholarship' },
     { id: 'assistant', icon: Bot, label: 'Veli Asistanı', path: '/admin/assistant' },
