@@ -26,6 +26,7 @@ import { logout } from '../lib/firebase';
 import { useAuthStore } from '../store/authStore';
 import { defaultEgitimSistemiData, defaultLgsCalculatorData } from '../lib/defaultData';
 
+import MigrateTuitionFees from "./MigrateTuitionFees";
 export default function AdminLayout() {
   const location = useLocation();
   const editorMatch = location.pathname.match(/\/admin\/editor\/([^/]+)/);
@@ -314,7 +315,8 @@ export default function AdminLayout() {
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <img src="/dost-logo-png.png" alt="Dost Koleji" className="h-8 w-auto object-contain shrink-0" />
-        </div>
+          <MigrateTuitionFees />
+    </div>
         <div className="flex items-center gap-4 md:gap-6">
           <a 
             href={currentPreviewUrl} 
@@ -333,12 +335,16 @@ export default function AdminLayout() {
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
               <p className="text-xs font-bold text-white uppercase">{role === 'super_admin' ? 'Süper Yönetici' : role === 'editor' ? 'Editör' : 'Yetkili Kullanıcı'}</p>
-            </div>
+              <MigrateTuitionFees />
+    </div>
             <div className="w-8 h-8 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4 text-slate-300" />
-            </div>
-          </div>
-        </div>
+              <MigrateTuitionFees />
+    </div>
+            <MigrateTuitionFees />
+    </div>
+          <MigrateTuitionFees />
+    </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden relative">
@@ -384,7 +390,8 @@ export default function AdminLayout() {
                     <div className="flex items-center gap-3">
                       <FileText className={`w-5 h-5 md:w-4 md:h-4 ${location.pathname.startsWith('/admin/editor') || location.pathname === '/admin/pages' ? 'text-blue-700' : 'text-slate-500'}`} />
                       Sayfa Yönetimi
-                    </div>
+                      <MigrateTuitionFees />
+    </div>
                     <ChevronDown className={`w-4 h-4 transition-transform ${isPagesMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {isPagesMenuOpen && (
@@ -411,9 +418,11 @@ export default function AdminLayout() {
                       >
                         + Yeni Sayfa / Yönetim
                       </Link>
-                    </div>
+                      <MigrateTuitionFees />
+    </div>
                   )}
-                </div>
+                  <MigrateTuitionFees />
+    </div>
                 
                 <div>
 {/* Eğitim Kademeleri Dropdown Submenu */}
@@ -429,7 +438,8 @@ export default function AdminLayout() {
                           <div className="flex items-center gap-2">
                             <GraduationCap className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Eğitim Kademeleri</span>
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                           <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isEduMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
@@ -449,12 +459,15 @@ export default function AdminLayout() {
                                 {page.title}
                               </Link>
                             ))}
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                         )}
-                      </div>
+                        <MigrateTuitionFees />
+    </div>
 
                     
-                </div>
+                  <MigrateTuitionFees />
+    </div>
                 <div>
 {/* Formlar Dropdown Submenu */}
                       <div className="pt-1">
@@ -469,7 +482,8 @@ export default function AdminLayout() {
                           <div className="flex items-center gap-2">
                             <ClipboardList className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Formlar</span>
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                           <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isFormsMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
@@ -489,12 +503,15 @@ export default function AdminLayout() {
                                 {page.title}
                               </Link>
                             ))}
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                         )}
-                      </div>
+                        <MigrateTuitionFees />
+    </div>
 
                     
-                </div>
+                  <MigrateTuitionFees />
+    </div>
                 <div>
 {/* Kampüsler Dropdown Submenu */}
                       <div className="pt-1">
@@ -509,7 +526,8 @@ export default function AdminLayout() {
                           <div className="flex items-center gap-2">
                             <Building2 className="w-5 h-5 md:w-4 md:h-4 text-blue-600 shrink-0" />
                             <span>Kampüsler</span>
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                           <ChevronDown className={`w-5 h-5 md:w-4 md:h-4 text-slate-400 transition-transform ${isCampusMenuOpen ? 'rotate-180' : ''}`} />
                         </button>
 
@@ -529,12 +547,15 @@ export default function AdminLayout() {
                                 {page.title}
                               </Link>
                             ))}
-                          </div>
+                            <MigrateTuitionFees />
+    </div>
                         )}
-                      </div>
+                        <MigrateTuitionFees />
+    </div>
 
                       
-                </div>
+                  <MigrateTuitionFees />
+    </div>
                 </>
               )}
               {filteredMenuItems.filter(i => i.id !== 'dashboard').map((item) => {
@@ -556,7 +577,8 @@ export default function AdminLayout() {
                 );
               })}
             </nav>
-          </div>
+            <MigrateTuitionFees />
+    </div>
           
           <div className="mt-auto p-4 border-t border-slate-200 bg-slate-50">
             <button 
@@ -565,26 +587,31 @@ export default function AdminLayout() {
             >
               Çıkış Yap
             </button>
-          </div>
+            <MigrateTuitionFees />
+    </div>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative w-full">
           <Outlet />
         </main>
-      </div>
+        <MigrateTuitionFees />
+    </div>
 
       <footer className="h-10 md:h-8 bg-slate-100 border-t border-slate-200 px-4 md:px-6 flex items-center justify-between text-[10px] font-medium text-slate-500 shrink-0">
         <div className="flex gap-2 md:gap-4 items-center">
           <span className="flex items-center gap-1 font-bold"><span className="w-2 h-2 bg-green-500 rounded-full"></span> <span className="hidden sm:inline">FIREBASE CONNECTED</span></span>
           <span className="hidden sm:inline">|</span>
           <span>99.998%</span>
-        </div>
+          <MigrateTuitionFees />
+    </div>
         <div className="flex gap-4 uppercase font-bold tracking-tighter">
           <span className="hidden sm:inline">Audit Log</span>
           <span>V2.4.12</span>
-        </div>
+          <MigrateTuitionFees />
+    </div>
       </footer>
+      <MigrateTuitionFees />
     </div>
   );
 }

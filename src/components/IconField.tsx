@@ -29,13 +29,14 @@ export function IconPreview({ data, className, style }: { data?: any; className?
   }
 
   // Fallback to Google Material Symbols
-  return <span {...customDataProps} className={`material-symbols-outlined ${className || ''}`} style={style} translate="no" aria-hidden="true">{cleanName}</span>;
+  const finalStyle = data?.color && data.color !== 'currentColor' ? { ...style, color: data.color } : style;
+  return <span {...customDataProps} className={`material-symbols-outlined ${className || ''}`} style={finalStyle} translate="no" aria-hidden="true">{cleanName}</span>;
 }
 
 export default function IconField({ 
   value, 
   onChange,
-  showAdvanced = false
+  showAdvanced = true
 }: { 
   value: any; 
   onChange: (val: any) => void;

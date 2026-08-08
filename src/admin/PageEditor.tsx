@@ -77,7 +77,34 @@ export default function PageEditor() {
         
         if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
           const data = docSnap.data(); 
-          data.blocks = data.blocks?.filter((b: any) => b.type !== "header" && b.type !== "footer"); 
+          data.blocks = data.blocks?.filter((b: any) => b.type !== "header" && b.type !== "footer");
+
+          // Patch for tuition_fees
+          const newBlocks = [];
+          data.blocks.forEach(block => {
+            if (block.type === 'tuition_fees' && block.title) {
+              newBlocks.push({
+                type: 'tuition_fees_hero',
+                id: block.id ? block.id + '_hero' : 'tf_hero_' + Date.now() + Math.random(),
+                title: block.title,
+                subtitle: block.subtitle,
+                badge: block.badge,
+                image: block.image,
+                styles: block.styles
+              });
+              newBlocks.push({
+                ...block,
+                title: undefined,
+                subtitle: undefined,
+                badge: undefined,
+                image: undefined
+              });
+            } else {
+              newBlocks.push(block);
+            }
+          });
+          data.blocks = newBlocks;
+ 
           resolveMediaUrls(data).then(resolved => setPageData(resolved));
                 } else if (pageId === 'egitim-sistemimiz') {
           import('../lib/defaultData').then((module) => {
@@ -472,7 +499,8 @@ export default function PageEditor() {
                           { type: 'contact_form', label: 'İletişim Formu' },
                           { type: 'social_media', label: 'Sosyal Medya Linkleri' },
 
-                          { type: 'tuition_fees', label: 'Kayıt Ücretleri' },
+                          { type: 'tuition_fees_hero', label: 'Kayıt Ücretleri Hero' },
+                          { type: 'tuition_fees', label: 'Kayıt Ücretleri (Tablolar)' },
                           { type: 'clubs_hero', label: 'Kulüp Hero' },
                           { type: 'clubs_grid', label: 'Kulüp Grid (Kartlar)' },
                           { type: 'clubs_benefits', label: 'Kulüp Avantajlar' },

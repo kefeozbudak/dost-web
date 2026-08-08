@@ -773,9 +773,14 @@ export const defaultCareerPageData = [
 
 export const defaultTuitionFeesData = [
   {
-    type: "tuition_fees",
+    type: "tuition_fees_hero",
     title: "2026-2027 Eğitim-Öğretim Yılı Ücretleri",
     subtitle: "Dost Koleji olarak, öğrencilerimize sunduğumuz kaliteli eğitim ve olanakların karşılığında belirlenen akademik yıl ücretlendirme detaylarımızı aşağıda inceleyebilirsiniz.",
+    badge: "2026-2027 EĞİTİM YILI",
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    type: "tuition_fees",
     tableTitle: "Eğitim Kadranları Ücret Tablosu",
     items: [
       {

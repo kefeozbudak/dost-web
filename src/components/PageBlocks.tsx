@@ -32,9 +32,20 @@ export const getHeroAlignStyle = (block: any): React.CSSProperties => {
   return style;
 };
 
+export const getAlignClass = (block: any, fieldKey: string = "", defaultClass: string = "mx-auto") => {
+  let align = block?.styles?.textAlign;
+  if (fieldKey) {
+    align = block?.styles?.[fieldKey + "Align"] || align;
+  }
+  if (align === "left") return "mr-auto ml-0";
+  if (align === "right") return "ml-auto mr-0";
+  if (align === "center") return "mx-auto";
+  return defaultClass;
+};
+
 export const getHeroInnerClass = (block: any, defaultClasses: string = "") => {
   if (!block.type || !block.type.includes("hero")) return defaultClasses;
-  const alignX = block.styles?.heroAlignX;
+  const alignX = block.styles?.heroAlignX || block.styles?.textAlign;
   let alignClass = "";
   if (alignX === "center") alignClass = "mx-auto text-center items-center";
   else if (alignX === "right") alignClass = "ml-auto text-right items-end";
@@ -215,7 +226,7 @@ const CareerHeroBlock = ({
       ></div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80 whitespace-pre-line"></div>
       <div
-        className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl mx-auto`}
+        className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl ${getAlignClass(block, "title")}`}
       >
         <h1
           className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line"
@@ -224,7 +235,7 @@ const CareerHeroBlock = ({
           {block.title || "Dost Koleji'nde Kariyer"}
         </h1>
         <p
-          className="font-body-lg text-[18px] text-white/90 mb-8 max-w-2xl mx-auto whitespace-pre-line"
+          className={`font-body-lg text-[18px] text-white/90 mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle ||
@@ -295,7 +306,7 @@ const CareerBenefitsBlock = ({
           {block.title || "Neden Bize Katılmalısınız?"}
         </h2>
         <p
-          className="font-normal text-[16px] text-slate-500 max-w-2xl mx-auto whitespace-pre-line"
+          className={`font-normal text-[16px] text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle ||
@@ -457,7 +468,7 @@ const EduSystemHeroBlock = ({
           {block.title || "Eğitim Sistemimiz"}
         </h1>
         <p
-          className="font-body-lg text-lg md:text-xl max-w-3xl mx-auto text-surface-bright/90 whitespace-pre-line"
+          className={`font-body-lg text-lg md:text-xl max-w-3xl ${getAlignClass(block, "subtitle")} text-surface-bright/90 whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle || "Geleceğe Güvenle Hazırlıyoruz"}
@@ -586,7 +597,7 @@ const EduSystemYadepBlock = ({
             {block.title}
           </h2>
           <p
-            className="font-body-lg text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+            className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
             style={getSubtitleStyle(block)}
           >
             {block.subtitle}
@@ -787,7 +798,7 @@ const EduSystemCtaBlock = ({
         }}
       ></div>
       <div
-        className={`max-w-4xl mx-auto px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}
+        className={`max-w-4xl ${getAlignClass(block, "title")} px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}
       >
         <h2
           className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line"
@@ -796,7 +807,7 @@ const EduSystemCtaBlock = ({
           {block.title}
         </h2>
         <p
-          className="font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl mx-auto whitespace-pre-line"
+          className={`font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle || block.desc}
@@ -998,7 +1009,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
             <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line">
               Bursluluk Sınavı Başvurunuz Başarıyla Alındı!
             </h3>
-            <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed whitespace-pre-line">
+            <p className={`text-slate-600 max-w-md ${getAlignClass(block)} text-sm leading-relaxed whitespace-pre-line`}>
               Sınav giriş belgeniz oluşturulmuştur. Belgenizi hemen görüntülemek
               ve indirmek için aşağıdaki butona tıklayabilirsiniz.
             </p>
@@ -1653,6 +1664,59 @@ const PreRegistrationFormBlock = ({
   );
 };
 
+
+const TuitionFeesHeroBlock = ({
+  block,
+  index,
+  getStyle,
+  getTitleStyle,
+  getSubtitleStyle,
+}: any) => {
+  const heroBg =
+    block.image ||
+    "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=80";
+
+  return (
+    <section
+      key={index}
+      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-pre-line"
+      style={getStyle(block, "container")}
+    >
+      <div className="absolute inset-0 z-0 whitespace-pre-line">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-pre-line"></div>
+        <div
+          className="w-full h-full bg-cover bg-center whitespace-pre-line"
+          style={{ backgroundImage: `url('${heroBg}')` }}
+        />
+      </div>
+      <div
+        className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}
+      >
+        <div className={getHeroInnerClass(block, "max-w-2xl text-white")}>
+          {block.badge && (
+            <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md whitespace-pre-line">
+              {block.badge}
+            </span>
+          )}
+          <h1
+            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line"
+            style={getTitleStyle(block)}
+          >
+            {block.title || "2026-2027 Eğitim-Öğretim Yılı Ücretleri"}
+          </h1>
+          <p
+            className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed whitespace-pre-line"
+            style={getSubtitleStyle(block)}
+          >
+            {block.subtitle ||
+              "Dost Koleji olarak, öğrencilerimize sunduğumuz kaliteli eğitim ve olanakların karşılığında belirlenen akademik yıl ücretlendirme detaylarımızı aşağıda inceleyebilirsiniz."}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const BurslulukHeroBlock = ({
   block,
   index,
@@ -1872,7 +1936,7 @@ const BurslulukExamFormBlock = ({
               >
                 info
               </span>
-              <p className="text-lg text-slate-700 whitespace-pre-line leading-relaxed max-w-2xl mx-auto whitespace-pre-line">
+              <p className={`text-lg text-slate-700 whitespace-pre-line leading-relaxed max-w-2xl ${getAlignClass(block)} whitespace-pre-line`}>
                 {burslulukInactiveMessage ||
                   "Değerli Velimiz,\n2026-2027 Eğitim-Öğretim yılı Bursluluk ve Kabul Sınavı başvuru sürecimiz şu an için aktif değildir. Yeni dönem sınav takvimimiz ve başvuru tarihlerimiz belirlendiğinde web sitemiz ve sosyal medya hesaplarımız üzerinden duyurulacaktır. Kurumumuza gösterdiğiniz değerli ilgi için teşekkür ederiz."}
               </p>
@@ -1949,7 +2013,7 @@ const BurslulukInfoCardsBlock = ({
             </h2>
             {block.subtitle && (
               <p
-                className="text-slate-500 max-w-2xl mx-auto text-sm md:text-base whitespace-pre-line"
+                className={`text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base whitespace-pre-line`}
                 style={getSubtitleStyle(block)}
               >
                 {block.subtitle}
@@ -2259,7 +2323,7 @@ const BurslulukConfirmationBlock = ({
           }
         }
       `}</style>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 whitespace-pre-line">
+      <div className={`max-w-4xl ${getAlignClass(block)} px-4 sm:px-6 whitespace-pre-line`}>
         {/* Success Header */}
         <div
           className={`${block.styles?.textAlign ? "" : "text-center"} mb-10 no-print`}
@@ -2280,7 +2344,7 @@ const BurslulukConfirmationBlock = ({
             {block.title || "Başvurunuz Başarıyla Alındı!"}
           </h1>
           <p
-            className="text-slate-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed whitespace-pre-line"
+            className={`text-slate-600 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base leading-relaxed whitespace-pre-line`}
             style={getSubtitleStyle(block)}
           >
             {block.subtitle ||
@@ -2556,6 +2620,33 @@ export const DynamicBlockRenderer = ({
 }) => {
   console.log("DynamicBlockRenderer blocks:", blocks);
   if (!blocks || !Array.isArray(blocks)) return null;
+
+  // Pre-process blocks to handle unmigrated tuition_fees blocks
+  const processedBlocks: any[] = [];
+  blocks.forEach(block => {
+    if (block.type === 'tuition_fees' && block.title) {
+      // Split into hero and table
+      processedBlocks.push({
+        type: 'tuition_fees_hero',
+        id: block.id ? block.id + '_hero' : undefined,
+        title: block.title,
+        subtitle: block.subtitle,
+        badge: block.badge,
+        image: block.image,
+        styles: block.styles
+      });
+      processedBlocks.push({
+        ...block,
+        title: undefined,
+        subtitle: undefined,
+        badge: undefined,
+        image: undefined
+      });
+    } else {
+      processedBlocks.push(block);
+    }
+  });
+
   const getStyle = (block: any, prefix: string) => {
     const style: any = {};
     
@@ -2876,7 +2967,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </h2>
                 {block.subtitle && (
                   <p
-                    className="font-body-lg text-text-muted max-w-2xl mx-auto mb-4 whitespace-pre-line"
+                    className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} mb-4 whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                     dangerouslySetInnerHTML={{ __html: block.subtitle }}
                   />
@@ -2953,7 +3044,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       {block.title}
                     </h2>
                     <p
-                      className="font-body-md text-text-muted max-w-xl whitespace-pre-line"
+                      className={`font-body-md text-text-muted max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
@@ -3290,7 +3381,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.title || "İletişim"}
                 </h1>
                 <p
-                  className="font-body-lg text-body-lg text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+                  className={`font-body-lg text-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                 >
                   {block.subtitle}
@@ -3420,6 +3511,18 @@ const getIndividualButtonStyle = (btn: any) => {
             />
           );
 
+        case "tuition_fees_hero":
+          return (
+            <TuitionFeesHeroBlock
+              key={index}
+              block={block}
+              index={index}
+              getStyle={getStyle}
+              getIconStyle={getIconStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
         case "bursluluk_hero":
           return (
             <BurslulukHeroBlock
@@ -3640,7 +3743,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 )}
                 {block.subtitle && (
                   <p
-                    className="font-body-md text-body-md text-text-muted mb-8 max-w-2xl mx-auto whitespace-pre-line"
+                    className={`font-body-md text-body-md text-text-muted mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -3709,7 +3812,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </h1>
                 {block.subtitle && (
                   <p
-                    className="font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl mx-auto mb-8 whitespace-pre-line"
+                    className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -3786,7 +3889,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </h2>
                   {block.subtitle && (
                     <p
-                      className="text-on-surface-variant max-w-2xl mx-auto font-body-lg whitespace-pre-line"
+                      className={`text-on-surface-variant max-w-2xl ${getAlignClass(block, "subtitle")} font-body-lg whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
@@ -3856,7 +3959,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </h2>
                     {block.subtitle && (
                       <p
-                        className="text-primary-fixed opacity-90 max-w-lg font-body-lg whitespace-pre-line"
+                        className={`text-primary-fixed opacity-90 max-w-lg font-body-lg ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                         style={getSubtitleStyle(block)}
                       >
                         {block.subtitle}
@@ -4109,7 +4212,7 @@ const getIndividualButtonStyle = (btn: any) => {
               style={getStyle(block, "")}
             >
               <div
-                className={`max-w-4xl mx-auto ${block.styles?.textAlign ? "" : "text-center"} ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
+                className={`max-w-4xl ${getAlignClass(block)} ${block.styles?.textAlign ? "" : "text-center"} ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
               >
                 {block.icon && (
                   <IconPreview
@@ -4139,7 +4242,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 )}
 
                 <form
-                  className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto w-full whitespace-pre-line"
+                  className={`flex flex-col sm:flex-row gap-4 max-w-xl ${getAlignClass(block)} w-full whitespace-pre-line`}
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <input
@@ -4189,6 +4292,8 @@ const getIndividualButtonStyle = (btn: any) => {
                         </span>
                       )}
                       {(() => {
+                        const titleAlign = block.styles?.titleAlign || block.styles?.textAlign || "center";
+                        const flexAlign = titleAlign === "left" ? "items-start justify-start text-left" : titleAlign === "right" ? "items-end justify-end text-right" : "items-center justify-center text-center";
                         const isStacked =
                           block.titleLayout === "stacked" ||
                           block.styles?.titleLayout === "stacked";
@@ -4203,10 +4308,10 @@ const getIndividualButtonStyle = (btn: any) => {
                           return (
                             <h1
                               style={getTitleStyle(block)}
-                              className={`text-2xl md:text-4xl lg:text-5xl font-extrabold mb-4 max-w-4xl mx-auto leading-tight ${
+                              className={`text-2xl md:text-4xl lg:text-5xl font-extrabold mb-4 max-w-4xl ${getAlignClass(block, "title")} leading-tight ${
                                 isStacked
-                                  ? "flex flex-col items-center justify-center gap-1 md:gap-2"
-                                  : "flex flex-wrap items-center justify-center gap-x-3 md:gap-x-4 gap-y-1"
+                                  ? `flex flex-col gap-1 md:gap-2 ${flexAlign}`
+                                  : `flex flex-wrap gap-x-3 md:gap-x-4 gap-y-1 ${flexAlign}`
                               }`}
                             >
                               {hasPart1 && (
@@ -4232,7 +4337,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         return (
                           <h1
                             style={getTitleStyle(block)}
-                            className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line"
+                            className={`text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl ${getAlignClass(block, "title")} leading-tight whitespace-pre-line`}
                             dangerouslySetInnerHTML={{
                               __html: (block.title || "").replace(
                                 "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4244,7 +4349,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       })()}
                       <p
                         style={getSubtitleStyle(block)}
-                        className="text-base md:text-[17px] text-[#556987] max-w-3xl mx-auto whitespace-pre-line font-medium leading-relaxed whitespace-pre-line"
+                        className={`text-base md:text-[17px] text-[#556987] max-w-3xl ${getAlignClass(block, "subtitle")} whitespace-pre-line font-medium leading-relaxed whitespace-pre-line`}
                         dangerouslySetInnerHTML={{
                           __html: block.subtitle || "",
                         }}
@@ -4320,7 +4425,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   const buttonsContent =
                     block.buttons && block.buttons.length > 0 ? (
                       <div
-                        className={`flex flex-col sm:flex-row gap-4 justify-center items-center w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto relative z-10`}
+                        className={`flex flex-col sm:flex-row gap-4 ${block.styles?.textAlign === "left" ? "justify-start items-start" : block.styles?.textAlign === "right" ? "justify-end items-end" : "justify-center items-center"} w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto relative z-10`}
                       >
                         {block.buttons.map((btn: any, i: number) => {
                           const isCustomColors = btn.bgColor || btn.textColor;
@@ -4901,7 +5006,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   )}
                   {block.subtitle && (
                     <p
-                      className="text-body-lg text-primary-fixed max-w-xl mx-auto whitespace-pre-line"
+                      className={`text-body-lg text-primary-fixed max-w-xl ${getAlignClass(block)} whitespace-pre-line`}
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
@@ -5268,7 +5373,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   ></h2>
                   <p
                     style={getSubtitleStyle(block)}
-                    className="text-white/80 max-w-2xl mx-auto mb-8 md:mb-12 text-sm md:text-lg whitespace-pre-line"
+                    className={`text-white/80 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 md:mb-12 text-sm md:text-lg whitespace-pre-line`}
                     dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
                   ></p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12 whitespace-pre-line">
@@ -5520,7 +5625,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.subtitle && (
                     <p
                       style={getSubtitleStyle(block)}
-                      className="text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+                      className={`text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
@@ -5597,7 +5702,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     )}
                     {block.subtitle && (
                       <p
-                        className="font-body-lg text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+                        className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                         style={getSubtitleStyle(block)}
                         dangerouslySetInnerHTML={{ __html: block.subtitle }}
                       />
@@ -5680,7 +5785,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.subtitle && (
                     <p
                       style={getSubtitleStyle(block)}
-                      className="text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+                      className={`text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
@@ -5837,7 +5942,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     ></h1>
                   )}
                   <p
-                    className="text-gray-200 text-lg md:text-xl leading-relaxed max-w-2xl whitespace-pre-line"
+                    className={`text-gray-200 text-lg md:text-xl leading-relaxed max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                     dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
                   ></p>
@@ -6070,7 +6175,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   }}
                 ></h1>
                 <p
-                  className="text-lg md:text-xl text-slate-200 max-w-2xl font-light leading-relaxed whitespace-pre-line"
+                  className={`text-lg md:text-xl text-slate-200 max-w-2xl font-light leading-relaxed ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                   dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
                 ></p>
@@ -6399,7 +6504,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </h1>
                   {block.subtitle && (
                     <p
-                      className="font-body-lg text-body-lg text-on-surface-variant max-w-lg whitespace-pre-line"
+                      className={`font-body-lg text-body-lg text-on-surface-variant max-w-lg ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
@@ -6473,7 +6578,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}
               >
                 <div
-                  className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl mx-auto`}
+                  className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl ${getAlignClass(block, "title")}`}
                 >
                   <h2
                     className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
@@ -6834,7 +6939,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </h2>
                   {block.subtitle && (
                     <p
-                      className="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto whitespace-pre-line"
+                      className={`font-body-md text-body-md text-on-surface-variant max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
@@ -7016,7 +7121,7 @@ const getIndividualButtonStyle = (btn: any) => {
               </h1>
               {block.subtitle && (
                 <p
-                  className="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl whitespace-pre-line"
+                  className={`font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                 >
                   {block.subtitle}
@@ -7186,7 +7291,7 @@ const getIndividualButtonStyle = (btn: any) => {
               className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
             >
               <div
-                className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl mx-auto`}
+                className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl ${getAlignClass(block, "title")}`}
               >
                 <h2
                   className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
@@ -7350,7 +7455,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </h1>
                 {block.subtitle && (
                   <p
-                    className="font-body-lg text-body-lg text-on-surface-variant max-w-xl whitespace-pre-line"
+                    className={`font-body-lg text-body-lg text-on-surface-variant max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -7444,7 +7549,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </h2>
                 {block.subtitle && (
                   <p
-                    className="font-body-md text-body-md text-text-muted max-w-2xl mx-auto whitespace-pre-line"
+                    className={`font-body-md text-body-md text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -7584,7 +7689,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </h1>
                 {block.subtitle && (
                   <p
-                    className="text-lg md:text-[18px] text-[#dce1ff] max-w-xl mx-auto whitespace-pre-line"
+                    className={`text-lg md:text-[18px] text-[#dce1ff] max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -7683,7 +7788,7 @@ const getIndividualButtonStyle = (btn: any) => {
 
                         {item.stats && item.stats.length > 0 && (
                           <div className="grid grid-cols-2 gap-6 items-center whitespace-pre-line">
-                            {item.stats.map((st: any, i: number) => (
+                            {(Array.isArray(item.stats) ? item.stats : (item.stats || "").split("\n").filter((x:string)=>x.trim()).map((x:string) => { const [val, lab] = x.split("|"); return {value: val?.trim() || "", label: lab?.trim() || ""} })).map((st: any, i: number) => (
                               <div
                                 key={i}
                                 className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
@@ -7746,7 +7851,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         </div>
                         {item.listItems && item.listItems.length > 0 && (
                           <ul className="space-y-4 whitespace-pre-line">
-                            {item.listItems.map((li: any, i: number) => (
+                            {(Array.isArray(item.listItems) ? item.listItems : (item.listItems || "").split("\n").filter((x:string)=>x.trim())).map((li: any, i: number) => (
                               <li
                                 key={i}
                                 className="flex items-center gap-3 whitespace-pre-line"
@@ -8386,7 +8491,7 @@ const getIndividualButtonStyle = (btn: any) => {
               </h1>
               {block.subtitle && (
                 <p
-                  className="font-body-lg text-body-lg text-on-primary-container max-w-2xl whitespace-pre-line"
+                  className={`font-body-lg text-body-lg text-on-primary-container max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                 >
                   {block.subtitle}
@@ -8679,21 +8784,7 @@ const getIndividualButtonStyle = (btn: any) => {
             className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-background text-on-background min-h-screen whitespace-pre-line"
             style={getStyle(block, "container")}
           >
-            <header className="text-center mb-section-gap whitespace-pre-line">
-              <h1
-                className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
-                style={getTitleStyle(block)}
-              >
-                {block.title || "2026-2027 Eğitim-Öğretim Yılı Ücretleri"}
-              </h1>
-              <p
-                className="font-body-lg text-body-lg text-text-muted max-w-2xl mx-auto whitespace-pre-line"
-                style={getSubtitleStyle(block)}
-              >
-                {block.subtitle ||
-                  "Dost Koleji olarak, öğrencilerimize sunduğumuz kaliteli eğitim ve olanakların karşılığında belirlenen akademik yıl ücretlendirme detaylarımızı aşağıda inceleyebilirsiniz."}
-              </p>
-            </header>
+            
 
             {/* Pricing Cards */}
             <section className="mb-section-gap whitespace-pre-line">
@@ -8905,6 +8996,6 @@ const getIndividualButtonStyle = (btn: any) => {
   };
 
   return (
-    <>{blocks.map((block: any, index: number) => renderBlock(block, index))}</>
+    <>{processedBlocks.map((block: any, index: number) => renderBlock(block, index))}</>
   );
 };

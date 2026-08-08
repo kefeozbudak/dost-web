@@ -644,13 +644,23 @@ export default function BlockFormEditor({
                     );
                   }
                   if (field.type === "textarea") {
+                    let val = item[field.key] || "";
+                    if (Array.isArray(val)) {
+                      if (field.key === "stats") {
+                        val = val.map(x => `${x.value || ''}|${x.label || ''}`).join('\n');
+                      } else {
+                        val = val.map(x => typeof x === 'string' ? x : JSON.stringify(x)).join('\n');
+                      }
+                    } else if (typeof val === "object") {
+                       val = JSON.stringify(val);
+                    }
                     return (
                       <div key={field.key}>
                         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                           {field.label}
                         </label>
                         <textarea
-                          value={item[field.key] || ""}
+                          value={val}
                           onChange={(e) =>
                             handleArrayChange(
                               arrayKey,
@@ -4358,7 +4368,63 @@ export default function BlockFormEditor({
           </div>
         )}
 
-        {block.type === "achievements_hero" && (
+        
+      {block.type === "achievements_academic_bento" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor(
+            "items",
+            [
+              { key: "style", label: "Stil (light, primary, list)", type: "select", options: [{value: "light", label: "Açık (Sol)"}, {value: "primary", label: "Renkli (Orta)"}, {value: "list", label: "Liste (Sağ)"}] },
+              { key: "icon", label: "İkon", type: "icon" },
+              { key: "title", label: "Başlık", type: "text" },
+              { key: "desc", label: "Açıklama", type: "textarea" },
+              { key: "statValue", label: "Büyük İstatistik (Sadece Açık Stil)", type: "text" },
+              { key: "statLabel", label: "İstatistik Etiketi (Sadece Açık Stil)", type: "text" },
+              { key: "badge", label: "Rozet (Sadece Açık Stil)", type: "text" },
+              { key: "buttonText", label: "Buton Metni (Sadece Renkli Stil)", type: "text" },
+              { key: "url", label: "Buton Linki (Sadece Renkli Stil)", type: "text" },
+              { key: "stats", label: "İstatistikler (Değer|Etiket şeklinde satır satır. Örn: %98|Yerleştirme)", type: "textarea" },
+              { key: "listItems", label: "Liste Elemanları (Satır satır)", type: "textarea" }
+            ],
+            "Kartlar"
+          )}
+        </div>
+      )}
+
+      {block.type === "achievements_social_gallery" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor(
+            "items",
+            [
+              { key: "title", label: "Başlık", type: "text" },
+              { key: "desc", label: "Kısa Açıklama", type: "text" },
+              { key: "hoverText", label: "Üzerine Gelince Çıkan Metin", type: "text" },
+              { key: "image", label: "Görsel", type: "image" }
+            ],
+            "Galerideki Kartlar"
+          )}
+        </div>
+      )}
+
+      {block.type === "achievements_science_projects" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor(
+            "items",
+            [
+              { key: "title", label: "Proje Adı", type: "text" },
+              { key: "desc", label: "Açıklama", type: "textarea" },
+              { key: "competition", label: "Yarışma Adı / Kategori", type: "text" },
+              { key: "award", label: "Ödül / Derece", type: "text" },
+              { key: "image", label: "Görsel", type: "image" }
+            ],
+            "Projeler"
+          )}
+        </div>
+      )}
+{block.type === "achievements_hero" && (
           <div className="space-y-4">
             {renderInputWithStyle("Rozet (Badge)", "badge")}
             {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
@@ -4969,10 +5035,17 @@ export default function BlockFormEditor({
         </div>
       )}
 
+      
+      {block.type === "tuition_fees_hero" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderInputWithStyle("Rozet / Etiket", "badge")}
+          {renderImageUpload("Arka Plan Görseli", "image")}
+        </div>
+      )}
+
       {block.type === "tuition_fees" && (
         <div className="space-y-4">
-          {renderInputWithStyle("Başlık", "title")}
-          {renderTextareaWithStyle("Alt Başlık", "subtitle")}
           {renderInputWithStyle("Tablo Başlığı", "tableTitle")}
 
           <div className="border-t border-slate-200 pt-4 mt-6">
