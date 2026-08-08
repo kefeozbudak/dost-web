@@ -619,15 +619,25 @@ export default function PopupCenter() {
                         </div>
                       )}
                     </div>
-                  ) : (
-                    /* Normal Mod Önizleme */
-                    <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-col md:flex-row'}`}>
+                  ) : (() => {
+/* Normal Mod Önizleme */
+                      const imgPos = selectedPopup.imagePosition || 'left';
+                      return (
+                    <div className={`flex ${imgPos === 'bottom' ? 'flex-col-reverse' : 'flex-col'} ${
+                      previewMode === 'mobile'
+                        ? ''
+                        : imgPos === 'left' ? 'md:flex-row' : imgPos === 'right' ? 'md:flex-row-reverse' : ''
+                    } ${imgPos === 'bg' ? 'relative' : ''}`}>
                       
                       {/* Image Section */}
                       {selectedPopup.imageUrl && (
                         <div
                           className={`relative bg-slate-100 ${
-                            previewMode === 'mobile' ? 'w-full h-48' : 'w-full md:w-1/2 min-h-[300px]'
+                            previewMode === 'mobile' && imgPos !== 'bg'
+                              ? 'w-full h-48'
+                              : imgPos === 'bg'
+                              ? 'absolute inset-0 z-0 h-full w-full'
+                              : 'w-full md:w-1/2 min-h-[300px]'
                           }`}
                         >
                           <img
@@ -638,15 +648,15 @@ export default function PopupCenter() {
                               e.target.src = "https://lh3.googleusercontent.com/aida-public/AB6AXuDd7z1oXpXwhH7QTgZ2wgXtYlKXePoC_Sp6RZ6ZwL3DgCB_E4XQ8V0YBwI6liC5Cc4LPfygw0lt_Ufj3ybg6A3ZZpBK6rgmhfRGOdQ97rgjLcZf0GIVbfe_TLwh9cHTzg4TiXVKv8XGlHuBePsHfYNF6VDC9tKu1dB_9DNIaIIYeTxAA2BoGlzhJnDtrbGMSZNq9TnpKcOsMvCQgu24ZIMLDdmCkltvU6n9Ju0oRuO-IoyDSVA3ojWNzDQXD1Ii0EsJb4qoCWbQZKI";
                             }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                          <div className={`absolute inset-0 ${imgPos === 'bg' ? 'bg-black/60' : 'bg-gradient-to-t from-black/40 to-transparent'} pointer-events-none`} />
                         </div>
                       )}
 
                       {/* Content Section */}
                       <div
                         className={`p-8 flex flex-col justify-center text-left ${
-                          selectedPopup.imageUrl && previewMode === 'desktop' ? 'w-full md:w-1/2' : 'w-full'
-                        }`}
+                          selectedPopup.imageUrl && previewMode === 'desktop' && (imgPos === 'left' || imgPos === 'right') ? 'w-full md:w-1/2' : 'w-full'
+                        } ${imgPos === 'bg' ? 'relative z-10' : ''}`}
                       >
                         {selectedPopup.badgeText && (
                           <span
@@ -657,11 +667,11 @@ export default function PopupCenter() {
                           </span>
                         )}
 
-                        <h2 className="text-2xl font-bold leading-tight mb-4">
+                        <h2 className="text-2xl font-bold leading-tight mb-4" style={{ color: selectedPopup.style?.titleColor || undefined }}>
                           {selectedPopup.title}
                         </h2>
 
-                        <p className="text-slate-600 text-sm leading-relaxed mb-8 whitespace-pre-line">
+                        <p className="text-sm leading-relaxed mb-8 whitespace-pre-line" style={{ color: selectedPopup.style?.descColor || undefined, opacity: selectedPopup.style?.descColor ? 1 : 0.8 }}>
                           {selectedPopup.description}
                         </p>
 
@@ -678,7 +688,9 @@ export default function PopupCenter() {
                       </div>
 
                     </div>
-                  )}
+                      );
+                    })()}
+
                 </div>
               </div>
             ) : (
@@ -870,6 +882,24 @@ export default function PopupCenter() {
                           />
                         </div>
                       </div>
+                    )}
+
+                    
+                    {!selectedPopup.onlyImage && selectedPopup.imageUrl && !selectedPopup.pageEmbed && (
+                      <label className="block mt-4">
+                        <span className="text-xs font-bold text-slate-500 uppercase">Görsel Konumu</span>
+                        <select
+                          value={selectedPopup.imagePosition || 'top'}
+                          onChange={(e) => updateCurrentPopup({ imagePosition: e.target.value as any })}
+                          className="mt-1 w-full border-slate-200 rounded-lg text-sm bg-slate-50 focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-2 border outline-none"
+                        >
+                          <option value="left">Sola Hizala</option>
+                          <option value="right">Sağa Hizala</option>
+                          <option value="top">Üste Hizala</option>
+                          <option value="bottom">Alta Hizala</option>
+                          <option value="bg">Arka Plan (Zemin) Olarak Ayarla</option>
+                        </select>
+                      </label>
                     )}
 
                     {!selectedPopup.onlyImage && !selectedPopup.pageEmbed && (
@@ -1146,6 +1176,17 @@ export default function PopupCenter() {
                           onChange={(e) => updateCurrentPopup({ badgeColor: e.target.value })}
                           className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateCurrentPopup({ badgeColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </label>
 
@@ -1164,11 +1205,81 @@ export default function PopupCenter() {
                           onChange={(e) => updateStyleField({ bgColor: e.target.value })}
                           className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateStyleField({ bgColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
+                      </div>
+                    </label>
+
+                    
+                    <label className="block">
+                      <span className="text-xs font-bold text-slate-500 uppercase">Başlık Rengi</span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <input
+                          type="color"
+                          value={selectedPopup.style?.titleColor || '#0f172a'}
+                          onChange={(e) => updateStyleField({ titleColor: e.target.value })}
+                          className="w-8 h-8 rounded border-0 cursor-pointer shrink-0"
+                        />
+                        <input
+                          type="text"
+                          value={selectedPopup.style?.titleColor || '#0f172a'}
+                          onChange={(e) => updateStyleField({ titleColor: e.target.value })}
+                          className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const handler = (e) => updateStyleField({ titleColor: e.target.value });
+                            handler({ target: { value: "transparent" } } as any);
+                          }}
+                          className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                          title="Rengi Temizle (Şeffaf)"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        </button>
                       </div>
                     </label>
 
                     <label className="block">
-                      <span className="text-xs font-bold text-slate-500 uppercase">Metin Rengi</span>
+                      <span className="text-xs font-bold text-slate-500 uppercase">Açıklama Metni Rengi</span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <input
+                          type="color"
+                          value={selectedPopup.style?.descColor || '#334155'}
+                          onChange={(e) => updateStyleField({ descColor: e.target.value })}
+                          className="w-8 h-8 rounded border-0 cursor-pointer shrink-0"
+                        />
+                        <input
+                          type="text"
+                          value={selectedPopup.style?.descColor || '#334155'}
+                          onChange={(e) => updateStyleField({ descColor: e.target.value })}
+                          className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const handler = (e) => updateStyleField({ descColor: e.target.value });
+                            handler({ target: { value: "transparent" } } as any);
+                          }}
+                          className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                          title="Rengi Temizle (Şeffaf)"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        </button>
+                      </div>
+                    </label>
+
+                    <label className="block">
+                      <span className="text-xs font-bold text-slate-500 uppercase">Metin Rengi (Genel)</span>
                       <div className="flex items-center gap-2 mt-1">
                         <input
                           type="color"
@@ -1182,6 +1293,17 @@ export default function PopupCenter() {
                           onChange={(e) => updateStyleField({ textColor: e.target.value })}
                           className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateStyleField({ textColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </label>
 
@@ -1200,6 +1322,17 @@ export default function PopupCenter() {
                           onChange={(e) => updateStyleField({ buttonBgColor: e.target.value })}
                           className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateStyleField({ buttonBgColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </label>
 
@@ -1218,6 +1351,17 @@ export default function PopupCenter() {
                           onChange={(e) => updateStyleField({ buttonTextColor: e.target.value })}
                           className="flex-1 px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-slate-50"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateStyleField({ buttonTextColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </label>
                   </div>
@@ -1299,19 +1443,35 @@ export default function PopupCenter() {
                         <div className="p-12 text-center text-slate-400">Görsel seçilmedi</div>
                       )}
                     </div>
-                  ) : (
-                    <div className="flex flex-col md:flex-row">
+                  ) : (() => {
+                      const imgPos = selectedPopup.imagePosition || 'left';
+                      return (
+<div className={`flex ${imgPos === 'bottom' ? 'flex-col-reverse' : 'flex-col'} ${
+                      imgPos === 'left' ? 'md:flex-row' : imgPos === 'right' ? 'md:flex-row-reverse' : ''
+                    } ${imgPos === 'bg' ? 'relative' : ''}`}>
+                      
                       {selectedPopup.imageUrl && (
-                        <div className="w-full md:w-1/2 min-h-[260px] bg-slate-100 relative">
+                        <div
+                          className={`relative bg-slate-100 ${
+                            imgPos === 'bg'
+                              ? 'absolute inset-0 z-0 h-full w-full'
+                              : 'w-full md:w-1/2 min-h-[260px]'
+                          }`}
+                        >
                           <img
                             src={selectedPopup.imageUrl}
                             alt=""
                             className="w-full h-full object-cover"
                           />
+                          <div className={`absolute inset-0 ${imgPos === 'bg' ? 'bg-black/60' : 'bg-gradient-to-t from-black/40 to-transparent'}`} />
                         </div>
                       )}
 
-                      <div className="p-6 md:p-8 flex flex-col justify-center text-left flex-1">
+                      <div
+                        className={`p-6 md:p-8 flex flex-col justify-center text-left ${
+                          selectedPopup.imageUrl && (imgPos === 'left' || imgPos === 'right') ? 'w-full md:w-1/2' : 'flex-1'
+                        } ${imgPos === 'bg' ? 'relative z-10' : ''}`}
+                      >
                         {selectedPopup.badgeText && (
                           <span
                             className="font-bold text-xs uppercase tracking-widest mb-2"
@@ -1320,8 +1480,8 @@ export default function PopupCenter() {
                             {selectedPopup.badgeText}
                           </span>
                         )}
-                        <h3 className="text-xl font-bold mb-3">{selectedPopup.title}</h3>
-                        <p className="text-xs opacity-80 leading-relaxed mb-6 whitespace-pre-line">{selectedPopup.description}</p>
+                        <h3 className="text-xl font-bold mb-3" style={{ color: selectedPopup.style?.titleColor || undefined }}>{selectedPopup.title}</h3>
+                        <p className="text-xs leading-relaxed mb-6 whitespace-pre-line" style={{ color: selectedPopup.style?.descColor || undefined, opacity: selectedPopup.style?.descColor ? 1 : 0.8 }}>{selectedPopup.description}</p>
                         <button
                           type="button"
                           onClick={() => setShowLivePreviewModal(false)}
@@ -1335,7 +1495,9 @@ export default function PopupCenter() {
                         </button>
                       </div>
                     </div>
-                  )}
+                      );
+                    })()}
+
                 </div>
               </div>
             </div>

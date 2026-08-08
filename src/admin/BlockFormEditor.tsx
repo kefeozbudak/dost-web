@@ -842,6 +842,24 @@ export default function BlockFormEditor({
                             placeholder="örn: #FFFFFF"
                             className="flex-1 text-sm border-slate-300 rounded p-1.5"
                           />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                              handleArrayChange(
+                                arrayKey,
+                                idx,
+                                field.key,
+                                e.target.value,
+                              )
+                            ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                         </div>
                       </div>
                     );
@@ -892,8 +910,7 @@ export default function BlockFormEditor({
                                 item.cardBgColor === "currentColor" ||
                                 !item.cardBgColor
                                   ? "#ffffff"
-                                  : item.cardBgColor
-                              }
+                                  : item.cardBgColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -918,6 +935,24 @@ export default function BlockFormEditor({
                               placeholder="Şeffaf"
                               className="w-full text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "cardBgColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                           </div>
                         </div>
                         <div>
@@ -951,8 +986,7 @@ export default function BlockFormEditor({
                                 item.cardBorderColor === "currentColor" ||
                                 !item.cardBorderColor
                                   ? "#e2e8f0"
-                                  : item.cardBorderColor
-                              }
+                                  : item.cardBorderColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -977,6 +1011,24 @@ export default function BlockFormEditor({
                               placeholder="Renk"
                               className="w-1/2 text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "cardBorderColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                             <input
                               type="text"
                               value={item.cardBorderWidth || ""}
@@ -1100,8 +1152,7 @@ export default function BlockFormEditor({
                                 item.itemTitleColor === "currentColor" ||
                                 !item.itemTitleColor
                                   ? "#000000"
-                                  : item.itemTitleColor
-                              }
+                                  : item.itemTitleColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -1126,6 +1177,24 @@ export default function BlockFormEditor({
                               placeholder="Varsayılan"
                               className="w-full text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "itemTitleColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                           </div>
                         </div>
                         <div>
@@ -1139,8 +1208,7 @@ export default function BlockFormEditor({
                                 item.itemDescColor === "currentColor" ||
                                 !item.itemDescColor
                                   ? "#000000"
-                                  : item.itemDescColor
-                              }
+                                  : item.itemDescColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -1165,6 +1233,24 @@ export default function BlockFormEditor({
                               placeholder="Varsayılan"
                               className="w-full text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "itemDescColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                           </div>
                         </div>
 
@@ -1179,8 +1265,7 @@ export default function BlockFormEditor({
                                 item.buttonTextColor === "currentColor" ||
                                 !item.buttonTextColor
                                   ? "#0f172a"
-                                  : item.buttonTextColor
-                              }
+                                  : item.buttonTextColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -1205,6 +1290,24 @@ export default function BlockFormEditor({
                               placeholder="Varsayılan"
                               className="w-full text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "buttonTextColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                           </div>
                         </div>
 
@@ -1219,8 +1322,7 @@ export default function BlockFormEditor({
                                 item.buttonBgColor === "currentColor" ||
                                 !item.buttonBgColor
                                   ? "#5eead4"
-                                  : item.buttonBgColor
-                              }
+                                  : item.buttonBgColor}
                               onChange={(e) =>
                                 handleArrayChange(
                                   arrayKey,
@@ -1245,6 +1347,24 @@ export default function BlockFormEditor({
                               placeholder="Varsayılan"
                               className="w-full text-xs border-slate-300 rounded p-1.5"
                             />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                                handleArrayChange(
+                                  arrayKey,
+                                  idx,
+                                  "buttonBgColor",
+                                  e.target.value,
+                                )
+                              ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                           </div>
                         </div>
                         <div className="flex items-end pb-1">
@@ -1401,6 +1521,23 @@ export default function BlockFormEditor({
                   placeholder="Varsayılan (Boş bırakılabilir)"
                   className="flex-1 text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
                 />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => {
+                    const newStyles = {
+                      ...(block.styles || {}),
+                      backgroundColor: e.target.value,
+                    };
+                    handleChange("styles", newStyles);
+                  };
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
               </div>
             </div>
             <div>
@@ -1433,6 +1570,23 @@ export default function BlockFormEditor({
                   placeholder="Varsayılan (Boş bırakılabilir)"
                   className="flex-1 text-sm border-slate-300 rounded p-1.5 outline-none focus:border-blue-500"
                 />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => {
+                    const newStyles = {
+                      ...(block.styles || {}),
+                      color: e.target.value,
+                    };
+                    handleChange("styles", newStyles);
+                  };
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
               </div>
             </div>
 
@@ -1861,6 +2015,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("sidebarBgColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -1900,6 +2067,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("sidebarActiveBgColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
               <div>
@@ -1930,6 +2110,22 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange(
+                        "sidebarActiveTextColor",
+                        e.target.value,
+                      )
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
               <div>
@@ -1954,6 +2150,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("sidebarTextColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
 
@@ -1979,6 +2188,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("cardBgColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
               <div>
@@ -2003,6 +2225,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("cardTitleColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
               <div>
@@ -2027,6 +2262,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("cardTextColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
               <div>
@@ -2051,6 +2299,19 @@ export default function BlockFormEditor({
                     className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
                     placeholder="Varsayılan"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("cardAccentColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
               </div>
             </div>
@@ -2505,7 +2766,24 @@ export default function BlockFormEditor({
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-            {renderImageUpload("Görsel (Arkaplan)", "image")}
+                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
+            {renderInputWithStyle(
+              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
+              "imageBadgeTitle",
+            )}
+            {renderInputWithStyle(
+              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
+              "imageBadgeDesc",
+            )}
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                Görsel Alt İkon
+              </label>
+              <IconField
+                value={block.imageBadgeIcon || ""}
+                onChange={(val) => handleChange("imageBadgeIcon", val)}
+              />
+            </div>
             {renderArrayEditor(
               "buttons",
               [
@@ -2580,7 +2858,24 @@ export default function BlockFormEditor({
           <div className="space-y-4">
             {renderCommonFields()}
             {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-            {renderImageUpload("Görsel (Arkaplan)", "image")}
+                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
+            {renderInputWithStyle(
+              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
+              "imageBadgeTitle",
+            )}
+            {renderInputWithStyle(
+              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
+              "imageBadgeDesc",
+            )}
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                Görsel Alt İkon
+              </label>
+              <IconField
+                value={block.imageBadgeIcon || ""}
+                onChange={(val) => handleChange("imageBadgeIcon", val)}
+              />
+            </div>
             {renderArrayEditor(
               "buttons",
               [
@@ -2921,6 +3216,19 @@ export default function BlockFormEditor({
                       placeholder="#002147"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("headerBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -2961,6 +3269,19 @@ export default function BlockFormEditor({
                       placeholder="#ffffff"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("cardBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3096,6 +3417,19 @@ export default function BlockFormEditor({
                       placeholder="#002147"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("headerBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3136,6 +3470,19 @@ export default function BlockFormEditor({
                       placeholder="#ffffff"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("cardBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3481,6 +3828,19 @@ export default function BlockFormEditor({
                       placeholder="#002147"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("headerBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3521,6 +3881,19 @@ export default function BlockFormEditor({
                       placeholder="#ffffff"
                       className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                        handleStyleChange("cardBgColor", e.target.value)
+                      ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3650,6 +4023,19 @@ export default function BlockFormEditor({
                     placeholder="#ffffff"
                     className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("cardBgColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -3881,7 +4267,24 @@ export default function BlockFormEditor({
             {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
             {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
             {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-            {renderImageUpload("Görsel (Sağ Kısım)", "image")}
+                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
+            {renderInputWithStyle(
+              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
+              "imageBadgeTitle",
+            )}
+            {renderInputWithStyle(
+              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
+              "imageBadgeDesc",
+            )}
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                Görsel Alt İkon
+              </label>
+              <IconField
+                value={block.imageBadgeIcon || ""}
+                onChange={(val) => handleChange("imageBadgeIcon", val)}
+              />
+            </div>
             {renderArrayEditor(
               "buttons",
               [
@@ -4378,6 +4781,19 @@ export default function BlockFormEditor({
                     placeholder="#faf8ff"
                     className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("backgroundColor", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -4418,6 +4834,19 @@ export default function BlockFormEditor({
                     placeholder="#002147"
                     className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) =>
+                      handleStyleChange("titlePart1Color", e.target.value)
+                    ;
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
@@ -4454,6 +4883,17 @@ export default function BlockFormEditor({
                     placeholder="#333333"
                     className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
                   />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => handleStyleChange("color", e.target.value);
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                 </div>
                 
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">

@@ -1,5 +1,12 @@
 const fs = require('fs');
 let code = fs.readFileSync('src/admin/BlockFormEditor.tsx', 'utf8');
 
-const matches = code.match(/\/>\n\s*<\/div>\n\s*<\/div>\n\s*<label className="text-\[10px\] font-bold text-slate-400 block mb-1 mt-3">\n\s*Kart Arka Plan Görseli/g);
-console.log("Matches found:", matches ? matches.length : 0);
+const matches = [...code.matchAll(/<input\s+type="text"[^>]*?onChange=\{\s*\(e\)\s*=>\s*([\s\S]*?)\}[^>]*?>/g)];
+let failed = 0;
+for (let m of matches) {
+  if (!m[1].includes('e.target.value')) {
+    console.log("Does not contain e.target.value:", m[1]);
+    failed++;
+  }
+}
+console.log("Total text inputs with onChange:", matches.length, "Failed:", failed);

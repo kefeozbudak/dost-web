@@ -738,6 +738,17 @@ export default function SettingsCenter() {
                       placeholder="#0a192f"
                       className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateField('announcementBgColor', e.target.value);
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {[
@@ -779,6 +790,17 @@ export default function SettingsCenter() {
                       placeholder="#ffffff"
                       className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => updateField('announcementTextColor', e.target.value);
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
                 </div>
               </div>

@@ -157,7 +157,7 @@ const ClubsGridBlock = ({
                     </span>
                   </div>
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-pre-line"
                     style={getCardTitleStyle(item, block)}
                   >
                     {item.title}
@@ -218,7 +218,7 @@ const CareerHeroBlock = ({
         className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl mx-auto`}
       >
         <h1
-          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line w-full md:w-auto"
+          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Dost Koleji'nde Kariyer"}
@@ -289,7 +289,7 @@ const CareerBenefitsBlock = ({
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
         <h2
-          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-pre-line w-full md:w-auto"
+          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Neden Bize Katılmalısınız?"}
@@ -353,7 +353,7 @@ const CareerApplicationBlock = ({
         <div className="w-full lg:w-1/3 whitespace-pre-line">
           <div className="sticky top-24 whitespace-pre-line">
             <h2
-              className="font-bold text-2xl text-[#002147] mb-6 whitespace-pre-line w-full md:w-auto"
+              className="font-bold text-2xl text-[#002147] mb-6 whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Açık Pozisyonlar"}
@@ -451,7 +451,7 @@ const EduSystemHeroBlock = ({
         className={`relative z-20 w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} px-margin-mobile md:px-margin-desktop py-20 ${block.styles?.textAlign ? "" : "text-center"} text-white`}
       >
         <h1
-          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-pre-line w-full md:w-auto"
+          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Eğitim Sistemimiz"}
@@ -485,7 +485,7 @@ const EduSystemLevelsBlock = ({
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
+          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title}
@@ -519,11 +519,11 @@ const EduSystemLevelsBlock = ({
               >
                 <IconPreview
                   data={item.icon || "school"}
-                  className="text-3xl transition-colors whitespace-pre-line w-full md:w-auto"
+                  className="text-3xl transition-colors whitespace-pre-line"
                  style={getIconStyle(item, block)} />
               </div>
               <h3
-                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line w-full md:w-auto"
+                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
                 style={getCardTitleStyle(item, block)}
               >
                 {item.title}
@@ -580,7 +580,7 @@ const EduSystemYadepBlock = ({
           className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
         >
           <h2
-            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
+            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title}
@@ -627,11 +627,11 @@ const EduSystemYadepBlock = ({
                 >
                   <IconPreview
                     data={item.icon}
-                    className="text-3xl whitespace-pre-line w-full md:w-auto"
+                    className="text-3xl whitespace-pre-line"
                    style={getIconStyle(item, block)} />
                 </div>
                 <h3
-                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line w-full md:w-auto"
+                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
                   style={getCardTitleStyle(item, block)}
                 >
                   {item.title}
@@ -687,7 +687,7 @@ const EduSystemPhilosophyBlock = ({
                 {block.badge}
               </span>
               <h2
-                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-pre-line w-full md:w-auto"
+                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.title}
@@ -709,7 +709,7 @@ const EduSystemPhilosophyBlock = ({
                     </div>
                     <div>
                       <h4
-                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-pre-line w-full md:w-auto"
+                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -742,13 +742,13 @@ const EduSystemPhilosophyBlock = ({
               <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-white/80 backdrop-blur-md p-6 rounded-xl border border-white shadow-lg max-w-xs hidden sm:block whitespace-pre-line">
                 <div className="flex items-center gap-3 mb-2 whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-secondary text-3xl whitespace-pre-line w-full md:w-auto"
+                    className="material-symbols-outlined text-secondary text-3xl whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
                     {block.cardIcon || "emoji_events"}
                   </span>
-                  <span className="font-headline-md font-bold text-text-main whitespace-pre-line w-full md:w-auto">
+                  <span className="font-headline-md font-bold text-text-main whitespace-pre-line">
                     {block.cardTitle}
                   </span>
                 </div>
@@ -790,7 +790,7 @@ const EduSystemCtaBlock = ({
         className={`max-w-4xl mx-auto px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}
       >
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line w-full md:w-auto"
+          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title}
@@ -988,14 +988,14 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-4xl whitespace-pre-line w-full md:w-auto"
+                className="material-symbols-outlined text-4xl whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line w-full md:w-auto">
+            <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line">
               Bursluluk Sınavı Başvurunuz Başarıyla Alındı!
             </h3>
             <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed whitespace-pre-line">
@@ -1026,7 +1026,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line w-full md:w-auto"
+                className="material-symbols-outlined text-3xl whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
@@ -1047,14 +1047,14 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line w-full md:w-auto"
+                className="material-symbols-outlined text-3xl whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto">
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line">
               Başvurunuz Alındı
             </h3>
             <p className="font-body-md text-body-md text-text-muted whitespace-pre-line">
@@ -1129,7 +1129,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                           className="text-primary whitespace-pre-line"
                          style={getIconStyle(input, block)} />
                       )}
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
                         {input.label}
                       </h2>
                     </div>
@@ -1396,7 +1396,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                       >
                         explore
                       </span>
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
                         Kulüp Seçimi
                       </h2>
                     </div>
@@ -1551,7 +1551,7 @@ const ClubRegistrationFormBlock = ({
     >
       <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700 whitespace-pre-line">
         <div className={`mb-8 ${block.styles?.textAlign ? "" : "text-center"}`}>
-          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-pre-line w-full md:w-auto">
+          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-pre-line">
             {block.title || "Dost Koleji"}
           </h1>
           <p className="font-body-lg text-body-lg text-text-muted whitespace-pre-line">
@@ -1611,7 +1611,7 @@ const PreRegistrationFormBlock = ({
         >
           <div className="relative z-10 whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line w-full md:w-auto"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "ÖĞRENCİ ÖN KAYIT FORMU"}
@@ -1692,7 +1692,7 @@ const BurslulukHeroBlock = ({
             {block.badge || "2026-2027 EĞİTİM YILI"}
           </span>
           <h1
-            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line w-full md:w-auto"
+            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title || "Akademik Başarıya Giden Yolunuz"}
@@ -1707,7 +1707,7 @@ const BurslulukHeroBlock = ({
           <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6 whitespace-pre-line">
             {stats.map((stat: any, idx: number) => (
               <div key={idx}>
-                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-pre-line w-full md:w-auto">
+                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-pre-line">
                   {stat.value}
                 </p>
                 <p className="text-sm opacity-80 whitespace-pre-line">
@@ -1830,7 +1830,7 @@ const BurslulukExamFormBlock = ({
         >
           <div className="relative z-10 whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line w-full md:w-auto"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "BURSLULUK SINAVI BAŞVURU FORMU"}
@@ -1942,7 +1942,7 @@ const BurslulukInfoCardsBlock = ({
             className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}
           >
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-pre-line w-full md:w-auto"
+              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title}
@@ -1966,7 +1966,7 @@ const BurslulukInfoCardsBlock = ({
               <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform whitespace-pre-line">
                 <IconPreview
                   data={item.icon || "info"}
-                  className="text-[#1d4eca] text-3xl whitespace-pre-line w-full md:w-auto"
+                  className="text-[#1d4eca] text-3xl whitespace-pre-line"
                  style={getIconStyle(item, block)} />
               </div>
               <h4 className="text-xl font-bold text-[#002147] mb-4 whitespace-pre-line">
@@ -2022,7 +2022,7 @@ const BurslulukResultQueryBlock = ({
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl whitespace-pre-line">
           <div className="flex-1 p-8 md:p-12 text-white whitespace-pre-line">
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-pre-line w-full md:w-auto"
+              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Sınav Sonuç Sorgulama"}
@@ -2078,7 +2078,7 @@ const BurslulukResultQueryBlock = ({
                 close
               </span>
             </button>
-            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-pre-line w-full md:w-auto">
+            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-pre-line">
               Sınav Sonuç Sorgulama
             </h3>
             <p className="text-slate-500 text-sm mb-6 whitespace-pre-line">
@@ -2274,7 +2274,7 @@ const BurslulukConfirmationBlock = ({
             </span>
           </div>
           <h1
-            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-pre-line w-full md:w-auto"
+            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title || "Başvurunuz Başarıyla Alındı!"}
@@ -2525,7 +2525,7 @@ const ContactFormBlock = ({
         <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border-subtle whitespace-pre-line">
           <div className="mb-8 whitespace-pre-line">
             <h2
-              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
+              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Bize Ulaşın"}
@@ -2826,7 +2826,7 @@ const getIndividualButtonStyle = (btn: any) => {
               >
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
                   <h1
-                    className="font-display-lg text-display-lg text-white mb-6 whitespace-pre-line w-full md:w-auto"
+                    className="font-display-lg text-display-lg text-white mb-6 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -2869,7 +2869,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
+                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -2913,7 +2913,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-pre-line">
                         <h3
-                          className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -2947,7 +2947,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
                   <div className="w-full md:w-auto flex-1">
                     <h2
-                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
@@ -3022,7 +3022,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       </div>
                       <div className="p-6 whitespace-pre-line">
                         <h4
-                          className="font-headline-md text-[20px] mb-2 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-md text-[20px] mb-2 whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -3110,7 +3110,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </span>
                   )}
                   <h2
-                    className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1}{" "}
@@ -3185,7 +3185,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row whitespace-pre-line">
                   <div className="p-12 w-full lg:w-1/2 space-y-8 flex flex-col justify-center whitespace-pre-line">
                     <h2
-                      className="font-headline-xl text-headline-xl whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
@@ -3284,7 +3284,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
               >
                 <h1
-                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line w-full md:w-auto"
+                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title || "İletişim"}
@@ -3323,7 +3323,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           </div>
                         )}
                         <h3
-                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -3632,7 +3632,7 @@ const getIndividualButtonStyle = (btn: any) => {
               >
                 {block.title && (
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -3659,7 +3659,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-2xl whitespace-pre-line w-full md:w-auto"
+                              className="text-2xl whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
@@ -3696,7 +3696,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 )}
               >
                 <h1
-                  className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line w-full md:w-auto"
+                  className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1 || block.title}{" "}
@@ -3779,7 +3779,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Neden Kulüplere Katılmalısın?"}
@@ -3806,7 +3806,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-primary text-3xl whitespace-pre-line w-full md:w-auto"
+                              className="text-primary text-3xl whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
@@ -3816,7 +3816,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           ))}
                       </div>
                       <h4
-                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-pre-line w-full md:w-auto"
+                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -3849,7 +3849,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
                   >
                     <h2
-                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Bir Kulübe Katılmak İster misin?"}
@@ -3924,7 +3924,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
-                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4027,7 +4027,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         {item.title && (
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line w-full md:w-auto"
+                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
@@ -4114,14 +4114,14 @@ const getIndividualButtonStyle = (btn: any) => {
                 {block.icon && (
                   <IconPreview
                     data={block.icon}
-                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-pre-line"
                     style={{ ...getIconStyle(block, block), fontVariationSettings: "'FILL' 1" }}
                   />
                 )}
                 {block.title && (
                   <h2
                     style={getTitleStyle(block)}
-                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-pre-line"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4232,7 +4232,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         return (
                           <h1
                             style={getTitleStyle(block)}
-                            className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line w-full md:w-auto"
+                            className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line"
                             dangerouslySetInnerHTML={{
                               __html: (block.title || "").replace(
                                 "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4405,7 +4405,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div className="flex flex-row items-center gap-4 mb-10 md:mb-12 whitespace-pre-line">
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-white text-3xl whitespace-pre-line w-full md:w-auto"
+                      className="material-symbols-outlined text-white text-3xl whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -4422,7 +4422,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     )}
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-pre-line leading-tight whitespace-pre-line w-full md:w-auto"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-pre-line leading-tight whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4457,7 +4457,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       </div>
                       <h3
                         style={getCardTitleStyle(item, block)}
-                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-pre-line w-full md:w-auto"
+                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-pre-line"
                       >
                         {item.title}
                       </h3>
@@ -4507,7 +4507,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   ></span>
                   <h2
                     style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line w-full md:w-auto"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4540,7 +4540,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             <div className="flex-1 whitespace-pre-line">
                               <h3
                                 style={getCardTitleStyle(item, block)}
-                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-pre-line w-full md:w-auto"
+                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-pre-line"
                               >
                                 {item.title}
                               </h3>
@@ -4609,7 +4609,7 @@ const getIndividualButtonStyle = (btn: any) => {
                               ) : (
                                 <IconPreview
                                   data={item.icon}
-                                  className="text-2xl whitespace-pre-line w-full md:w-auto"
+                                  className="text-2xl whitespace-pre-line"
                                  style={getIconStyle(item, block)} />
                               )}
                             </div>
@@ -4658,7 +4658,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     ></span>
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line w-full md:w-auto"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4707,7 +4707,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         <div className="flex items-center justify-between mb-3 md:mb-4 whitespace-pre-line">
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="text-xl md:text-2xl font-bold whitespace-pre-line w-full md:w-auto"
+                            className="text-xl md:text-2xl font-bold whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
@@ -4773,7 +4773,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     {block.title && (
                       <h2
                         style={getTitleStyle(block)}
-                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
+                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                           __html: (block.title || "").replace(
                             "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4825,7 +4825,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           className="relative w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 z-10 text-primary whitespace-pre-line"
                         >
                           <span
-                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-pre-line w-full md:w-auto"
+                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-pre-line"
                             translate="no"
                             aria-hidden="true"
                             style={{ fontVariationSettings: "'FILL' 1" }}
@@ -4869,7 +4869,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   )}
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line w-full md:w-auto"
+                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.titlePart1}
@@ -4889,7 +4889,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </h1>
                   ) : (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line w-full md:w-auto"
+                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
                       style={getTitleStyle(block)}
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
@@ -4944,7 +4944,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
-                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto">
+                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
                     {block.title}
                   </h2>
                   <div
@@ -4962,9 +4962,9 @@ const getIndividualButtonStyle = (btn: any) => {
                       ></div>
                       <IconPreview
                         data={block.items[0].icon || "school"}
-                        className="text-primary text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
+                        className="text-primary text-4xl mb-6 whitespace-pre-line"
                        style={getIconStyle(null, block)} />
-                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line w-full md:w-auto">
+                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
                         {block.items[0].title}
                       </h3>
                       <p className="text-on-surface-variant mb-8 whitespace-pre-line">
@@ -4973,7 +4973,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       <div className="space-y-6 whitespace-pre-line">
                         <div className="flex items-end gap-3 whitespace-pre-line">
                           <span
-                            className="text-4xl font-extrabold text-gold whitespace-pre-line w-full md:w-auto"
+                            className="text-4xl font-extrabold text-gold whitespace-pre-line"
                             style={{ color: "#D4AF37" }}
                           >
                             {block.items[0].stat}
@@ -5001,12 +5001,12 @@ const getIndividualButtonStyle = (btn: any) => {
                       <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-pre-line"></div>
                       <IconPreview
                         data={block.items[1].icon || "star"}
-                        className="text-gold text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
+                        className="text-gold text-4xl mb-6 whitespace-pre-line"
                         style={{ ...getIconStyle(null, block), fontVariationSettings: "'FILL' 1",
                           color: "#D4AF37",
                         }}
                       />
-                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-pre-line w-full md:w-auto">
+                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-pre-line">
                         {block.items[1].title}
                       </h3>
                       <p className="text-primary-fixed mb-8 whitespace-pre-line">
@@ -5019,7 +5019,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
                           >
                             <div
-                              className="text-2xl font-bold text-gold whitespace-pre-line w-full md:w-auto"
+                              className="text-2xl font-bold text-gold whitespace-pre-line"
                               style={{ color: "#D4AF37" }}
                             >
                               {stat.value}
@@ -5048,9 +5048,9 @@ const getIndividualButtonStyle = (btn: any) => {
                       <div className="w-full md:w-auto flex-1">
                         <IconPreview
                           data={block.items[2].icon || "analytics"}
-                          className="text-primary text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
+                          className="text-primary text-4xl mb-6 whitespace-pre-line"
                          style={getIconStyle(null, block)} />
-                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line w-full md:w-auto">
+                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
                           {block.items[2].title}
                         </h3>
                         <p className="text-on-surface-variant mb-6 whitespace-pre-line">
@@ -5104,7 +5104,7 @@ const getIndividualButtonStyle = (btn: any) => {
               >
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
                   <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                    <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto">
+                    <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
                       {block.title}
                     </h2>
                     <p className="text-body-lg text-on-surface-variant whitespace-pre-line">
@@ -5189,7 +5189,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           {block.badge}
                         </span>
                       )}
-                      <h2 className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line w-full md:w-auto">
+                      <h2 className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line">
                         {block.title}
                       </h2>
                       <p className="text-primary-fixed mb-10 text-lg whitespace-pre-line">
@@ -5204,7 +5204,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           >
                             <IconPreview
                               data={item.icon || "science"}
-                              className="text-gold text-3xl whitespace-pre-line w-full md:w-auto"
+                              className="text-gold text-3xl whitespace-pre-line"
                               style={{ ...getIconStyle(item, block), color: "#D4AF37" }}
                             />
                             <div>
@@ -5258,7 +5258,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div>
                   <h2
                     style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5276,7 +5276,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       <div key={i} style={getCardStyle(item, block)}>
                         <div
                           style={getCardTitleStyle(item, block)}
-                          className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-secondary-fixed mb-1 md:mb-2 whitespace-pre-line w-full md:w-auto"
+                          className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-secondary-fixed mb-1 md:mb-2 whitespace-pre-line"
                         >
                           {item.value}
                         </div>
@@ -5333,7 +5333,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     ></span>
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line w-full md:w-auto"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5345,7 +5345,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   <div className="flex gap-2 md:gap-4 whitespace-pre-line">
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
                       <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line w-full md:w-auto"
+                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -5354,7 +5354,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </button>
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
                       <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line w-full md:w-auto"
+                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -5435,7 +5435,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
-                      className="font-display-lg text-display-lg mb-6 text-white whitespace-pre-line w-full md:w-auto"
+                      className="font-display-lg text-display-lg mb-6 text-white whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5508,7 +5508,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5545,7 +5545,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           )}
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
+                            className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
@@ -5589,7 +5589,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   >
                     {block.title && (
                       <h2
-                        className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
+                        className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
                         style={getTitleStyle(block)}
                       >
                         {block.title}
@@ -5629,13 +5629,13 @@ const getIndividualButtonStyle = (btn: any) => {
                                 item.icon ||
                                 (isSecondary ? "visibility" : "flag")
                               }
-                              className="text-4xl whitespace-pre-line w-full md:w-auto"
+                              className="text-4xl whitespace-pre-line"
                              style={getIconStyle(null, block)} />
                           )}
                         </div>
                         <h2
                           style={getCardTitleStyle(item, block)}
-                          className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
                         >
                           {item.title}
                         </h2>
@@ -5668,7 +5668,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5712,7 +5712,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         )}
                         <h4
                           style={getCardTitleStyle(item, block)}
-                          className="font-headline-md text-headline-md text-text-main mb-2 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-md text-headline-md text-text-main mb-2 whitespace-pre-line"
                         >
                           {item.title}
                         </h4>
@@ -5758,7 +5758,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       {block.title && (
                         <h2
                           style={getTitleStyle(block)}
-                          className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line"
                           dangerouslySetInnerHTML={{
                             __html: (block.title || "").replace(
                               "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5809,7 +5809,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div className={getHeroInnerClass(block, "max-w-3xl")}>
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
+                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.titlePart1 && (
@@ -5826,7 +5826,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </h1>
                   ) : (
                     <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
+                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
                       style={getTitleStyle(block)}
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
@@ -6060,7 +6060,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`relative z-10 layout-content-container w-full max-w-[1200px] px-6 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
               >
                 <h1
-                  className="text-2xl md:text-5xl font-black text-white mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
+                  className="text-2xl md:text-5xl font-black text-white mb-4 tracking-tight whitespace-pre-line"
                   style={getTitleStyle(block)}
                   dangerouslySetInnerHTML={{
                     __html: (block.title || "").replace(
@@ -6101,7 +6101,7 @@ const getIndividualButtonStyle = (btn: any) => {
                      style={getIconStyle(block, block)} />
                   )}
                   <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
+                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Rektör"}
@@ -6122,7 +6122,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       <span className="inline-block px-3 py-1 rounded bg-[#bd0f2c] text-white text-xs font-bold uppercase tracking-widest whitespace-pre-line">
                         {getValidText(block.badge, "Rektörlük Makamı")}
                       </span>
-                      <h3 style={getStyle(block, "name")} className="text-3xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto">
+                      <h3 style={getStyle(block, "name")} className="text-3xl font-bold text-slate-900 dark:text-white whitespace-pre-line">
                         <span dangerouslySetInnerHTML={{ __html: getValidText(block.name, "Prof. Dr. Ahmet Yılmaz") }} />
                       </h3>
                       <p style={getStyle(block, "role")} className="text-[#bd0f2c] font-bold text-lg whitespace-pre-line">
@@ -6205,7 +6205,7 @@ const getIndividualButtonStyle = (btn: any) => {
                      style={getIconStyle(block, block)} />
                   )}
                   <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
+                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Rektör Yardımcıları & Genel Sekreter"}
@@ -6291,7 +6291,7 @@ const getIndividualButtonStyle = (btn: any) => {
                        style={getIconStyle(block, block)} />
                     )}
                     <h2
-                      className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
+                      className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Fakülte Dekanları"}
@@ -6384,7 +6384,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </div>
                   )}
                   <h1
-                    className="font-display-lg text-display-lg text-on-background whitespace-pre-line w-full md:w-auto"
+                    className="font-display-lg text-display-lg text-on-background whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -6476,7 +6476,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl mx-auto`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Holistik Eğitim Modelimiz"}
@@ -6515,7 +6515,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                  style={getIconStyle(item, block)} />
                               )}
                               <h3
-                                className="font-headline-md text-headline-md text-on-primary mb-2 whitespace-pre-line w-full md:w-auto"
+                                className="font-headline-md text-headline-md text-on-primary mb-2 whitespace-pre-line"
                                 style={getCardTitleStyle(item, block)}
                               >
                                 {item.title}
@@ -6570,7 +6570,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                style={getIconStyle(item, block)} />
                             )}
                             <h3
-                              className="font-headline-md text-headline-md text-on-background mb-2 whitespace-pre-line w-full md:w-auto"
+                              className="font-headline-md text-headline-md text-on-background mb-2 whitespace-pre-line"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6641,7 +6641,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
                   <div className={getHeroInnerClass(block, "max-w-2xl")}>
                     <h2
-                      className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line w-full md:w-auto"
+                      className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Geleceğe Hazırlayan Branşlar"}
@@ -6710,20 +6710,13 @@ const getIndividualButtonStyle = (btn: any) => {
           return (
             <header
               key={index}
-              className="relative w-full min-h-[614px] flex items-center justify-center bg-surface-container-low overflow-hidden whitespace-pre-line"
+              className="relative w-full py-24 md:py-32 bg-surface-container-low overflow-hidden whitespace-pre-line"
               style={getStyle(block, "container")}
             >
-              <div className="absolute inset-0 z-0 opacity-40 whitespace-pre-line">
-                <div
-                  className="w-full h-full bg-cover bg-center whitespace-pre-line"
-                  style={getImageStyle(block, "image")}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-surface-background via-surface-background/80 to-transparent whitespace-pre-line"></div>
-              </div>
               <div
-                className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center`}
+                className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}
               >
-                <div className="col-span-1 md:col-span-7 lg:col-span-6 space-y-6 whitespace-pre-line">
+                <div className="space-y-6 whitespace-pre-line">
                   {block.badge && (
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 whitespace-pre-line">
                       <span
@@ -6740,7 +6733,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     </div>
                   )}
                   <h1
-                    className="font-display-lg text-display-lg text-on-surface whitespace-pre-line w-full md:w-auto"
+                    className="font-display-lg text-display-lg text-on-surface whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -6782,9 +6775,42 @@ const getIndividualButtonStyle = (btn: any) => {
                       })}
                     </div>
                   )}
+
+                </div>
+                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-sm group whitespace-pre-line">
+                  <div
+                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
+                    style={getImageStyle(block, "image")}
+                  ></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent whitespace-pre-line"></div>
+                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
+                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
+                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
+                        <div className="flex items-center gap-3 whitespace-pre-line">
+                          <span
+                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            {block.imageBadgeIcon || "extension"}
+                          </span>
+                          <div>
+                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
+                              {block.imageBadgeTitle}
+                            </p>
+                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
+                              {block.imageBadgeDesc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
             </header>
+
           );
 
         case "primary_school_bento":
@@ -6801,7 +6827,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Eğitim Yaklaşımımız"}
@@ -6845,7 +6871,7 @@ const getIndividualButtonStyle = (btn: any) => {
                               )}
                             </div>
                             <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
+                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6893,7 +6919,7 @@ const getIndividualButtonStyle = (btn: any) => {
                               )}
                             </div>
                             <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
+                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6934,7 +6960,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         </div>
                         <div>
                           <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
+                            className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -6962,23 +6988,17 @@ const getIndividualButtonStyle = (btn: any) => {
             className="relative w-full bg-surface-container-low overflow-hidden py-24 md:py-32 whitespace-pre-line"
             style={getStyle(block, "container")}
           >
-            <div className="absolute inset-0 z-0 whitespace-pre-line">
-              <div className="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/80 to-transparent z-10 whitespace-pre-line"></div>
-              <div
-                className="w-full h-full bg-cover bg-center whitespace-pre-line"
-                style={getImageStyle(block, "image")}
-              ></div>
-            </div>
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 flex flex-col items-start w-full md:w-2/3`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}
             >
+              <div className="flex flex-col items-start">
               {block.badge && (
                 <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-label-md text-label-md mb-6 border border-primary/20 whitespace-pre-line">
                   {block.badge}
                 </span>
               )}
               <h1
-                className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
+                className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.titlePart1 || block.title}{" "}
@@ -7032,9 +7052,43 @@ const getIndividualButtonStyle = (btn: any) => {
                   })}
                 </div>
               )}
-            </div>
-          </section>
-        );
+
+                </div>
+                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-sm group whitespace-pre-line">
+                  <div
+                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
+                    style={getImageStyle(block, "image")}
+                  ></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent whitespace-pre-line"></div>
+                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
+                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
+                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
+                        <div className="flex items-center gap-3 whitespace-pre-line">
+                          <span
+                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            {block.imageBadgeIcon || "extension"}
+                          </span>
+                          <div>
+                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
+                              {block.imageBadgeTitle}
+                            </p>
+                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
+                              {block.imageBadgeDesc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            </section>
+
+          );
       }
 
       if (block.type === "middle_school_pedagogy") {
@@ -7057,7 +7111,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 </div>
                 <div className="md:col-span-7 order-1 md:order-2 md:pl-12 whitespace-pre-line">
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-6 whitespace-pre-line w-full md:w-auto"
+                    className="font-headline-xl text-headline-xl text-on-surface mb-6 whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -7092,13 +7146,13 @@ const getIndividualButtonStyle = (btn: any) => {
                             ) : (
                               <IconPreview
                                 data={item.icon || "psychology"}
-                                className="text-2xl whitespace-pre-line w-full md:w-auto"
+                                className="text-2xl whitespace-pre-line"
                                 style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                               />
                             )}
                           </div>
                           <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 text-[20px] whitespace-pre-line w-full md:w-auto"
+                            className="font-headline-md text-headline-md text-on-surface mb-2 text-[20px] whitespace-pre-line"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -7135,7 +7189,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl mx-auto`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
+                  className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -7170,7 +7224,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             </span>
                           )}
                           <h3
-                            className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line w-full md:w-auto"
+                            className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -7221,7 +7275,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       </div>
                       <div>
                         <h3
-                          className="font-headline-md text-headline-md text-on-surface mb-2 text-[18px] whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-md text-headline-md text-on-surface mb-2 text-[18px] whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -7268,7 +7322,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </div>
                 )}
                 <h1
-                  className="font-display-lg text-display-lg text-main whitespace-pre-line w-full md:w-auto"
+                  className="font-display-lg text-display-lg text-main whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1 || block.title}{" "}
@@ -7339,6 +7393,30 @@ const getIndividualButtonStyle = (btn: any) => {
                   style={getImageStyle(block, "image")}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent whitespace-pre-line"></div>
+                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
+                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
+                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
+                        <div className="flex items-center gap-3 whitespace-pre-line">
+                          <span
+                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            {block.imageBadgeIcon || "extension"}
+                          </span>
+                          <div>
+                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
+                              {block.imageBadgeTitle}
+                            </p>
+                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
+                              {block.imageBadgeDesc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
               </div>
             </div>
           </section>
@@ -7359,7 +7437,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-main mb-4 whitespace-pre-line w-full md:w-auto"
+                  className="font-headline-xl text-headline-xl text-main mb-4 whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title || "Akademik Seçenekler"}
@@ -7411,7 +7489,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           )}
                         </div>
                         <h3
-                          className="font-headline-md text-headline-md text-main whitespace-pre-line w-full md:w-auto"
+                          className="font-headline-md text-headline-md text-main whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -7494,7 +7572,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </span>
                 )}
                 <h1
-                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-pre-line w-full md:w-auto"
+                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1}{" "}
@@ -7559,7 +7637,7 @@ const getIndividualButtonStyle = (btn: any) => {
               <div
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
-                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line w-full md:w-auto">
+                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
                   {block.title}
                 </h2>
                 <div className="w-24 h-1 bg-[#D4AF37] mx-auto rounded-full whitespace-pre-line"></div>
@@ -7588,7 +7666,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           ) : (
                             <IconPreview
                               data={item.icon || "star"}
-                              className="text-[#D4AF37] text-4xl whitespace-pre-line w-full md:w-auto"
+                              className="text-[#D4AF37] text-4xl whitespace-pre-line"
                               style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                             />
                           )}
@@ -7610,7 +7688,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                 key={i}
                                 className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
                               >
-                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-pre-line w-full md:w-auto">
+                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-pre-line">
                                   {st.value}
                                 </div>
                                 <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
@@ -7652,7 +7730,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             ) : (
                               <IconPreview
                                 data={item.icon || "analytics"}
-                                className="text-[#1d4eca] text-4xl whitespace-pre-line w-full md:w-auto"
+                                className="text-[#1d4eca] text-4xl whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
@@ -7713,7 +7791,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           ) : (
                             <IconPreview
                               data={item.icon || "school"}
-                              className="text-[#1d4eca] text-4xl whitespace-pre-line w-full md:w-auto"
+                              className="text-[#1d4eca] text-4xl whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           )}
                         </div>
@@ -7730,7 +7808,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           {item.statValue && (
                             <div className="flex flex-col gap-1 whitespace-pre-line">
                               <div className="flex items-end gap-3 whitespace-pre-line">
-                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-pre-line w-full md:w-auto">
+                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-pre-line">
                                   {item.statValue}
                                 </span>
                                 {item.statLabel && (
@@ -7772,7 +7850,7 @@ const getIndividualButtonStyle = (btn: any) => {
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line w-full md:w-auto">
+                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
                     {block.title}
                   </h2>
                   {block.subtitle && (
@@ -7860,7 +7938,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         {block.badge}
                       </span>
                     )}
-                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-pre-line w-full md:w-auto">
+                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-pre-line">
                       {block.title}
                     </h2>
                     {block.subtitle && (
@@ -7890,7 +7968,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             ) : (
                               <IconPreview
                                 data={item.icon || "science"}
-                                className="text-[#D4AF37] text-3xl whitespace-pre-line w-full md:w-auto"
+                                className="text-[#D4AF37] text-3xl whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
@@ -7959,7 +8037,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   </span>
                 )}
                 <h1
-                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
+                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -7987,7 +8065,7 @@ const getIndividualButtonStyle = (btn: any) => {
             >
               <div className="w-full md:w-auto flex-1">
                 <h2
-                  className="text-2xl font-bold text-slate-800 whitespace-pre-line w-full md:w-auto"
+                  className="text-2xl font-bold text-slate-800 whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -8132,7 +8210,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                 {day.date}
                               </span>
                               <span
-                                className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"} w-full md:w-auto`}
+                                className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"}`}
                               >
                                 Kapalı
                               </span>
@@ -8259,7 +8337,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   {item.icon && (
                     <IconPreview
                       data={item.icon}
-                      className="text-4xl whitespace-pre-line w-full md:w-auto"
+                      className="text-4xl whitespace-pre-line"
                       style={{ ...getIconStyle(item, block), color: item.iconColor || "var(--color-primary)",
                       }}
                     />
@@ -8301,7 +8379,7 @@ const getIndividualButtonStyle = (btn: any) => {
               className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"}`}
             >
               <h1
-                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-pre-line w-full md:w-auto"
+                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.title}
@@ -8337,7 +8415,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     chevron_left
                   </span>
                 </button>
-                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-pre-line w-full md:w-auto">
+                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-pre-line">
                   {block.month || "Ekim 2023"}
                 </h2>
                 <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-pre-line">
@@ -8560,7 +8638,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         />
                       </div>
                       <h3
-                        className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto"
+                        className="font-headline-md text-headline-md text-on-surface whitespace-pre-line"
                         style={getCardTitleStyle(legend, block)}
                       >
                         {legend.title}
@@ -8603,7 +8681,7 @@ const getIndividualButtonStyle = (btn: any) => {
           >
             <header className="text-center mb-section-gap whitespace-pre-line">
               <h1
-                className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line w-full md:w-auto"
+                className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.title || "2026-2027 Eğitim-Öğretim Yılı Ücretleri"}
@@ -8619,7 +8697,7 @@ const getIndividualButtonStyle = (btn: any) => {
 
             {/* Pricing Cards */}
             <section className="mb-section-gap whitespace-pre-line">
-              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-pre-line w-full md:w-auto">
+              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-pre-line">
                 {block.tableTitle || "Eğitim Kadranları Ücret Tablosu"}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter whitespace-pre-line">
@@ -8633,11 +8711,11 @@ const getIndividualButtonStyle = (btn: any) => {
                     <div className="flex items-center gap-3 mb-6 whitespace-pre-line">
                       <IconPreview
                         data={item.icon || "school"}
-                        className="text-primary text-3xl w-full md:w-auto"
+                        className="text-primary text-3xl"
                         style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                       />
                       <h3
-                        className="font-headline-md text-headline-md text-text-main whitespace-pre-line w-full md:w-auto"
+                        className="font-headline-md text-headline-md text-text-main whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -8711,7 +8789,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       percent
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line w-full md:w-auto">
+                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line">
                     {block.discountsTitle || "İndirimler"}
                   </h2>
                 </div>
@@ -8749,7 +8827,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       account_balance
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-pre-line w-full md:w-auto">
+                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-pre-line">
                     {block.paymentsTitle || "Ödeme Seçenekleri"}
                   </h2>
                 </div>

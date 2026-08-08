@@ -151,6 +151,17 @@ export default function FieldStylePicker({
                       className="w-full text-xs p-1 border border-slate-200 rounded"
                       placeholder="Varsayılan"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = e => handleChange(`${fieldKey}Color`, e.target.value);
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
                 </div>
                 
@@ -172,6 +183,17 @@ export default function FieldStylePicker({
                       className="w-full text-xs p-1 border border-slate-200 rounded"
                       placeholder="Şeffaf"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = e => handleChange(`${fieldKey}BackgroundColor`, e.target.value);
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
                 </div>
               </div>
@@ -184,13 +206,13 @@ export default function FieldStylePicker({
                   <div className="grid grid-cols-2 gap-3 mb-3">
                   <SliderInput 
                     label="Boyut (Masaüstü, px)" 
-                    value={size ? parseInt(size as string) || 0 : ''} 
+                    value={size ? parseInt(size as string) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}Size`, val ? val + 'px' : '')} 
                     min={10} max={72} 
                   />
                   <SliderInput 
                     label="Boyut (Mobil, px)" 
-                    value={mobileSize ? parseInt(mobileSize as string) || 0 : ''} 
+                    value={mobileSize ? parseInt(mobileSize as string) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobileSize`, val ? val + 'px' : '')} 
                     min={10} max={72} 
                   />
@@ -250,7 +272,7 @@ export default function FieldStylePicker({
                 </label>
                 <SliderInput 
                   label="Radius (px)" 
-                  value={borderRadius ? parseInt(borderRadius as string, 10) || 0 : ''} 
+                  value={borderRadius ? parseInt(borderRadius as string, 10) || 0 : ''}
                   onChange={(val: any) => handleChange(`${fieldKey}BorderRadius`, val)} 
                   min={0} max={100} 
                 />
@@ -263,25 +285,25 @@ export default function FieldStylePicker({
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   <SliderInput 
                     label="Üst (Masaüstü, px)" 
-                    value={marginTop ? parseInt(marginTop as string, 10) || 0 : ''} 
+                    value={marginTop ? parseInt(marginTop as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MarginTop`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Alt (Masaüstü, px)" 
-                    value={marginBottom ? parseInt(marginBottom as string, 10) || 0 : ''} 
+                    value={marginBottom ? parseInt(marginBottom as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MarginBottom`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Üst (Mobil, px)" 
-                    value={mobileMarginTop ? parseInt(mobileMarginTop as string, 10) || 0 : ''} 
+                    value={mobileMarginTop ? parseInt(mobileMarginTop as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobileMarginTop`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Alt (Mobil, px)" 
-                    value={mobileMarginBottom ? parseInt(mobileMarginBottom as string, 10) || 0 : ''} 
+                    value={mobileMarginBottom ? parseInt(mobileMarginBottom as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobileMarginBottom`, val)} 
                     min={0} max={120} 
                   />
@@ -295,52 +317,52 @@ export default function FieldStylePicker({
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   <SliderInput 
                     label="Üst (Masaüstü, px)" 
-                    value={paddingTop ? parseInt(paddingTop as string, 10) || 0 : ''} 
+                    value={paddingTop ? parseInt(paddingTop as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingTop`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Üst (Mobil, px)" 
-                    value={mobilePaddingTop ? parseInt(mobilePaddingTop as string, 10) || 0 : ''} 
+                    value={mobilePaddingTop ? parseInt(mobilePaddingTop as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingTop`, val)} 
                     min={0} max={120} 
                   />
                   
                   <SliderInput 
                     label="Alt (Masaüstü, px)" 
-                    value={paddingBottom ? parseInt(paddingBottom as string, 10) || 0 : ''} 
+                    value={paddingBottom ? parseInt(paddingBottom as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingBottom`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Alt (Mobil, px)" 
-                    value={mobilePaddingBottom ? parseInt(mobilePaddingBottom as string, 10) || 0 : ''} 
+                    value={mobilePaddingBottom ? parseInt(mobilePaddingBottom as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingBottom`, val)} 
                     min={0} max={120} 
                   />
                   
                   <SliderInput 
                     label="Sol (Masaüstü, px)" 
-                    value={paddingLeft ? parseInt(paddingLeft as string, 10) || 0 : ''} 
+                    value={paddingLeft ? parseInt(paddingLeft as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingLeft`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Sol (Mobil, px)" 
-                    value={mobilePaddingLeft ? parseInt(mobilePaddingLeft as string, 10) || 0 : ''} 
+                    value={mobilePaddingLeft ? parseInt(mobilePaddingLeft as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingLeft`, val)} 
                     min={0} max={120} 
                   />
                   
                   <SliderInput 
                     label="Sağ (Masaüstü, px)" 
-                    value={paddingRight ? parseInt(paddingRight as string, 10) || 0 : ''} 
+                    value={paddingRight ? parseInt(paddingRight as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}PaddingRight`, val)} 
                     min={0} max={120} 
                   />
                   <SliderInput 
                     label="Sağ (Mobil, px)" 
-                    value={mobilePaddingRight ? parseInt(mobilePaddingRight as string, 10) || 0 : ''} 
+                    value={mobilePaddingRight ? parseInt(mobilePaddingRight as string, 10) || 0 : ''}
                     onChange={(val: any) => handleChange(`${fieldKey}MobilePaddingRight`, val)} 
                     min={0} max={120} 
                   />

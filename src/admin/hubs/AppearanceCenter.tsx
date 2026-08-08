@@ -560,6 +560,17 @@ export default function AppearanceCenter() {
                       placeholder="#0a192f"
                       className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setAnnouncementData({ ...announcementData, announcementBgColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
 
                   <div>
@@ -612,6 +623,17 @@ export default function AppearanceCenter() {
                       placeholder="#ffffff"
                       className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
                     />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setAnnouncementData({ ...announcementData, announcementTextColor: e.target.value });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                   </div>
 
                   <div>
@@ -665,7 +687,7 @@ export default function AppearanceCenter() {
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Logo Boyutu (Yükseklik: {headerData.logoHeight || 48}px)</label>
                       <input 
                         type="range" min="20" max="120" 
-                        value={headerData.logoHeight || 48} 
+                        value={headerData.logoHeight || 48}
                         onChange={(e) => setHeaderData({...headerData, logoHeight: parseInt(e.target.value)})} 
                         className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer" 
                       />
@@ -704,7 +726,7 @@ export default function AppearanceCenter() {
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Yazı Boyutu</label>
                         <select 
-                          value={headerData.menuTypography?.topMenuFontSize || 'text-sm'} 
+                          value={headerData.menuTypography?.topMenuFontSize || 'text-sm'}
                           onChange={(e) => setHeaderData({...headerData, menuTypography: {...(headerData.menuTypography || {}), topMenuFontSize: e.target.value}})}
                           className="w-full px-3 py-2 border rounded-lg text-sm"
                         >
@@ -718,7 +740,7 @@ export default function AppearanceCenter() {
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Yazı Kalınlığı</label>
                         <select 
-                          value={headerData.menuTypography?.topMenuFontWeight || 'font-bold'} 
+                          value={headerData.menuTypography?.topMenuFontWeight || 'font-bold'}
                           onChange={(e) => setHeaderData({...headerData, menuTypography: {...(headerData.menuTypography || {}), topMenuFontWeight: e.target.value}})}
                           className="w-full px-3 py-2 border rounded-lg text-sm"
                         >
@@ -738,7 +760,7 @@ export default function AppearanceCenter() {
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Yazı Boyutu</label>
                         <select 
-                          value={headerData.menuTypography?.subMenuFontSize || 'text-sm'} 
+                          value={headerData.menuTypography?.subMenuFontSize || 'text-sm'}
                           onChange={(e) => setHeaderData({...headerData, menuTypography: {...(headerData.menuTypography || {}), subMenuFontSize: e.target.value}})}
                           className="w-full px-3 py-2 border rounded-lg text-sm"
                         >
@@ -751,7 +773,7 @@ export default function AppearanceCenter() {
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Yazı Kalınlığı</label>
                         <select 
-                          value={headerData.menuTypography?.subMenuFontWeight || 'font-medium'} 
+                          value={headerData.menuTypography?.subMenuFontWeight || 'font-medium'}
                           onChange={(e) => setHeaderData({...headerData, menuTypography: {...(headerData.menuTypography || {}), subMenuFontWeight: e.target.value}})}
                           className="w-full px-3 py-2 border rounded-lg text-sm"
                         >
@@ -774,6 +796,17 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-3">
                       <input type="color" value={headerData.menuColors?.normal || '#475569'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), normal: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
                       <input type="text" value={headerData.menuColors?.normal || '#475569'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), normal: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), normal: e.target.value}});
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
                   <div>
@@ -781,6 +814,17 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-3">
                       <input type="color" value={headerData.menuColors?.hover || '#2563eb'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), hover: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
                       <input type="text" value={headerData.menuColors?.hover || '#2563eb'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), hover: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), hover: e.target.value}});
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
                   <div>
@@ -788,6 +832,17 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-3">
                       <input type="color" value={headerData.menuColors?.active || '#1d4ed8'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), active: e.target.value}})} className="w-10 h-10 rounded cursor-pointer p-0.5 bg-white border border-slate-200" />
                       <input type="text" value={headerData.menuColors?.active || '#1d4ed8'} onChange={(e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), active: e.target.value}})} className="w-full px-3 py-2 border rounded-lg text-sm uppercase" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setHeaderData({...headerData, menuColors: {...(headerData.menuColors || {}), active: e.target.value}});
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
                 </div>
@@ -838,7 +893,7 @@ export default function AppearanceCenter() {
                             {renderUrlEditor(link.url || "", (val) => handleHeaderLinkChange(index, "url", val))}
                           </div>
                           <select 
-                            value={link.type || 'normal'} 
+                            value={link.type || 'normal'}
                             onChange={(e) => handleHeaderLinkChange(index, 'type', e.target.value)}
                             className="px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                           >
@@ -1251,7 +1306,7 @@ export default function AppearanceCenter() {
                         </label>
                         <input 
                           type="range" min="20" max="120" 
-                          value={footerData.logoHeight || 64} 
+                          value={footerData.logoHeight || 64}
                           onChange={(e) => setFooterData({...footerData, logoHeight: parseInt(e.target.value)})} 
                           className="w-full accent-blue-600 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer" 
                         />
@@ -1261,7 +1316,7 @@ export default function AppearanceCenter() {
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Marka Adı</label>
                         <input 
                           type="text" 
-                          value={footerData.brandName || ''} 
+                          value={footerData.brandName || ''}
                           onChange={(e) => setFooterData({...footerData, brandName: e.target.value})} 
                           className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium" 
                           placeholder="Dost Koleji"
@@ -1272,7 +1327,7 @@ export default function AppearanceCenter() {
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Marka Açıklaması</label>
                       <textarea 
-                        value={footerData.brandDesc || ''} 
+                        value={footerData.brandDesc || ''}
                         onChange={(e) => setFooterData({...footerData, brandDesc: e.target.value})} 
                         className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm h-36 resize-none font-medium"
                         placeholder="Kurum ile ilgili kısa alt bilgi açıklaması..."
@@ -1328,16 +1383,27 @@ export default function AppearanceCenter() {
                       <div className="flex items-center gap-2">
                         <input 
                           type="color" 
-                          value={footerData.newsletterBgColor || '#ffffff'} 
+                          value={footerData.newsletterBgColor || '#ffffff'}
                           onChange={(e) => setFooterData({...footerData, newsletterBgColor: e.target.value})}
                           className="w-8 h-8 p-0 border border-slate-300 rounded cursor-pointer shrink-0" 
                         />
                         <input 
                           type="text" 
-                          value={footerData.newsletterBgColor || '#ffffff'} 
+                          value={footerData.newsletterBgColor || '#ffffff'}
                           onChange={(e) => setFooterData({...footerData, newsletterBgColor: e.target.value})}
                           className="w-full px-3 py-1.5 border rounded text-xs font-mono"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({...footerData, newsletterBgColor: e.target.value});
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </div>
                     <div>
@@ -1345,16 +1411,27 @@ export default function AppearanceCenter() {
                       <div className="flex items-center gap-2">
                         <input 
                           type="color" 
-                          value={footerData.newsletterTextColor || '#0f172a'} 
+                          value={footerData.newsletterTextColor || '#0f172a'}
                           onChange={(e) => setFooterData({...footerData, newsletterTextColor: e.target.value})}
                           className="w-8 h-8 p-0 border border-slate-300 rounded cursor-pointer shrink-0" 
                         />
                         <input 
                           type="text" 
-                          value={footerData.newsletterTextColor || '#0f172a'} 
+                          value={footerData.newsletterTextColor || '#0f172a'}
                           onChange={(e) => setFooterData({...footerData, newsletterTextColor: e.target.value})}
                           className="w-full px-3 py-1.5 border rounded text-xs font-mono"
                         />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({...footerData, newsletterTextColor: e.target.value});
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                       </div>
                     </div>
                   </div>
@@ -1391,7 +1468,7 @@ export default function AppearanceCenter() {
                           <span className="text-xs font-extrabold bg-blue-100 text-blue-700 px-2 py-1 rounded">Sütun {colIdx + 1}</span>
                           <input 
                             type="text" 
-                            value={col.title || ''} 
+                            value={col.title || ''}
                             onChange={(e) => {
                               const newCols = [...(footerData.columns || [])];
                               newCols[colIdx].title = e.target.value;
@@ -1472,7 +1549,7 @@ export default function AppearanceCenter() {
                             <div key={linkIdx} className="flex flex-col md:flex-row items-stretch md:items-center gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
                               <input 
                                 type="text" 
-                                value={link.label || ''} 
+                                value={link.label || ''}
                                 onChange={(e) => {
                                   const newCols = [...(footerData.columns || [])];
                                   newCols[colIdx].links[linkIdx].label = e.target.value;
@@ -1546,7 +1623,7 @@ export default function AppearanceCenter() {
                       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
                         <input 
                           type="text" 
-                          value={item.label || ''} 
+                          value={item.label || ''}
                           onChange={(e) => {
                             const newSocial = [...(footerData.socialLinks || [])];
                             newSocial[sIdx].label = e.target.value;
@@ -1578,7 +1655,7 @@ export default function AppearanceCenter() {
                       <div className="pt-2 border-t border-slate-100">
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Sosyal Medya İkonu</label>
                         <IconField 
-                          value={item.icon || ''} 
+                          value={item.icon || ''}
                           onChange={(val) => {
                             const newSocial = [...(footerData.socialLinks || [])];
                             newSocial[sIdx].icon = val;
@@ -1604,7 +1681,7 @@ export default function AppearanceCenter() {
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Copyright Metni</label>
                     <input 
                       type="text" 
-                      value={footerData.copyright || ''} 
+                      value={footerData.copyright || ''}
                       onChange={(e) => setFooterData({...footerData, copyright: e.target.value})} 
                       className="w-full px-3 py-2 border rounded-lg text-sm font-medium" 
                       placeholder="© 2024 Dost Koleji. Tüm Hakları Saklıdır."
@@ -1630,7 +1707,7 @@ export default function AppearanceCenter() {
                         <div key={idx} className="flex gap-2 bg-white p-2 border border-slate-200 rounded-lg">
                           <input 
                             type="text" 
-                            value={link.label || ''} 
+                            value={link.label || ''}
                             onChange={(e) => {
                               const newLinks = [...(footerData.legalLinks || [])];
                               newLinks[idx].label = e.target.value;
@@ -1674,7 +1751,7 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-2">
                       <input 
                         type="color" 
-                        value={footerData.styles?.backgroundColor || footerData.backgroundColor || '#f8fafc'} 
+                        value={footerData.styles?.backgroundColor || footerData.backgroundColor || '#f8fafc'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           backgroundColor: e.target.value,
@@ -1684,7 +1761,7 @@ export default function AppearanceCenter() {
                       />
                       <input 
                         type="text" 
-                        value={footerData.styles?.backgroundColor || footerData.backgroundColor || '#f8fafc'} 
+                        value={footerData.styles?.backgroundColor || footerData.backgroundColor || '#f8fafc'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           backgroundColor: e.target.value,
@@ -1692,6 +1769,21 @@ export default function AppearanceCenter() {
                         })}
                         className="w-full px-2 py-1 border rounded text-xs font-mono" 
                       />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({
+                          ...footerData, 
+                          backgroundColor: e.target.value,
+                          styles: { ...(footerData.styles || {}), backgroundColor: e.target.value }
+                        });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                     {/* Presets */}
                     <div className="flex gap-1.5 mt-2">
@@ -1722,7 +1814,7 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-2">
                       <input 
                         type="color" 
-                        value={footerData.styles?.titleColor || footerData.titleColor || '#0f172a'} 
+                        value={footerData.styles?.titleColor || footerData.titleColor || '#0f172a'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           titleColor: e.target.value,
@@ -1732,7 +1824,7 @@ export default function AppearanceCenter() {
                       />
                       <input 
                         type="text" 
-                        value={footerData.styles?.titleColor || footerData.titleColor || '#0f172a'} 
+                        value={footerData.styles?.titleColor || footerData.titleColor || '#0f172a'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           titleColor: e.target.value,
@@ -1740,6 +1832,21 @@ export default function AppearanceCenter() {
                         })}
                         className="w-full px-2 py-1 border rounded text-xs font-mono" 
                       />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({
+                          ...footerData, 
+                          titleColor: e.target.value,
+                          styles: { ...(footerData.styles || {}), titleColor: e.target.value }
+                        });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
 
@@ -1748,7 +1855,7 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-2">
                       <input 
                         type="color" 
-                        value={footerData.styles?.textColor || footerData.textColor || '#64748b'} 
+                        value={footerData.styles?.textColor || footerData.textColor || '#64748b'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           textColor: e.target.value,
@@ -1758,7 +1865,7 @@ export default function AppearanceCenter() {
                       />
                       <input 
                         type="text" 
-                        value={footerData.styles?.textColor || footerData.textColor || '#64748b'} 
+                        value={footerData.styles?.textColor || footerData.textColor || '#64748b'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           textColor: e.target.value,
@@ -1766,6 +1873,21 @@ export default function AppearanceCenter() {
                         })}
                         className="w-full px-2 py-1 border rounded text-xs font-mono" 
                       />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({
+                          ...footerData, 
+                          textColor: e.target.value,
+                          styles: { ...(footerData.styles || {}), textColor: e.target.value }
+                        });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
 
@@ -1774,7 +1896,7 @@ export default function AppearanceCenter() {
                     <div className="flex items-center gap-2">
                       <input 
                         type="color" 
-                        value={footerData.styles?.borderColor || footerData.borderColor || '#e2e8f0'} 
+                        value={footerData.styles?.borderColor || footerData.borderColor || '#e2e8f0'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           borderColor: e.target.value,
@@ -1784,7 +1906,7 @@ export default function AppearanceCenter() {
                       />
                       <input 
                         type="text" 
-                        value={footerData.styles?.borderColor || footerData.borderColor || '#e2e8f0'} 
+                        value={footerData.styles?.borderColor || footerData.borderColor || '#e2e8f0'}
                         onChange={(e) => setFooterData({
                           ...footerData, 
                           borderColor: e.target.value,
@@ -1792,6 +1914,21 @@ export default function AppearanceCenter() {
                         })}
                         className="w-full px-2 py-1 border rounded text-xs font-mono" 
                       />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const handler = (e) => setFooterData({
+                          ...footerData, 
+                          borderColor: e.target.value,
+                          styles: { ...(footerData.styles || {}), borderColor: e.target.value }
+                        });
+                                handler({ target: { value: "transparent" } } as any);
+                              }}
+                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                              title="Rengi Temizle (Şeffaf)"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
                     </div>
                   </div>
 
