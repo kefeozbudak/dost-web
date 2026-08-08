@@ -157,7 +157,7 @@ const ClubsGridBlock = ({
                     </span>
                   </div>
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-pre-line"
+                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-pre-line w-full md:w-auto"
                     style={getCardTitleStyle(item, block)}
                   >
                     {item.title}
@@ -218,7 +218,7 @@ const CareerHeroBlock = ({
         className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl mx-auto`}
       >
         <h1
-          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line"
+          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line w-full md:w-auto"
           style={getTitleStyle(block)}
         >
           {block.title || "Dost Koleji'nde Kariyer"}
@@ -289,7 +289,7 @@ const CareerBenefitsBlock = ({
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
         <h2
-          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-pre-line"
+          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-pre-line w-full md:w-auto"
           style={getTitleStyle(block)}
         >
           {block.title || "Neden Bize Katılmalısınız?"}
@@ -353,7 +353,7 @@ const CareerApplicationBlock = ({
         <div className="w-full lg:w-1/3 whitespace-pre-line">
           <div className="sticky top-24 whitespace-pre-line">
             <h2
-              className="font-bold text-2xl text-[#002147] mb-6 whitespace-pre-line"
+              className="font-bold text-2xl text-[#002147] mb-6 whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title || "Açık Pozisyonlar"}
@@ -451,7 +451,7 @@ const EduSystemHeroBlock = ({
         className={`relative z-20 w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} px-margin-mobile md:px-margin-desktop py-20 ${block.styles?.textAlign ? "" : "text-center"} text-white`}
       >
         <h1
-          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-pre-line"
+          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-pre-line w-full md:w-auto"
           style={getTitleStyle(block)}
         >
           {block.title || "Eğitim Sistemimiz"}
@@ -485,7 +485,7 @@ const EduSystemLevelsBlock = ({
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
+          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
           style={getTitleStyle(block)}
         >
           {block.title}
@@ -519,11 +519,11 @@ const EduSystemLevelsBlock = ({
               >
                 <IconPreview
                   data={item.icon || "school"}
-                  className="text-3xl transition-colors whitespace-pre-line"
+                  className="text-3xl transition-colors whitespace-pre-line w-full md:w-auto"
                  style={getIconStyle(item, block)} />
               </div>
               <h3
-                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
+                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line w-full md:w-auto"
                 style={getCardTitleStyle(item, block)}
               >
                 {item.title}
@@ -580,7 +580,7 @@ const EduSystemYadepBlock = ({
           className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
         >
           <h2
-            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
+            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
             style={getTitleStyle(block)}
           >
             {block.title}
@@ -627,11 +627,11 @@ const EduSystemYadepBlock = ({
                 >
                   <IconPreview
                     data={item.icon}
-                    className="text-3xl whitespace-pre-line"
+                    className="text-3xl whitespace-pre-line w-full md:w-auto"
                    style={getIconStyle(item, block)} />
                 </div>
                 <h3
-                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
+                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line w-full md:w-auto"
                   style={getCardTitleStyle(item, block)}
                 >
                   {item.title}
@@ -687,7 +687,7 @@ const EduSystemPhilosophyBlock = ({
                 {block.badge}
               </span>
               <h2
-                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-pre-line"
+                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-pre-line w-full md:w-auto"
                 style={getTitleStyle(block)}
               >
                 {block.title}
@@ -709,7 +709,7 @@ const EduSystemPhilosophyBlock = ({
                     </div>
                     <div>
                       <h4
-                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-pre-line"
+                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-pre-line w-full md:w-auto"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -742,13 +742,13 @@ const EduSystemPhilosophyBlock = ({
               <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-white/80 backdrop-blur-md p-6 rounded-xl border border-white shadow-lg max-w-xs hidden sm:block whitespace-pre-line">
                 <div className="flex items-center gap-3 mb-2 whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-secondary text-3xl whitespace-pre-line"
+                    className="material-symbols-outlined text-secondary text-3xl whitespace-pre-line w-full md:w-auto"
                     translate="no"
                     aria-hidden="true"
                   >
                     {block.cardIcon || "emoji_events"}
                   </span>
-                  <span className="font-headline-md font-bold text-text-main whitespace-pre-line">
+                  <span className="font-headline-md font-bold text-text-main whitespace-pre-line w-full md:w-auto">
                     {block.cardTitle}
                   </span>
                 </div>
@@ -790,7 +790,7 @@ const EduSystemCtaBlock = ({
         className={`max-w-4xl mx-auto px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}
       >
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line"
+          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line w-full md:w-auto"
           style={getTitleStyle(block)}
         >
           {block.title}
@@ -988,14 +988,14 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-4xl whitespace-pre-line"
+                className="material-symbols-outlined text-4xl whitespace-pre-line w-full md:w-auto"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line">
+            <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line w-full md:w-auto">
               Bursluluk Sınavı Başvurunuz Başarıyla Alındı!
             </h3>
             <p className="text-slate-600 max-w-md mx-auto text-sm leading-relaxed whitespace-pre-line">
@@ -1026,7 +1026,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line"
+                className="material-symbols-outlined text-3xl whitespace-pre-line w-full md:w-auto"
                 translate="no"
                 aria-hidden="true"
               >
@@ -1047,14 +1047,14 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           >
             <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line"
+                className="material-symbols-outlined text-3xl whitespace-pre-line w-full md:w-auto"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line">
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto">
               Başvurunuz Alındı
             </h3>
             <p className="font-body-md text-body-md text-text-muted whitespace-pre-line">
@@ -1129,7 +1129,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                           className="text-primary whitespace-pre-line"
                          style={getIconStyle(input, block)} />
                       )}
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto">
                         {input.label}
                       </h2>
                     </div>
@@ -1396,7 +1396,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                       >
                         explore
                       </span>
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto">
                         Kulüp Seçimi
                       </h2>
                     </div>
@@ -1551,7 +1551,7 @@ const ClubRegistrationFormBlock = ({
     >
       <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700 whitespace-pre-line">
         <div className={`mb-8 ${block.styles?.textAlign ? "" : "text-center"}`}>
-          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-pre-line">
+          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-pre-line w-full md:w-auto">
             {block.title || "Dost Koleji"}
           </h1>
           <p className="font-body-lg text-body-lg text-text-muted whitespace-pre-line">
@@ -1611,7 +1611,7 @@ const PreRegistrationFormBlock = ({
         >
           <div className="relative z-10 whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title || "ÖĞRENCİ ÖN KAYIT FORMU"}
@@ -1692,7 +1692,7 @@ const BurslulukHeroBlock = ({
             {block.badge || "2026-2027 EĞİTİM YILI"}
           </span>
           <h1
-            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line"
+            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line w-full md:w-auto"
             style={getTitleStyle(block)}
           >
             {block.title || "Akademik Başarıya Giden Yolunuz"}
@@ -1707,7 +1707,7 @@ const BurslulukHeroBlock = ({
           <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6 whitespace-pre-line">
             {stats.map((stat: any, idx: number) => (
               <div key={idx}>
-                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-pre-line">
+                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-pre-line w-full md:w-auto">
                   {stat.value}
                 </p>
                 <p className="text-sm opacity-80 whitespace-pre-line">
@@ -1830,7 +1830,7 @@ const BurslulukExamFormBlock = ({
         >
           <div className="relative z-10 whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title || "BURSLULUK SINAVI BAŞVURU FORMU"}
@@ -1942,7 +1942,7 @@ const BurslulukInfoCardsBlock = ({
             className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}
           >
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-pre-line"
+              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title}
@@ -1966,7 +1966,7 @@ const BurslulukInfoCardsBlock = ({
               <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform whitespace-pre-line">
                 <IconPreview
                   data={item.icon || "info"}
-                  className="text-[#1d4eca] text-3xl whitespace-pre-line"
+                  className="text-[#1d4eca] text-3xl whitespace-pre-line w-full md:w-auto"
                  style={getIconStyle(item, block)} />
               </div>
               <h4 className="text-xl font-bold text-[#002147] mb-4 whitespace-pre-line">
@@ -2022,7 +2022,7 @@ const BurslulukResultQueryBlock = ({
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl whitespace-pre-line">
           <div className="flex-1 p-8 md:p-12 text-white whitespace-pre-line">
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-pre-line"
+              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title || "Sınav Sonuç Sorgulama"}
@@ -2078,7 +2078,7 @@ const BurslulukResultQueryBlock = ({
                 close
               </span>
             </button>
-            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-pre-line">
+            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-pre-line w-full md:w-auto">
               Sınav Sonuç Sorgulama
             </h3>
             <p className="text-slate-500 text-sm mb-6 whitespace-pre-line">
@@ -2274,7 +2274,7 @@ const BurslulukConfirmationBlock = ({
             </span>
           </div>
           <h1
-            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-pre-line"
+            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-pre-line w-full md:w-auto"
             style={getTitleStyle(block)}
           >
             {block.title || "Başvurunuz Başarıyla Alındı!"}
@@ -2525,7 +2525,7 @@ const ContactFormBlock = ({
         <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border-subtle whitespace-pre-line">
           <div className="mb-8 whitespace-pre-line">
             <h2
-              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-pre-line"
+              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
               style={getTitleStyle(block)}
             >
               {block.title || "Bize Ulaşın"}
@@ -2600,9 +2600,15 @@ export const DynamicBlockRenderer = ({
 
     // Helper for responsive variables
     const addResponsiveVar = (cssProp: string, jsProp: string, suffix: string, unit: string = "") => {
-      const desktopVal = block.styles?.[prefix + suffix] || (prefix === "" || prefix === "container" ? block.styles?.[suffix.charAt(0).toLowerCase() + suffix.slice(1)] : undefined);
-      const mobileVal = block.styles?.[prefix + "Mobile" + suffix] || (prefix === "" || prefix === "container" ? block.styles?.["mobile" + suffix] : undefined);
-      
+      let desktopVal = block.styles?.[prefix + suffix] || (prefix === "" || prefix === "container" ? block.styles?.[suffix.charAt(0).toLowerCase() + suffix.slice(1)] : undefined);
+      let mobileVal = block.styles?.[prefix + "Mobile" + suffix] || (prefix === "" || prefix === "container" ? block.styles?.["mobile" + suffix] : undefined);
+        
+      // FIX: If it's a size property and it's 0 or 0px, treat it as undefined so it falls back to CSS classes.
+      if (cssProp === 'font-size') {
+         if (desktopVal === '0' || desktopVal === '0px' || desktopVal === 0) desktopVal = undefined;
+         if (mobileVal === '0' || mobileVal === '0px' || mobileVal === 0) mobileVal = undefined;
+      }
+
       if (mobileVal !== undefined && mobileVal !== "") {
         style[`--desktop-${cssProp}`] = desktopVal ? desktopVal + unit : (unit === "px" ? "0px" : "inherit");
         style[`--mobile-${cssProp}`] = mobileVal + unit;
@@ -2670,8 +2676,29 @@ export const DynamicBlockRenderer = ({
     color: block.styles?.titlePart2Color || block.titlePart2Color || undefined,
   });
 
-  const getIndividualButtonStyle = (btn: any) => {
+  const getValidText = (...values: any[]) => {
+  for (const v of values) {
+    if (typeof v === 'string') {
+      const stripped = v.replace(/<[^>]*>?/gm, '').trim();
+      if (stripped.length > 0) return v;
+    } else if (v) {
+      return v;
+    }
+  }
+  return values[values.length - 1] || "";
+};
+
+const getValidStyle = (block: any, ...keys: string[]) => {
+  for (const key of keys) {
+    const s = getStyle(block, key);
+    if (Object.keys(s).length > 0) return s;
+  }
+  return {};
+};
+
+const getIndividualButtonStyle = (btn: any) => {
     const style: any = {};
+
     if (btn.bgColor) style.backgroundColor = btn.bgColor;
     if (btn.textColor) style.color = btn.textColor;
     if (btn.borderColor) {
@@ -2799,7 +2826,7 @@ export const DynamicBlockRenderer = ({
               >
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
                   <h1
-                    className="font-display-lg text-display-lg text-white mb-6 whitespace-pre-line"
+                    className="font-display-lg text-display-lg text-white mb-6 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -2842,7 +2869,7 @@ export const DynamicBlockRenderer = ({
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
+                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -2886,7 +2913,7 @@ export const DynamicBlockRenderer = ({
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-pre-line">
                         <h3
-                          className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
+                          className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line w-full md:w-auto"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -2917,10 +2944,10 @@ export const DynamicBlockRenderer = ({
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
               >
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 whitespace-pre-line">
-                  <div>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
+                  <div className="w-full md:w-auto flex-1">
                     <h2
-                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
@@ -2995,7 +3022,7 @@ export const DynamicBlockRenderer = ({
                       </div>
                       <div className="p-6 whitespace-pre-line">
                         <h4
-                          className="font-headline-md text-[20px] mb-2 whitespace-pre-line"
+                          className="font-headline-md text-[20px] mb-2 whitespace-pre-line w-full md:w-auto"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -3083,7 +3110,7 @@ export const DynamicBlockRenderer = ({
                     </span>
                   )}
                   <h2
-                    className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1}{" "}
@@ -3158,7 +3185,7 @@ export const DynamicBlockRenderer = ({
                 <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row whitespace-pre-line">
                   <div className="p-12 w-full lg:w-1/2 space-y-8 flex flex-col justify-center whitespace-pre-line">
                     <h2
-                      className="font-headline-xl text-headline-xl whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
@@ -3215,7 +3242,7 @@ export const DynamicBlockRenderer = ({
                           />
                         )}
                         <div className="absolute bottom-8 left-8 right-8 bg-white/80 backdrop-blur-md p-6 rounded-2xl flex items-center justify-between border border-border-subtle/80 whitespace-pre-line">
-                          <div>
+                          <div className="w-full md:w-auto flex-1">
                             <h4 className="font-bold whitespace-pre-line">
                               {block.cardTitle}
                             </h4>
@@ -3257,7 +3284,7 @@ export const DynamicBlockRenderer = ({
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
               >
                 <h1
-                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
+                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title || "İletişim"}
@@ -3296,7 +3323,7 @@ export const DynamicBlockRenderer = ({
                           </div>
                         )}
                         <h3
-                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
+                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -3605,7 +3632,7 @@ export const DynamicBlockRenderer = ({
               >
                 {block.title && (
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-pre-line"
+                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -3632,7 +3659,7 @@ export const DynamicBlockRenderer = ({
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-2xl whitespace-pre-line"
+                              className="text-2xl whitespace-pre-line w-full md:w-auto"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
@@ -3669,7 +3696,7 @@ export const DynamicBlockRenderer = ({
                 )}
               >
                 <h1
-                  className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line"
+                  className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1 || block.title}{" "}
@@ -3752,7 +3779,7 @@ export const DynamicBlockRenderer = ({
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Neden Kulüplere Katılmalısın?"}
@@ -3779,7 +3806,7 @@ export const DynamicBlockRenderer = ({
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-primary text-3xl whitespace-pre-line"
+                              className="text-primary text-3xl whitespace-pre-line w-full md:w-auto"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
@@ -3789,7 +3816,7 @@ export const DynamicBlockRenderer = ({
                           ))}
                       </div>
                       <h4
-                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-pre-line w-full md:w-auto"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -3822,7 +3849,7 @@ export const DynamicBlockRenderer = ({
                     className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
                   >
                     <h2
-                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Bir Kulübe Katılmak İster misin?"}
@@ -3897,7 +3924,7 @@ export const DynamicBlockRenderer = ({
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
-                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-pre-line"
+                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4000,7 +4027,7 @@ export const DynamicBlockRenderer = ({
                         {item.title && (
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line"
+                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line w-full md:w-auto"
                           >
                             {item.title}
                           </h3>
@@ -4087,14 +4114,14 @@ export const DynamicBlockRenderer = ({
                 {block.icon && (
                   <IconPreview
                     data={block.icon}
-                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-pre-line"
+                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-pre-line w-full md:w-auto"
                     style={{ ...getIconStyle(block, block), fontVariationSettings: "'FILL' 1" }}
                   />
                 )}
                 {block.title && (
                   <h2
                     style={getTitleStyle(block)}
-                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-pre-line w-full md:w-auto"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4205,7 +4232,7 @@ export const DynamicBlockRenderer = ({
                         return (
                           <h1
                             style={getTitleStyle(block)}
-                            className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line"
+                            className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl mx-auto leading-tight whitespace-pre-line w-full md:w-auto"
                             dangerouslySetInnerHTML={{
                               __html: (block.title || "").replace(
                                 "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4378,7 +4405,7 @@ export const DynamicBlockRenderer = ({
                 <div className="flex flex-row items-center gap-4 mb-10 md:mb-12 whitespace-pre-line">
                   <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-white text-3xl whitespace-pre-line"
+                      className="material-symbols-outlined text-white text-3xl whitespace-pre-line w-full md:w-auto"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -4395,7 +4422,7 @@ export const DynamicBlockRenderer = ({
                     )}
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-pre-line leading-tight whitespace-pre-line"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-pre-line leading-tight whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4430,7 +4457,7 @@ export const DynamicBlockRenderer = ({
                       </div>
                       <h3
                         style={getCardTitleStyle(item, block)}
-                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-pre-line"
+                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-pre-line w-full md:w-auto"
                       >
                         {item.title}
                       </h3>
@@ -4480,7 +4507,7 @@ export const DynamicBlockRenderer = ({
                   ></span>
                   <h2
                     style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line w-full md:w-auto"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4513,7 +4540,7 @@ export const DynamicBlockRenderer = ({
                             <div className="flex-1 whitespace-pre-line">
                               <h3
                                 style={getCardTitleStyle(item, block)}
-                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-pre-line"
+                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-pre-line w-full md:w-auto"
                               >
                                 {item.title}
                               </h3>
@@ -4582,7 +4609,7 @@ export const DynamicBlockRenderer = ({
                               ) : (
                                 <IconPreview
                                   data={item.icon}
-                                  className="text-2xl whitespace-pre-line"
+                                  className="text-2xl whitespace-pre-line w-full md:w-auto"
                                  style={getIconStyle(item, block)} />
                               )}
                             </div>
@@ -4622,8 +4649,8 @@ export const DynamicBlockRenderer = ({
                     : "w-full"
                 }
               >
-                <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-12 gap-6 whitespace-pre-line">
-                  <div>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6 whitespace-pre-line">
+                  <div className="w-full md:w-auto flex-1">
                     <span
                       style={getSubtitleStyle(block)}
                       className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
@@ -4631,7 +4658,7 @@ export const DynamicBlockRenderer = ({
                     ></span>
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4680,7 +4707,7 @@ export const DynamicBlockRenderer = ({
                         <div className="flex items-center justify-between mb-3 md:mb-4 whitespace-pre-line">
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="text-xl md:text-2xl font-bold whitespace-pre-line"
+                            className="text-xl md:text-2xl font-bold whitespace-pre-line w-full md:w-auto"
                           >
                             {item.title}
                           </h3>
@@ -4746,7 +4773,7 @@ export const DynamicBlockRenderer = ({
                     {block.title && (
                       <h2
                         style={getTitleStyle(block)}
-                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-pre-line"
+                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
                         dangerouslySetInnerHTML={{
                           __html: (block.title || "").replace(
                             "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4798,7 +4825,7 @@ export const DynamicBlockRenderer = ({
                           className="relative w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 z-10 text-primary whitespace-pre-line"
                         >
                           <span
-                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-pre-line"
+                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-pre-line w-full md:w-auto"
                             translate="no"
                             aria-hidden="true"
                             style={{ fontVariationSettings: "'FILL' 1" }}
@@ -4842,7 +4869,7 @@ export const DynamicBlockRenderer = ({
                   )}
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
+                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.titlePart1}
@@ -4862,7 +4889,7 @@ export const DynamicBlockRenderer = ({
                     </h1>
                   ) : (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
+                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
@@ -4917,7 +4944,7 @@ export const DynamicBlockRenderer = ({
                 <div
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
-                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto">
                     {block.title}
                   </h2>
                   <div
@@ -4935,9 +4962,9 @@ export const DynamicBlockRenderer = ({
                       ></div>
                       <IconPreview
                         data={block.items[0].icon || "school"}
-                        className="text-primary text-4xl mb-6 whitespace-pre-line"
+                        className="text-primary text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
                        style={getIconStyle(null, block)} />
-                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
+                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line w-full md:w-auto">
                         {block.items[0].title}
                       </h3>
                       <p className="text-on-surface-variant mb-8 whitespace-pre-line">
@@ -4946,7 +4973,7 @@ export const DynamicBlockRenderer = ({
                       <div className="space-y-6 whitespace-pre-line">
                         <div className="flex items-end gap-3 whitespace-pre-line">
                           <span
-                            className="text-4xl font-extrabold text-gold whitespace-pre-line"
+                            className="text-4xl font-extrabold text-gold whitespace-pre-line w-full md:w-auto"
                             style={{ color: "#D4AF37" }}
                           >
                             {block.items[0].stat}
@@ -4974,12 +5001,12 @@ export const DynamicBlockRenderer = ({
                       <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-pre-line"></div>
                       <IconPreview
                         data={block.items[1].icon || "star"}
-                        className="text-gold text-4xl mb-6 whitespace-pre-line"
+                        className="text-gold text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
                         style={{ ...getIconStyle(null, block), fontVariationSettings: "'FILL' 1",
                           color: "#D4AF37",
                         }}
                       />
-                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-pre-line">
+                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-pre-line w-full md:w-auto">
                         {block.items[1].title}
                       </h3>
                       <p className="text-primary-fixed mb-8 whitespace-pre-line">
@@ -4992,7 +5019,7 @@ export const DynamicBlockRenderer = ({
                             className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
                           >
                             <div
-                              className="text-2xl font-bold text-gold whitespace-pre-line"
+                              className="text-2xl font-bold text-gold whitespace-pre-line w-full md:w-auto"
                               style={{ color: "#D4AF37" }}
                             >
                               {stat.value}
@@ -5018,12 +5045,12 @@ export const DynamicBlockRenderer = ({
                   {/* Rankings Card */}
                   {block.items && block.items[2] && (
                     <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card flex flex-col justify-between transition-all duration-700 hover:-translate-y-2 whitespace-pre-line">
-                      <div>
+                      <div className="w-full md:w-auto flex-1">
                         <IconPreview
                           data={block.items[2].icon || "analytics"}
-                          className="text-primary text-4xl mb-6 whitespace-pre-line"
+                          className="text-primary text-4xl mb-6 whitespace-pre-line w-full md:w-auto"
                          style={getIconStyle(null, block)} />
-                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
+                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line w-full md:w-auto">
                           {block.items[2].title}
                         </h3>
                         <p className="text-on-surface-variant mb-6 whitespace-pre-line">
@@ -5075,9 +5102,9 @@ export const DynamicBlockRenderer = ({
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
               >
-                <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 whitespace-pre-line">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
                   <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                    <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
+                    <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto">
                       {block.title}
                     </h2>
                     <p className="text-body-lg text-on-surface-variant whitespace-pre-line">
@@ -5162,7 +5189,7 @@ export const DynamicBlockRenderer = ({
                           {block.badge}
                         </span>
                       )}
-                      <h2 className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line">
+                      <h2 className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line w-full md:w-auto">
                         {block.title}
                       </h2>
                       <p className="text-primary-fixed mb-10 text-lg whitespace-pre-line">
@@ -5177,7 +5204,7 @@ export const DynamicBlockRenderer = ({
                           >
                             <IconPreview
                               data={item.icon || "science"}
-                              className="text-gold text-3xl whitespace-pre-line"
+                              className="text-gold text-3xl whitespace-pre-line w-full md:w-auto"
                               style={{ ...getIconStyle(item, block), color: "#D4AF37" }}
                             />
                             <div>
@@ -5231,7 +5258,7 @@ export const DynamicBlockRenderer = ({
                 <div>
                   <h2
                     style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line w-full md:w-auto"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5249,7 +5276,7 @@ export const DynamicBlockRenderer = ({
                       <div key={i} style={getCardStyle(item, block)}>
                         <div
                           style={getCardTitleStyle(item, block)}
-                          className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-secondary-fixed mb-1 md:mb-2 whitespace-pre-line"
+                          className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-secondary-fixed mb-1 md:mb-2 whitespace-pre-line w-full md:w-auto"
                         >
                           {item.value}
                         </div>
@@ -5298,7 +5325,7 @@ export const DynamicBlockRenderer = ({
                 }
               >
                 <div className="flex justify-between items-end mb-10 md:mb-12 whitespace-pre-line">
-                  <div>
+                  <div className="w-full md:w-auto flex-1">
                     <span
                       style={getSubtitleStyle(block)}
                       className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
@@ -5306,7 +5333,7 @@ export const DynamicBlockRenderer = ({
                     ></span>
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5318,7 +5345,7 @@ export const DynamicBlockRenderer = ({
                   <div className="flex gap-2 md:gap-4 whitespace-pre-line">
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
                       <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
+                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line w-full md:w-auto"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -5327,7 +5354,7 @@ export const DynamicBlockRenderer = ({
                     </button>
                     <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
                       <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
+                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line w-full md:w-auto"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -5408,7 +5435,7 @@ export const DynamicBlockRenderer = ({
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
-                      className="font-display-lg text-display-lg mb-6 text-white whitespace-pre-line"
+                      className="font-display-lg text-display-lg mb-6 text-white whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5481,7 +5508,7 @@ export const DynamicBlockRenderer = ({
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5518,7 +5545,7 @@ export const DynamicBlockRenderer = ({
                           )}
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
+                            className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
                           >
                             {item.title}
                           </h3>
@@ -5562,7 +5589,7 @@ export const DynamicBlockRenderer = ({
                   >
                     {block.title && (
                       <h2
-                        className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
+                        className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line w-full md:w-auto"
                         style={getTitleStyle(block)}
                       >
                         {block.title}
@@ -5602,13 +5629,13 @@ export const DynamicBlockRenderer = ({
                                 item.icon ||
                                 (isSecondary ? "visibility" : "flag")
                               }
-                              className="text-4xl whitespace-pre-line"
+                              className="text-4xl whitespace-pre-line w-full md:w-auto"
                              style={getIconStyle(null, block)} />
                           )}
                         </div>
                         <h2
                           style={getCardTitleStyle(item, block)}
-                          className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
+                          className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
                         >
                           {item.title}
                         </h2>
@@ -5641,7 +5668,7 @@ export const DynamicBlockRenderer = ({
                   {block.title && (
                     <h2
                       style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line w-full md:w-auto"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5685,7 +5712,7 @@ export const DynamicBlockRenderer = ({
                         )}
                         <h4
                           style={getCardTitleStyle(item, block)}
-                          className="font-headline-md text-headline-md text-text-main mb-2 whitespace-pre-line"
+                          className="font-headline-md text-headline-md text-text-main mb-2 whitespace-pre-line w-full md:w-auto"
                         >
                           {item.title}
                         </h4>
@@ -5707,12 +5734,12 @@ export const DynamicBlockRenderer = ({
             <section
               key={index}
               className="py-section-gap bg-surface-container-highest/30 whitespace-pre-line"
-              style={getStyle(block, "")}
+              style={getStyle(block, "container")}
             >
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
               >
-                <div className="bg-surface-card rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl whitespace-pre-line">
+                <div className="rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl whitespace-pre-line" style={{ backgroundColor: block.styles?.containerBackgroundColor || 'var(--color-surface-card)' }}>
                   <div className="w-full md:w-1/2 h-64 md:h-auto min-h-[350px] relative overflow-hidden whitespace-pre-line">
                     <div
                       className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
@@ -5731,7 +5758,7 @@ export const DynamicBlockRenderer = ({
                       {block.title && (
                         <h2
                           style={getTitleStyle(block)}
-                          className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line"
+                          className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line w-full md:w-auto"
                           dangerouslySetInnerHTML={{
                             __html: (block.title || "").replace(
                               "Eğitimde Dostluk, Gelecekte Başarı",
@@ -5740,19 +5767,14 @@ export const DynamicBlockRenderer = ({
                           }}
                         ></h2>
                       )}
-                      <p
-                        style={getSubtitleStyle(block)}
+                      <div
+                        style={{...getValidStyle(block, "quote", "desc"), whiteSpace: "pre-line"}}
                         className="font-body-lg text-body-lg text-text-main italic mb-8 leading-relaxed whitespace-pre-line"
-                      >
-                        {block.quote}
-                      </p>
+                        dangerouslySetInnerHTML={{ __html: getValidText(block.quote, block.desc, '<span style="color:red">Lütfen admin panelinden Alıntı Metni (Quote) alanını doldurun.</span>') }}
+                      />
                       <div>
-                        <h4 className="font-headline-md text-headline-md text-primary whitespace-pre-line">
-                          {block.authorName}
-                        </h4>
-                        <p className="text-text-muted whitespace-pre-line">
-                          {block.authorTitle}
-                        </p>
+                        <h4 style={{...getValidStyle(block, "authorName", "name"), whiteSpace: "pre-line"}} className="font-headline-md text-headline-md text-primary whitespace-pre-line" dangerouslySetInnerHTML={{ __html: getValidText(block.authorName, block.name, '<span style="color:red">Lütfen Yazar Adı Girin</span>') }} />
+                        <p style={{...getValidStyle(block, "authorTitle", "subtitle", "role"), whiteSpace: "pre-line"}} className="text-text-muted whitespace-pre-line" dangerouslySetInnerHTML={{ __html: getValidText(block.authorTitle, block.subtitle, block.role, '<span style="color:red">Lütfen Yazar Ünvanı Girin</span>') }} />
                       </div>
                     </div>
                   </div>
@@ -5787,7 +5809,7 @@ export const DynamicBlockRenderer = ({
                 <div className={getHeroInnerClass(block, "max-w-3xl")}>
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
+                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.titlePart1 && (
@@ -5804,7 +5826,7 @@ export const DynamicBlockRenderer = ({
                     </h1>
                   ) : (
                     <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
+                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
@@ -6038,7 +6060,7 @@ export const DynamicBlockRenderer = ({
                 className={`relative z-10 layout-content-container w-full max-w-[1200px] px-6 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
               >
                 <h1
-                  className="text-2xl md:text-5xl font-black text-white mb-4 tracking-tight whitespace-pre-line"
+                  className="text-2xl md:text-5xl font-black text-white mb-4 tracking-tight whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                   dangerouslySetInnerHTML={{
                     __html: (block.title || "").replace(
@@ -6079,7 +6101,7 @@ export const DynamicBlockRenderer = ({
                      style={getIconStyle(block, block)} />
                   )}
                   <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
+                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Rektör"}
@@ -6098,13 +6120,13 @@ export const DynamicBlockRenderer = ({
                   <div className="w-full md:w-3/5 flex flex-col justify-center p-8 md:p-12 gap-6 bg-gradient-to-br from-white to-slate-50 dark:from-background-dark dark:to-slate-900 whitespace-pre-line">
                     <div className="space-y-2 whitespace-pre-line">
                       <span className="inline-block px-3 py-1 rounded bg-[#bd0f2c] text-white text-xs font-bold uppercase tracking-widest whitespace-pre-line">
-                        {block.badge || "Rektörlük Makamı"}
+                        {getValidText(block.badge, "Rektörlük Makamı")}
                       </span>
-                      <h3 className="text-3xl font-bold text-slate-900 dark:text-white whitespace-pre-line">
-                        {block.name || "Prof. Dr. Ahmet Yılmaz"}
+                      <h3 style={getStyle(block, "name")} className="text-3xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto">
+                        <span dangerouslySetInnerHTML={{ __html: getValidText(block.name, "Prof. Dr. Ahmet Yılmaz") }} />
                       </h3>
-                      <p className="text-[#bd0f2c] font-bold text-lg whitespace-pre-line">
-                        {block.role || "Rektör"}
+                      <p style={getStyle(block, "role")} className="text-[#bd0f2c] font-bold text-lg whitespace-pre-line">
+                        <span dangerouslySetInnerHTML={{ __html: getValidText(block.role, "Rektör") }} />
                       </p>
                     </div>
                     <div className="relative whitespace-pre-line">
@@ -6116,8 +6138,9 @@ export const DynamicBlockRenderer = ({
                         format_quote
                       </span>
                       <p
+                        style={{...getStyle(block, "quote"), whiteSpace: "pre-line"}}
                         className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed relative z-10 whitespace-pre-line"
-                        dangerouslySetInnerHTML={{ __html: block.quote || "" }}
+                        dangerouslySetInnerHTML={{ __html: getValidText(block.quote, "Lütfen admin panelinden Alıntı (Söz) alanını doldurun.") }}
                       ></p>
                     </div>
                     <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-200 dark:border-slate-800 whitespace-pre-line">
@@ -6182,7 +6205,7 @@ export const DynamicBlockRenderer = ({
                      style={getIconStyle(block, block)} />
                   )}
                   <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
+                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Rektör Yardımcıları & Genel Sekreter"}
@@ -6268,7 +6291,7 @@ export const DynamicBlockRenderer = ({
                        style={getIconStyle(block, block)} />
                     )}
                     <h2
-                      className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
+                      className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Fakülte Dekanları"}
@@ -6361,7 +6384,7 @@ export const DynamicBlockRenderer = ({
                     </div>
                   )}
                   <h1
-                    className="font-display-lg text-display-lg text-on-background whitespace-pre-line"
+                    className="font-display-lg text-display-lg text-on-background whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -6453,7 +6476,7 @@ export const DynamicBlockRenderer = ({
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl mx-auto`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Holistik Eğitim Modelimiz"}
@@ -6477,7 +6500,7 @@ export const DynamicBlockRenderer = ({
                           style={getCardStyle(item, block)}
                         >
                           <div className="relative z-10 flex flex-col h-full justify-between whitespace-pre-line">
-                            <div>
+                            <div className="w-full md:w-auto flex-1">
                               {typeof item.icon === "object" ||
                               (typeof item.icon === "string" &&
                                 item.icon !== item.icon.toLowerCase()) ? (
@@ -6492,7 +6515,7 @@ export const DynamicBlockRenderer = ({
                                  style={getIconStyle(item, block)} />
                               )}
                               <h3
-                                className="font-headline-md text-headline-md text-on-primary mb-2 whitespace-pre-line"
+                                className="font-headline-md text-headline-md text-on-primary mb-2 whitespace-pre-line w-full md:w-auto"
                                 style={getCardTitleStyle(item, block)}
                               >
                                 {item.title}
@@ -6547,7 +6570,7 @@ export const DynamicBlockRenderer = ({
                                style={getIconStyle(item, block)} />
                             )}
                             <h3
-                              className="font-headline-md text-headline-md text-on-background mb-2 whitespace-pre-line"
+                              className="font-headline-md text-headline-md text-on-background mb-2 whitespace-pre-line w-full md:w-auto"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6615,10 +6638,10 @@ export const DynamicBlockRenderer = ({
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}
               >
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 whitespace-pre-line">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
                   <div className={getHeroInnerClass(block, "max-w-2xl")}>
                     <h2
-                      className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line w-full md:w-auto"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Geleceğe Hazırlayan Branşlar"}
@@ -6717,7 +6740,7 @@ export const DynamicBlockRenderer = ({
                     </div>
                   )}
                   <h1
-                    className="font-display-lg text-display-lg text-on-surface whitespace-pre-line"
+                    className="font-display-lg text-display-lg text-on-surface whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -6778,7 +6801,7 @@ export const DynamicBlockRenderer = ({
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Eğitim Yaklaşımımız"}
@@ -6822,7 +6845,7 @@ export const DynamicBlockRenderer = ({
                               )}
                             </div>
                             <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
+                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6870,7 +6893,7 @@ export const DynamicBlockRenderer = ({
                               )}
                             </div>
                             <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
+                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
@@ -6911,7 +6934,7 @@ export const DynamicBlockRenderer = ({
                         </div>
                         <div>
                           <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
+                            className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line w-full md:w-auto"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -6955,7 +6978,7 @@ export const DynamicBlockRenderer = ({
                 </span>
               )}
               <h1
-                className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line"
+                className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
                 style={getTitleStyle(block)}
               >
                 {block.titlePart1 || block.title}{" "}
@@ -7034,7 +7057,7 @@ export const DynamicBlockRenderer = ({
                 </div>
                 <div className="md:col-span-7 order-1 md:order-2 md:pl-12 whitespace-pre-line">
                   <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-6 whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-on-surface mb-6 whitespace-pre-line w-full md:w-auto"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -7069,13 +7092,13 @@ export const DynamicBlockRenderer = ({
                             ) : (
                               <IconPreview
                                 data={item.icon || "psychology"}
-                                className="text-2xl whitespace-pre-line"
+                                className="text-2xl whitespace-pre-line w-full md:w-auto"
                                 style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                               />
                             )}
                           </div>
                           <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 text-[20px] whitespace-pre-line"
+                            className="font-headline-md text-headline-md text-on-surface mb-2 text-[20px] whitespace-pre-line w-full md:w-auto"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -7112,7 +7135,7 @@ export const DynamicBlockRenderer = ({
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl mx-auto`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
+                  className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -7147,7 +7170,7 @@ export const DynamicBlockRenderer = ({
                             </span>
                           )}
                           <h3
-                            className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
+                            className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line w-full md:w-auto"
                             style={getCardTitleStyle(item, block)}
                           >
                             {item.title}
@@ -7198,7 +7221,7 @@ export const DynamicBlockRenderer = ({
                       </div>
                       <div>
                         <h3
-                          className="font-headline-md text-headline-md text-on-surface mb-2 text-[18px] whitespace-pre-line"
+                          className="font-headline-md text-headline-md text-on-surface mb-2 text-[18px] whitespace-pre-line w-full md:w-auto"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -7245,7 +7268,7 @@ export const DynamicBlockRenderer = ({
                   </div>
                 )}
                 <h1
-                  className="font-display-lg text-display-lg text-main whitespace-pre-line"
+                  className="font-display-lg text-display-lg text-main whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1 || block.title}{" "}
@@ -7336,7 +7359,7 @@ export const DynamicBlockRenderer = ({
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-main mb-4 whitespace-pre-line"
+                  className="font-headline-xl text-headline-xl text-main mb-4 whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title || "Akademik Seçenekler"}
@@ -7388,7 +7411,7 @@ export const DynamicBlockRenderer = ({
                           )}
                         </div>
                         <h3
-                          className="font-headline-md text-headline-md text-main whitespace-pre-line"
+                          className="font-headline-md text-headline-md text-main whitespace-pre-line w-full md:w-auto"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -7471,7 +7494,7 @@ export const DynamicBlockRenderer = ({
                   </span>
                 )}
                 <h1
-                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-pre-line"
+                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1}{" "}
@@ -7536,7 +7559,7 @@ export const DynamicBlockRenderer = ({
               <div
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
-                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
+                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line w-full md:w-auto">
                   {block.title}
                 </h2>
                 <div className="w-24 h-1 bg-[#D4AF37] mx-auto rounded-full whitespace-pre-line"></div>
@@ -7565,7 +7588,7 @@ export const DynamicBlockRenderer = ({
                           ) : (
                             <IconPreview
                               data={item.icon || "star"}
-                              className="text-[#D4AF37] text-4xl whitespace-pre-line"
+                              className="text-[#D4AF37] text-4xl whitespace-pre-line w-full md:w-auto"
                               style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                             />
                           )}
@@ -7587,7 +7610,7 @@ export const DynamicBlockRenderer = ({
                                 key={i}
                                 className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
                               >
-                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-pre-line">
+                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-pre-line w-full md:w-auto">
                                   {st.value}
                                 </div>
                                 <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
@@ -7629,7 +7652,7 @@ export const DynamicBlockRenderer = ({
                             ) : (
                               <IconPreview
                                 data={item.icon || "analytics"}
-                                className="text-[#1d4eca] text-4xl whitespace-pre-line"
+                                className="text-[#1d4eca] text-4xl whitespace-pre-line w-full md:w-auto"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
@@ -7690,7 +7713,7 @@ export const DynamicBlockRenderer = ({
                           ) : (
                             <IconPreview
                               data={item.icon || "school"}
-                              className="text-[#1d4eca] text-4xl whitespace-pre-line"
+                              className="text-[#1d4eca] text-4xl whitespace-pre-line w-full md:w-auto"
                              style={getIconStyle(item, block)} />
                           )}
                         </div>
@@ -7707,7 +7730,7 @@ export const DynamicBlockRenderer = ({
                           {item.statValue && (
                             <div className="flex flex-col gap-1 whitespace-pre-line">
                               <div className="flex items-end gap-3 whitespace-pre-line">
-                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-pre-line">
+                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-pre-line w-full md:w-auto">
                                   {item.statValue}
                                 </span>
                                 {item.statLabel && (
@@ -7747,9 +7770,9 @@ export const DynamicBlockRenderer = ({
             <div
               className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}
             >
-              <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 whitespace-pre-line">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
+                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line w-full md:w-auto">
                     {block.title}
                   </h2>
                   {block.subtitle && (
@@ -7837,7 +7860,7 @@ export const DynamicBlockRenderer = ({
                         {block.badge}
                       </span>
                     )}
-                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-pre-line">
+                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-pre-line w-full md:w-auto">
                       {block.title}
                     </h2>
                     {block.subtitle && (
@@ -7867,7 +7890,7 @@ export const DynamicBlockRenderer = ({
                             ) : (
                               <IconPreview
                                 data={item.icon || "science"}
-                                className="text-[#D4AF37] text-3xl whitespace-pre-line"
+                                className="text-[#D4AF37] text-3xl whitespace-pre-line w-full md:w-auto"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
@@ -7936,7 +7959,7 @@ export const DynamicBlockRenderer = ({
                   </span>
                 )}
                 <h1
-                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-pre-line"
+                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -7962,9 +7985,9 @@ export const DynamicBlockRenderer = ({
             <div
               className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
             >
-              <div>
+              <div className="w-full md:w-auto flex-1">
                 <h2
-                  className="text-2xl font-bold text-slate-800 whitespace-pre-line"
+                  className="text-2xl font-bold text-slate-800 whitespace-pre-line w-full md:w-auto"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
@@ -8236,7 +8259,7 @@ export const DynamicBlockRenderer = ({
                   {item.icon && (
                     <IconPreview
                       data={item.icon}
-                      className="text-4xl whitespace-pre-line"
+                      className="text-4xl whitespace-pre-line w-full md:w-auto"
                       style={{ ...getIconStyle(item, block), color: item.iconColor || "var(--color-primary)",
                       }}
                     />
@@ -8278,7 +8301,7 @@ export const DynamicBlockRenderer = ({
               className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"}`}
             >
               <h1
-                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-pre-line"
+                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-pre-line w-full md:w-auto"
                 style={getTitleStyle(block)}
               >
                 {block.title}
@@ -8314,7 +8337,7 @@ export const DynamicBlockRenderer = ({
                     chevron_left
                   </span>
                 </button>
-                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-pre-line">
+                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-pre-line w-full md:w-auto">
                   {block.month || "Ekim 2023"}
                 </h2>
                 <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-pre-line">
@@ -8537,7 +8560,7 @@ export const DynamicBlockRenderer = ({
                         />
                       </div>
                       <h3
-                        className="font-headline-md text-headline-md text-on-surface whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-on-surface whitespace-pre-line w-full md:w-auto"
                         style={getCardTitleStyle(legend, block)}
                       >
                         {legend.title}
@@ -8580,7 +8603,7 @@ export const DynamicBlockRenderer = ({
           >
             <header className="text-center mb-section-gap whitespace-pre-line">
               <h1
-                className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
+                className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line w-full md:w-auto"
                 style={getTitleStyle(block)}
               >
                 {block.title || "2026-2027 Eğitim-Öğretim Yılı Ücretleri"}
@@ -8596,7 +8619,7 @@ export const DynamicBlockRenderer = ({
 
             {/* Pricing Cards */}
             <section className="mb-section-gap whitespace-pre-line">
-              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-pre-line">
+              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-pre-line w-full md:w-auto">
                 {block.tableTitle || "Eğitim Kadranları Ücret Tablosu"}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter whitespace-pre-line">
@@ -8610,11 +8633,11 @@ export const DynamicBlockRenderer = ({
                     <div className="flex items-center gap-3 mb-6 whitespace-pre-line">
                       <IconPreview
                         data={item.icon || "school"}
-                        className="text-primary text-3xl"
+                        className="text-primary text-3xl w-full md:w-auto"
                         style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                       />
                       <h3
-                        className="font-headline-md text-headline-md text-text-main whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-text-main whitespace-pre-line w-full md:w-auto"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
@@ -8688,7 +8711,7 @@ export const DynamicBlockRenderer = ({
                       percent
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line w-full md:w-auto">
                     {block.discountsTitle || "İndirimler"}
                   </h2>
                 </div>
@@ -8726,7 +8749,7 @@ export const DynamicBlockRenderer = ({
                       account_balance
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-pre-line w-full md:w-auto">
                     {block.paymentsTitle || "Ödeme Seçenekleri"}
                   </h2>
                 </div>

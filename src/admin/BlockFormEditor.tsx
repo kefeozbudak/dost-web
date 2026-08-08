@@ -2343,6 +2343,7 @@ export default function BlockFormEditor({
 
         {block.type === "quote_image" && (
           <div className="space-y-4">
+            {renderCommonFields()}
             {renderTextareaWithStyle("Başlık", "title")}
             {renderTextareaWithStyle("Alıntı Metni (Quote)", "quote")}
             <div className="grid grid-cols-2 gap-4">

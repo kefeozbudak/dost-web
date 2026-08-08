@@ -620,6 +620,15 @@ export default function LgsCenter() {
                             </span>
                             
                             <button 
+                              onClick={(e) => { e.stopPropagation(); window.print(); }}
+                              className="flex items-center gap-1 px-3 py-1 bg-slate-50 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-bold transition-colors cursor-pointer border border-slate-200"
+                              title="Yazdır"
+                            >
+                              <Printer className="w-3.5 h-3.5" />
+                              Yazdır
+                            </button>
+                            
+                            <button 
                               onClick={(e) => { e.stopPropagation(); handleDelete(report.id); }}
                               className="flex items-center gap-1 px-3 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold transition-colors cursor-pointer border border-red-200/60"
                               title="Sil"

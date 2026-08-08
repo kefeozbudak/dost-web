@@ -1,8 +1,21 @@
 import { resolveMediaUrls } from '../lib/resolveMedia';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, getDoc, doc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { DynamicBlockRenderer } from './PageBlocks';
+import {
+  defaultHomePageData,
+  defaultHakkimizdaData,
+  defaultBasarilarimizData,
+  defaultDuyurularData,
+  defaultPreRegistrationData,
+  defaultScholarshipPageData,
+  defaultScholarshipConfirmationPageData,
+  defaultEgitimSistemiData,
+  defaultCareerPageData,
+  defaultLgsCalculatorData
+} from '../lib/defaultData';
 
 export interface PopupData {
   id: string;
@@ -24,6 +37,7 @@ export interface PopupData {
   triggerDelay?: number;
   targetPages?: 'all' | 'home' | 'custom';
   customPages?: string;
+  pageEmbed?: string; // New field for embedding a page in the popup
   onlyNewVisitors?: boolean;
   frequency?: 'session' | '24h' | 'always';
   style?: {
@@ -256,7 +270,11 @@ export default function PopupOverlay() {
           <span className="material-symbols-outlined text-xl">close</span>
         </button>
 
-        {isOnlyImage ? (
+        {currentPopup.pageEmbed ? (
+          <div className="w-full h-full max-h-[85vh] overflow-y-auto bg-white popup-embed-scroll">
+            <EmbeddedPageLoader pageId={currentPopup.pageEmbed} />
+          </div>
+        ) : isOnlyImage ? (
           /* Sadece Resim Olarak Yayınlama Modu */
           <div
             onClick={handleAction}
@@ -324,6 +342,92 @@ export default function PopupOverlay() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function EmbeddedPageLoader({ pageId }: { pageId: string }) {
+  const [pageData, setPageData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPage = async () => {
+      try {
+        const docRef = doc(db, 'pages', pageId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
+          let data = docSnap.data();
+          if (!data.isDeleted && !data.isHidden) {
+            setPageData(await resolveMediaUrls(data));
+            setLoading(false);
+            return;
+          }
+        }
+        
+        // Fallback to built-in templates
+        const normalizedPath = '/' + pageId.toLowerCase();
+        let fallbackData = null;
+        
+        if (pageId === 'home') {
+          fallbackData = { title: 'Ana Sayfa', blocks: defaultHomePageData.filter((b: any) => b.type !== 'header' && b.type !== 'footer') };
+        } else if (pageId === 'kulup-kayit-formu') {
+          fallbackData = {
+            title: 'Kulüp Kayıt Formu',
+            blocks: [{ type: 'club_registration_form', titlePart1: 'Dost Koleji', titlePart2: 'Kulüp Kayıt', subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.' }]
+          };
+        } else if (pageId === 'duyurular') {
+          fallbackData = { title: 'Duyurular', blocks: defaultDuyurularData };
+        } else if (pageId === 'basarilarimiz') {
+          fallbackData = { title: 'Başarılarımız', blocks: defaultBasarilarimizData };
+        } else if (pageId === 'hakkimizda') {
+          fallbackData = { title: 'Hakkımızda', blocks: defaultHakkimizdaData };
+        } else if (pageId === 'is-basvuru-formu' || pageId === 'is-basvurusu') {
+          fallbackData = { title: 'İş Başvurusu', blocks: defaultCareerPageData };
+        } else if (pageId === 'egitim-sistemimiz') {
+          fallbackData = { title: 'Eğitim Sistemimiz', blocks: defaultEgitimSistemiData };
+        } else if (pageId === 'on-kayit') {
+          fallbackData = { title: 'Öğrenci Ön Kayıt Formu', blocks: defaultPreRegistrationData };
+        } else if (pageId === 'bursluluk-basvuru-formu') {
+          fallbackData = { title: 'Bursluluk Sınav Başvurusu', blocks: defaultScholarshipPageData };
+        } else if (pageId === 'bursluluk-basvuru-onay') {
+          fallbackData = { title: 'Bursluluk Sınav Başvuru Onayı', blocks: defaultScholarshipConfirmationPageData };
+        } else if (pageId === 'lgs-puan-hesaplama') {
+          fallbackData = { title: 'LGS Puan Hesaplama Modülü', blocks: defaultLgsCalculatorData };
+        }
+
+        if (fallbackData) {
+          setPageData(fallbackData);
+        } else {
+          console.warn('Embedded page not found:', pageId);
+        }
+      } catch (err) {
+        console.error('Error fetching embedded page:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPage();
+  }, [pageId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-48">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!pageData || !pageData.blocks || pageData.blocks.length === 0) {
+    return (
+      <div className="p-12 text-center text-slate-500">
+        Sayfa içeriği bulunamadı.
+      </div>
+    );
+  }
+
+  return (
+    <div className="embedded-page-content">
+      <DynamicBlockRenderer blocks={pageData.blocks} />
     </div>
   );
 }

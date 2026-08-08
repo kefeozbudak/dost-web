@@ -744,90 +744,135 @@ export default function PopupCenter() {
                       />
                     </label>
 
-                    {/* Only Image Toggle Option */}
-                    <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                    {/* Embedded Page Select */}
+                    <div className="bg-[#0606f9]/5 border border-[#0606f9]/20 p-4 rounded-xl space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-amber-900">Sadece Görsel Olarak Göster</span>
+                        <span className="text-xs font-bold text-[#0606f9]">Sayfa Olarak Göster (Canlı Embed)</span>
                         <label className="relative inline-flex items-center cursor-pointer shrink-0">
                           <input
                             type="checkbox"
-                            checked={!!selectedPopup.onlyImage}
-                            onChange={(e) => updateCurrentPopup({ onlyImage: e.target.checked })}
+                            checked={!!selectedPopup.pageEmbed}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                updateCurrentPopup({ pageEmbed: pagesList[0]?.id || '' });
+                              } else {
+                                updateCurrentPopup({ pageEmbed: undefined });
+                              }
+                            }}
                             className="sr-only peer"
                           />
                           <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0606f9]"></div>
                         </label>
                       </div>
-                      <p className="text-[11px] text-amber-700 leading-snug">
-                        Açıldığında metin ve butonlar gizlenir, sadece afiş/görsel gösterilir.
+                      <p className="text-[11px] text-[#0606f9]/70 leading-snug">
+                        Seçilen sayfanın içerik bloklarını (header/footer olmadan) doğrudan popup içerisinde gösterir. Form sayfaları için idealdir. (Aşağıdaki diğer içerik ayarlarını geçersiz kılar)
                       </p>
-                    </div>
-
-                    {/* Image Selection / Upload Box */}
-                    <div className="block space-y-2">
-                      <span className="text-xs font-bold text-slate-500 uppercase">Popup Görseli</span>
-
-                      {/* Dropzone & File Picker Button */}
-                      <div
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                        onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-slate-300 hover:border-[#0606f9] rounded-xl p-4 flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-blue-50/30 transition-all cursor-pointer group"
-                      >
-                        <div className="size-10 rounded-full bg-[#0606f9]/10 text-[#0606f9] flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <span className="material-symbols-outlined text-xl">cloud_upload</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="text-xs font-bold text-slate-700 block">
-                            Görsel Seç / Bilgisayardan Yükle
-                          </span>
-                          <span className="text-[11px] text-slate-400">
-                            Sürükleyip bırakın veya tıklayın (PNG, JPG)
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Image Preview & Actions */}
-                      {selectedPopup.imageUrl && (
-                        <div className="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-100 p-2 flex items-center gap-3">
-                          <img
-                            src={selectedPopup.imageUrl}
-                            alt="Mevcut Görsel"
-                            className="w-12 h-12 rounded object-cover shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <span className="text-xs font-semibold text-slate-700 block truncate">
-                              Yüklü Görsel
-                            </span>
-                            <span className="text-[10px] text-slate-400 block truncate">
-                              {selectedPopup.imageUrl.startsWith('data:') ? 'Yerel Yükleme' : selectedPopup.imageUrl}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => updateCurrentPopup({ imageUrl: '' })}
-                            className="text-rose-500 hover:text-rose-700 p-1 text-xs font-bold cursor-pointer"
-                            title="Görseli Kaldır"
+                      
+                      {!!selectedPopup.pageEmbed && (
+                        <div>
+                          <select
+                            value={selectedPopup.pageEmbed}
+                            onChange={(e) => updateCurrentPopup({ pageEmbed: e.target.value })}
+                            className="w-full border-[#0606f9]/30 rounded-lg text-sm bg-white focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-2 border outline-none font-medium text-[#0606f9]"
                           >
-                            Kaldır
-                          </button>
+                            <option value="">Sayfa Seçiniz...</option>
+                            {pagesList.map((p) => (
+                              <option key={p.id} value={p.id}>
+                                {p.title} ({p.path})
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       )}
-
-                      {/* Direct URL input fallback */}
-                      <div className="pt-1">
-                        <span className="text-[11px] text-slate-400 block mb-1">veya Görsel URL Girin:</span>
-                        <input
-                          type="text"
-                          value={selectedPopup.imageUrl || ''}
-                          onChange={(e) => updateCurrentPopup({ imageUrl: e.target.value })}
-                          placeholder="https://..."
-                          className="w-full border-slate-200 rounded-lg text-xs bg-slate-50 focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-1.5 border outline-none"
-                        />
-                      </div>
                     </div>
 
-                    {!selectedPopup.onlyImage && (
+                    {!selectedPopup.pageEmbed && (
+                      <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-amber-900">Sadece Görsel Olarak Göster</span>
+                          <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input
+                              type="checkbox"
+                              checked={!!selectedPopup.onlyImage}
+                              onChange={(e) => updateCurrentPopup({ onlyImage: e.target.checked })}
+                              className="sr-only peer"
+                            />
+                            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0606f9]"></div>
+                          </label>
+                        </div>
+                        <p className="text-[11px] text-amber-700 leading-snug">
+                          Açıldığında metin ve butonlar gizlenir, sadece afiş/görsel gösterilir.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Image Selection / Upload Box */}
+                    {!selectedPopup.pageEmbed && (
+                      <div className="block space-y-2">
+                        <span className="text-xs font-bold text-slate-500 uppercase">Popup Görseli</span>
+
+                        {/* Dropzone & File Picker Button */}
+                        <div
+                          onDragOver={handleDragOver}
+                          onDrop={handleDrop}
+                          onClick={() => fileInputRef.current?.click()}
+                          className="border-2 border-dashed border-slate-300 hover:border-[#0606f9] rounded-xl p-4 flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-blue-50/30 transition-all cursor-pointer group"
+                        >
+                          <div className="size-10 rounded-full bg-[#0606f9]/10 text-[#0606f9] flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span className="material-symbols-outlined text-xl">cloud_upload</span>
+                          </div>
+                          <div className="text-center">
+                            <span className="text-xs font-bold text-slate-700 block">
+                              Görsel Seç / Bilgisayardan Yükle
+                            </span>
+                            <span className="text-[11px] text-slate-400">
+                              Sürükleyip bırakın veya tıklayın (PNG, JPG)
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Image Preview & Actions */}
+                        {selectedPopup.imageUrl && (
+                          <div className="relative rounded-lg overflow-hidden border border-slate-200 bg-slate-100 p-2 flex items-center gap-3">
+                            <img
+                              src={selectedPopup.imageUrl}
+                              alt="Mevcut Görsel"
+                              className="w-12 h-12 rounded object-cover shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <span className="text-xs font-semibold text-slate-700 block truncate">
+                                Yüklü Görsel
+                              </span>
+                              <span className="text-[10px] text-slate-400 block truncate">
+                                {selectedPopup.imageUrl.startsWith('data:') ? 'Yerel Yükleme' : selectedPopup.imageUrl}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => updateCurrentPopup({ imageUrl: '' })}
+                              className="text-rose-500 hover:text-rose-700 p-1 text-xs font-bold cursor-pointer"
+                              title="Görseli Kaldır"
+                            >
+                              Kaldır
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Direct URL input fallback */}
+                        <div className="pt-1">
+                          <span className="text-[11px] text-slate-400 block mb-1">veya Görsel URL Girin:</span>
+                          <input
+                            type="text"
+                            value={selectedPopup.imageUrl || ''}
+                            onChange={(e) => updateCurrentPopup({ imageUrl: e.target.value })}
+                            placeholder="https://..."
+                            className="w-full border-slate-200 rounded-lg text-xs bg-slate-50 focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-1.5 border outline-none"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {!selectedPopup.onlyImage && !selectedPopup.pageEmbed && (
                       <>
                         <label className="block">
                           <span className="text-xs font-bold text-slate-500 uppercase">Rozet / Kategori Metni</span>
@@ -872,22 +917,24 @@ export default function PopupCenter() {
                       </>
                     )}
 
-                    <label className="block">
-                      <span className="text-xs font-bold text-slate-500 uppercase">
-                        {selectedPopup.onlyImage ? 'Görsele Tıklayınca Açılacak Sayfa (Link)' : 'Buton Yönlendirme (Link)'}
-                      </span>
-                      <select
-                        value={selectedPopup.buttonUrl || '/'}
-                        onChange={(e) => updateCurrentPopup({ buttonUrl: e.target.value })}
-                        className="mt-1 w-full border-slate-200 rounded-lg text-sm bg-slate-50 focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-2 border outline-none"
-                      >
-                        {pagesList.map((p) => (
-                          <option key={p.id} value={p.path}>
-                            {p.title} ({p.path})
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+                    {!selectedPopup.pageEmbed && (
+                      <label className="block">
+                        <span className="text-xs font-bold text-slate-500 uppercase">
+                          {selectedPopup.onlyImage ? 'Görsele Tıklayınca Açılacak Sayfa (Link)' : 'Buton Yönlendirme (Link)'}
+                        </span>
+                        <select
+                          value={selectedPopup.buttonUrl || '/'}
+                          onChange={(e) => updateCurrentPopup({ buttonUrl: e.target.value })}
+                          className="mt-1 w-full border-slate-200 rounded-lg text-sm bg-slate-50 focus:ring-[#0606f9] focus:border-[#0606f9] px-3 py-2 border outline-none"
+                        >
+                          {pagesList.map((p) => (
+                            <option key={p.id} value={p.path}>
+                              {p.title} ({p.path})
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
                   </div>
                 )}
 

@@ -9,20 +9,27 @@ export function IconPreview({ data, className, style }: { data?: any; className?
   if (!name) return null;
 
   const cleanName = name.replace(/^lucide:/i, '');
+
+  const dAlign = style?.['--desktop-text-align'];
+  const mAlign = style?.['--mobile-text-align'];
+  const customDataProps: any = {};
+  if (dAlign) customDataProps['data-desktop-align'] = dAlign.replace('px', '').trim();
+  if (mAlign) customDataProps['data-mobile-align'] = mAlign.replace('px', '').trim();
+
   
   if (cleanName.trim().toLowerCase().includes('<svg')) {
-    return <span className={`inline-flex items-center justify-center ${className || ''}`} style={style} dangerouslySetInnerHTML={{ __html: cleanName }} />;
+    return <span {...customDataProps} className={`inline-flex items-center justify-center ${className || ''}`} style={style} dangerouslySetInnerHTML={{ __html: cleanName }} />;
   }
 
   const Icon = (LucideIcons as any)[cleanName];
   if (Icon) {
     const color = data.color && data.color !== 'currentColor' ? data.color : undefined;
     const size = data.size || undefined;
-    return <Icon className={className} color={color} size={size} style={style} />;
+    return <Icon {...customDataProps} className={className} color={color} size={size} style={style} />;
   }
 
   // Fallback to Google Material Symbols
-  return <span className={`material-symbols-outlined ${className || ''}`} style={style} translate="no" aria-hidden="true">{cleanName}</span>;
+  return <span {...customDataProps} className={`material-symbols-outlined ${className || ''}`} style={style} translate="no" aria-hidden="true">{cleanName}</span>;
 }
 
 export default function IconField({ 

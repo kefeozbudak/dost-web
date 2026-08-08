@@ -29,7 +29,6 @@ import MediaCenter from "./admin/hubs/MediaCenter";
 import SettingsCenter from "./admin/hubs/SettingsCenter";
 import UsersCenter from "./admin/hubs/UsersCenter";
 import PopupCenter from "./admin/hubs/PopupCenter";
-import QuickNav from "./components/QuickNav";
 
 export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
@@ -86,7 +85,6 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <QuickNav />
       <Routes>
         {/* Public Routes */}
         <Route path="*" element={<PublicView />} />

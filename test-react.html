@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    [style*="--desktop-font-size"] { font-size: var(--mobile-font-size, var(--desktop-font-size)) !important; }
+    @media (min-width: 1025px) {
+      [style*="--desktop-font-size"] { font-size: var(--desktop-font-size) !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    function App() {
+      const style = {
+        '--desktop-font-size': '40px',
+        '--mobile-font-size': '10px'
+      };
+      return <h2 style={style}>Hello World</h2>;
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

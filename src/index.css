@@ -329,3 +329,23 @@ body.menu-open .fixed-widget, body.menu-open .floating-btn, body.menu-open .fixe
   [style*="--desktop-margin-top"] { margin-top: var(--desktop-margin-top) !important; }
   [style*="--desktop-margin-bottom"] { margin-bottom: var(--desktop-margin-bottom) !important; }
 }
+
+
+/* Icon Alignment Fixes */
+*:has(> [data-mobile-align="center"]) { margin-left: auto !important; margin-right: auto !important; justify-content: center; }
+*:has(> [data-mobile-align="left"]) { margin-left: 0 !important; margin-right: auto !important; justify-content: flex-start; }
+*:has(> [data-mobile-align="right"]) { margin-left: auto !important; margin-right: 0 !important; justify-content: flex-end; }
+
+[data-mobile-align="center"] { margin-left: auto !important; margin-right: auto !important; display: block !important; text-align: center !important; }
+[data-mobile-align="left"] { margin-left: 0 !important; margin-right: auto !important; display: block !important; text-align: left !important; }
+[data-mobile-align="right"] { margin-left: auto !important; margin-right: 0 !important; display: block !important; text-align: right !important; }
+
+@media (min-width: 1025px) {
+  *:has(> [data-desktop-align="center"]) { margin-left: auto !important; margin-right: auto !important; justify-content: center; }
+  *:has(> [data-desktop-align="left"]) { margin-left: 0 !important; margin-right: auto !important; justify-content: flex-start; }
+  *:has(> [data-desktop-align="right"]) { margin-left: auto !important; margin-right: 0 !important; justify-content: flex-end; }
+
+  [data-desktop-align="center"] { margin-left: auto !important; margin-right: auto !important; display: block !important; text-align: center !important; }
+  [data-desktop-align="left"] { margin-left: 0 !important; margin-right: auto !important; display: block !important; text-align: left !important; }
+  [data-desktop-align="right"] { margin-left: auto !important; margin-right: 0 !important; display: block !important; text-align: right !important; }
+}
