@@ -1446,7 +1446,7 @@ export default function BlockFormEditor({
                       required: false,
                     }
                   : {};
-              handleChange(arrayKey, [...currentArray, newItem]);
+              handleChange(arrayKey, arrayKey === "inputs" ? [...currentArray, newItem] : [newItem, ...currentArray]);
             }}
             className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded flex items-center justify-center gap-1 shadow-sm transition-colors"
           >
@@ -3035,7 +3035,98 @@ export default function BlockFormEditor({
         )}
 
       
-        {['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form'].includes(block.type) && (
+        
+        {block.type === 'campuses' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'image', label: 'Kampüs Görseli', type: 'image' },
+              { key: 'title', label: 'Kampüs Adı', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Buton Linki', type: 'url' },
+            ], 'Kampüsler')}
+          </div>
+        )}
+
+        {block.type === 'education_levels' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              { key: 'title', label: 'Kategori Adı', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Buton Linki', type: 'url' }
+            ], 'Kademeler')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderImageUpload('Görsel', 'image')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_levels' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderArrayEditor('items', [
+              { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              { key: 'title', label: 'Kategori Adı', type: 'text' },
+              { key: 'desc', label: 'Açıklama', type: 'textarea' },
+              { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Buton Linki', type: 'url' }
+            ], 'Kademeler')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_yadep' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor('items', [
+              { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              { key: 'title', label: 'Madde Başlığı', type: 'text' },
+              { key: 'desc', label: 'Madde Açıklaması', type: 'textarea' }
+            ], 'YADEP Maddeleri')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_philosophy' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Rozet (Badge)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Ana Açıklama', 'desc')}
+            {renderImageUpload('Görsel', 'image')}
+            {renderInputWithStyle('Kart İkonu', 'cardIcon')}
+            {renderInputWithStyle('Kart Başlığı', 'cardTitle')}
+            {renderTextareaWithStyle('Kart Açıklaması', 'cardDesc')}
+            {renderArrayEditor('items', [
+              { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              { key: 'title', label: 'Madde Başlığı', type: 'text' },
+              { key: 'desc', label: 'Madde Açıklaması', type: 'textarea' }
+            ], 'Felsefe Maddeleri')}
+          </div>
+        )}
+
+        {block.type === 'edu_system_cta' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'desc')}
+            {renderArrayEditor('buttons', [
+              { key: 'label', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Buton Linki', type: 'url' },
+              { key: 'icon', label: 'İkon (Material)', type: 'text' },
+            ], 'Butonlar')}
+          </div>
+        )}
+
+{['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form'].includes(block.type) && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}

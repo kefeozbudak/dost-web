@@ -4188,63 +4188,27 @@ const getIndividualButtonStyle = (btn: any) => {
                             {item.subtitle || item.desc}
                           </p>
                         )}
-                        <div className="mt-auto whitespace-pre-line">
-                          <a
-                            href={item.url || "#"}
-                            className="flex items-center gap-2 text-primary font-label-md text-sm md:text-label-md hover:underline group/link whitespace-pre-line"
-                          >
-                            {item.buttonText || "Devamını Oku"}
-                            <span
-                              className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base whitespace-pre-line"
-                              translate="no"
-                              aria-hidden="true"
+                        {!item.hideButton && (
+                          <div className="mt-auto whitespace-pre-line">
+                            <a
+                              href={item.url || "#"}
+                              className="flex items-center gap-2 text-primary font-label-md text-sm md:text-label-md hover:underline group/link whitespace-pre-line"
                             >
-                              arrow_forward
-                            </span>
-                          </a>
-                        </div>
+                              {item.buttonText || "Devamını Oku"}
+                              <span
+                                className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base whitespace-pre-line"
+                                translate="no"
+                                aria-hidden="true"
+                              >
+                                arrow_forward
+                              </span>
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
-
-                {block.showPagination && (
-                  <div className="mt-12 md:mt-16 flex justify-center items-center gap-2 whitespace-pre-line">
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_left
-                      </span>
-                    </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md whitespace-pre-line">
-                      1
-                    </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md whitespace-pre-line">
-                      2
-                    </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md whitespace-pre-line">
-                      3
-                    </button>
-                    <span className="px-2 text-text-muted whitespace-pre-line">
-                      ...
-                    </span>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md whitespace-pre-line">
-                      12
-                    </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-border-subtle text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_right
-                      </span>
-                    </button>
-                  </div>
-                )}
               </section>
             </div>
           );
@@ -4478,10 +4442,15 @@ const getIndividualButtonStyle = (btn: any) => {
                             ? "bg-primary text-white hover:bg-primary/90 hover:shadow-lg"
                             : "bg-white text-primary border border-border-subtle hover:bg-surface-container";
 
+                          let buttonUrl = btn.url || "#";
+                          if (btn.label === "Kampüsleri Keşfet") {
+                            buttonUrl = "#campuses-section";
+                          }
+
                           return (
-                            <a
+                            <SmartLink
                               key={i}
-                              href={btn.url || "#"}
+                              url={buttonUrl}
                               style={getIndividualButtonStyle(btn)}
                               className={`inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold transition-all ${!isCustomColors ? defaultClasses : "hover:opacity-90 hover:shadow-lg"}`}
                             >
@@ -4499,7 +4468,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                     className="w-[1.1em] h-[1.1em] whitespace-pre-line"
                                    style={getIconStyle(btn, block)} />
                                 ))}
-                            </a>
+                            </SmartLink>
                           );
                         })}
                       </div>
@@ -4789,6 +4758,7 @@ const getIndividualButtonStyle = (btn: any) => {
           return (
             <section
               key={index}
+              id="campuses-section"
               className={`py-section-gap px-margin-desktop bg-surface-container/50 ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
@@ -4817,26 +4787,6 @@ const getIndividualButtonStyle = (btn: any) => {
                       }}
                     ></h2>
                   </div>
-                  {block.viewAllText && (
-                    <SmartLink
-                      url={
-                        block.viewAllUrl ||
-                        block.buttonUrl ||
-                        block.url ||
-                        "/kampusler"
-                      }
-                      className="hidden md:flex items-center gap-2 text-primary text-sm md:text-base font-bold hover:underline whitespace-pre-line"
-                    >
-                      {block.viewAllText}
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_right
-                      </span>
-                    </SmartLink>
-                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 whitespace-pre-line">
                   {block.items?.map((item: any, i: number) => (

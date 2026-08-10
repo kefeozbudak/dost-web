@@ -27,7 +27,7 @@ export default function SmartLink({
 }: SmartLinkProps) {
   const rawUrl = (url || href || to || '').trim();
 
-  // 1. If empty or hash placeholder, prevent default page jump
+  // 1. If empty or exact hash placeholder, prevent default page jump
   if (!rawUrl || rawUrl === '#') {
     return (
       <a
@@ -37,6 +37,29 @@ export default function SmartLink({
         onClick={(e) => {
           e.preventDefault();
           if (onClick) onClick(e);
+        }}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  // Intra-page anchor link (e.g., "#campuses-section")
+  if (rawUrl.startsWith('#')) {
+    return (
+      <a
+        href={rawUrl}
+        className={className}
+        style={style}
+        onClick={(e) => {
+          e.preventDefault();
+          if (onClick) onClick(e);
+          const targetId = rawUrl.substring(1);
+          const el = document.getElementById(targetId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
         {...props}
       >
