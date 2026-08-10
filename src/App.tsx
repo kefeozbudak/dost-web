@@ -12,6 +12,7 @@ import { useAuthStore } from "./store/authStore";
 
 // Placeholder imports for pages
 import PublicView from "./pages/PublicView";
+import KvkkModal from "./components/KvkkModal";
 import AdminLayout from "./admin/AdminLayout";
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
@@ -85,6 +86,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <KvkkModal />
       <Routes>
         {/* Public Routes */}
         <Route path="*" element={<PublicView />} />

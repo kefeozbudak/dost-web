@@ -1,6 +1,7 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { IconPreview } from './IconField';
+import { openKvkkModal } from "./KvkkModal";
 import SmartLink from './SmartLink';
 
 
@@ -231,7 +232,7 @@ export default function Footer({ data, headerData }: { data?: any; headerData?: 
                 <ul className="flex flex-col gap-2.5">
                   {(col.links || []).map((link: any, j: number) => (
                     <li key={j}>
-                      <SmartLink 
+                      <SmartLink onClick={(e) => { if (link.label.includes("KVKK")) { e.preventDefault(); openKvkkModal(); } }} 
                         className="text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors flex items-center gap-1.5 capitalize whitespace-nowrap truncate" 
                         style={textStyle}
                         url={link.url}
@@ -255,7 +256,7 @@ export default function Footer({ data, headerData }: { data?: any; headerData?: 
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             {legalLinks.map((link: any, i: number) => (
-              <SmartLink 
+              <SmartLink onClick={(e) => { if (link.label.includes("KVKK")) { e.preventDefault(); openKvkkModal(); } }} 
                 key={i} 
                 className="text-xs md:text-sm text-text-muted dark:text-outline-variant hover:text-primary transition-colors" 
                 style={textStyle}

@@ -4,6 +4,7 @@ import LgsCalculator from "./LgsCalculator";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, storage } from "../lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import TextWithKvkkLink from "./TextWithKvkkLink";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
 import {
@@ -851,6 +852,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
               : DEFAULT_PRE_REGISTRATION_INPUTS;
 
   // Migration for old pre_registration_form grade options
+  const hasKvkk = defaultInputs.some((i: any) => i.name === "kvkk_approval" || (i.label && i.label.includes("KVKK")));
+  if (!hasKvkk && defaultInputs.length > 0) {
+    defaultInputs = [...defaultInputs, { id: "kvkk_auto", name: "kvkk_approval", type: "checkbox", label: "Gizlilik Politikası ve KVKK metnini okudum, onaylıyorum.", required: true, fullWidth: true }];
+  }
   if (type === "pre_registration_form" && block.inputs && block.inputs.length > 0) {
     defaultInputs = defaultInputs.map((inp: any) => {
       if (inp.name === "grade" && typeof inp.options === "string") {
@@ -1203,10 +1208,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                           />
                         </div>
                         <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors whitespace-pre-line">
-                          <span className="font-bold text-primary whitespace-pre-line">
-                            {input.label.split(" ")[0]}
-                          </span>{" "}
-                          {input.label.substring(input.label.indexOf(" ") + 1)}
+                          <TextWithKvkkLink text={input.label} />
                         </span>
                       </label>
                     </div>
@@ -3050,7 +3052,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                     !item.styles?.backgroundColor
                   ) {
                     baseStyle.backgroundColor = "#747685";
-                  } else if (item.styles?.backgroundColor) {
+} else if (item.styles?.backgroundColor) {
                     baseStyle.backgroundColor = item.styles.backgroundColor;
                   }
                   return (
@@ -4267,7 +4269,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                     style={getDescStyle(block)}
                     className="font-body-lg text-base md:text-body-lg text-on-surface-variant mb-6 md:mb-8 whitespace-pre-line"
                     dangerouslySetInnerHTML={{ __html: block.desc }}
-                  ></p>
+                    ></p>
                 )}
 
                 <form
@@ -4290,8 +4292,9 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                 {block.caption && (
                   <p
                     className="mt-4 text-xs md:text-caption text-text-muted whitespace-pre-line"
-                    dangerouslySetInnerHTML={{ __html: block.caption }}
-                  ></p>
+                    ><TextWithKvkkLink text={block.caption} /></p>
+
+
                 )}
               </div>
             </section>
@@ -4502,7 +4505,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         {buttonsContent}
                       </>
                     );
-                  } else if (layoutOrder === "text_buttons_images") {
+} else if (layoutOrder === "text_buttons_images") {
                     return (
                       <>
                         {textContent}
@@ -5493,7 +5496,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         )}
                       </div>
                     );
-                  } else if (item.style === "list") {
+} else if (item.style === "list") {
                     return (
                       <div
                         key={idx}
@@ -5554,7 +5557,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         )}
                       </div>
                     );
-                  } else {
+} else {
                     return (
                       <div
                         key={idx}

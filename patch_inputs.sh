@@ -1,0 +1,2 @@
+#!/bin/bash
+sed -i '/if (type === "pre_registration_form" && block.inputs/i \  const hasKvkk = defaultInputs.some((i: any) => i.name === "kvkk_approval" || (i.label && i.label.includes("KVKK")));\n  if (!hasKvkk && defaultInputs.length > 0) {\n    defaultInputs = [...defaultInputs, { id: "kvkk_auto", name: "kvkk_approval", type: "checkbox", label: "Gizlilik Politikası ve KVKK metnini okudum, onaylıyorum.", required: true, fullWidth: true }];\n  }' src/components/PageBlocks.tsx

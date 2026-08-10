@@ -3126,6 +3126,72 @@ export default function BlockFormEditor({
           </div>
         )}
 
+        {block.type === 'clubs_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık Bölüm 1', 'title')}
+            {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderArrayEditor(
+              'buttons',
+              [
+                { key: 'label', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Buton Linki', type: 'url' },
+                { key: 'style', label: 'Stil (primary/outline)', type: 'text' }
+              ],
+              'Butonlar'
+            )}
+          </div>
+        )}
+
+        {block.type === 'clubs_grid' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Kategoriler (Virgülle Ayırın)', 'categories')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'category', label: 'Kategori', type: 'text' },
+                { key: 'title', label: 'Kulüp Adı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon', type: 'icon' },
+                { key: 'image', label: 'Görsel', type: 'image' }
+              ],
+              'Kulüpler'
+            )}
+          </div>
+        )}
+
+        {block.type === 'clubs_benefits' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+                { key: 'title', label: 'Başlık', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' }
+              ],
+              'Avantajlar'
+            )}
+          </div>
+        )}
+
+        {block.type === 'clubs_cta' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'buttons',
+              [
+                { key: 'label', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Buton Linki', type: 'url' }
+              ],
+              'Butonlar'
+            )}
+          </div>
+        )}
+
 {['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form'].includes(block.type) && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
