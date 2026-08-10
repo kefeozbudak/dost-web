@@ -176,12 +176,15 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
                disabled={uploading}
                className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm disabled:bg-blue-400"
              >
-               {uploading ? (
-                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-               ) : (
-                 <Upload className="w-4 h-4" />
-               )}
-               {uploading ? 'Yükleniyor...' : 'Yeni Görsel Yükle'}
+               <div className="flex items-center justify-center w-4 h-4 shrink-0">
+                 {uploading ? (
+                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                 ) : (
+                   <Upload className="w-4 h-4" />
+                 )}
+               </div>
+               <span className={uploading ? 'hidden' : 'block'}>Yeni Görsel Yükle</span>
+               <span className={uploading ? 'block' : 'hidden'}>Yükleniyor...</span>
              </button>
           </div>
         </div>

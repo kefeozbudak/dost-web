@@ -188,12 +188,15 @@ export default function MediaCenter() {
             disabled={uploading}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
           >
-            {uploading ? (
-              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-            ) : (
-              <Upload className="w-4 h-4" />
-            )}
-            <span key={uploading ? '1' : '0'}>{uploading ? 'Yükleniyor...' : 'Yeni Dosya Yükle'}</span>
+            <div className="flex items-center justify-center w-5 h-5 shrink-0">
+              {uploading ? (
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              ) : (
+                <Upload className="w-4 h-4" />
+              )}
+            </div>
+            <span className={uploading ? 'hidden' : 'block'}>Yeni Dosya Yükle</span>
+            <span className={uploading ? 'block' : 'hidden'}>Yükleniyor...</span>
           </button>
         </div>
       </div>

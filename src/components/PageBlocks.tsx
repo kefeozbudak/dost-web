@@ -6962,10 +6962,10 @@ const getIndividualButtonStyle = (btn: any) => {
                       return (
                         <div
                           key={i}
-                          className="col-span-1 md:col-span-2 row-span-1 bg-surface-card rounded-xl border border-border-subtle p-8 flex flex-col md:flex-row gap-8 items-center justify-between overflow-hidden relative shadow-sm whitespace-pre-line"
+                          className="col-span-1 md:col-span-2 row-span-1 bg-surface-card rounded-xl border border-border-subtle flex flex-col md:flex-row items-stretch justify-between overflow-hidden relative shadow-sm whitespace-pre-line group hover:border-primary/50 transition-colors"
                           style={getCardStyle(item, block)}
                         >
-                          <div className="flex-1 relative z-10 whitespace-pre-line">
+                          <div className="flex-1 p-8 relative z-10 whitespace-pre-line flex flex-col justify-center">
                             <div
                               className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
                             >
@@ -6996,9 +6996,9 @@ const getIndividualButtonStyle = (btn: any) => {
                               {item.desc}
                             </p>
                           </div>
-                          <div className="w-full md:w-1/3 h-40 rounded-lg overflow-hidden shrink-0 whitespace-pre-line">
+                          <div className="w-full md:w-2/5 min-h-[250px] md:min-h-full relative shrink-0 whitespace-pre-line">
                             <div
-                              className="w-full h-full bg-cover bg-center whitespace-pre-line"
+                              className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
                               style={getImageStyle(item, "image", i)}
                             ></div>
                           </div>
@@ -7051,40 +7051,97 @@ const getIndividualButtonStyle = (btn: any) => {
                     return (
                       <div
                         key={i}
-                        className={`col-span-1 row-span-1 bg-surface-card rounded-xl border border-border-subtle p-8 flex flex-col justify-between ${isPrimary ? "hover:border-primary/50" : "hover:border-secondary/50"} transition-colors shadow-sm`}
+                        className={`col-span-1 row-span-1 bg-surface-card rounded-xl border border-border-subtle flex flex-col overflow-hidden ${isPrimary ? "hover:border-primary/50" : "hover:border-secondary/50"} transition-colors shadow-sm whitespace-pre-line`}
                         style={getCardStyle(item, block)}
                       >
-                        <div
-                          className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
-                        >
-                          {typeof item.icon === "object" ||
-                          (typeof item.icon === "string" &&
-                            item.icon !== item.icon.toLowerCase()) ? (
-                            <IconPreview
-                              data={item.icon}
-                              className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
-                             style={getIconStyle(item, block)} />
-                          ) : (
-                            <IconPreview
-                              data={item.icon || "groups"}
-                              style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.desc}
-                          </p>
-                        </div>
+                        {item.image ? (
+                          <>
+                            {(!item.title && !item.desc) ? (
+                              <div className="w-full h-full min-h-[250px] relative whitespace-pre-line">
+                                <div
+                                  className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
+                                  style={getImageStyle(item, "image", i)}
+                                ></div>
+                              </div>
+                            ) : (
+                              <>
+                                <div className="w-full h-48 relative shrink-0 whitespace-pre-line">
+                                  <div
+                                    className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
+                                    style={getImageStyle(item, "image", i)}
+                                  ></div>
+                                </div>
+                                <div className="p-8 flex flex-col justify-between flex-1 whitespace-pre-line">
+                                  <div
+                                    className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
+                                  >
+                                    {typeof item.icon === "object" ||
+                                    (typeof item.icon === "string" &&
+                                      item.icon !== item.icon.toLowerCase()) ? (
+                                      <IconPreview
+                                        data={item.icon}
+                                        className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
+                                       style={getIconStyle(item, block)} />
+                                    ) : (
+                                      <IconPreview
+                                        data={item.icon || "groups"}
+                                        style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
+                                      />
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h3
+                                      className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
+                                      style={getCardTitleStyle(item, block)}
+                                    >
+                                      {item.title}
+                                    </h3>
+                                    <p
+                                      className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
+                                      style={getCardDescStyle(item, block)}
+                                    >
+                                      {item.desc}
+                                    </p>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </>
+                        ) : (
+                          <div className="p-8 flex flex-col justify-between h-full whitespace-pre-line">
+                            <div
+                              className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
+                            >
+                              {typeof item.icon === "object" ||
+                              (typeof item.icon === "string" &&
+                                item.icon !== item.icon.toLowerCase()) ? (
+                                <IconPreview
+                                  data={item.icon}
+                                  className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
+                                 style={getIconStyle(item, block)} />
+                              ) : (
+                                <IconPreview
+                                  data={item.icon || "groups"}
+                                  style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
+                                />
+                              )}
+                            </div>
+                            <div>
+                              <h3
+                                className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
+                                style={getCardTitleStyle(item, block)}
+                              >
+                                {item.title}
+                              </h3>
+                              <p
+                                className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
+                                style={getCardDescStyle(item, block)}
+                              >
+                                {item.desc}
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
