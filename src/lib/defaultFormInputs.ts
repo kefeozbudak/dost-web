@@ -4,7 +4,7 @@ export const DEFAULT_PRE_REGISTRATION_INPUTS = [
   { type: 'text', name: 'student_tc', label: 'T.C. Kimlik Numarası', placeholder: '11 Haneli T.C. Kimlik No', required: true },
   { type: 'date', name: 'dob', label: 'Doğum Tarihi', required: true },
   { type: 'select', name: 'gender', label: 'Cinsiyet', options: 'Erkek, Kız', required: true },
-  { type: 'select', name: 'grade', label: 'Mevcut Sınıf Seviyesi', options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf, 10. Sınıf, 11. Sınıf', required: true, fullWidth: true },
+  { type: 'select', name: 'grade', label: 'Mevcut Sınıf Seviyesi', options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf Anadolu Lisesi, 9. Sınıf Fen Lisesi, 10. Sınıf Anadolu Lisesi, 10. Sınıf Fen Lisesi, 11. Sınıf Anadolu Lisesi, 11. Sınıf Fen Lisesi, 12. Sınıf Anadolu Lisesi, 12. Sınıf Fen Lisesi', required: true, fullWidth: true },
   { type: 'section_title', label: 'Veli Bilgileri', icon: 'family_restroom' },
   { type: 'text', name: 'parent_fullname', label: 'Veli Adı Soyadı', placeholder: 'Örn: Mehmet Yılmaz', required: true },
   { type: 'text', name: 'parent_tc', label: 'T.C. Kimlik Numarası', placeholder: '11 Haneli T.C. Kimlik No', required: true },

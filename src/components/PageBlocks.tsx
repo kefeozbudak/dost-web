@@ -51,12 +51,20 @@ export const getHeroInnerClass = (block: any, defaultClasses: string = "") => {
   else if (alignX === "right") alignClass = "ml-auto text-right items-end";
   else if (alignX === "left") alignClass = "mr-auto text-left items-start";
 
-  // ensure it's a flex column so items-start/end aligns the buttons
-  if (alignClass && !defaultClasses.includes("flex-col")) {
-    alignClass = "flex flex-col " + alignClass;
+  let cleanedClasses = defaultClasses;
+  if (alignClass) {
+    cleanedClasses = cleanedClasses.replace(/\bmx-auto\b/g, '')
+                                   .replace(/\bml-auto\b/g, '')
+                                   .replace(/\bmr-auto\b/g, '')
+                                   .replace(/\btext-center\b/g, '')
+                                   .replace(/\btext-left\b/g, '')
+                                   .replace(/\btext-right\b/g, '');
+    if (!cleanedClasses.includes("flex-col")) {
+      alignClass = "flex flex-col " + alignClass;
+    }
   }
 
-  return `${defaultClasses} ${alignClass}`.trim();
+  return `${cleanedClasses} ${alignClass}`.trim().replace(/\s+/g, ' ');
 };
 
 const ClubsGridBlock = ({
@@ -177,7 +185,7 @@ const ClubsGridBlock = ({
                     className="text-on-surface-variant font-body-md mb-6 line-clamp-3 whitespace-pre-line"
                     style={getCardDescStyle(item, block)}
                   >
-                    {item.desc}
+                    {item.subtitle || item.desc}
                   </p>
                   <div className="mt-auto flex items-center justify-between whitespace-pre-line">
                     <a
@@ -331,7 +339,7 @@ const CareerBenefitsBlock = ({
               {item.title}
             </h3>
             <p className="font-normal text-[16px] text-slate-500 whitespace-pre-line">
-              {item.desc}
+              {item.subtitle || item.desc}
             </p>
           </div>
         ))}
@@ -543,7 +551,7 @@ const EduSystemLevelsBlock = ({
                 className="font-body-md text-text-muted mb-6 flex-grow whitespace-pre-line"
                 style={getCardDescStyle(item, block)}
               >
-                {item.desc}
+                {item.subtitle || item.desc}
               </p>
               {item.url && !item.hideButton && (
                 <SmartLink
@@ -651,7 +659,7 @@ const EduSystemYadepBlock = ({
                   className="font-body-md text-text-muted whitespace-pre-line"
                   style={getCardDescStyle(item, block)}
                 >
-                  {item.desc}
+                  {item.subtitle || item.desc}
                 </p>
               </div>
             );
@@ -729,7 +737,7 @@ const EduSystemPhilosophyBlock = ({
                         className="font-body-md text-text-muted text-sm whitespace-pre-line"
                         style={getCardDescStyle(item, block)}
                       >
-                        {item.desc}
+                        {item.subtitle || item.desc}
                       </p>
                     </div>
                   </div>
@@ -845,10 +853,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
   // Migration for old pre_registration_form grade options
   if (type === "pre_registration_form" && block.inputs && block.inputs.length > 0) {
     defaultInputs = defaultInputs.map((inp: any) => {
-      if (inp.name === "grade" && typeof inp.options === "string" && inp.options.includes("Lise Hazırlık")) {
+      if (inp.name === "grade" && typeof inp.options === "string") {
         return {
           ...inp,
-          options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf, 10. Sınıf, 11. Sınıf'
+          options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf Anadolu Lisesi, 9. Sınıf Fen Lisesi, 10. Sınıf Anadolu Lisesi, 10. Sınıf Fen Lisesi, 11. Sınıf Anadolu Lisesi, 11. Sınıf Fen Lisesi, 12. Sınıf Anadolu Lisesi, 12. Sınıf Fen Lisesi'
         };
       }
       return inp;
@@ -932,7 +940,15 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
       }
     }
 
-    setFormData((prev: any) => ({ ...prev, [name]: finalValue }));
+    setFormData((prev: any) => {
+      const newData = { ...prev, [name]: finalValue };
+      if (type === "pre_registration_form" && name === "grade") {
+        if (typeof finalValue === "string" && (finalValue.includes("Anadolu Lisesi") || finalValue.includes("Fen Lisesi"))) {
+          newData.campus = "Eryaman Kampüsü";
+        }
+      }
+      return newData;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1299,6 +1315,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                     }
                   }
 
+                  const isHighSchoolSelected = type === "pre_registration_form" && typeof formData.grade === "string" && (formData.grade.includes("Anadolu Lisesi") || formData.grade.includes("Fen Lisesi"));
+                  const isCampusField = input.name === "campus";
+                  const shouldDisableCampus = isHighSchoolSelected && isCampusField;
+
                   return (
                     <div
                       key={inputKey}
@@ -1319,14 +1339,15 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                       </label>
                       <select
                         required={input.required}
+                        disabled={shouldDisableCampus}
                         value={formData[input.name] || ""}
                         onChange={(e) =>
                           handleChange(input.name, e.target.value)
                         }
                         className={
                           isStyledForm
-                            ? "w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat"
-                            : "w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat"
+                            ? `w-full px-4 py-3 rounded-lg border border-border-subtle bg-surface-background text-text-main font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat ${shouldDisableCampus ? 'opacity-60 cursor-not-allowed !bg-slate-100' : ''}`
+                            : `w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat ${shouldDisableCampus ? 'opacity-60 cursor-not-allowed !bg-slate-100' : ''}`
                         }
                       >
                         <option disabled value="">
@@ -1338,6 +1359,9 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                           </option>
                         ))}
                       </select>
+                      {shouldDisableCampus && (
+                        <p className="text-xs text-blue-600 mt-1">Lise seviyesi eğitimimiz sadece Eryaman kampüsümüzde mevcuttur.</p>
+                      )}
                     </div>
                   );
                 }
@@ -2780,12 +2804,12 @@ export const DynamicBlockRenderer = ({
   const getTitlePart1Style = (block: any) => ({
     whiteSpace: "pre-line" as const,
     ...getStyle(block, "titlePart1"),
-    color: block.styles?.titlePart1Color || block.titlePart1Color || undefined,
+    color: block.styles?.titlePart1Color || block.styles?.titleColor || block.titlePart1Color || block.titleColor || undefined,
   });
   const getTitlePart2Style = (block: any) => ({
     whiteSpace: "pre-line" as const,
     ...getStyle(block, "titlePart2"),
-    color: block.styles?.titlePart2Color || block.titlePart2Color || undefined,
+    color: block.styles?.titlePart2Color || block.styles?.titleColor || block.titlePart2Color || block.titleColor || undefined,
   });
 
   const getValidText = (...values: any[]) => {
@@ -3035,7 +3059,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             className="text-white/80 font-body-md whitespace-pre-line"
                             style={getCardDescStyle(item, block)}
                           >
-                            {item.desc}
+                            {item.subtitle || item.desc}
                           </p>
                         )}
                       </div>
@@ -3143,7 +3167,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           className="text-text-muted text-label-md whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
-                          {item.desc}
+                          {item.subtitle || item.desc}
                         </p>
                       </div>
                     </div>
@@ -3330,7 +3354,7 @@ const getIndividualButtonStyle = (btn: any) => {
                               className="text-text-muted whitespace-pre-line"
                               style={getCardDescStyle(item, block)}
                             >
-                              {item.desc}
+                              {item.subtitle || item.desc}
                             </p>
                           </div>
                         </div>
@@ -3949,7 +3973,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         className="text-on-surface-variant text-sm whitespace-pre-line"
                         style={getCardDescStyle(item, block)}
                       >
-                        {item.desc}
+                        {item.subtitle || item.desc}
                       </p>
                     </div>
                   ))}
@@ -4161,7 +4185,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             style={getCardDescStyle(item, block)}
                             className="font-body-md text-sm md:text-body-md text-on-surface-variant mb-6 line-clamp-3 whitespace-pre-line"
                           >
-                            {item.desc}
+                            {item.subtitle || item.desc}
                           </p>
                         )}
                         <div className="mt-auto whitespace-pre-line">
@@ -4591,7 +4615,7 @@ const getIndividualButtonStyle = (btn: any) => {
                         style={getCardDescStyle(item, block)}
                         className="text-white/80 text-sm leading-relaxed mb-8 flex-1 whitespace-pre-line"
                       >
-                        {item.desc}
+                        {item.subtitle || item.desc}
                       </p>
                       {(item.buttonText || item.buttonUrl || item.url) && (
                         <SmartLink
@@ -4674,7 +4698,7 @@ const getIndividualButtonStyle = (btn: any) => {
                                 style={getCardDescStyle(item, block)}
                                 className="text-white/80 mb-5 md:mb-6 text-sm md:text-base whitespace-pre-line"
                               >
-                                {item.desc}
+                                {item.subtitle || item.desc}
                               </p>
                               {item.buttonText && (
                                 <SmartLink
@@ -4750,7 +4774,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             style={getCardDescStyle(item, block)}
                             className="text-text-muted text-sm leading-relaxed whitespace-pre-line"
                           >
-                            {item.desc}
+                            {item.subtitle || item.desc}
                           </p>
                         </>
                       )}
@@ -4849,7 +4873,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           style={getCardDescStyle(item, block)}
                           className="text-text-muted text-sm md:text-base mb-5 md:mb-6 flex-1 whitespace-pre-line"
                         >
-                          {item.desc}
+                          {item.subtitle || item.desc}
                         </p>
                         {!item.hideButton && (
                           <SmartLink
@@ -4980,7 +5004,7 @@ const getIndividualButtonStyle = (btn: any) => {
               }}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} w-full mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center`}
               >
                 <div
                   className={getHeroInnerClass(
@@ -5027,12 +5051,12 @@ const getIndividualButtonStyle = (btn: any) => {
                   )}
                   {block.subtitle && (
                     <p
-                      className={`text-body-lg text-primary-fixed max-w-xl ${getAlignClass(block)} whitespace-pre-line`}
+                      className={`text-body-lg text-primary-fixed max-w-xl whitespace-pre-line`}
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex gap-4 pt-4 justify-center whitespace-pre-line">
+                    <div className="flex gap-4 pt-4 whitespace-pre-line">
                       {block.buttons.map((btn: any, i: number) => (
                         <a
                           key={i}
@@ -5057,6 +5081,7 @@ const getIndividualButtonStyle = (btn: any) => {
               </div>
             </section>
           );
+      
         case "bento_academic":
           return (
             <section
@@ -5102,7 +5127,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             className="text-4xl font-extrabold text-gold whitespace-pre-line"
                             style={{ color: "#D4AF37" }}
                           >
-                            {block.items[0].stat}
+                            {block.items[0].stat !== undefined ? block.items[0].stat : block.items[0].statValue}
                           </span>
                           <span className="text-label-md text-on-surface-variant pb-1 whitespace-pre-line">
                             {block.items[0].statLabel}
@@ -5115,7 +5140,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           ></div>
                         </div>
                         <p className="text-label-sm font-label-sm text-primary uppercase whitespace-pre-line">
-                          {block.items[0].tag}
+                          {block.items[0].tag !== undefined ? block.items[0].tag : block.items[0].badge}
                         </p>
                       </div>
                     </div>
@@ -5139,22 +5164,35 @@ const getIndividualButtonStyle = (btn: any) => {
                         {block.items[1].desc}
                       </p>
                       <div className="grid grid-cols-2 gap-6 items-center whitespace-pre-line">
-                        {block.items[1].stats?.map((stat: any, i: number) => (
-                          <div
-                            key={i}
-                            className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
-                          >
+                        {(() => {
+                          let stats: any[] = [];
+                          if (block.items[1].stat1Label !== undefined || block.items[1].stat1Value !== undefined) {
+                            if (block.items[1].stat1Label || block.items[1].stat1Value) {
+                              stats.push({ label: block.items[1].stat1Label, value: block.items[1].stat1Value });
+                            }
+                            if (block.items[1].stat2Label || block.items[1].stat2Value) {
+                              stats.push({ label: block.items[1].stat2Label, value: block.items[1].stat2Value });
+                            }
+                          } else {
+                            stats = block.items[1].stats || [];
+                          }
+                          return stats.map((stat: any, i: number) => (
                             <div
-                              className="text-2xl font-bold text-gold whitespace-pre-line"
-                              style={{ color: "#D4AF37" }}
+                              key={i}
+                              className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
                             >
-                              {stat.value}
+                              <div
+                                className="text-2xl font-bold text-gold whitespace-pre-line"
+                                style={{ color: "#D4AF37" }}
+                              >
+                                {stat.value}
+                              </div>
+                              <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
+                                {stat.label}
+                              </div>
                             </div>
-                            <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
-                              {stat.label}
-                            </div>
-                          </div>
-                        ))}
+                          ));
+                        })()}
                       </div>
                       {block.items[1].buttonText && (
                         <a
@@ -5184,33 +5222,41 @@ const getIndividualButtonStyle = (btn: any) => {
                         </p>
                       </div>
                       <ul className="space-y-4 whitespace-pre-line">
-                        {block.items[2].list?.map(
-                          (listItem: string, i: number) => (
-                            <li
-                              key={i}
-                              className="flex items-center gap-3 whitespace-pre-line"
-                            >
-                              <div
-                                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 whitespace-pre-line"
-                                style={{
-                                  backgroundColor: "rgba(212, 175, 55, 0.1)",
-                                }}
+                        {(() => {
+                          let list = [];
+                          if (block.items[2].listString !== undefined) {
+                            list = block.items[2].listString.split('\n').filter((x: string) => x.trim());
+                          } else {
+                            list = block.items[2].listItems || block.items[2].list || [];
+                          }
+                          return list.map(
+                            (listItem: string, i: number) => (
+                              <li
+                                key={i}
+                                className="flex items-center gap-3 whitespace-pre-line"
                               >
-                                <span
-                                  className="material-symbols-outlined text-gold text-lg whitespace-pre-line"
-                                  translate="no"
-                                  aria-hidden="true"
-                                  style={{ color: "#D4AF37" }}
+                                <div
+                                  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 whitespace-pre-line"
+                                  style={{
+                                    backgroundColor: "rgba(212, 175, 55, 0.1)",
+                                  }}
                                 >
-                                  check_circle
+                                  <span
+                                    className="material-symbols-outlined text-gold text-lg whitespace-pre-line"
+                                    translate="no"
+                                    aria-hidden="true"
+                                    style={{ color: "#D4AF37" }}
+                                  >
+                                    check_circle
+                                  </span>
+                                </div>
+                                <span className="font-body-md text-body-md whitespace-pre-line">
+                                  {listItem}
                                 </span>
-                              </div>
-                              <span className="text-label-md whitespace-pre-line">
-                                {listItem}
-                              </span>
-                            </li>
-                          ),
-                        )}
+                              </li>
+                            )
+                          );
+                        })()}
                       </ul>
                     </div>
                   )}
@@ -5218,412 +5264,14 @@ const getIndividualButtonStyle = (btn: any) => {
               </div>
             </section>
           );
-        case "achievements_grid":
-          return (
-            <section
-              key={index}
-              className="py-section-gap bg-white whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-              >
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
-                  <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                    <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
-                      {block.title}
-                    </h2>
-                    <p className="text-body-lg text-on-surface-variant whitespace-pre-line">
-                      {block.subtitle}
-                    </p>
-                  </div>
-                  <div className="flex gap-2 whitespace-pre-line">
-                    <button className="p-3 rounded-full border border-border-subtle hover:bg-surface transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_left
-                      </span>
-                    </button>
-                    <button className="p-3 rounded-full border border-border-subtle bg-primary text-white hover:opacity-90 transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_right
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 whitespace-pre-line">
-                  {block.items?.map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className="group cursor-pointer transition-all duration-700 whitespace-pre-line"
-                      style={getCardStyle(item, block)}
-                    >
-                      <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative whitespace-pre-line">
-                        <div className="absolute inset-0 w-full h-full whitespace-pre-line">
-                          <div
-                            className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500 whitespace-pre-line"
-                            style={getImageStyle(item, "image")}
-                          ></div>
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 whitespace-pre-line">
-                          <p className="text-white text-label-sm whitespace-pre-line">
-                            {item.hoverText}
-                          </p>
-                        </div>
-                      </div>
-                      <h4 className="font-bold text-lg mb-1 whitespace-pre-line">
-                        {item.title}
-                      </h4>
-                      <p className="text-on-surface-variant text-label-sm whitespace-pre-line">
-                        {item.subtitle}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          );
-        case "achievements_science":
-          return (
-            <section
-              key={index}
-              className="py-section-gap bg-surface-container-low overflow-hidden whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-              >
-                <div className="bg-[#0f172a] rounded-[40px] p-12 md:p-20 relative overflow-hidden text-white whitespace-pre-line">
-                  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px] whitespace-pre-line"></div>
-                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center whitespace-pre-line">
-                    <div>
-                      {block.badge && (
-                        <span
-                          className="inline-block bg-gold/20 px-4 py-1 rounded-full text-label-sm font-label-sm mb-6 whitespace-pre-line"
-                          style={{
-                            color: "#D4AF37",
-                            backgroundColor: "rgba(212, 175, 55, 0.2)",
-                          }}
-                        >
-                          {block.badge}
-                        </span>
-                      )}
-                      <h2 className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line">
-                        {block.title}
-                      </h2>
-                      <p className="text-primary-fixed mb-10 text-lg whitespace-pre-line">
-                        {block.subtitle}
-                      </p>
-                      <div className="space-y-6 whitespace-pre-line">
-                        {block.items?.map((item: any, i: number) => (
-                          <div
-                            key={i}
-                            className="flex gap-4 items-start bg-white/5 p-6 rounded-2xl border border-white/10 hover:border-gold/50 transition-colors whitespace-pre-line"
-                            style={getCardStyle(item, block)}
-                          >
-                            <IconPreview
-                              data={item.icon || "science"}
-                              className="text-gold text-3xl whitespace-pre-line"
-                              style={{ ...getIconStyle(item, block), color: "#D4AF37" }}
-                            />
-                            <div>
-                              <h4 className="font-bold mb-1 whitespace-pre-line">
-                                {item.title}
-                              </h4>
-                              <p className="text-sm opacity-70 whitespace-pre-line">
-                                {item.desc}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="relative whitespace-pre-line">
-                      <div className="rounded-3xl shadow-2xl border border-white/10 w-full aspect-video overflow-hidden relative whitespace-pre-line">
-                        <div
-                          className="w-full h-full bg-cover bg-center whitespace-pre-line"
-                          style={getImageStyle(block, "image")}
-                        ></div>
-                      </div>
-                      {block.highlightTag && (
-                        <div
-                          className="absolute -top-4 -right-4 bg-gold text-[#00164f] p-4 rounded-xl font-bold shadow-lg whitespace-pre-line"
-                          style={{ backgroundColor: "#D4AF37" }}
-                        >
-                          {block.highlightTag}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          );
-        case "stats":
-          return (
-            <section
-              key={index}
-              className={`py-section-gap px-margin-mobile md:px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"} bg-primary-container ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
-              style={getStyle(block, "")}
-            >
-              <div className="relative overflow-hidden w-full h-full absolute inset-0 rounded-3xl pointer-events-none whitespace-pre-line">
-                <div className="absolute inset-0 z-0 opacity-10 whitespace-pre-line">
-                  <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent whitespace-pre-line"></div>
-                </div>
-              </div>
-              <div
-                className={`${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"} relative z-10 p-4 md:p-8 lg:p-12`}
-              >
-                <div>
-                  <h2
-                    style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 whitespace-pre-line"
-                    dangerouslySetInnerHTML={{
-                      __html: (block.title || "").replace(
-                        "Eğitimde Dostluk, Gelecekte Başarı",
-                        'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                      ),
-                    }}
-                  ></h2>
-                  <p
-                    style={getSubtitleStyle(block)}
-                    className={`text-white/80 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 md:mb-12 text-sm md:text-lg whitespace-pre-line`}
-                    dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
-                  ></p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12 whitespace-pre-line">
-                    {block.items?.map((item: any, i: number) => (
-                      <div key={i} style={getCardStyle(item, block)}>
-                        <div
-                          style={getCardTitleStyle(item, block)}
-                          className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-secondary-fixed mb-1 md:mb-2 whitespace-pre-line"
-                        >
-                          {item.value}
-                        </div>
-                        <div
-                          style={getCardDescStyle(item, block)}
-                          className="text-white/70 text-xs md:text-sm font-bold tracking-wider whitespace-pre-line"
-                        >
-                          {item.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  {block.buttonText && (
-                    <SmartLink
-                      url={block.buttonUrl || block.url || block.link}
-                      className="inline-flex items-center gap-2 md:gap-3 bg-secondary-container text-teal-950 px-6 py-3 md:px-10 md:py-4 rounded-full text-sm md:text-base font-bold hover:bg-secondary-fixed transition-all whitespace-pre-line"
-                    >
-                      {block.buttonText}
-                      {block.buttonIcon && (
-                        <span
-                          className="material-symbols-outlined text-[1.1em] whitespace-pre-line"
-                          translate="no"
-                          aria-hidden="true"
-                        >
-                          {block.buttonIcon}
-                        </span>
-                      )}
-                    </SmartLink>
-                  )}
-                </div>
-              </div>
-            </section>
-          );
-        case "news":
-          return (
-            <section
-              key={index}
-              className={`py-section-gap px-margin-desktop ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
-              style={getStyle(block, "")}
-            >
-              <div
-                className={
-                  block.fullWidth || block.styles?.fullWidth
-                    ? "max-w-container-max mx-auto"
-                    : "w-full"
-                }
-              >
-                <div className="flex justify-between items-end mb-10 md:mb-12 whitespace-pre-line">
-                  <div className="w-full md:w-auto flex-1">
-                    <span
-                      style={getSubtitleStyle(block)}
-                      className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
-                      dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
-                    ></span>
-                    <h2
-                      style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
-                      dangerouslySetInnerHTML={{
-                        __html: (block.title || "").replace(
-                          "Eğitimde Dostluk, Gelecekte Başarı",
-                          'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                        ),
-                      }}
-                    ></h2>
-                  </div>
-                  <div className="flex gap-2 md:gap-4 whitespace-pre-line">
-                    <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_left
-                      </span>
-                    </button>
-                    <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border-subtle flex items-center justify-center hover:bg-primary/5 transition-colors whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined text-xl md:text-2xl whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        chevron_right
-                      </span>
-                    </button>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-6 whitespace-pre-line">
-                  {block.items?.map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className={`group cursor-pointer ${i === 0 ? "md:col-span-2 sm:col-span-2" : ""}`}
-                      style={getCardStyle(item, block)}
-                    >
-                      <div
-                        className={`relative rounded-2xl overflow-hidden mb-4 md:mb-6 ${i === 0 ? "aspect-[16/9]" : "aspect-[4/5] sm:aspect-square md:aspect-[4/5]"}`}
-                      >
-                        <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
-                          <div
-                            className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500 whitespace-pre-line"
-                            style={getImageStyle(item, "image")}
-                          ></div>
-                        </div>
-                        <div
-                          style={getBadgeStyle(block)}
-                          className={`absolute top-4 left-4 text-white text-[10px] px-3 py-1 rounded-full tracking-tighter font-bold ${item.tagColor || "bg-primary"}`}
-                        >
-                          {item.tag}
-                        </div>
-                      </div>
-                      <h3
-                        style={getCardTitleStyle(item, block)}
-                        className={`${i === 0 ? "text-2xl mb-3" : "text-sm font-bold mb-2"} group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line`}
-                      >
-                        {item.title}
-                      </h3>
-                      <p
-                        style={getCardDescStyle(item, block)}
-                        className={`text-text-muted ${i === 0 ? "text-base line-clamp-2" : "text-xs"} whitespace-pre-line`}
-                      >
-                        {item.desc}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          );
-        case "about_hero":
-          return (
-            <section
-              key={index}
-              className="relative h-[80vh] flex items-center overflow-hidden whitespace-pre-line"
-              style={getStyle(block, "")}
-            >
-              <div className="absolute inset-0 z-0 whitespace-pre-line">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 whitespace-pre-line"></div>
-                <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
-                  <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                </div>
-              </div>
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-20 w-full`}
-              >
-                <div className="max-w-2xl text-white whitespace-pre-line">
-                  {block.badge && (
-                    <span
-                      style={getBadgeStyle(block)}
-                      className="inline-block bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full font-label-sm mb-6 uppercase tracking-wider whitespace-pre-line"
-                    >
-                      {block.badge}
-                    </span>
-                  )}
-                  {block.title && (
-                    <h1
-                      style={getTitleStyle(block)}
-                      className="font-display-lg text-display-lg mb-6 text-white whitespace-pre-line"
-                      dangerouslySetInnerHTML={{
-                        __html: (block.title || "").replace(
-                          "Eğitimde Dostluk, Gelecekte Başarı",
-                          'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                        ),
-                      }}
-                    ></h1>
-                  )}
-                  {block.subtitle && (
-                    <p
-                      style={getSubtitleStyle(block)}
-                      className="font-body-lg text-body-lg text-on-primary-container mb-8 whitespace-pre-line"
-                      dangerouslySetInnerHTML={{ __html: block.subtitle }}
-                    ></p>
-                  )}
 
-                  {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex gap-4 whitespace-pre-line">
-                      {block.buttons.map((btn: any, i: number) => {
-                        const isCustomColors = btn.bgColor || btn.textColor;
-                        return (
-                          <SmartLink
-                            key={i}
-                            url={btn.url || btn.buttonUrl || btn.link}
-                            style={getIndividualButtonStyle(btn)}
-                            className={
-                              !isCustomColors
-                                ? btn.primary
-                                  ? "bg-white text-primary px-8 py-3 rounded-xl font-label-md hover:bg-primary-fixed transition-colors flex items-center justify-center gap-2"
-                                  : "border-2 border-white text-white px-8 py-3 rounded-xl font-label-md hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-                                : "px-8 py-3 rounded-xl font-label-md transition-colors flex items-center justify-center gap-2 hover:opacity-90"
-                            }
-                          >
-                            {btn.label}
-                            {btn.icon &&
-                              (typeof btn.icon === "string" &&
-                              btn.icon === btn.icon.toLowerCase() ? (
-                                <IconPreview
-                                  data={btn.icon}
-                                  className="text-[1.1em] whitespace-pre-line"
-                                 style={getIconStyle(btn, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={btn.icon}
-                                  className="w-[1.1em] h-[1.1em] whitespace-pre-line"
-                                 style={getIconStyle(btn, block)} />
-                              ))}
-                          </SmartLink>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </section>
-          );
-        case "timeline":
+      
+        case "high_school_programs":
           return (
             <section
               key={index}
               className="py-section-gap bg-surface whitespace-pre-line"
-              style={getStyle(block, "")}
+              style={getStyle(block, "container")}
             >
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
@@ -5631,2115 +5279,86 @@ const getIndividualButtonStyle = (btn: any) => {
                 <div
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
-                  {block.title && (
-                    <h2
-                      style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
-                      dangerouslySetInnerHTML={{
-                        __html: (block.title || "").replace(
-                          "Eğitimde Dostluk, Gelecekte Başarı",
-                          'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                        ),
-                      }}
-                    ></h2>
-                  )}
-                  {block.subtitle && (
-                    <p
-                      style={getSubtitleStyle(block)}
-                      className={`text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                      dangerouslySetInnerHTML={{ __html: block.subtitle }}
-                    ></p>
-                  )}
-                </div>
-                <div className="space-y-24 whitespace-pre-line">
-                  {block.items?.map((item: any, i: number) => {
-                    const isEven = i % 2 !== 0;
-                    return (
-                      <div
-                        key={i}
-                        className="flex flex-col md:flex-row items-center gap-12 whitespace-pre-line"
-                      >
-                        <div
-                          className={`w-full md:w-1/2 ${isEven ? "" : "order-2 md:order-1"}`}
-                        >
-                          {item.year && (
-                            <div
-                              className={`inline-block ${isEven ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"} px-4 py-1 rounded-full font-label-sm mb-4`}
-                            >
-                              {item.year}
-                            </div>
-                          )}
-                          <h3
-                            style={getCardTitleStyle(item, block)}
-                            className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            style={getCardDescStyle(item, block)}
-                            className="text-body-lg text-text-muted leading-relaxed whitespace-pre-line"
-                          >
-                            {item.desc}
-                          </p>
-                        </div>
-                        <div
-                          className={`w-full md:w-1/2 ${isEven ? "" : "order-1 md:order-2"}`}
-                        >
-                          <div className="w-full h-64 md:h-96 rounded-3xl shadow-lg border border-border-subtle relative overflow-hidden whitespace-pre-line">
-                            <div
-                              className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                              style={getImageStyle(item, "image")}
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-        case "mission_vision":
-          return (
-            <section
-              key={index}
-              className="py-section-gap bg-surface-container-low whitespace-pre-line"
-              style={getStyle(block, "")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-              >
-                {(block.title || block.subtitle) && (
-                  <div
-                    className={`mb-12 ${block.styles?.textAlign ? "" : "text-center"}`}
-                  >
-                    {block.title && (
-                      <h2
-                        className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
-                        style={getTitleStyle(block)}
-                      >
-                        {block.title}
-                      </h2>
-                    )}
-                    {block.subtitle && (
-                      <p
-                        className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                        style={getSubtitleStyle(block)}
-                        dangerouslySetInnerHTML={{ __html: block.subtitle }}
-                      />
-                    )}
-                  </div>
-                )}
-                <div className="grid md:grid-cols-2 gap-6">
-                  {block.items?.map((item: any, i: number) => {
-                    const isSecondary = i % 2 !== 0;
-                    return (
-                      <div
-                        key={i}
-                        className={`bg-surface-card p-10 rounded-2xl border border-border-subtle shadow-sm flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"} group transition-colors duration-300 ${isSecondary ? "hover:border-secondary" : "hover:border-primary"}`}
-                        style={getItemContainerStyle(block)}
-                      >
-                        <div
-                          className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${isSecondary ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"}`}
-                        >
-                          {typeof item.icon === "object" ||
-                          (typeof item.icon === "string" &&
-                            item.icon !== item.icon.toLowerCase()) ? (
-                            <IconPreview
-                              data={item.icon}
-                              className="w-10 h-10 whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          ) : (
-                            <IconPreview
-                              data={
-                                item.icon ||
-                                (isSecondary ? "visibility" : "flag")
-                              }
-                              className="text-4xl whitespace-pre-line"
-                             style={getIconStyle(null, block)} />
-                          )}
-                        </div>
-                        <h2
-                          style={getCardTitleStyle(item, block)}
-                          className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
-                        >
-                          {item.title}
-                        </h2>
-                        <p
-                          style={getCardDescStyle(item, block)}
-                          className="text-text-muted leading-relaxed whitespace-pre-line"
-                        >
-                          {item.desc}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-        case "values":
-          return (
-            <section
-              key={index}
-              className="py-section-gap whitespace-pre-line"
-              style={getStyle(block, "")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-              >
-                <div
-                  className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
-                >
-                  {block.title && (
-                    <h2
-                      style={getTitleStyle(block)}
-                      className="font-headline-xl text-headline-xl mb-4 whitespace-pre-line"
-                      dangerouslySetInnerHTML={{
-                        __html: (block.title || "").replace(
-                          "Eğitimde Dostluk, Gelecekte Başarı",
-                          'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                        ),
-                      }}
-                    ></h2>
-                  )}
-                  {block.subtitle && (
-                    <p
-                      style={getSubtitleStyle(block)}
-                      className={`text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                      dangerouslySetInnerHTML={{ __html: block.subtitle }}
-                    ></p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 whitespace-pre-line">
-                  {block.items?.map((item: any, i: number) => {
-                    const colors = [
-                      "text-primary",
-                      "text-secondary",
-                      "text-error-red",
-                      "text-tertiary",
-                    ];
-                    const color = colors[i % colors.length];
-                    return (
-                      <div
-                        key={i}
-                        className="bg-white p-8 rounded-2xl border border-border-subtle hover:shadow-md transition-all whitespace-pre-line"
-                        style={getItemContainerStyle(block)}
-                      >
-                        {typeof item.icon === "object" ||
-                        (typeof item.icon === "string" &&
-                          item.icon !== item.icon.toLowerCase()) ? (
-                          <IconPreview
-                            data={item.icon}
-                            className={`${color} w-8 h-8 mb-4`}
-                           style={getIconStyle(item, block)} />
-                        ) : (
-                          <IconPreview data={item.icon || "verified_user"}  style={getIconStyle(item, block)} />
-                        )}
-                        <h4
-                          style={getCardTitleStyle(item, block)}
-                          className="font-headline-md text-headline-md text-text-main mb-2 whitespace-pre-line"
-                        >
-                          {item.title}
-                        </h4>
-                        <p
-                          style={getCardDescStyle(item, block)}
-                          className="text-sm text-text-muted whitespace-pre-line"
-                        >
-                          {item.desc}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-        case "quote_image":
-          return (
-            <section
-              key={index}
-              className="py-section-gap bg-surface-container-highest/30 whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-              >
-                <div className="rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl whitespace-pre-line" style={{ backgroundColor: block.styles?.containerBackgroundColor || 'var(--color-surface-card)' }}>
-                  <div className="w-full md:w-1/2 h-64 md:h-auto min-h-[350px] relative overflow-hidden whitespace-pre-line">
-                    <div
-                      className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                      style={getImageStyle(block, "image")}
-                    ></div>
-                  </div>
-                  <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative whitespace-pre-line">
-                    <span
-                      className="material-symbols-outlined text-primary-fixed text-8xl absolute top-4 md:top-8 left-4 md:left-8 opacity-40 whitespace-pre-line"
-                      translate="no"
-                      aria-hidden="true"
-                    >
-                      format_quote
-                    </span>
-                    <div className="relative z-10 whitespace-pre-line">
-                      {block.title && (
-                        <h2
-                          style={getTitleStyle(block)}
-                          className="font-headline-xl text-headline-xl mb-6 whitespace-pre-line"
-                          dangerouslySetInnerHTML={{
-                            __html: (block.title || "").replace(
-                              "Eğitimde Dostluk, Gelecekte Başarı",
-                              'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                            ),
-                          }}
-                        ></h2>
-                      )}
-                      <div
-                        style={{...getValidStyle(block, "quote", "desc"), whiteSpace: "pre-line"}}
-                        className="font-body-lg text-body-lg text-text-main italic mb-8 leading-relaxed whitespace-pre-line"
-                        dangerouslySetInnerHTML={{ __html: getValidText(block.quote, block.desc, '<span style="color:red">Lütfen admin panelinden Alıntı Metni (Quote) alanını doldurun.</span>') }}
-                      />
-                      <div>
-                        <h4 style={{...getValidStyle(block, "authorName", "name"), whiteSpace: "pre-line"}} className="font-headline-md text-headline-md text-primary whitespace-pre-line" dangerouslySetInnerHTML={{ __html: getValidText(block.authorName, block.name, '<span style="color:red">Lütfen Yazar Adı Girin</span>') }} />
-                        <p style={{...getValidStyle(block, "authorTitle", "subtitle", "role"), whiteSpace: "pre-line"}} className="text-text-muted whitespace-pre-line" dangerouslySetInnerHTML={{ __html: getValidText(block.authorTitle, block.subtitle, block.role, '<span style="color:red">Lütfen Yazar Ünvanı Girin</span>') }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          );
-
-        case "academic_hero":
-          return (
-            <section
-              key={index}
-              className="relative w-full h-[400px] overflow-hidden whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="absolute inset-0 z-0 whitespace-pre-line">
-                <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
-                  <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                </div>
-                <div
-                  className="absolute inset-0 whitespace-pre-line"
-                  style={{
-                    backgroundColor:
-                      block.styles?.overlayColor || "rgba(0,0,0,0.5)",
-                  }}
-                ></div>
-              </div>
-              <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-10 lg:px-20 whitespace-pre-line">
-                <div className={getHeroInnerClass(block, "max-w-3xl")}>
-                  {block.titlePart1 || block.titlePart2 ? (
-                    <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
-                      style={getTitleStyle(block)}
-                    >
-                      {block.titlePart1 && (
-                        <span style={getTitlePart1Style(block)}>
-                          {block.titlePart1}
-                        </span>
-                      )}
-                      {block.titlePart1 && block.titlePart2 && " "}
-                      {block.titlePart2 && (
-                        <span style={getTitlePart2Style(block)}>
-                          {block.titlePart2}
-                        </span>
-                      )}
-                    </h1>
-                  ) : (
-                    <h1
-                      className="text-white text-2xl md:text-4xl font-black mb-4 tracking-tight whitespace-pre-line"
-                      style={getTitleStyle(block)}
-                      dangerouslySetInnerHTML={{
-                        __html: (block.title || "").replace(
-                          "Eğitimde Dostluk, Gelecekte Başarı",
-                          'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                        ),
-                      }}
-                    ></h1>
-                  )}
-                  <p
-                    className={`text-gray-200 text-lg md:text-xl leading-relaxed max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                    style={getSubtitleStyle(block)}
-                    dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
-                  ></p>
-                  <div className="mt-8 flex gap-4 whitespace-pre-line">
-                    <div className="h-1 w-20 bg-primary rounded-full whitespace-pre-line"></div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          );
-
-        case "akademik_kadro":
-          return (
-            <div
-              key={index}
-              className="max-w-[1440px] mx-auto flex flex-col pt-8 pb-20 px-4 sm:px-10 lg:px-20 gap-8 whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="flex flex-col lg:flex-row gap-8 whitespace-pre-line">
-                {/* Sidebar Navigation */}
-                <aside className="w-full lg:w-72 shrink-0 whitespace-pre-line">
-                  <div
-                    className="border border-[#e5e7eb] dark:border-[#2d333d] rounded-xl p-5 sticky top-24 whitespace-pre-line"
-                    style={{
-                      backgroundColor:
-                        block.styles?.sidebarBgColor ||
-                        "var(--sidebar-bg, #1a212c)",
-                    }}
-                  >
-                    <div className="mb-6 whitespace-pre-line">
-                      <h3
-                        className="text-sm font-bold uppercase tracking-wider whitespace-pre-line"
-                        style={{
-                          ...getStyle(block, "sidebarTitle"),
-                          color:
-                            block.styles?.sidebarTitleColor ||
-                            block.styles?.sidebarTextColor ||
-                            "#9ca3af",
-                        }}
-                      >
-                        {block.sidebarTitle || "Bölümler"}
-                      </h3>
-                      <p
-                        className="text-xs mt-1 whitespace-pre-line"
-                        style={getStyle(block, "sidebarSubtitle")}
-                      >
-                        {block.sidebarSubtitle || "Hızlı Navigasyon"}
-                      </p>
-                    </div>
-                    <nav className="space-y-1 whitespace-pre-line">
-                      {(block.sidebarItems || []).map(
-                        (item: any, i: number) => (
-                          <a
-                            key={i}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all group font-semibold whitespace-pre-line"
-                            style={{
-                              backgroundColor:
-                                i === 0
-                                  ? block.styles?.sidebarActiveBgColor ||
-                                    "rgba(29, 78, 202, 0.1)"
-                                  : "transparent",
-                              color:
-                                i === 0
-                                  ? block.styles?.sidebarActiveTextColor ||
-                                    "#1d4eca"
-                                  : block.styles?.sidebarTextColor || "#e5e7eb",
-                            }}
-                            href={item.url || "#"}
-                          >
-                            {typeof item.icon === "object" ||
-                            (typeof item.icon === "string" &&
-                              item.icon !== item.icon.toLowerCase()) ? (
-                              <IconPreview
-                                data={item.icon}
-                                className="w-[20px] h-[20px] whitespace-pre-line"
-                               style={getIconStyle(item, block)} />
-                            ) : (
-                              <IconPreview
-                                data={item.icon || "school"}
-                                className="text-[20px] whitespace-pre-line"
-                                style={{ ...getIconStyle(item, block), color: "inherit" }}
-                              />
-                            )}
-                            <span>{item.label}</span>
-                          </a>
-                        ),
-                      )}
-                    </nav>
-                  </div>
-                </aside>
-
-                {/* Faculty Grid */}
-                <div className="flex-1 whitespace-pre-line">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 whitespace-pre-line">
-                    {(block.items || []).map((item: any, i: number) => (
-                      <div
-                        key={i}
-                        className="border border-[#e5e7eb] dark:border-[#2d333d] rounded-xl overflow-hidden hover:shadow-lg transition-shadow group whitespace-pre-line"
-                        style={{
-                          ...getStyle(block, "card"),
-                          backgroundColor:
-                            item.cardBgColor ||
-                            block.styles?.cardBgColor ||
-                            "#1a212c",
-                          ...(item.cardBorderColor
-                            ? { borderColor: item.cardBorderColor }
-                            : {}),
-                          ...(item.cardBorderWidth
-                            ? { borderWidth: item.cardBorderWidth }
-                            : {}),
-                          ...(item.cardBorderRadius
-                            ? { borderRadius: item.cardBorderRadius }
-                            : {}),
-                        }}
-                      >
-                        <div
-                          className="aspect-square bg-slate-100 overflow-hidden relative whitespace-pre-line"
-                          style={{
-                            borderRadius: item.cardBorderRadius
-                              ? `calc(${item.cardBorderRadius} - 1px) calc(${item.cardBorderRadius} - 1px) 0 0`
-                              : undefined,
-                          }}
-                        >
-                          <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
-                            <div
-                              className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500 whitespace-pre-line"
-                              style={getImageStyle(item, "image", i)}
-                            ></div>
-                          </div>
-                          {item.tag && (
-                            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/60 to-transparent whitespace-pre-line">
-                              <span
-                                className="text-white text-xs font-bold px-2 py-1 bg-primary rounded whitespace-pre-line"
-                                style={
-                                  item.tagColor
-                                    ? { backgroundColor: item.tagColor }
-                                    : {}
-                                }
-                              >
-                                {item.tag}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div
-                          className="p-5 whitespace-pre-line"
-                          style={
-                            item.cardPadding
-                              ? { padding: item.cardPadding }
-                              : {}
-                          }
-                        >
-                          <h3
-                            className="text-lg font-bold mb-1 whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            className="text-sm font-medium italic mb-3 whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.subtitle}
-                          </p>
-                          <p
-                            className="text-xs leading-relaxed line-clamp-2 mb-4 whitespace-pre-line"
-                            style={{
-                              color:
-                                item.itemTextColor ||
-                                block.styles?.cardTextColor ||
-                                "#9ca3af",
-                            }}
-                            dangerouslySetInnerHTML={{
-                              __html: item.desc || "",
-                            }}
-                          ></p>
-
-                          {item.url && (
-                            <div className="flex items-center justify-between border-t border-[#f0f2f4] dark:border-[#2d333d] pt-4 whitespace-pre-line">
-                              <div className="flex gap-3 whitespace-pre-line"></div>
-                              <a
-                                href={item.url}
-                                className="text-xs font-bold hover:underline whitespace-pre-line"
-                                style={getCardButtonStyle(item, block)}
-                              >
-                                {item.buttonText || "Profili Görüntüle"}
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        case "management_hero":
-          return (
-            <section
-              key={index}
-              className="relative w-full h-[400px] flex items-center justify-center overflow-hidden mb-12 whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="absolute inset-0 overflow-hidden whitespace-pre-line">
-                <div
-                  className="w-full h-full bg-cover bg-center whitespace-pre-line"
-                  style={getImageStyle(block, "image")}
-                ></div>
-              </div>
-              <div
-                className="absolute inset-0 bg-slate-900/60 whitespace-pre-line"
-                style={
-                  block.styles?.overlayColor
-                    ? { backgroundColor: block.styles.overlayColor }
-                    : {}
-                }
-              ></div>
-              <div
-                className={`relative z-10 layout-content-container w-full max-w-[1200px] px-6 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
-              >
-                <h1
-                  className="text-2xl md:text-5xl font-black text-white mb-4 tracking-tight whitespace-pre-line"
-                  style={getTitleStyle(block)}
-                  dangerouslySetInnerHTML={{
-                    __html: (block.title || "").replace(
-                      "Eğitimde Dostluk, Gelecekte Başarı",
-                      'Eğitimde Dostluk, <br class="block md:hidden" /> Gelecekte Başarı',
-                    ),
-                  }}
-                ></h1>
-                <p
-                  className={`text-lg md:text-xl text-slate-200 max-w-2xl font-light leading-relaxed ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                  style={getSubtitleStyle(block)}
-                  dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
-                ></p>
-              </div>
-            </section>
-          );
-
-        case "management_rector":
-          return (
-            <div
-              key={index}
-              className="layout-content-container flex flex-col w-full max-w-[1200px] px-6 py-8 mx-auto whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="mb-12 whitespace-pre-line">
-                <div className="flex items-center gap-3 mb-6 border-b border-[#bd0f2c]/20 pb-2 whitespace-pre-line">
-                  {typeof block.icon === "object" ||
-                  (typeof block.icon === "string" &&
-                    block.icon !== block.icon.toLowerCase()) ? (
-                    <IconPreview
-                      data={block.icon}
-                      className="text-[#bd0f2c] w-6 h-6 whitespace-pre-line"
-                     style={getIconStyle(block, block)} />
-                  ) : (
-                    <IconPreview
-                      data={block.icon || "school"}
-                      className="text-[#bd0f2c] whitespace-pre-line"
-                     style={getIconStyle(block, block)} />
-                  )}
-                  <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
-                    style={getTitleStyle(block)}
-                  >
-                    {block.title || "Rektör"}
+                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
+                    {block.title || "Programlar"}
                   </h2>
-                </div>
-                <div className="group relative flex flex-col md:flex-row items-stretch gap-0 rounded-xl bg-white dark:bg-background-dark shadow-xl overflow-hidden border border-slate-100 dark:border-slate-800 whitespace-pre-line">
-                  <div className="w-full md:w-2/5 relative h-[350px] md:h-auto overflow-hidden whitespace-pre-line">
-                    <div className="absolute inset-0 bg-[#bd0f2c]/10 mix-blend-multiply z-10 group-hover:bg-transparent transition-all duration-500 whitespace-pre-line"></div>
-                    <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
-                      <div
-                        className="absolute inset-0 w-full h-full bg-center bg-cover whitespace-pre-line"
-                        style={getImageStyle(block, "image")}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="w-full md:w-3/5 flex flex-col justify-center p-8 md:p-12 gap-6 bg-gradient-to-br from-white to-slate-50 dark:from-background-dark dark:to-slate-900 whitespace-pre-line">
-                    <div className="space-y-2 whitespace-pre-line">
-                      <span className="inline-block px-3 py-1 rounded bg-[#bd0f2c] text-white text-xs font-bold uppercase tracking-widest whitespace-pre-line">
-                        {getValidText(block.badge, "Rektörlük Makamı")}
-                      </span>
-                      <h3 style={getStyle(block, "name")} className="text-3xl font-bold text-slate-900 dark:text-white whitespace-pre-line">
-                        <span dangerouslySetInnerHTML={{ __html: getValidText(block.name, "Prof. Dr. Ahmet Yılmaz") }} />
-                      </h3>
-                      <p style={getStyle(block, "role")} className="text-[#bd0f2c] font-bold text-lg whitespace-pre-line">
-                        <span dangerouslySetInnerHTML={{ __html: getValidText(block.role, "Rektör") }} />
-                      </p>
-                    </div>
-                    <div className="relative whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined absolute -top-4 -left-6 text-slate-200 dark:text-slate-800 text-6xl select-none whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        format_quote
-                      </span>
-                      <p
-                        style={{...getStyle(block, "quote"), whiteSpace: "pre-line"}}
-                        className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed relative z-10 whitespace-pre-line"
-                        dangerouslySetInnerHTML={{ __html: getValidText(block.quote, "Lütfen admin panelinden Alıntı (Söz) alanını doldurun.") }}
-                      ></p>
-                    </div>
-                    <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-200 dark:border-slate-800 whitespace-pre-line">
-                      {(block.buttons || []).map((btn: any, i: number) => {
-                        const isCustom = btn.bgColor || btn.textColor;
-                        return (
-                          <a
-                            key={i}
-                            href={btn.url || "#"}
-                            style={getIndividualButtonStyle(btn)}
-                            className={
-                              !isCustom
-                                ? btn.style === "outline"
-                                  ? "flex items-center gap-2 rounded-lg border-2 border-slate-200 dark:border-slate-700 px-6 py-3 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
-                                  : "flex items-center gap-2 rounded-lg bg-[#bd0f2c] px-6 py-3 text-sm font-bold text-white hover:bg-[#bd0f2c]/90 transition-all shadow-md"
-                                : "flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold transition-all shadow-md hover:opacity-90"
-                            }
-                          >
-                            {btn.label}{" "}
-                            {btn.icon &&
-                              (typeof btn.icon === "string" &&
-                              btn.icon === btn.icon.toLowerCase() ? (
-                                <IconPreview
-                                  data={btn.icon}
-                                  className="text-[18px] whitespace-pre-line"
-                                 style={getIconStyle(btn, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={btn.icon}
-                                  className="w-[18px] h-[18px] whitespace-pre-line"
-                                 style={getIconStyle(btn, block)} />
-                              ))}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        case "management_vice_rectors":
-          return (
-            <div
-              key={index}
-              className="layout-content-container flex flex-col w-full max-w-[1200px] px-6 py-8 mx-auto whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="mb-12 whitespace-pre-line">
-                <div className="flex items-center gap-3 mb-8 border-b border-[#bd0f2c]/20 pb-2 whitespace-pre-line">
-                  {typeof block.icon === "object" ||
-                  (typeof block.icon === "string" &&
-                    block.icon !== block.icon.toLowerCase()) ? (
-                    <IconPreview
-                      data={block.icon}
-                      className="text-[#bd0f2c] w-6 h-6 whitespace-pre-line"
-                     style={getIconStyle(block, block)} />
-                  ) : (
-                    <IconPreview
-                      data={block.icon || "groups"}
-                      className="text-[#bd0f2c] whitespace-pre-line"
-                     style={getIconStyle(block, block)} />
-                  )}
-                  <h2
-                    className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
-                    style={getTitleStyle(block)}
-                  >
-                    {block.title || "Rektör Yardımcıları & Genel Sekreter"}
-                  </h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 whitespace-pre-line">
-                  {(block.items || []).map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className={getCardClass(
-                        item,
-                        "flex flex-col bg-white dark:bg-background-dark rounded-xl shadow-md border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-xl transition-all duration-300",
-                      )}
-                      style={getCardStyle(item, block)}
-                    >
-                      <div className="h-64 relative overflow-hidden whitespace-pre-line">
-                        <div
-                          className="absolute inset-0 w-full h-full bg-center bg-cover whitespace-pre-line"
-                          style={getImageStyle(item, "image", i)}
-                        ></div>
-                      </div>
-                      <div className="p-6 flex flex-col gap-3 whitespace-pre-line">
-                        <div>
-                          <p className="text-xs font-bold text-[#bd0f2c] uppercase tracking-wider mb-1 whitespace-pre-line">
-                            {item.badge}
-                          </p>
-                          <h4
-                            className="text-xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.name}
-                          </h4>
-                          <p
-                            className="text-sm text-slate-500 font-medium whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.role}
-                          </p>
-                        </div>
-                        {item.url && (
-                          <a
-                            className="flex items-center gap-1 text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-[#bd0f2c] transition-colors mt-2 whitespace-pre-line"
-                            href={item.url}
-                          >
-                            {item.buttonText || "Detaylı Profil"}{" "}
-                            <span
-                              className="material-symbols-outlined text-[16px] whitespace-pre-line"
-                              translate="no"
-                              aria-hidden="true"
-                            >
-                              trending_flat
-                            </span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        case "management_deans":
-          return (
-            <div
-              key={index}
-              className="layout-content-container flex flex-col w-full max-w-[1200px] px-6 py-8 mx-auto whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div className="mb-16 whitespace-pre-line">
-                <div className="flex items-center justify-between mb-8 border-b border-[#bd0f2c]/20 pb-2 whitespace-pre-line">
-                  <div className="flex items-center gap-3 whitespace-pre-line">
-                    {typeof block.icon === "object" ||
-                    (typeof block.icon === "string" &&
-                      block.icon !== block.icon.toLowerCase()) ? (
-                      <IconPreview
-                        data={block.icon}
-                        className="text-[#bd0f2c] w-6 h-6 whitespace-pre-line"
-                       style={getIconStyle(block, block)} />
-                    ) : (
-                      <IconPreview
-                        data={block.icon || "account_balance"}
-                        className="text-[#bd0f2c] whitespace-pre-line"
-                       style={getIconStyle(block, block)} />
-                    )}
-                    <h2
-                      className="text-2xl font-bold text-slate-900 dark:text-white whitespace-pre-line"
-                      style={getTitleStyle(block)}
-                    >
-                      {block.title || "Fakülte Dekanları"}
-                    </h2>
-                  </div>
                   {block.subtitle && (
-                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest hidden sm:block whitespace-pre-line">
-                      {block.subtitle}
-                    </div>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 whitespace-pre-line">
-                  {(block.items || []).map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className={getCardClass(
-                        item,
-                        "p-4 rounded-xl bg-white dark:bg-background-dark shadow hover:shadow-lg transition-shadow border border-slate-100 dark:border-slate-800",
-                      )}
-                      style={getCardStyle(item, block)}
-                    >
-                      <div className="aspect-square rounded-lg mb-4 relative overflow-hidden whitespace-pre-line">
-                        <div
-                          className="absolute inset-0 w-full h-full bg-center bg-cover whitespace-pre-line"
-                          style={getImageStyle(item, "image", i)}
-                        ></div>
-                      </div>
-                      <div className="space-y-1 whitespace-pre-line">
-                        <p className="text-[11px] font-bold text-[#bd0f2c] uppercase leading-tight whitespace-pre-line">
-                          {item.badge}
-                        </p>
-                        <h5
-                          className="text-md font-bold text-slate-900 dark:text-white leading-snug whitespace-pre-line"
-                          style={getCardTitleStyle(item, block)}
-                        >
-                          {item.name}
-                        </h5>
-                        <p
-                          className="text-xs text-slate-500 whitespace-pre-line"
-                          style={getCardDescStyle(item, block)}
-                        >
-                          {item.role}
-                        </p>
-                      </div>
-                      {item.url && (
-                        <div className="mt-4 pt-3 border-t border-slate-50 dark:border-slate-800 whitespace-pre-line">
-                          <a
-                            className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-[#bd0f2c] flex items-center gap-1 whitespace-pre-line"
-                            href={item.url}
-                          >
-                            {item.buttonText || "Fakülte Sayfası"}{" "}
-                            <span
-                              className="material-symbols-outlined text-[14px] whitespace-pre-line"
-                              translate="no"
-                              aria-hidden="true"
-                            >
-                              open_in_new
-                            </span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-
-        case "kindergarten_hero":
-          return (
-            <section
-              key={index}
-              className="relative pt-32 pb-section-gap px-margin-desktop bg-surface-bright overflow-hidden whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-center relative z-10`}
-              >
-                <div className="space-y-6 whitespace-pre-line">
-                  {block.badge && (
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-fixed/20 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined text-[16px] whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        school
-                      </span>
-                      {block.badge}
-                    </div>
-                  )}
-                  <h1
-                    className="font-display-lg text-display-lg text-on-background whitespace-pre-line"
-                    style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
-                  >
-                    {block.titlePart1 || block.title}{" "}
-                    {block.titlePart2 && (
-                      <span
-                        className="text-primary block mt-2 whitespace-pre-line"
-                        style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
-                      >
-                        {block.titlePart2}
-                      </span>
-                    )}
-                  </h1>
-                  {block.subtitle && (
-                    <p
-                      className={`font-body-lg text-body-lg text-on-surface-variant max-w-lg ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                      style={getSubtitleStyle(block)}
-                    >
+                    <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto whitespace-pre-line">
                       {block.subtitle}
                     </p>
                   )}
-                  {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex flex-wrap gap-4 pt-4 whitespace-pre-line">
-                      {block.buttons.map((btn: any, i: number) => {
-                        const isOutline = btn.style === "outline";
-                        return (
-                          <a
-                            key={i}
-                            href={btn.url || "#"}
-                            style={getIndividualButtonStyle(btn)}
-                            className={
-                              isOutline
-                                ? "border-2 border-primary text-primary px-8 py-3 rounded-lg font-label-md text-label-md font-bold hover:bg-primary/5 transition-colors"
-                                : "bg-primary text-on-primary px-8 py-3 rounded-lg font-label-md text-label-md font-bold hover:bg-primary-container transition-colors shadow-sm"
-                            }
-                          >
-                            {btn.label}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
+                  <div className="w-24 h-1 bg-primary mx-auto mt-6 rounded-full whitespace-pre-line"></div>
                 </div>
-                <div className="relative h-[500px] rounded-xl overflow-hidden shadow-sm border border-border-subtle group whitespace-pre-line">
-                  <div
-                    className="absolute inset-0 w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent whitespace-pre-line"></div>
-                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
-                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
-                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
-                        <div className="flex items-center gap-3 whitespace-pre-line">
-                          <span
-                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
-                          >
-                            {block.imageBadgeIcon || "extension"}
-                          </span>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
-                              {block.imageBadgeTitle}
-                            </p>
-                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
-                              {block.imageBadgeDesc}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="absolute top-0 right-0 w-1/3 h-full bg-surface-container-low rounded-l-full -z-10 transform translate-x-1/2 whitespace-pre-line"></div>
-            </section>
-          );
-
-        case "kindergarten_bento":
-          return (
-            <section
-              key={index}
-              className="py-section-gap px-margin-desktop bg-surface-background whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}
-              >
-                <div
-                  className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-2xl ${getAlignClass(block, "title")}`}
-                >
-                  <h2
-                    className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
-                    style={getTitleStyle(block)}
-                  >
-                    {block.title || "Holistik Eğitim Modelimiz"}
-                  </h2>
-                  {block.subtitle && (
-                    <p
-                      className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                      style={getSubtitleStyle(block)}
-                    >
-                      {block.subtitle}
-                    </p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px] whitespace-pre-line">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 whitespace-pre-line">
                   {(block.items || []).map((item: any, i: number) => {
-                    if (item.highlight) {
-                      return (
-                        <div
-                          key={i}
-                          className={`md:col-span-2 bg-primary text-on-primary rounded-xl shadow-sm p-8 flex flex-col justify-between relative overflow-hidden group`}
-                          style={getCardStyle(item, block)}
-                        >
-                          <div className="relative z-10 flex flex-col h-full justify-between whitespace-pre-line">
-                            <div className="w-full md:w-auto flex-1">
-                              {typeof item.icon === "object" ||
-                              (typeof item.icon === "string" &&
-                                item.icon !== item.icon.toLowerCase()) ? (
-                                <IconPreview
-                                  data={item.icon}
-                                  className="text-secondary-fixed w-[40px] h-[40px] mb-4 whitespace-pre-line"
-                                 style={getIconStyle(item, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={item.icon || "forest"}
-                                  className="text-secondary-fixed text-[40px] mb-4 whitespace-pre-line"
-                                 style={getIconStyle(item, block)} />
-                              )}
-                              <h3
-                                className="font-headline-md text-headline-md text-on-primary mb-2 whitespace-pre-line"
-                                style={getCardTitleStyle(item, block)}
-                              >
-                                {item.title}
-                              </h3>
-                              <p
-                                className="font-body-md text-body-md text-primary-fixed-dim max-w-md whitespace-pre-line"
-                                style={getCardDescStyle(item, block)}
-                              >
-                                {item.desc}
-                              </p>
-                            </div>
-                            {item.url && !item.hideButton && (
-                              <a
-                                className="inline-flex items-center gap-2 font-label-md text-label-md font-bold mt-4 hover:text-secondary-fixed transition-colors w-fit whitespace-pre-line"
-                                href={item.url}
-                              >
-                                {item.buttonText || "İnceleyin"}{" "}
-                                <span
-                                  className="material-symbols-outlined text-[18px] whitespace-pre-line"
-                                  translate="no"
-                                  aria-hidden="true"
-                                >
-                                  arrow_forward
+                    const isPrimary = i % 2 === 0;
+                    return (
+                      <div
+                        key={i}
+                        className={`${isPrimary ? "bg-primary text-on-primary" : "bg-surface-card border border-border-subtle"} rounded-3xl p-8 relative overflow-hidden transition-all duration-700 hover:-translate-y-2 flex flex-col whitespace-pre-line`}
+                      >
+                        {isPrimary && (
+                          <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/5 rounded-full -mb-32 -mr-32 whitespace-pre-line"></div>
+                        )}
+                        <div className="mb-6 whitespace-pre-line">
+                          <IconPreview
+                            data={item.icon || "school"}
+                            className={`${isPrimary ? "text-gold" : "text-primary"} text-4xl whitespace-pre-line`}
+                            style={isPrimary ? { color: "#D4AF37" } : getIconStyle(null, block)}
+                          />
+                        </div>
+                        <h3 className={`font-headline-md text-headline-md mb-4 ${isPrimary ? "text-white" : "text-on-surface"} whitespace-pre-line`}>
+                          {item.title}
+                        </h3>
+                        <p className={`${isPrimary ? "text-primary-fixed" : "text-on-surface-variant"} mb-8 flex-grow whitespace-pre-line`}>
+                          {item.subtitle || item.desc}
+                        </p>
+                        
+                        {item.image && (
+                          <div className="mb-8 rounded-2xl overflow-hidden aspect-video whitespace-pre-line">
+                            <img src={item.image} alt={item.title} className="w-full h-full object-cover whitespace-pre-line" />
+                          </div>
+                        )}
+
+                        <ul className="space-y-4 mb-8 whitespace-pre-line">
+                          {(() => {
+                            let list = item.list || [];
+                            if (list.length === 0 && item.listString) {
+                              list = item.listString.split('\n').filter((x: string) => x.trim());
+                            }
+                            return list.map((listItem: string, j: number) => (
+                              <li key={j} className="flex items-start gap-3 whitespace-pre-line">
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${isPrimary ? "bg-white/10" : "bg-primary/10"}`}>
+                                  <span className={`material-symbols-outlined text-sm ${isPrimary ? "text-gold" : "text-primary"}`} style={isPrimary ? { color: "#D4AF37" } : {}}>check</span>
+                                </div>
+                                <span className={`font-body-md text-body-md ${isPrimary ? "text-white" : "text-on-surface-variant"} whitespace-pre-line`}>
+                                  {listItem}
                                 </span>
-                              </a>
-                            )}
-                          </div>
-                          <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-l from-primary-fixed-variant/20 to-transparent -z-0 whitespace-pre-line"></div>
-                        </div>
-                      );
-                    }
-
-                    if (item.rowSpan) {
-                      return (
-                        <div
-                          key={i}
-                          className="md:col-span-2 bg-surface-card rounded-xl border border-border-subtle shadow-sm p-8 flex flex-col justify-between group hover:shadow-md transition-shadow relative overflow-hidden whitespace-pre-line"
-                          style={getCardStyle(item, block)}
-                        >
-                          <div className="relative z-10 whitespace-pre-line">
-                            {typeof item.icon === "object" ||
-                            (typeof item.icon === "string" &&
-                              item.icon !== item.icon.toLowerCase()) ? (
-                              <IconPreview
-                                data={item.icon}
-                                className="text-primary w-[40px] h-[40px] mb-4 whitespace-pre-line"
-                               style={getIconStyle(item, block)} />
-                            ) : (
-                              <IconPreview
-                                data={item.icon || "psychology"}
-                                className="text-primary text-[40px] mb-4 whitespace-pre-line"
-                               style={getIconStyle(item, block)} />
-                            )}
-                            <h3
-                              className="font-headline-md text-headline-md text-on-background mb-2 whitespace-pre-line"
-                              style={getCardTitleStyle(item, block)}
-                            >
-                              {item.title}
-                            </h3>
-                            <p
-                              className="font-body-md text-body-md text-on-surface-variant max-w-md whitespace-pre-line"
-                              style={getCardDescStyle(item, block)}
-                            >
-                              {item.desc}
-                            </p>
-                          </div>
-                          <div className="absolute right-0 bottom-0 w-64 h-64 bg-surface-container-low rounded-tl-full opacity-50 group-hover:scale-110 transition-transform -z-0 whitespace-pre-line"></div>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <div
-                        key={i}
-                        className="bg-surface-card rounded-xl border border-border-subtle shadow-sm p-8 flex flex-col justify-between hover:bg-surface-container-low transition-colors group whitespace-pre-line"
-                        style={getCardStyle(item, block)}
-                      >
-                        <div>
-                          {typeof item.icon === "object" ||
-                          (typeof item.icon === "string" &&
-                            item.icon !== item.icon.toLowerCase()) ? (
-                            <IconPreview
-                              data={item.icon}
-                              className="text-secondary w-[32px] h-[32px] mb-4 whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          ) : (
-                            <IconPreview
-                              data={item.icon || "favorite"}
-                              className="text-secondary text-[32px] mb-4 whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          )}
-                          <h3
-                            className="font-label-md text-label-md text-on-background font-bold mb-2 whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            className="font-body-md text-body-md text-on-surface-variant text-sm whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-
-        case "kindergarten_branches":
-          return (
-            <section
-              key={index}
-              className="py-section-gap px-margin-desktop bg-surface-bright border-t border-border-subtle whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}
-              >
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
-                  <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                    <h2
-                      className="font-headline-xl text-headline-xl text-on-background mb-4 whitespace-pre-line"
-                      style={getTitleStyle(block)}
-                    >
-                      {block.title || "Geleceğe Hazırlayan Branşlar"}
-                    </h2>
-                    {block.subtitle && (
-                      <p
-                        className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                        style={getSubtitleStyle(block)}
-                      >
-                        {block.subtitle}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-pre-line">
-                  {(block.items || []).map((item: any, i: number) => (
-                    <div
-                      key={i}
-                      className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden shadow-sm hover:shadow-md transition-shadow group whitespace-pre-line"
-                      style={getCardStyle(item, block)}
-                    >
-                      <div className="h-48 relative overflow-hidden whitespace-pre-line">
-                        <div
-                          className="absolute inset-0 w-full h-full bg-center bg-cover group-hover:scale-105 transition-transform duration-500 whitespace-pre-line"
-                          style={getImageStyle(item, "image", i)}
-                        ></div>
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500 whitespace-pre-line"></div>
-                      </div>
-                      <div className="p-6 whitespace-pre-line">
-                        <div className="flex items-center gap-3 mb-3 whitespace-pre-line">
-                          {typeof item.icon === "object" ||
-                          (typeof item.icon === "string" &&
-                            item.icon !== item.icon.toLowerCase()) ? (
-                            <IconPreview
-                              data={item.icon}
-                              className="text-primary w-6 h-6 whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          ) : (
-                            <IconPreview
-                              data={item.icon || "language"}
-                              className="text-primary whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          )}
-                          <h3
-                            className="font-label-md text-label-md font-bold text-on-background text-lg whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                        </div>
-                        <p
-                          className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                          style={getCardDescStyle(item, block)}
-                        >
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          );
-
-        case "primary_school_hero":
-          return (
-            <header
-              key={index}
-              className="relative w-full py-24 md:py-32 bg-surface-container-low overflow-hidden whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}
-              >
-                <div className="space-y-6 whitespace-pre-line">
-                  {block.badge && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 whitespace-pre-line">
-                      <span
-                        className="material-symbols-outlined text-primary text-sm whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        star
-                      </span>
-                      <span className="font-label-sm text-label-sm text-primary uppercase tracking-wider whitespace-pre-line">
-                        {block.badge}
-                      </span>
-                    </div>
-                  )}
-                  <h1
-                    className="font-display-lg text-display-lg text-on-surface whitespace-pre-line"
-                    style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
-                  >
-                    {block.titlePart1 || block.title}{" "}
-                    {block.titlePart2 && (
-                      <span
-                        className="text-primary block mt-2 whitespace-pre-line"
-                        style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
-                      >
-                        {block.titlePart2}
-                      </span>
-                    )}
-                  </h1>
-                  {block.subtitle && (
-                    <p
-                      className="font-body-lg text-body-lg text-on-surface-variant max-w-lg whitespace-pre-line"
-                      style={getSubtitleStyle(block)}
-                    >
-                      {block.subtitle}
-                    </p>
-                  )}
-                  {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex flex-wrap gap-4 pt-4 whitespace-pre-line">
-                      {block.buttons.map((btn: any, i: number) => {
-                        const isOutline = btn.style === "outline";
-                        return (
-                          <a
-                            key={i}
-                            href={btn.url || "#"}
-                            style={getIndividualButtonStyle(btn)}
-                            className={
-                              isOutline
-                                ? "bg-surface-card border border-border-subtle text-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-surface-container-low transition-colors shadow-sm inline-block"
-                                : "bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-primary-container transition-colors shadow-sm inline-block"
-                            }
-                          >
-                            {btn.label}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                </div>
-                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-sm group whitespace-pre-line">
-                  <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent whitespace-pre-line"></div>
-                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
-                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
-                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
-                        <div className="flex items-center gap-3 whitespace-pre-line">
-                          <span
-                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
-                          >
-                            {block.imageBadgeIcon || "extension"}
-                          </span>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
-                              {block.imageBadgeTitle}
-                            </p>
-                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
-                              {block.imageBadgeDesc}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              </div>
-            </header>
-
-          );
-
-        case "primary_school_bento":
-          return (
-            <section
-              key={index}
-              className="py-section-gap px-margin-desktop bg-surface-background whitespace-pre-line"
-              style={getStyle(block, "container")}
-            >
-              <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto`}
-              >
-                <div
-                  className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
-                >
-                  <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
-                    style={getTitleStyle(block)}
-                  >
-                    {block.title || "Eğitim Yaklaşımımız"}
-                  </h2>
-                  {block.subtitle && (
-                    <p
-                      className={`font-body-md text-body-md text-on-surface-variant max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                      style={getSubtitleStyle(block)}
-                    >
-                      {block.subtitle}
-                    </p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px] whitespace-pre-line">
-                  {(block.items || []).map((item: any, i: number) => {
-                    const isPrimary = item.styleType !== "secondary";
-
-                    if (item.rowSpan && item.image) {
-                      return (
-                        <div
-                          key={i}
-                          className="col-span-1 md:col-span-2 row-span-1 bg-surface-card rounded-xl border border-border-subtle flex flex-col md:flex-row items-stretch justify-between overflow-hidden relative shadow-sm whitespace-pre-line group hover:border-primary/50 transition-colors"
-                          style={getCardStyle(item, block)}
-                        >
-                          <div className="flex-1 p-8 relative z-10 whitespace-pre-line flex flex-col justify-center">
-                            <div
-                              className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
-                            >
-                              {typeof item.icon === "object" ||
-                              (typeof item.icon === "string" &&
-                                item.icon !== item.icon.toLowerCase()) ? (
-                                <IconPreview
-                                  data={item.icon}
-                                  className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
-                                 style={getIconStyle(item, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={item.icon || "palette"}
-                                  style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                                />
-                              )}
-                            </div>
-                            <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
-                              style={getCardTitleStyle(item, block)}
-                            >
-                              {item.title}
-                            </h3>
-                            <p
-                              className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                              style={getCardDescStyle(item, block)}
-                            >
-                              {item.desc}
-                            </p>
-                          </div>
-                          <div className="w-full md:w-2/5 min-h-[250px] md:min-h-full relative shrink-0 whitespace-pre-line">
-                            <div
-                              className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                              style={getImageStyle(item, "image", i)}
-                            ></div>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    if (item.rowSpan) {
-                      return (
-                        <div
-                          key={i}
-                          className="col-span-1 md:col-span-2 row-span-1 bg-surface-card rounded-xl border border-border-subtle p-8 flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-colors shadow-sm whitespace-pre-line"
-                          style={getCardStyle(item, block)}
-                        >
-                          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl whitespace-pre-line"></div>
-                          <div className="relative z-10 whitespace-pre-line">
-                            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 whitespace-pre-line">
-                              {typeof item.icon === "object" ||
-                              (typeof item.icon === "string" &&
-                                item.icon !== item.icon.toLowerCase()) ? (
-                                <IconPreview
-                                  data={item.icon}
-                                  className="text-primary w-6 h-6 whitespace-pre-line"
-                                 style={getIconStyle(item, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={item.icon || "menu_book"}
-                                  className="text-primary whitespace-pre-line"
-                                  style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                                />
-                              )}
-                            </div>
-                            <h3
-                              className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
-                              style={getCardTitleStyle(item, block)}
-                            >
-                              {item.title}
-                            </h3>
-                            <p
-                              className="font-body-md text-body-md text-on-surface-variant max-w-md whitespace-pre-line"
-                              style={getCardDescStyle(item, block)}
-                            >
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <div
-                        key={i}
-                        className={`col-span-1 row-span-1 bg-surface-card rounded-xl border border-border-subtle flex flex-col overflow-hidden ${isPrimary ? "hover:border-primary/50" : "hover:border-secondary/50"} transition-colors shadow-sm whitespace-pre-line`}
-                        style={getCardStyle(item, block)}
-                      >
-                        {item.image ? (
-                          <>
-                            {(!item.title && !item.desc) ? (
-                              <div className="w-full h-full min-h-[250px] relative whitespace-pre-line">
-                                <div
-                                  className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                                  style={getImageStyle(item, "image", i)}
-                                ></div>
-                              </div>
-                            ) : (
-                              <>
-                                <div className="w-full h-48 relative shrink-0 whitespace-pre-line">
-                                  <div
-                                    className="absolute inset-0 w-full h-full bg-cover bg-center whitespace-pre-line"
-                                    style={getImageStyle(item, "image", i)}
-                                  ></div>
-                                </div>
-                                <div className="p-8 flex flex-col justify-between flex-1 whitespace-pre-line">
-                                  <div
-                                    className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
-                                  >
-                                    {typeof item.icon === "object" ||
-                                    (typeof item.icon === "string" &&
-                                      item.icon !== item.icon.toLowerCase()) ? (
-                                      <IconPreview
-                                        data={item.icon}
-                                        className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
-                                       style={getIconStyle(item, block)} />
-                                    ) : (
-                                      <IconPreview
-                                        data={item.icon || "groups"}
-                                        style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                                      />
-                                    )}
-                                  </div>
-                                  <div>
-                                    <h3
-                                      className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
-                                      style={getCardTitleStyle(item, block)}
-                                    >
-                                      {item.title}
-                                    </h3>
-                                    <p
-                                      className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                                      style={getCardDescStyle(item, block)}
-                                    >
-                                      {item.desc}
-                                    </p>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                          </>
-                        ) : (
-                          <div className="p-8 flex flex-col justify-between h-full whitespace-pre-line">
-                            <div
-                              className={`w-12 h-12 ${isPrimary ? "bg-primary/10" : "bg-secondary/10"} rounded-lg flex items-center justify-center mb-6`}
-                            >
-                              {typeof item.icon === "object" ||
-                              (typeof item.icon === "string" &&
-                                item.icon !== item.icon.toLowerCase()) ? (
-                                <IconPreview
-                                  data={item.icon}
-                                  className={`${isPrimary ? "text-primary" : "text-secondary"} w-6 h-6`}
-                                 style={getIconStyle(item, block)} />
-                              ) : (
-                                <IconPreview
-                                  data={item.icon || "groups"}
-                                  style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                                />
-                              )}
-                            </div>
-                            <div>
-                              <h3
-                                className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line"
-                                style={getCardTitleStyle(item, block)}
-                              >
-                                {item.title}
-                              </h3>
-                              <p
-                                className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                                style={getCardDescStyle(item, block)}
-                              >
-                                {item.desc}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-      }
-
-      if (block.type === "middle_school_hero") {
-        return (
-          <section
-            key={index}
-            className="relative w-full bg-surface-container-low overflow-hidden py-24 md:py-32 whitespace-pre-line"
-            style={getStyle(block, "container")}
-          >
-            <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}
-            >
-              <div className="flex flex-col items-start">
-              {block.badge && (
-                <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-label-md text-label-md mb-6 border border-primary/20 whitespace-pre-line">
-                  {block.badge}
-                </span>
-              )}
-              <h1
-                className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line"
-                style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
-              >
-                {block.titlePart1 || block.title}{" "}
-                {block.titlePart2 && (
-                  <>
-                    <br />
-                    <span
-                      className="text-primary whitespace-pre-line"
-                      style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
-                    >
-                      {block.titlePart2}
-                    </span>
-                  </>
-                )}
-              </h1>
-              {block.subtitle && (
-                <p
-                  className={`font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                  style={getSubtitleStyle(block)}
-                >
-                  {block.subtitle}
-                </p>
-              )}
-              {block.buttons && block.buttons.length > 0 && (
-                <div className="flex flex-wrap gap-4 whitespace-pre-line">
-                  {block.buttons.map((btn: any, i: number) => {
-                    const isOutline = btn.style === "outline";
-                    return (
-                      <a
-                        key={i}
-                        href={btn.url || "#"}
-                        style={getIndividualButtonStyle(btn)}
-                        className={
-                          isOutline
-                            ? "bg-white text-on-surface font-label-md text-label-md px-8 py-3.5 rounded-full border border-border-subtle hover:bg-surface-container transition-colors shadow-sm inline-flex items-center justify-center"
-                            : "bg-primary text-on-primary font-label-md text-label-md px-8 py-3.5 rounded-full hover:bg-primary/90 transition-colors shadow-sm inline-flex items-center gap-2"
-                        }
-                      >
-                        {btn.label}
-                        {!isOutline && (
-                          <span
-                            className="material-symbols-outlined text-[18px] whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
-                          >
-                            arrow_forward
-                          </span>
-                        )}
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-                </div>
-                <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-sm group whitespace-pre-line">
-                  <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent whitespace-pre-line"></div>
-                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
-                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
-                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
-                        <div className="flex items-center gap-3 whitespace-pre-line">
-                          <span
-                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
-                          >
-                            {block.imageBadgeIcon || "extension"}
-                          </span>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
-                              {block.imageBadgeTitle}
-                            </p>
-                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
-                              {block.imageBadgeDesc}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              </div>
-            </section>
-
-          );
-      }
-
-      if (block.type === "middle_school_pedagogy") {
-        return (
-          <section
-            key={index}
-            className="py-section-gap bg-surface whitespace-pre-line"
-            style={getStyle(block, "container")}
-          >
-            <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center whitespace-pre-line">
-                <div className="md:col-span-5 order-2 md:order-1 relative whitespace-pre-line">
-                  <div className="absolute -inset-4 bg-secondary/5 rounded-2xl -z-10 whitespace-pre-line"></div>
-                  <div
-                    className="w-full aspect-[4/5] bg-cover bg-center rounded-xl border border-border-subtle shadow-sm whitespace-pre-line"
-                    style={getImageStyle(block, "image")}
-                  ></div>
-                </div>
-                <div className="md:col-span-7 order-1 md:order-2 md:pl-12 whitespace-pre-line">
-                  <h2
-                    className="font-headline-xl text-headline-xl text-on-surface mb-6 whitespace-pre-line"
-                    style={getTitleStyle(block)}
-                  >
-                    {block.title}
-                  </h2>
-                  {block.subtitle && (
-                    <p
-                      className="font-body-lg text-body-lg text-on-surface-variant mb-8 whitespace-pre-line"
-                      style={getSubtitleStyle(block)}
-                    >
-                      {block.subtitle}
-                    </p>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 whitespace-pre-line">
-                    {(block.items || []).map((item: any, i: number) => {
-                      const isPrimary = item.styleType !== "secondary";
-                      return (
-                        <div
-                          key={i}
-                          className="bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm hover:shadow-md transition-shadow whitespace-pre-line"
-                          style={getCardStyle(item, block)}
-                        >
-                          <div
-                            className={`w-12 h-12 ${isPrimary ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"} rounded-lg flex items-center justify-center mb-4`}
-                          >
-                            {typeof item.icon === "object" ||
-                            (typeof item.icon === "string" &&
-                              item.icon !== item.icon.toLowerCase()) ? (
-                              <IconPreview
-                                data={item.icon}
-                                className="w-[28px] h-[28px] whitespace-pre-line"
-                               style={getIconStyle(item, block)} />
-                            ) : (
-                              <IconPreview
-                                data={item.icon || "psychology"}
-                                className="text-2xl whitespace-pre-line"
-                                style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
-                              />
-                            )}
-                          </div>
-                          <h3
-                            className="font-headline-md text-headline-md text-on-surface mb-2 text-[20px] whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.desc}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === "middle_school_lgs") {
-        return (
-          <section
-            key={index}
-            className="py-section-gap bg-surface-background whitespace-pre-line"
-            id="lgs-hazirlik"
-            style={getStyle(block, "container")}
-          >
-            <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-            >
-              <div
-                className={`${block.styles?.textAlign ? "" : "text-center"} mb-16 max-w-3xl ${getAlignClass(block, "title")}`}
-              >
-                <h2
-                  className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
-                  style={getTitleStyle(block)}
-                >
-                  {block.title}
-                </h2>
-                {block.subtitle && (
-                  <p
-                    className="font-body-lg text-body-lg text-on-surface-variant whitespace-pre-line"
-                    style={getSubtitleStyle(block)}
-                  >
-                    {block.subtitle}
-                  </p>
-                )}
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px] whitespace-pre-line">
-                {(block.items || []).map((item: any, i: number) => {
-                  if (item.rowSpan && item.image) {
-                    return (
-                      <div
-                        key={i}
-                        className="md:col-span-2 md:row-span-2 bg-surface-card rounded-xl border border-border-subtle overflow-hidden relative group whitespace-pre-line"
-                        style={getCardStyle(item, block)}
-                      >
-                        <div
-                          className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
-                          style={getImageStyle(item, "image", i)}
-                        ></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-on-background/90 via-on-background/40 to-transparent whitespace-pre-line"></div>
-                        <div className="absolute bottom-0 left-0 p-8 w-full whitespace-pre-line">
-                          {item.badge && (
-                            <span className="inline-block py-1 px-3 rounded-md bg-primary text-on-primary font-label-sm text-label-sm mb-3 whitespace-pre-line">
-                              {item.badge}
-                            </span>
-                          )}
-                          <h3
-                            className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
-                            style={getCardTitleStyle(item, block)}
-                          >
-                            {item.title}
-                          </h3>
-                          <p
-                            className="font-body-md text-body-md text-white/80 max-w-xl whitespace-pre-line"
-                            style={getCardDescStyle(item, block)}
-                          >
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  let iconBgClass = "bg-secondary-container";
-                  let iconTextClass = "text-on-secondary-container";
-                  if (item.styleType === "primary") {
-                    iconBgClass = "bg-primary/10";
-                    iconTextClass = "text-primary";
-                  } else if (item.styleType === "tertiary") {
-                    iconBgClass = "bg-surface-container-high";
-                    iconTextClass = "text-primary";
-                  }
-
-                  return (
-                    <div
-                      key={i}
-                      className="bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm flex flex-col justify-between whitespace-pre-line"
-                      style={getCardStyle(item, block)}
-                    >
-                      <div
-                        className={`w-10 h-10 ${iconBgClass} rounded-lg flex items-center justify-center mb-4 ${iconTextClass}`}
-                      >
-                        {typeof item.icon === "object" ||
-                        (typeof item.icon === "string" &&
-                          item.icon !== item.icon.toLowerCase()) ? (
-                          <IconPreview
-                            data={item.icon}
-                            className="w-6 h-6 whitespace-pre-line"
-                           style={getIconStyle(item, block)} />
-                        ) : (
-                          <IconPreview
-                            data={item.icon || "menu_book"}
-                            className="text-[24px] whitespace-pre-line"
-                           style={getIconStyle(item, block)} />
-                        )}
-                      </div>
-                      <div>
-                        <h3
-                          className="font-headline-md text-headline-md text-on-surface mb-2 text-[18px] whitespace-pre-line"
-                          style={getCardTitleStyle(item, block)}
-                        >
-                          {item.title}
-                        </h3>
-                        <p
-                          className="font-body-md text-body-md text-on-surface-variant text-sm whitespace-pre-line"
-                          style={getCardDescStyle(item, block)}
-                        >
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === "high_school_hero") {
-        return (
-          <section
-            key={index}
-            className="relative w-full py-section-gap overflow-hidden bg-surface-card border-b border-border-subtle whitespace-pre-line"
-            style={getStyle(block, "container")}
-          >
-            <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop grid md:grid-cols-2 gap-12 items-center`}
-            >
-              <div className="z-10 flex flex-col gap-6 whitespace-pre-line">
-                {block.badge && (
-                  <div className="inline-flex items-center gap-2 bg-primary-fixed/20 text-primary-container px-3 py-1 rounded-full w-fit whitespace-pre-line">
-                    <span
-                      className="material-symbols-outlined text-sm whitespace-pre-line"
-                      translate="no"
-                      aria-hidden="true"
-                    >
-                      stars
-                    </span>
-                    <span className="font-label-sm text-label-sm uppercase tracking-wider whitespace-pre-line">
-                      {block.badge}
-                    </span>
-                  </div>
-                )}
-                <h1
-                  className="font-display-lg text-display-lg text-main whitespace-pre-line"
-                  style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
-                >
-                  {block.titlePart1 || block.title}{" "}
-                  {block.titlePart2 && (
-                    <>
-                      <br />
-                      <span
-                        className="text-primary whitespace-pre-line"
-                        style={{
-                          color: block.styles?.titlePart2Color || block.titlePart2Color || undefined,
-                          backgroundClip: "text",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: (block.styles?.titlePart2Color || block.titlePart2Color)
-                            ? undefined
-                            : "transparent",
-                          backgroundImage: (block.styles?.titlePart2Color || block.titlePart2Color)
-                            ? undefined
-                            : "linear-gradient(90deg, #1d4eca, #006a62)",
-                        }}
-                      >
-                        {block.titlePart2}
-                      </span>
-                    </>
-                  )}
-                </h1>
-                {block.subtitle && (
-                  <p
-                    className={`font-body-lg text-body-lg text-on-surface-variant max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                    style={getSubtitleStyle(block)}
-                  >
-                    {block.subtitle}
-                  </p>
-                )}
-                {block.buttons && block.buttons.length > 0 && (
-                  <div className="flex flex-wrap gap-4 pt-4 whitespace-pre-line">
-                    {block.buttons.map((btn: any, i: number) => {
-                      const isOutline = btn.style === "outline";
-                      return (
-                        <a
-                          key={i}
-                          href={btn.url || "#"}
-                          style={getIndividualButtonStyle(btn)}
-                          className={
-                            isOutline
-                              ? "border-2 border-primary text-primary bg-transparent font-label-md text-label-md px-8 py-3 rounded-lg hover:bg-primary/5 transition-all flex items-center gap-2 inline-flex"
-                              : "bg-primary text-on-primary font-label-md text-label-md px-8 py-3 rounded-lg hover:bg-surface-tint transition-all shadow-sm flex items-center gap-2 inline-flex"
-                          }
-                        >
-                          {btn.label}
-                          {!isOutline && (
-                            <span
-                              className="material-symbols-outlined whitespace-pre-line"
-                              translate="no"
-                              aria-hidden="true"
-                            >
-                              arrow_forward
-                            </span>
-                          )}
-                        </a>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-              <div className="relative h-[500px] w-full rounded-2xl overflow-hidden border border-border-subtle shadow-sm group whitespace-pre-line">
-                <div
-                  className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 whitespace-pre-line"
-                  style={getImageStyle(block, "image")}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent whitespace-pre-line"></div>
-                  {(block.imageBadgeTitle || block.imageBadgeDesc) && (
-                    <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end whitespace-pre-line">
-                      <div className="bg-surface/90 backdrop-blur-sm p-4 rounded-lg border border-border-subtle whitespace-pre-line">
-                        <div className="flex items-center gap-3 whitespace-pre-line">
-                          <span
-                            className="material-symbols-outlined text-secondary text-[32px] whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
-                          >
-                            {block.imageBadgeIcon || "extension"}
-                          </span>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface font-bold whitespace-pre-line">
-                              {block.imageBadgeTitle}
-                            </p>
-                            <p className="font-caption text-caption text-text-muted whitespace-pre-line">
-                              {block.imageBadgeDesc}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-              </div>
-            </div>
-          </section>
-        );
-      }
-
-      if (block.type === "high_school_programs") {
-        return (
-          <section
-            key={index}
-            className="py-section-gap bg-surface-background whitespace-pre-line"
-            style={getStyle(block, "container")}
-          >
-            <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
-            >
-              <div
-                className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
-              >
-                <h2
-                  className="font-headline-xl text-headline-xl text-main mb-4 whitespace-pre-line"
-                  style={getTitleStyle(block)}
-                >
-                  {block.title || "Akademik Seçenekler"}
-                </h2>
-                {block.subtitle && (
-                  <p
-                    className={`font-body-md text-body-md text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
-                    style={getSubtitleStyle(block)}
-                  >
-                    {block.subtitle}
-                  </p>
-                )}
-              </div>
-              <div className="grid md:grid-cols-2 gap-8 whitespace-pre-line">
-                {(block.items || []).map((item: any, i: number) => {
-                  const isPrimary = item.styleType !== "secondary";
-                  const features = item.features
-                    ? item.features.split("\n").filter((f: string) => f.trim())
-                    : [];
-
-                  return (
-                    <div
-                      key={i}
-                      className="bg-surface-card border border-border-subtle rounded-xl p-8 hover:shadow-sm transition-all group cursor-pointer relative overflow-hidden whitespace-pre-line"
-                      style={getCardStyle(item, block)}
-                      onClick={() => {
-                        if (item.url) {
-                          if (item.url.startsWith("http")) {
-                            window.open(item.url, "_blank", "noopener,noreferrer");
-                          } else {
-                            window.location.href = item.url;
-                          }
-                        }
-                      }}
-                    >
-                      <div
-                        className={`absolute top-0 right-0 w-32 h-32 ${isPrimary ? "bg-primary/5" : "bg-secondary-container/20"} rounded-bl-full -z-10 transition-transform group-hover:scale-110`}
-                      ></div>
-                      <div className="flex items-center gap-4 mb-6 whitespace-pre-line">
-                        <div
-                          className={`w-12 h-12 ${isPrimary ? "bg-primary-fixed text-primary" : "bg-secondary-container/30 text-secondary"} flex items-center justify-center rounded-lg`}
-                        >
-                          {typeof item.icon === "object" ||
-                          (typeof item.icon === "string" &&
-                            item.icon !== item.icon.toLowerCase()) ? (
-                            <IconPreview
-                              data={item.icon}
-                              className="w-[24px] h-[24px] whitespace-pre-line"
-                             style={getIconStyle(item, block)} />
-                          ) : (
-                            <IconPreview
-                              data={
-                                item.icon ||
-                                (isPrimary ? "account_balance" : "science")
-                              }
-                              style={{ ...getIconStyle(null, block), fontVariationSettings: "'FILL' 1" }}
-                            />
-                          )}
-                        </div>
-                        <h3
-                          className="font-headline-md text-headline-md text-main whitespace-pre-line"
-                          style={getCardTitleStyle(item, block)}
-                        >
-                          {item.title}
-                        </h3>
-                      </div>
-                      <p
-                        className="font-body-md text-body-md text-on-surface-variant mb-6 whitespace-pre-line"
-                        style={getCardDescStyle(item, block)}
-                      >
-                        {item.desc}
-                      </p>
-
-                      {features.length > 0 && (
-                        <ul className="space-y-3 mb-8 whitespace-pre-line">
-                          {features.map((feature: string, fIdx: number) => (
-                            <li
-                              key={fIdx}
-                              className="flex items-start gap-2 text-on-surface-variant whitespace-pre-line"
-                            >
-                              <span
-                                className={`material-symbols-outlined ${isPrimary ? "text-primary" : "text-secondary"} text-sm mt-1`}
-                                translate="no"
-                                aria-hidden="true"
-                              >
-                                check_circle
-                              </span>
-                              <span className="font-body-md text-body-md whitespace-pre-line">
-                                {feature}
-                              </span>
-                            </li>
-                          ))}
+                              </li>
+                            ));
+                          })()}
                         </ul>
-                      )}
 
-                      {item.buttonText !== "" && (
-                        <div
-                          className={`font-label-md text-label-md ${isPrimary ? "text-primary" : "text-secondary"} group-hover:translate-x-2 transition-transform flex items-center gap-1`}
-                        >
-                          {item.buttonText || "Detaylı Bilgi"}{" "}
-                          <span
-                            className="material-symbols-outlined text-sm whitespace-pre-line"
-                            translate="no"
-                            aria-hidden="true"
+                        {(item.buttonText || item.url) && (
+                          <a
+                            href={item.url || "#"}
+                            className={`inline-flex items-center gap-2 font-label-lg text-label-lg mt-auto ${isPrimary ? "text-gold hover:text-white" : "text-primary hover:text-primary-dark"} transition-colors whitespace-pre-line`}
+                            style={isPrimary ? { color: "#D4AF37" } : {}}
                           >
-                            arrow_forward
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                            {item.buttonText || "Detaylı Bilgi"}
+                            <span className="material-symbols-outlined text-lg" translate="no" aria-hidden="true">arrow_forward</span>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </section>
-        );
-      }
+            </section>
+          );
 
-      if (block.type === "achievements_hero") {
+      default:
+        if (block.type === "achievements_hero") {
         return (
           <section
             key={block.id}
@@ -7872,7 +5491,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           className="text-[#dce1ff] mb-8 whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
-                          {item.desc}
+                          {item.subtitle || item.desc}
                         </p>
 
                         {item.stats && item.stats.length > 0 && (
@@ -7935,7 +5554,7 @@ const getIndividualButtonStyle = (btn: any) => {
                             className="text-[#434654] mb-6 whitespace-pre-line"
                             style={getCardDescStyle(item, block)}
                           >
-                            {item.desc}
+                            {item.subtitle || item.desc}
                           </p>
                         </div>
                         {item.listItems && item.listItems.length > 0 && (
@@ -7996,7 +5615,7 @@ const getIndividualButtonStyle = (btn: any) => {
                           className="text-[#434654] mb-8 whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
-                          {item.desc}
+                          {item.subtitle || item.desc}
                         </p>
                         <div className="space-y-6 whitespace-pre-line">
                           {item.statValue && (
@@ -8032,7 +5651,7 @@ const getIndividualButtonStyle = (btn: any) => {
         );
       }
 
-      if (block.type === "achievements_social_gallery") {
+      if (block.type === "achievements_grid" || block.type === "achievements_social_gallery") {
         return (
           <section
             key={block.id}
@@ -8103,7 +5722,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       className="text-[#434654] text-[12px] font-bold tracking-[0.05em] whitespace-pre-line"
                       style={getCardDescStyle(item, block)}
                     >
-                      {item.desc}
+                      {item.subtitle || item.desc}
                     </p>
                   </div>
                 ))}
@@ -8113,7 +5732,7 @@ const getIndividualButtonStyle = (btn: any) => {
         );
       }
 
-      if (block.type === "achievements_science_projects") {
+      if (block.type === "achievements_science" || block.type === "achievements_science_projects") {
         return (
           <section
             key={block.id}
@@ -8123,7 +5742,12 @@ const getIndividualButtonStyle = (btn: any) => {
             <div
               className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}
             >
-              <div className="bg-[#0f172a] rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white whitespace-pre-line">
+              <div className="rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white whitespace-pre-line"
+                  style={{
+                    backgroundColor: block.styles?.innerBgColor 
+                      ? `color-mix(in srgb, ${block.styles.innerBgColor} ${block.styles.innerBgOpacity ?? 100}%, transparent)` 
+                      : `color-mix(in srgb, #0f172a ${block.styles?.innerBgOpacity ?? 100}%, transparent)`
+                  }}>
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#1d4eca]/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px] whitespace-pre-line"></div>
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center whitespace-pre-line">
                   <div>
@@ -8174,7 +5798,7 @@ const getIndividualButtonStyle = (btn: any) => {
                               className="text-sm opacity-70 leading-relaxed whitespace-pre-line"
                               style={getCardDescStyle(item, block)}
                             >
-                              {item.desc}
+                              {item.subtitle || item.desc}
                             </p>
                           </div>
                         </div>
@@ -8191,7 +5815,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     )}
                     {block.imageBadge && (
                       <div className="absolute -top-4 -right-4 bg-[#D4AF37] text-[#00164f] p-4 rounded-xl font-bold shadow-lg whitespace-pre-line">
-                        {block.imageBadge}
+                        {block.highlightTag || block.imageBadge}
                       </div>
                     )}
                   </div>
@@ -8547,7 +6171,7 @@ const getIndividualButtonStyle = (btn: any) => {
                       className="text-sm text-slate-500 whitespace-pre-line"
                       style={getCardDescStyle(item, block)}
                     >
-                      {item.desc}
+                      {item.subtitle || item.desc}
                     </p>
                   </div>
                 </div>
@@ -9056,6 +6680,7 @@ const getIndividualButtonStyle = (btn: any) => {
         );
       }
       return null;
+    }
     };
 
     if (block.isHidden && !onBlockClick) {

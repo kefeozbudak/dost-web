@@ -541,11 +541,21 @@ export default function BlockFormEditor({
                     );
                   }
                   if (field.type === "text") {
+                    let val = item[field.key];
+                    if (val === undefined) {
+                      if (field.key === 'stat1Label' && item.stats && item.stats[0]) val = item.stats[0].label || "";
+                      else if (field.key === 'stat1Value' && item.stats && item.stats[0]) val = item.stats[0].value || "";
+                      else if (field.key === 'stat2Label' && item.stats && item.stats[1]) val = item.stats[1].label || "";
+                      else if (field.key === 'stat2Value' && item.stats && item.stats[1]) val = item.stats[1].value || "";
+                      else if (field.key === 'stat' && item.statValue) val = item.statValue || "";
+                      else if (field.key === 'tag' && item.badge) val = item.badge || "";
+                      else val = "";
+                    }
                     return (
                       <input
                         key={field.key}
                         type="text"
-                        value={item[field.key] || ""}
+                        value={val}
                         onChange={(e) =>
                           handleArrayChange(
                             arrayKey,
@@ -644,7 +654,16 @@ export default function BlockFormEditor({
                     );
                   }
                   if (field.type === "textarea") {
-                    let val = item[field.key] || "";
+                    let val = item[field.key];
+                    if (val === undefined) {
+                      if (field.key === 'listString' && item.listItems) {
+                        val = item.listItems.join('\n');
+                      } else if (field.key === 'listString' && item.list) {
+                        val = item.list.join('\n');
+                      } else {
+                        val = "";
+                      }
+                    }
                     if (Array.isArray(val)) {
                       if (field.key === "stats") {
                         val = val.map(x => `${x.value || ''}|${x.label || ''}`).join('\n');
@@ -1918,2600 +1937,13 @@ export default function BlockFormEditor({
             </div>
 
             {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderArrayEditor(
+{renderArrayEditor(
               "items",
               [
-                { key: "title", label: "Başlık", type: "text" },
                 { key: "image", label: "Görsel", type: "image" },
-                { key: "url", label: "Link URL", type: "url" },
-                {
-                  key: "buttonText",
-                  label: "Buton Yazısı (Örn: Detaylı Bilgi)",
-                  type: "text",
-                },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
+                { key: "title", label: "Görsel Altı Yazı (Opsiyonel)", type: "text" },
               ],
-              "Görseller",
-            )}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-              false,
-              "buttons",
-            )}
-          </div>
-        )}
-
-        {block.type === "academic_hero" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Ana Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arka Plan Görseli", "image")}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                Karartma Rengi (örn: rgba(0,0,0,0.5))
-              </label>
-              <input
-                type="text"
-                value={block.styles?.overlayColor || ""}
-                onChange={(e) =>
-                  handleStyleChange("overlayColor", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
-        )}
-
-        {block.type === "akademik_kadro" && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Sidebar Arka Plan Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.sidebarBgColor || "#1a212c"}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarBgColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.sidebarBgColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarBgColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("sidebarBgColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none font-mono"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Sidebar Aktif Öğe Arka Planı
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.sidebarActiveBgColor || "#1d4eca"}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarActiveBgColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.sidebarActiveBgColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarActiveBgColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("sidebarActiveBgColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Sidebar Aktif Metin Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.sidebarActiveTextColor || "#1d4eca"}
-                    onChange={(e) =>
-                      handleStyleChange(
-                        "sidebarActiveTextColor",
-                        e.target.value,
-                      )
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.sidebarActiveTextColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange(
-                        "sidebarActiveTextColor",
-                        e.target.value,
-                      )
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange(
-                        "sidebarActiveTextColor",
-                        e.target.value,
-                      )
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Sidebar Pasif Metin Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.sidebarTextColor || "#e5e7eb"}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarTextColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.sidebarTextColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("sidebarTextColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("sidebarTextColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kart Arka Plan Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.cardBgColor || "#1a212c"}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kart Başlık Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.cardTitleColor || "#ffffff"}
-                    onChange={(e) =>
-                      handleStyleChange("cardTitleColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.cardTitleColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardTitleColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("cardTitleColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kart Metin/İkon Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.cardTextColor || "#9ca3af"}
-                    onChange={(e) =>
-                      handleStyleChange("cardTextColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.cardTextColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardTextColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("cardTextColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Vurgu/Aksiyon Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.cardAccentColor || "#1d4eca"}
-                    onChange={(e) =>
-                      handleStyleChange("cardAccentColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.cardAccentColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardAccentColor", e.target.value)
-                    }
-                    className="flex-1 px-2 py-1 border border-slate-200 rounded text-xs outline-none uppercase font-mono"
-                    placeholder="Varsayılan"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("cardAccentColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-              </div>
-            </div>
-
-            {renderInputWithStyle("Sidebar Ana Başlık", "sidebarTitle")}
-            {renderInputWithStyle("Sidebar Alt Başlık", "sidebarSubtitle")}
-
-            {renderArrayEditor(
-              "sidebarItems",
-              [
-                { key: "label", label: "Menü Etiketi", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-              ],
-              "Sidebar Menü Öğeleri",
-            )}
-
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Kişi Adı", type: "text" },
-                { key: "subtitle", label: "Ünvan/Bölüm", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "image", label: "Profil Görseli", type: "image" },
-                {
-                  key: "tag",
-                  label: "Etiket (Örn: Bilgisayar Müh.)",
-                  type: "text",
-                },
-                { key: "tagColor", label: "Etiket Rengi", type: "color" },
-                { key: "url", label: "Profil URL", type: "url" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-                {
-                  key: "cardBgColor",
-                  label: "Kart Arka Plan Rengi",
-                  type: "color",
-                },
-                {
-                  key: "cardBgImage",
-                  label: "Kart Arka Plan Görseli",
-                  type: "image",
-                },
-                {
-                  key: "cardBorderColor",
-                  label: "Kart Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "itemTitleColor",
-                  label: "İsim Metin Rengi",
-                  type: "color",
-                },
-                {
-                  key: "itemDescColor",
-                  label: "Ünvan Metin Rengi",
-                  type: "color",
-                },
-                {
-                  key: "itemTextColor",
-                  label: "Açıklama Metin Rengi",
-                  type: "color",
-                },
-                {
-                  key: "buttonTextColor",
-                  label: "Link Metin Rengi",
-                  type: "color",
-                },
-              ],
-              "Kadro Öğeleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "management_hero" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Ana Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arka Plan Görseli", "image")}
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                Karartma Rengi
-              </label>
-              <input
-                type="text"
-                value={block.styles?.overlayColor || ""}
-                onChange={(e) =>
-                  handleStyleChange("overlayColor", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
-        )}
-
-        {block.type === "management_rector" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Bölüm Başlığı", "title")}
-            {renderInputWithStyle("Bölüm İkonu (Material)", "icon")}
-            {renderImageUpload("Rektör Görseli", "image")}
-            {renderInputWithStyle("Rozet (Badge)", "badge")}
-            {renderInputWithStyle("Rektör Adı", "name")}
-            {renderInputWithStyle("Ünvan/Rol", "role")}
-            {renderTextareaWithStyle("Alıntı (Söz)", "quote")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Aksiyon Butonları",
-            )}
-          </div>
-        )}
-
-        {block.type === "management_vice_rectors" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Bölüm Başlığı", "title")}
-            {renderInputWithStyle("Bölüm İkonu", "icon")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "name", label: "Kişi Adı", type: "text" },
-                { key: "role", label: "Rol/Ünvan", type: "text" },
-                { key: "badge", label: "Sorumluluk (Badge)", type: "text" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "url", label: "Profil Linki", type: "url" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-              ],
-              "Yöneticiler",
-            )}
-          </div>
-        )}
-
-        {block.type === "management_deans" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Bölüm Başlığı", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderInputWithStyle("Bölüm İkonu", "icon")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "name", label: "Dekan Adı", type: "text" },
-                { key: "role", label: "Rol/Ünvan", type: "text" },
-                { key: "badge", label: "Fakülte (Badge)", type: "text" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "url", label: "Fakülte Linki", type: "url" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-              ],
-              "Dekanlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "about_hero" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Badge (İsteğe Bağlı)", "badge")}
-            {renderTextareaWithStyle("Ana Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arka Plan Görseli", "image")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-              false,
-              "buttons",
-            )}
-          </div>
-        )}
-
-        {block.type === "mission_vision" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-              ],
-              "Kartlar",
-              true,
-            )}
-          </div>
-        )}
-
-        {block.type === "timeline" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "year", label: "Yıl/Etiket", type: "text" },
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "image", label: "Görsel", type: "image" },
-              ],
-              "Tarihçe Öğeleri",
-              true,
-            )}
-          </div>
-        )}
-
-        {block.type === "values" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-              ],
-              "Değerler",
-              true,
-            )}
-          </div>
-        )}
-
-        {block.type === "quote_image" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alıntı Metni (Quote)", "quote")}
-            <div className="grid grid-cols-2 gap-4">
-              {renderInputWithStyle("Yazar Adı", "authorName")}
-              {renderInputWithStyle("Yazar Unvanı", "authorTitle")}
-            </div>
-            {renderImageUpload("Görsel", "image")}
-          </div>
-        )}
-
-        {block.type === "video" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Açıklama (Metin)", "desc")}
-            {renderImageUpload(
-              "Video URL (MP4 veya YouTube vb. Destekleniyorsa, yoksa link)",
-              "videoUrl",
-            )}
-            <p className="text-xs text-slate-500 italic mt-1">
-              Not: Medya kütüphanesinden video yükleyebilir veya doğrudan link
-              yapıştırabilirsiniz.
-            </p>
-            {renderImageUpload("Video Kapak Görseli", "thumbnailUrl")}
-          </div>
-        )}
-        {["features", "stats", "education_levels", "campuses", "news"].includes(
-          block.type,
-        ) && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "url", label: "Link URL", type: "url" },
-                {
-                  key: "buttonText",
-                  label: "Buton Yazısı (Örn: Detaylı Bilgi)",
-                  type: "text",
-                },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-              ],
-              "Öğeler",
-              true,
-            )}
-          </div>
-        )}
-
-        {block.type === "kindergarten_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
-            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-            {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-            {renderImageUpload("Görsel (Sağ Kısım)", "image")}
-            {renderInputWithStyle(
-              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
-              "imageBadgeTitle",
-            )}
-            {renderInputWithStyle(
-              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
-              "imageBadgeDesc",
-            )}
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                Görsel Alt İkon
-              </label>
-              <IconField
-                value={block.imageBadgeIcon || ""}
-                onChange={(val) => handleChange("imageBadgeIcon", val)}
-              />
-            </div>
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "kindergarten_bento" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "rowSpan", label: "Geniş Kart", type: "checkbox" },
-                {
-                  key: "highlight",
-                  label: "Mavi Temalı (Primary)",
-                  type: "checkbox",
-                },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-              ],
-              "Bento Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "kindergarten_branches" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "image", label: "Görsel", type: "image" },
-              ],
-              "Branş Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "primary_school_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
-            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-            {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
-            {renderInputWithStyle(
-              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
-              "imageBadgeTitle",
-            )}
-            {renderInputWithStyle(
-              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
-              "imageBadgeDesc",
-            )}
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                Görsel Alt İkon
-              </label>
-              <IconField
-                value={block.imageBadgeIcon || ""}
-                onChange={(val) => handleChange("imageBadgeIcon", val)}
-              />
-            </div>
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "primary_school_bento" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "rowSpan", label: "Geniş Kart", type: "checkbox" },
-                {
-                  key: "styleType",
-                  label: "Stil Tipi",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Primary (Mavi)" },
-                    { value: "secondary", label: "Secondary (Turkuaz)" },
-                  ],
-                },
-              ],
-              "Bento Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "middle_school_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
-            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-            {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
-            {renderInputWithStyle(
-              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
-              "imageBadgeTitle",
-            )}
-            {renderInputWithStyle(
-              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
-              "imageBadgeDesc",
-            )}
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                Görsel Alt İkon
-              </label>
-              <IconField
-                value={block.imageBadgeIcon || ""}
-                onChange={(val) => handleChange("imageBadgeIcon", val)}
-              />
-            </div>
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "middle_school_pedagogy" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderImageUpload("Görsel (Sol Kısım)", "image")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "styleType",
-                  label: "Stil Tipi",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Primary (Mavi)" },
-                    { value: "secondary", label: "Secondary (Turkuaz)" },
-                  ],
-                },
-              ],
-              "Pedagoji Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "middle_school_lgs" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "badge", label: "Rozet (Örn: Ana Odak)", type: "text" },
-                { key: "rowSpan", label: "Geniş Kart", type: "checkbox" },
-                {
-                  key: "styleType",
-                  label: "Stil Tipi (İkon Arkaplanı)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Primary (Mavi)" },
-                    { value: "secondary", label: "Secondary (Turkuaz)" },
-                    { value: "tertiary", label: "Tertiary (Gri)" },
-                  ],
-                },
-              ],
-              "LGS Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "campus_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderImageUpload("Arkaplan Görseli", "image")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "campus_bento" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Kart Başlığı", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "image", label: "Görsel", type: "image" },
-                {
-                  key: "colSpan",
-                  label:
-                    "Sütun Genişliği (örn: col-span-12 md:col-span-6 lg:col-span-4)",
-                  type: "text",
-                },
-              ],
-              "Eğitim Kademeleri Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "campus_gallery" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Kart Başlığı", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "image", label: "Görsel", type: "image" },
-              ],
-              "Galeri Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "campus_life" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle("Rozet (Örn: Kampüs Yaşamı)", "badge")}
-            {renderTextareaWithStyle("Başlık (1. Kısım)", "titlePart1")}
-            {renderTextareaWithStyle("Başlık (2. Kısım)", "titlePart2")}
-            <div className="grid grid-cols-2 gap-4">
-              {renderImageUpload("Görsel 1 (Sol Üst)", "image1")}
-              {renderImageUpload("Görsel 2 (Sol Alt)", "image2")}
-              {renderImageUpload("Görsel 3 (Sağ Üst)", "image3")}
-              {renderImageUpload("Görsel 4 (Sağ Alt)", "image4")}
-            </div>
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "title", label: "Madde Metni", type: "text" },
-              ],
-              "Özellik Listesi",
-            )}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "URL", type: "url" },
-                {
-                  key: "style",
-                  label: "Stil (primary veya outline)",
-                  type: "text",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "campus_contact" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "title",
-                  label: "Başlık (Adres/Telefon vb.)",
-                  type: "text",
-                },
-                { key: "desc", label: "İçerik", type: "textarea" },
-              ],
-              "İletişim Bilgileri",
-            )}
-            <h3 className="font-semibold text-sm">Harita Alanı</h3>
-            {renderTextareaWithStyle(
-              "Harita iframe Kodu (Eğer varsa alttakiler geçersiz olur)",
-              "mapCode",
-            )}
-            {renderImageUpload("Harita Yedek Görseli", "image")}
-            {renderInputWithStyle("Harita İçi Kart Başlığı", "cardTitle")}
-            {renderInputWithStyle("Harita İçi Kart Alt Metni", "cardDesc")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "url", label: "Yol Tarifi Linki", type: "url" },
-                { key: "icon", label: "İkon (örn: directions)", type: "icon" },
-              ],
-              "Harita Butonu (Maks 1)",
-            )}
-          </div>
-        )}
-
-        {block.type === "contact_hero" && (
-          <div className="space-y-4">{renderCommonFields()}</div>
-        )}
-
-        {block.type === "contact_campuses" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Kampüs Adı", type: "text" },
-                { key: "badge", label: "Rozet (Örn: ERYAMAN)", type: "text" },
-                { key: "address", label: "Adres", type: "textarea" },
-                { key: "phone", label: "Telefon", type: "text" },
-                {
-                  key: "image",
-                  label: "Harita Görseli (Yedek)",
-                  type: "image",
-                },
-                {
-                  key: "mapCode",
-                  label: "Harita Kodu (iframe, Google Maps vs.)",
-                  type: "textarea",
-                },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-                { key: "url", label: "Yol Tarifi Linki", type: "url" },
-              ],
-              "Kampüs Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "contact_form" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            <div className="border-t border-slate-200 pt-4 mt-6">
-              <h4 className="text-sm font-bold text-slate-800 mb-3">
-                İletişim Formu Alanları
-              </h4>
-              {renderArrayEditor(
-                "inputs",
-                [
-                  {
-                    key: "type",
-                    label: "Alan Tipi",
-                    type: "select",
-                    options: [
-                      { value: "text", label: "Kısa Metin" },
-                      { value: "email", label: "E-posta" },
-                      { value: "tel", label: "Telefon" },
-                      { value: "textarea", label: "Uzun Metin" },
-                      { value: "select", label: "Seçim Kutusu" },
-                      { value: "checkbox", label: "Onay Kutusu" },
-                      { value: "date", label: "Tarih" },
-                      { value: "section_title", label: "Bölüm Başlığı" },
-                    ],
-                  },
-                  {
-                    key: "name",
-                    label: "Veri Anahtarı (İngilizce)",
-                    type: "text",
-                  },
-                  { key: "label", label: "Görünen Etiket", type: "text" },
-                  { key: "placeholder", label: "Yer Tutucu", type: "text" },
-                  {
-                    key: "options",
-                    label:
-                      "Seçenekler (Virgülle ayırın, sadece Seçim Kutusu için)",
-                    type: "text",
-                  },
-                  {
-                    key: "icon",
-                    label: "İkon (Bölüm Başlığı için)",
-                    type: "icon",
-                  },
-                  { key: "required", label: "Zorunlu Alan", type: "checkbox" },
-                  {
-                    key: "fullWidth",
-                    label: "Tam Genişlik (İki Sütun Kapla)",
-                    type: "checkbox",
-                  },
-                ],
-                "Form Alanları",
-              )}
-            </div>
-          </div>
-        )}
-
-        {block.type === "club_registration_form" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">
-                Form Görünüm & CSS Renk Ayarları
-              </span>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Başlık Bölümü Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.headerBgColor || "#002147"}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.headerBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      placeholder="#002147"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Form Kartı Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.cardBgColor || "#ffffff"}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.cardBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      placeholder="#ffffff"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-              </div>
-            </div>
-
-            {renderArrayEditor(
-              "clubs",
-              [
-                { key: "id", label: "Kulüp ID (boşluksuz)", type: "text" },
-                { key: "label", label: "Kulüp Adı", type: "text" },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Kulüpler",
-            )}
-
-            {renderArrayEditor(
-              "inputs",
-              [
-                {
-                  key: "type",
-                  label: "Alan Tipi (Görev Seçimi)",
-                  type: "select",
-                  options: [
-                    { value: "text", label: "Kısa Metin (Tek Satır Metin)" },
-                    {
-                      value: "select",
-                      label: "Açılır Liste / Seçim Kutusu (Dropdown)",
-                    },
-                    {
-                      value: "radio",
-                      label: "Çoktan Seçmeli (Radyo Butonları)",
-                    },
-                    { value: "checkbox", label: "Onay Kutusu (Checkbox)" },
-                    { value: "date", label: "Tarih Seçici (Date)" },
-                    { value: "tel", label: "Telefon Numarası (Phone)" },
-                    { value: "email", label: "E-Posta Adresi (Email)" },
-                    {
-                      value: "textarea",
-                      label: "Uzun Metin Kutusu (Textarea)",
-                    },
-                    {
-                      value: "section_title",
-                      label: "Bölüm / Kısım Başlığı (Section Header)",
-                    },
-                  ],
-                },
-                {
-                  key: "label",
-                  label: "Görünen Etiket / Metin (Örn: Kampüs Seçimi)",
-                  type: "text",
-                },
-                {
-                  key: "name",
-                  label: "Alan Kimliği / Key (İngilizce/Boşluksuz)",
-                  type: "text",
-                },
-                {
-                  key: "placeholder",
-                  label: "Yer Tutucu Metin (Örn: Kampüs Seçiniz)",
-                  type: "text",
-                },
-                {
-                  key: "options",
-                  label:
-                    "Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)",
-                  type: "textarea",
-                },
-                {
-                  key: "required",
-                  label: "Zorunlu Alan Mı?",
-                  type: "checkbox",
-                },
-                {
-                  key: "fullWidth",
-                  label: "Tam Genişlik (2 Sütun Kaplasın Mı?)",
-                  type: "checkbox",
-                },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Form Alanları (İnputlar)",
-            )}
-          </div>
-        )}
-
-        {block.type === "pre_registration_form" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle(
-              "Webhook URL (Opsiyonel: Form gönderilince verilerin iletileceği URL)",
-              "webhookUrl",
-            )}
-
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">
-                Form Görünüm & CSS Renk Ayarları
-              </span>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Başlık Bölümü Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.headerBgColor || "#002147"}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.headerBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      placeholder="#002147"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Form Kartı Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.cardBgColor || "#ffffff"}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.cardBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      placeholder="#ffffff"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-              </div>
-            </div>
-
-            {renderArrayEditor(
-              "inputs",
-              [
-                {
-                  key: "type",
-                  label: "Alan Tipi (Görev Seçimi)",
-                  type: "select",
-                  options: [
-                    { value: "text", label: "Kısa Metin (Tek Satır Metin)" },
-                    {
-                      value: "select",
-                      label: "Açılır Liste / Seçim Kutusu (Dropdown)",
-                    },
-                    {
-                      value: "radio",
-                      label: "Çoktan Seçmeli (Radyo Butonları)",
-                    },
-                    { value: "checkbox", label: "Onay Kutusu (Checkbox)" },
-                    { value: "date", label: "Tarih Seçici (Date)" },
-                    { value: "tel", label: "Telefon Numarası (Phone)" },
-                    { value: "email", label: "E-Posta Adresi (Email)" },
-                    {
-                      value: "textarea",
-                      label: "Uzun Metin Kutusu (Textarea)",
-                    },
-                    {
-                      value: "section_title",
-                      label: "Bölüm / Kısım Başlığı (Section Header)",
-                    },
-                  ],
-                },
-                {
-                  key: "label",
-                  label: "Görünen Etiket / Metin (Örn: Kampüs Seçimi)",
-                  type: "text",
-                },
-                {
-                  key: "name",
-                  label: "Alan Kimliği / Key (İngilizce/Boşluksuz)",
-                  type: "text",
-                },
-                {
-                  key: "placeholder",
-                  label: "Yer Tutucu Metin (Örn: Kampüs Seçiniz)",
-                  type: "text",
-                },
-                {
-                  key: "options",
-                  label:
-                    "Seçenekler (Açılır liste veya radio için virgülle ayırın: Örn: Eryaman Kampüsü, Oran Kampüsü)",
-                  type: "textarea",
-                },
-                {
-                  key: "required",
-                  label: "Zorunlu Alan Mı?",
-                  type: "checkbox",
-                },
-                {
-                  key: "fullWidth",
-                  label: "Tam Genişlik (2 Sütun Kaplasın Mı?)",
-                  type: "checkbox",
-                },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Form Alanları (İnputlar)",
-            )}
-          </div>
-        )}
-
-        {block.type === "edu_system_hero" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arka Plan Görseli", "image")}
-          </div>
-        )}
-
-        {block.type === "edu_system_levels" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-              ],
-              "Kademeler (Items)",
-            )}
-          </div>
-        )}
-
-        {block.type === "edu_system_yadep" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-              ],
-              "YADEP Kartları (Items)",
-            )}
-          </div>
-        )}
-
-        {block.type === "edu_system_philosophy" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Rozet (Badge)", "badge")}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderInputWithStyle("Alt Başlık (Açıklama)", "subtitle")}
-            {renderImageUpload("Görsel URL", "image")}
-            {renderInputWithStyle("Kayan Kart İkonu", "cardIcon")}
-            {renderInputWithStyle("Kayan Kart Başlığı", "cardTitle")}
-            {renderInputWithStyle("Kayan Kart Açıklaması", "cardDesc")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-              ],
-              "Özellikler (Items)",
-            )}
-          </div>
-        )}
-
-        {block.type === "edu_system_cta" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "career_hero" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Hero Başlığı", "title")}
-            {renderTextareaWithStyle("Hero Alt Başlığı", "subtitle")}
-            {renderImageUpload("Arka Plan Görseli URL", "image")}
-            {renderInputWithStyle("Buton Metni", "buttonText")}
-          </div>
-        )}
-
-        {block.type === "career_benefits" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon (Material)", type: "icon" },
-                { key: "iconColor", label: "İkon Rengi (Sınıf)", type: "text" },
-                {
-                  key: "iconBg",
-                  label: "İkon Arka Plan (Sınıf)",
-                  type: "text",
-                },
-              ],
-              "Avantajlar (Items)",
-            )}
-          </div>
-        )}
-
-        {block.type === "career_application" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Pozisyonlar Başlığı", "title")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Pozisyon Başlığı", type: "text" },
-                {
-                  key: "type",
-                  label: "Çalışma Tipi (örn: TAM ZAMANLI)",
-                  type: "text",
-                },
-                {
-                  key: "dept",
-                  label: "Bölüm (örn: Lise Bölümü)",
-                  type: "text",
-                },
-                { key: "val", label: "Değer / ID", type: "text" },
-              ],
-              "Açık Pozisyonlar (Items)",
-            )}
-
-            <div className="border-t border-slate-200 my-6"></div>
-
-            <h4 className="text-sm font-bold text-slate-800 mb-4">
-              Form Alanları (Inputs)
-            </h4>
-
-            {renderArrayEditor(
-              "inputs",
-              [
-                {
-                  key: "type",
-                  label: "Veri Tipi (Giriş Türü)",
-                  type: "select",
-                  options: [
-                    { value: "text", label: "Kısa Metin (Text)" },
-                    {
-                      value: "select",
-                      label: "Açılır Liste Seçimi (Select/Dropdown)",
-                    },
-                    { value: "radio", label: "Tekli Seçim (Radio)" },
-                    { value: "checkbox", label: "Onay Kutusu (Checkbox)" },
-                    { value: "date", label: "Tarih Seçici (Date)" },
-                    { value: "tel", label: "Telefon Numarası (Phone)" },
-                    { value: "email", label: "E-Posta Adresi (Email)" },
-                    {
-                      value: "textarea",
-                      label: "Uzun Metin Kutusu (Textarea)",
-                    },
-                    { value: "file", label: "Dosya Yükleme (Örn: CV)" },
-                    {
-                      value: "section_title",
-                      label: "Bölüm / Kısım Başlığı (Section Header)",
-                    },
-                  ],
-                },
-                { key: "label", label: "Görünen Etiket / Metin", type: "text" },
-                {
-                  key: "name",
-                  label: "Alan Kimliği / Key (İngilizce/Boşluksuz)",
-                  type: "text",
-                },
-                { key: "placeholder", label: "Yer Tutucu Metin", type: "text" },
-                {
-                  key: "options",
-                  label:
-                    "Seçenekler (Açılır liste veya radio için virgülle ayırın)",
-                  type: "textarea",
-                },
-                {
-                  key: "required",
-                  label: "Zorunlu Alan Mı?",
-                  type: "checkbox",
-                },
-                {
-                  key: "fullWidth",
-                  label: "Tam Genişlik (2 Sütun Kaplasın Mı?)",
-                  type: "checkbox",
-                },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Form Alanları (İnputlar)",
-            )}
-          </div>
-        )}
-
-        {block.type === "bursluluk_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle(
-              "Rozet / Etiket (Örn: 2026-2027 EĞİTİM YILI)",
-              "badge",
-            )}
-            {renderImageUpload("Arka Plan Görseli", "image")}
-            {renderArrayEditor(
-              "stats",
-              [
-                {
-                  key: "value",
-                  label: "Değer (Örn: 16-17 Mart)",
-                  type: "text",
-                },
-                {
-                  key: "label",
-                  label: "Etiket (Örn: Sınav Tarihi)",
-                  type: "text",
-                },
-              ],
-              "Öne Çıkan Bilgiler / İstatistikler",
-            )}
-          </div>
-        )}
-
-        {block.type === "bursluluk_exam_form" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">
-                Form Görünüm & CSS Renk Ayarları
-              </span>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Başlık Bölümü Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.headerBgColor || "#002147"}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.headerBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      }
-                      placeholder="#002147"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("headerBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Form Kartı Arka Plan Rengi
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={block.styles?.cardBgColor || "#ffffff"}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                    />
-                    <input
-                      type="text"
-                      value={block.styles?.cardBgColor || ""}
-                      onChange={(e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      }
-                      placeholder="#ffffff"
-                      className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                        handleStyleChange("cardBgColor", e.target.value)
-                      ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-                </div>
-              </div>
-            </div>
-
-            {renderArrayEditor(
-              "inputs",
-              [
-                {
-                  key: "type",
-                  label: "Alan Tipi (Görev Seçimi)",
-                  type: "select",
-                  options: [
-                    { value: "text", label: "Kısa Metin (Tek Satır Metin)" },
-                    {
-                      value: "select",
-                      label: "Açılır Liste / Seçim Kutusu (Dropdown)",
-                    },
-                    {
-                      value: "radio",
-                      label: "Çoktan Seçmeli (Radyo Butonları)",
-                    },
-                    { value: "checkbox", label: "Onay Kutusu (Checkbox)" },
-                    { value: "date", label: "Tarih Seçici (Date)" },
-                    { value: "tel", label: "Telefon Numarası (Phone)" },
-                    { value: "email", label: "E-Posta Adresi (Email)" },
-                    {
-                      value: "textarea",
-                      label: "Uzun Metin Kutusu (Textarea)",
-                    },
-                    {
-                      value: "section_title",
-                      label: "Bölüm / Kısım Başlığı (Section Header)",
-                    },
-                  ],
-                },
-                {
-                  key: "label",
-                  label: "Görünen Etiket / Metin (Örn: Sınıf Seviyesi)",
-                  type: "text",
-                },
-                {
-                  key: "name",
-                  label: "Alan Kimliği / Key (İngilizce/Boşluksuz)",
-                  type: "text",
-                },
-                { key: "placeholder", label: "Yer Tutucu Metin", type: "text" },
-                {
-                  key: "options",
-                  label:
-                    "Seçenekler (Virgülle ayırın: Örn: 4. Sınıf, 5. Sınıf)",
-                  type: "textarea",
-                },
-                {
-                  key: "required",
-                  label: "Zorunlu Alan Mı?",
-                  type: "checkbox",
-                },
-                {
-                  key: "fullWidth",
-                  label: "Tam Genişlik (2 Sütun Kaplasın Mı?)",
-                  type: "checkbox",
-                },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Form Alanları (İnputlar)",
-            )}
-          </div>
-        )}
-
-        {block.type === "bursluluk_confirmation" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle(
-              "Belge Başlığı (Örn: Bursluluk Sınavı Giriş Belgesi)",
-              "documentTitle",
-            )}
-            {renderImageUpload("Belge Logosu", "documentLogo")}
-            {renderInputWithStyle(
-              "Belge No Öneki (Örn: BELGE NO: )",
-              "documentNoPrefix",
-            )}
-            {renderInputWithStyle(
-              "Sınav Tarihi (Örn: 16 Mart 2026)",
-              "examDate",
-            )}
-
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block border-b border-slate-200 pb-2">
-                Belge Kartı Görünüm Ayarları
-              </span>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kart Arka Plan Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.cardBgColor || "#ffffff"}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    }
-                    className="w-8 h-8 p-0 border-0 rounded cursor-pointer shrink-0"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgColor || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    }
-                    placeholder="#ffffff"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const handler = (e) =>
-                      handleStyleChange("cardBgColor", e.target.value)
-                    ;
-                                handler({ target: { value: "transparent" } } as any);
-                              }}
-                              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                              title="Rengi Temizle (Şeffaf)"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            </button>
-                </div>
-                
-                <label className="text-[10px] font-bold text-slate-400 block mb-1 mt-3">
-                  Kart Arka Plan Görseli
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={block.styles?.cardBgImage || ""}
-                    onChange={(e) =>
-                      handleStyleChange("cardBgImage", e.target.value)
-                    }
-                    placeholder="Görsel URL'si (http... veya /img.jpg)"
-                    className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-xs outline-none"
-                  />
-                </div>
-
-              </div>
-            </div>
-
-            {renderArrayEditor(
-              "rules",
-              [{ key: "rule", label: "Sınav Kuralı Metni", type: "text" }],
-              "Sınav Kuralları Listesi",
-            )}
-
-            {renderArrayEditor(
-              "requiredDocuments",
-              [{ key: "docName", label: "Gerekli Belge Adı", type: "text" }],
-              "Gerekli Belgeler Listesi",
-            )}
-          </div>
-        )}
-
-        {block.type === "bursluluk_info_cards" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "title", label: "Kart Başlığı", type: "text" },
-                {
-                  key: "rules",
-                  label:
-                    "Maddeler / Kurallar (Her satıra veya virgülle ayırın)",
-                  type: "textarea",
-                },
-              ],
-              "Bilgilendirme Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "bursluluk_result_query" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle("Buton Metni", "buttonText")}
-            {renderImageUpload("Görsel", "image")}
-          </div>
-        )}
-
-        {block.type === "social_media" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "icon", label: "İkon (SVG Kodu)", type: "icon" },
-                { key: "url", label: "Profil Linki", type: "url" },
-              ],
-              "Sosyal Medya Linkleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "clubs_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderInputWithStyle("Başlık Bölüm 2", "titlePart2")}
-            {renderImageUpload("Arkaplan Görseli", "image")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "clubs_grid" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle(
-              "Filtre Kategorileri (Virgülle ayrılmış)",
-              "categories",
-            )}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "category", label: "Kategori", type: "text" },
-                {
-                  key: "badge",
-                  label: "Rozet (Örn: Kontenjan: 5 Kişi)",
-                  type: "text",
-                },
-                {
-                  key: "badgeColor",
-                  label: "Rozet Rengi Tipi",
-                  type: "select",
-                  options: [
-                    { value: "secondary", label: "Turkuaz" },
-                    { value: "error", label: "Kırmızı" },
-                  ],
-                },
-                { key: "icon", label: "Kategori İkonu", type: "icon" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "url", label: "Detay Linki", type: "url" },
-              ],
-              "Kulüp Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "clubs_benefits" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Avantaj Kartları",
-            )}
-          </div>
-        )}
-
-        {block.type === "clubs_cta" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "high_school_hero" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
-            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-                        {renderImageUpload("Görsel (Sağ Kısım)", "image")}
-            {renderInputWithStyle(
-              "Görsel Alt Rozet (Örn: Oyun Temelli Eğitim)",
-              "imageBadgeTitle",
-            )}
-            {renderInputWithStyle(
-              "Görsel Alt Açıklama (Örn: Aktif Öğrenme)",
-              "imageBadgeDesc",
-            )}
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                Görsel Alt İkon
-              </label>
-              <IconField
-                value={block.imageBadgeIcon || ""}
-                onChange={(val) => handleChange("imageBadgeIcon", val)}
-              />
-            </div>
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "high_school_programs" && (
-          <div className="space-y-4">
-            {renderCommonFields()}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                {
-                  key: "features",
-                  label: "Özellikler (Her satıra bir tane)",
-                  type: "textarea",
-                },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "buttonText", label: "Buton Yazısı (Örn: Detaylı Bilgi)", type: "text" },
-                { key: "url", label: "Buton Linki", type: "url" },
-                {
-                  key: "styleType",
-                  label: "Stil Tipi",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Primary (Mavi)" },
-                    { value: "secondary", label: "Secondary (Turkuaz)" },
-                  ],
-                },
-              ],
-              "Program Kartları",
-            )}
-          </div>
-        )}
-
-        
-      {block.type === "achievements_academic_bento" && (
-        <div className="space-y-4">
-          {renderCommonFields()}
-          {renderArrayEditor(
-            "items",
-            [
-              { key: "style", label: "Stil (light, primary, list)", type: "select", options: [{value: "light", label: "Açık (Sol)"}, {value: "primary", label: "Renkli (Orta)"}, {value: "list", label: "Liste (Sağ)"}] },
-              { key: "icon", label: "İkon", type: "icon" },
-              { key: "title", label: "Başlık", type: "text" },
-              { key: "desc", label: "Açıklama", type: "textarea" },
-              { key: "statValue", label: "Büyük İstatistik (Sadece Açık Stil)", type: "text" },
-              { key: "statLabel", label: "İstatistik Etiketi (Sadece Açık Stil)", type: "text" },
-              { key: "badge", label: "Rozet (Sadece Açık Stil)", type: "text" },
-              { key: "buttonText", label: "Buton Metni (Sadece Renkli Stil)", type: "text" },
-              { key: "url", label: "Buton Linki (Sadece Renkli Stil)", type: "text" },
-              { key: "stats", label: "İstatistikler (Değer|Etiket şeklinde satır satır. Örn: %98|Yerleştirme)", type: "textarea" },
-              { key: "listItems", label: "Liste Elemanları (Satır satır)", type: "textarea" }
-            ],
-            "Kartlar"
-          )}
-        </div>
-      )}
-
-      {block.type === "achievements_social_gallery" && (
-        <div className="space-y-4">
-          {renderCommonFields()}
-          {renderArrayEditor(
-            "items",
-            [
-              { key: "title", label: "Başlık", type: "text" },
-              { key: "desc", label: "Kısa Açıklama", type: "text" },
-              { key: "hoverText", label: "Üzerine Gelince Çıkan Metin", type: "text" },
-              { key: "image", label: "Görsel", type: "image" }
-            ],
-            "Galerideki Kartlar"
-          )}
-        </div>
-      )}
-
-      {block.type === "achievements_science_projects" && (
-        <div className="space-y-4">
-          {renderCommonFields()}
-          {renderArrayEditor(
-            "items",
-            [
-              { key: "title", label: "Proje Adı", type: "text" },
-              { key: "desc", label: "Açıklama", type: "textarea" },
-              { key: "competition", label: "Yarışma Adı / Kategori", type: "text" },
-              { key: "award", label: "Ödül / Derece", type: "text" },
-              { key: "image", label: "Görsel", type: "image" }
-            ],
-            "Projeler"
-          )}
-        </div>
-      )}
-{block.type === "achievements_hero" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Rozet (Badge)", "badge")}
-            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
-            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
-            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arkaplan Görseli", "image")}
-            {renderArrayEditor(
-              "buttons",
-              [
-                { key: "label", label: "Buton Metni", type: "text" },
-                { key: "url", label: "Link URL", type: "url" },
-                { key: "icon", label: "İkon", type: "icon" },
-                {
-                  key: "style",
-                  label: "Stil (Varsayılan)",
-                  type: "select",
-                  options: [
-                    { value: "primary", label: "Birincil" },
-                    { value: "secondary", label: "İkincil" },
-                    { value: "outline", label: "Çizgili" },
-                    { value: "ghost", label: "Saydam" },
-                  ],
-                },
-                {
-                  key: "bgColor",
-                  label: "Özel Arka Plan Rengi",
-                  type: "color",
-                },
-                { key: "textColor", label: "Özel Yazı Rengi", type: "color" },
-                {
-                  key: "borderColor",
-                  label: "Özel Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "borderRadius",
-                  label: "Özel Köşe Yuvarlama (Örn: 8px)",
-                  type: "text",
-                },
-                {
-                  key: "primary",
-                  label: "Birincil Buton (Eski)",
-                  type: "checkbox",
-                },
-              ],
-              "Butonlar",
-            )}
-          </div>
-        )}
-
-        {block.type === "bento_academic" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-                { key: "stat", label: "İstatistik (Kart 1)", type: "text" },
-                {
-                  key: "statLabel",
-                  label: "İstatistik Etiketi (Kart 1)",
-                  type: "text",
-                },
-                { key: "tag", label: "Rozet/Etiket (Kart 1)", type: "text" },
-                {
-                  key: "buttonText",
-                  label: "Buton Metni (Kart 2)",
-                  type: "text",
-                },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-                { key: "url", label: "Buton URL (Kart 2)", type: "url" },
-              ],
-              "Öğeler (Max 3, Özel Tasarım)",
+              "Hero Görselleri",
             )}
           </div>
         )}
@@ -4539,6 +1971,62 @@ export default function BlockFormEditor({
             {renderTextareaWithStyle("Başlık", "title")}
             {renderTextareaWithStyle("Alt Başlık", "subtitle")}
             {renderImageUpload("Görsel", "image")}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Zemin Rengi
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={block.styles?.innerBgColor || "#0f172a"}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                  />
+                  <input
+                    type="text"
+                    value={block.styles?.innerBgColor || ""}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    placeholder="#0f172a"
+                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newStyles = { ...(block.styles || {}) };
+                      delete newStyles.innerBgColor;
+                      handleChange("styles", newStyles);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Şeffaflığı (0 - 100)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={block.styles?.innerBgOpacity ?? 100}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : 100;
+                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
+                    handleChange("styles", newStyles);
+                  }}
+                  placeholder="100"
+                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
             {renderInputWithStyle("Görsel Üzeri Rozet", "highlightTag")}
             {renderArrayEditor(
               "items",
@@ -5121,6 +2609,480 @@ export default function BlockFormEditor({
           </div>
         </div>
       )}
+      
+        {block.type === 'achievements_hero' && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              {renderInputWithStyle('Badge (Rozet)', 'badge')}
+              {renderImageUpload('Görsel URL', 'image')}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Zemin Rengi
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={block.styles?.innerBgColor || "#0f172a"}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                  />
+                  <input
+                    type="text"
+                    value={block.styles?.innerBgColor || ""}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    placeholder="#0f172a"
+                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newStyles = { ...(block.styles || {}) };
+                      delete newStyles.innerBgColor;
+                      handleChange("styles", newStyles);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Şeffaflığı (0 - 100)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={block.styles?.innerBgOpacity ?? 100}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : 100;
+                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
+                    handleChange("styles", newStyles);
+                  }}
+                  placeholder="100"
+                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Zemin Rengi
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={block.styles?.innerBgColor || "#0f172a"}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                  />
+                  <input
+                    type="text"
+                    value={block.styles?.innerBgColor || ""}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    placeholder="#0f172a"
+                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newStyles = { ...(block.styles || {}) };
+                      delete newStyles.innerBgColor;
+                      handleChange("styles", newStyles);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Şeffaflığı (0 - 100)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={block.styles?.innerBgOpacity ?? 100}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : 100;
+                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
+                    handleChange("styles", newStyles);
+                  }}
+                  placeholder="100"
+                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Zemin Rengi
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={block.styles?.innerBgColor || "#0f172a"}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                  />
+                  <input
+                    type="text"
+                    value={block.styles?.innerBgColor || ""}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    placeholder="#0f172a"
+                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newStyles = { ...(block.styles || {}) };
+                      delete newStyles.innerBgColor;
+                      handleChange("styles", newStyles);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Kutu Şeffaflığı (0 - 100)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={block.styles?.innerBgOpacity ?? 100}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : 100;
+                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
+                    handleChange("styles", newStyles);
+                  }}
+                  placeholder="100"
+                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+              {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
+              {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
+            </div>
+            {renderTextareaWithStyle('Alt Başlık / Açıklama', 'subtitle')}
+            {renderArrayEditor(
+              'buttons',
+              [
+                {key: 'label', label: 'Metin', type: 'text'},
+                {key: 'url', label: 'URL', type: 'text'},
+                {key: 'icon', label: 'İkon', type: 'icon'},
+                {key: 'bgColor', label: 'Arka Plan Rengi', type: 'color'},
+                {key: 'textColor', label: 'Metin Rengi', type: 'color'}
+              ],
+              'Butonlar'
+            )}
+          </div>
+        )}
+
+        {block.type === 'achievements_academic_bento' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Başlığı', 'title')}
+            {renderArrayEditor(
+              'items',
+              [
+                {key: 'title', label: 'Başlık', type: 'text'},
+                {key: 'desc', label: 'Açıklama', type: 'textarea'},
+                {key: 'icon', label: 'İkon', type: 'icon'},
+                {key: 'style', label: 'Stil Tipi (light, primary, list)', type: 'text'},
+                {key: 'badge', label: 'Rozet (Opsiyonel)', type: 'text'},
+                {key: 'statValue', label: 'Ana İstatistik', type: 'text'},
+                {key: 'statLabel', label: 'Ana İstatistik Etiketi', type: 'text'},
+                {key: 'buttonText', label: 'Buton Metni', type: 'text'},
+                {key: 'url', label: 'Buton URL', type: 'text'}
+              ],
+              'Kartlar'
+            )}
+          </div>
+        )}
+
+        {block.type === 'achievements_social_gallery' && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              {renderInputWithStyle('Başlık', 'title')}
+              {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            </div>
+            {renderArrayEditor(
+              'items',
+              [
+                {key: 'title', label: 'Kart Başlığı', type: 'text'},
+                {key: 'desc', label: 'Açıklama', type: 'text'},
+                {key: 'hoverText', label: 'Vurgu/Hover Metni', type: 'textarea'},
+                {key: 'image', label: 'Görsel', type: 'image'}
+              ],
+              'Galeri Kartları'
+            )}
+          </div>
+        )}
+
+        {block.type === 'achievements_science_projects' && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              {renderInputWithStyle('Bölüm Rozeti', 'badge')}
+              {renderInputWithStyle('Başlık', 'title')}
+              {renderImageUpload('Görsel URL', 'image')}
+              {renderInputWithStyle('Görsel Üzeri Rozet', 'imageBadge')}
+            </div>
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                {key: 'title', label: 'Başlık', type: 'text'},
+                {key: 'desc', label: 'Açıklama', type: 'textarea'},
+                {key: 'icon', label: 'İkon', type: 'icon'}
+              ],
+              'Öğeler'
+            )}
+          </div>
+        )}
+
+        {block.type === 'bento_academic' && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Başlık', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon', type: 'icon' },
+                { key: 'stat', label: 'İstatistik (Kart 1)', type: 'text' },
+                { key: 'statLabel', label: 'İstatistik Etiketi (Kart 1)', type: 'text' },
+                { key: 'tag', label: 'Rozet/Etiket (Kart 1)', type: 'text' },
+                { key: 'buttonText', label: 'Buton Metni (Kart 2)', type: 'text' },
+                { key: 'url', label: 'Buton URL (Kart 2)', type: 'url' },
+                { key: 'stat1Label', label: 'İstatistik 1 Etiketi (Kart 2)', type: 'text' },
+                { key: 'stat1Value', label: 'İstatistik 1 Değeri (Kart 2)', type: 'text' },
+                { key: 'stat2Label', label: 'İstatistik 2 Etiketi (Kart 2)', type: 'text' },
+                { key: 'stat2Value', label: 'İstatistik 2 Değeri (Kart 2)', type: 'text' },
+                { key: 'listString', label: 'Özellik Listesi (Kart 3 - Her satıra bir tane)', type: 'textarea' }
+              ],
+              'Öğeler (Max 3, Özel Tasarım)'
+            )}
+          </div>
+        )}
+
+        {block.type === 'high_school_programs' && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Program Adı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+                { key: 'image', label: 'Program Görseli', type: 'image' },
+                { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Buton URL', type: 'url' },
+                { key: 'listString', label: 'Özellikler (Her satıra bir tane)', type: 'textarea' }
+              ],
+              'Lise Programları'
+            )}
+          </div>
+        )}
+
+        {block.type === 'mission_vision' && (
+          <div className="space-y-4">
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Başlık', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon', type: 'icon' }
+              ],
+              'Misyon & Vizyon Kartları'
+            )}
+          </div>
+        )}
+
+        {block.type === 'timeline' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'year', label: 'Yıl', type: 'text' },
+                { key: 'title', label: 'Olay Başlığı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' }
+              ],
+              'Tarihçe Öğeleri'
+            )}
+          </div>
+        )}
+
+        {block.type === 'values' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Değer Başlığı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon', type: 'icon' }
+              ],
+              'Değerlerimiz Öğeleri'
+            )}
+          </div>
+        )}
+
+        {block.type === 'quote_image' && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle('Alıntı Metni', 'quote')}
+            {renderInputWithStyle('Yazar', 'author')}
+            {renderInputWithStyle('Ünvan/Açıklama', 'authorTitle')}
+            {renderImageUpload('Görsel', 'image')}
+            {renderInputWithStyle('Alıntı Arka Plan Rengi', 'bgColor')}
+            {renderInputWithStyle('Alıntı Metin Rengi', 'textColor')}
+          </div>
+        )}
+
+        {block.type === 'features' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Rozeti (Badge)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderInputWithStyle('Alt Başlık Metin Rengi', 'subtitleColor')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+                { key: 'title', label: 'Başlık', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' }
+              ],
+              'Özellikler'
+            )}
+          </div>
+        )}
+
+        {block.type === 'stats' && (
+          <div className="space-y-4">
+            {renderImageUpload('Arka Plan Görseli', 'image')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'value', label: 'İstatistik Değeri', type: 'text' },
+                { key: 'label', label: 'Etiket', type: 'text' }
+              ],
+              'İstatistikler'
+            )}
+          </div>
+        )}
+
+        {block.type === 'grid' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'image', label: 'Görsel', type: 'image' },
+                { key: 'title', label: 'Başlık', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'url', label: 'Tıklama Bağlantısı', type: 'url' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' }
+              ],
+              'Grid Öğeleri'
+            )}
+          </div>
+        )}
+
+        {block.type === 'text_image' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Rozeti (Badge)', 'badge')}
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama (HTML destekli)', 'content')}
+            {renderImageUpload('Görsel', 'image')}
+            <div className="mt-4">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-2">Görsel Yönü</label>
+              <select
+                value={block.imagePosition || 'right'}
+                onChange={(e) => onChange({ ...block, imagePosition: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none"
+              >
+                <option value="right">Sağda</option>
+                <option value="left">Solda</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+      
+        {['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form'].includes(block.type) && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            
+            {block.type === 'bursluluk_exam_form' && renderImageUpload('Yan Görsel', 'image')}
+            {block.type === 'career_application' && renderTextareaWithStyle('Açıklama (HTML)', 'content')}
+
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+              <h4 className="font-bold text-sm text-slate-700">Form Alanları (Inputs)</h4>
+              {renderArrayEditor(
+                'inputs',
+                [
+                  { key: 'name', label: 'Alan Adı (name)', type: 'text' },
+                  { key: 'label', label: 'Etiket (Label)', type: 'text' },
+                  { key: 'type', label: 'Tipi (text, email, tel, select, file)', type: 'text' },
+                  { key: 'placeholder', label: 'Yer Tutucu', type: 'text' },
+                  { key: 'options', label: 'Seçenekler (select için virgülle ayır)', type: 'text' },
+                  { key: 'required', label: 'Zorunlu Mu?', type: 'checkbox' }
+                ],
+                'Form Alanları'
+              )}
+            </div>
+            
+            {(block.type === 'pre_registration_form' || block.type === 'bursluluk_exam_form' || block.type === 'career_application') && (
+               <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                <h4 className="font-bold text-sm text-slate-700">Özel Seçenekler</h4>
+                {block.type === 'pre_registration_form' && (
+                   <>
+                     {renderInputWithStyle('Kampüs Başlığı', 'campusTitle')}
+                     {renderTextareaWithStyle('Kampüs Açıklaması', 'campusDesc')}
+                   </>
+                )}
+                {block.type === 'career_application' && (
+                  renderArrayEditor(
+                    'items',
+                    [
+                      { key: 'val', label: 'Pozisyon Değeri', type: 'text' },
+                      { key: 'title', label: 'Pozisyon Adı', type: 'text' },
+                      { key: 'desc', label: 'Açıklama', type: 'text' }
+                    ],
+                    'Pozisyonlar'
+                  )
+                )}
+               </div>
+            )}
+          </div>
+        )}
       <MediaPickerModal
         isOpen={mediaPickerConfig.isOpen}
         onClose={() =>
