@@ -1,22 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
+import { readFileSync } from 'fs';
 
-const app = initializeApp({
-  projectId: "upheld-welder-321314",
-  appId: "1:658565745414:web:a8e2712f9a58383252ac87",
-  apiKey: "AIzaSyBx9-2F6PCefhJknbzh5T2oSRWwgdvzZP0",
-});
+const config = JSON.parse(readFileSync('./firebase-applet-config.json', 'utf8'));
+const app = initializeApp(config);
+const db = getFirestore(app, config.firestoreDatabaseId);
 
-const db = getFirestore(app);
-
-async function check() {
-  const docRef = doc(db, 'pages', 'kayit-fiyatlari');
-  const snap = await getDoc(docRef);
-  if (snap.exists()) {
-    console.log("EXISTS!", Object.keys(snap.data()));
-    console.log("isDeleted:", snap.data().isDeleted);
-  } else {
-    console.log("DOES NOT EXIST");
+async function run() {
+  const docRef = doc(db, 'pages', 'kulup-kayit-formu');
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    console.log(data.blocks.find(b => b.type === 'club_registration_form').inputs);
   }
+  process.exit(0);
 }
-check();
+run().catch(console.error);

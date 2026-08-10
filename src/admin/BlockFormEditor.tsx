@@ -2669,6 +2669,9 @@ export default function BlockFormEditor({
         {block.type === "kindergarten_hero" && (
           <div className="space-y-4">
             {renderCommonFields()}
+            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
+            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
+            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
             {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
             {renderImageUpload("Görsel (Sağ Kısım)", "image")}
             {renderInputWithStyle(
@@ -2775,6 +2778,9 @@ export default function BlockFormEditor({
         {block.type === "primary_school_hero" && (
           <div className="space-y-4">
             {renderCommonFields()}
+            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
+            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
+            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
             {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
                         {renderImageUpload("Görsel (Sağ Kısım)", "image")}
             {renderInputWithStyle(
@@ -2867,6 +2873,9 @@ export default function BlockFormEditor({
         {block.type === "middle_school_hero" && (
           <div className="space-y-4">
             {renderCommonFields()}
+            {renderTextareaWithStyle("Başlık Bölüm 1", "titlePart1")}
+            {renderTextareaWithStyle("Başlık Bölüm 2 (Renkli)", "titlePart2")}
+            {renderInputWithStyle("Başlık Bölüm 2 Rengi", "titlePart2Color")}
             {renderInputWithStyle("Üst Başlık (Rozet)", "badge")}
                         {renderImageUpload("Görsel (Sağ Kısım)", "image")}
             {renderInputWithStyle(

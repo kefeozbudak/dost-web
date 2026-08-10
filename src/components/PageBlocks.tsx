@@ -829,7 +829,7 @@ const EduSystemCtaBlock = ({
   );
 };
 const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
-  const defaultInputs =
+  let defaultInputs =
     block.inputs && block.inputs.length > 0
       ? block.inputs
       : type === "club_registration_form"
@@ -841,6 +841,19 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
             : type === "contact_form"
               ? DEFAULT_CONTACT_INPUTS
               : DEFAULT_PRE_REGISTRATION_INPUTS;
+
+  // Migration for old pre_registration_form grade options
+  if (type === "pre_registration_form" && block.inputs && block.inputs.length > 0) {
+    defaultInputs = defaultInputs.map((inp: any) => {
+      if (inp.name === "grade" && typeof inp.options === "string" && inp.options.includes("Lise Hazırlık")) {
+        return {
+          ...inp,
+          options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf, 10. Sınıf, 11. Sınıf'
+        };
+      }
+      return inp;
+    });
+  }
   const defaultClubs =
     block.clubs && block.clubs.length > 0
       ? block.clubs
@@ -913,7 +926,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
     }
 
     // Frontend validation: TC Kimlik can only contain numbers and max 11 chars
-    if (lowerName.includes("tc") || lowerName.includes("kimlik")) {
+    if (lowerName === "tc" || lowerName === "t.c." || lowerName.includes("kimlik") || lowerName.includes("_tc")) {
       if (typeof value === "string") {
         finalValue = value.replace(/[^\d]/g, "").slice(0, 11);
       }
@@ -6498,13 +6511,13 @@ const getIndividualButtonStyle = (btn: any) => {
                   )}
                   <h1
                     className="font-display-lg text-display-lg text-on-background whitespace-pre-line"
-                    style={getTitleStyle(block)}
+                    style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
                   >
                     {block.titlePart1 || block.title}{" "}
                     {block.titlePart2 && (
                       <span
                         className="text-primary block mt-2 whitespace-pre-line"
-                        style={{ color: block.titlePart2Color || undefined }}
+                        style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
                       >
                         {block.titlePart2}
                       </span>
@@ -6853,7 +6866,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     {block.titlePart2 && (
                       <span
                         className="text-primary block mt-2 whitespace-pre-line"
-                        style={{ color: block.titlePart2Color || undefined }}
+                        style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
                       >
                         {block.titlePart2}
                       </span>

@@ -527,7 +527,7 @@ export default function ClubCenter() {
       const label = keyTranslations[key] || key;
       if (lowerKey.includes('formname')) return;
 
-      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim') || lowerKey.includes('grade')) {
+      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim') || lowerKey.includes('grade') || lowerKey.includes('class')) {
         if (!kademe) kademe = String(val);
         else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('kampüs') || lowerKey.includes('kampus') || lowerKey.includes('campus')) {
@@ -561,6 +561,28 @@ export default function ClubCenter() {
     };
   };
 
+
+  const checkKademeMatch = (senderKademe: string, filterValue: string) => {
+    if (!filterValue) return true;
+    const k = senderKademe.toLowerCase();
+    const f = filterValue.toLowerCase();
+
+    if (f === 'anaokulu') {
+      return k.includes('okul öncesi') || k.includes('anaokul') || k.includes('yaş');
+    }
+    if (f === 'ilkokul') {
+      return k.includes('1. sınıf') || k.includes('2. sınıf') || k.includes('3. sınıf') || k.includes('4. sınıf') || k.includes('ilkokul');
+    }
+    if (f === 'ortaokul') {
+      return k.includes('5. sınıf') || k.includes('6. sınıf') || k.includes('7. sınıf') || k.includes('8. sınıf') || k.includes('ortaokul');
+    }
+    if (f === 'lise') {
+      return k.includes('9. sınıf') || k.includes('10. sınıf') || k.includes('11. sınıf') || k.includes('12. sınıf') || k.includes('hazırlık') || k.includes('lise');
+    }
+    
+    return k.includes(f);
+  };
+
   // Filter forms based on tab & search term
   const filteredReports = reports.filter(r => {
     if (r.type !== 'club_registration_form') return false;
@@ -569,7 +591,7 @@ export default function ClubCenter() {
     if (filterKampus && !sender.kampus.toLowerCase().includes(filterKampus.toLowerCase())) {
       return false;
     }
-    if (filterKademe && !sender.kademe.toLowerCase().includes(filterKademe.toLowerCase())) {
+    if (filterKademe && !checkKademeMatch(sender.kademe, filterKademe)) {
       return false;
     }
 
