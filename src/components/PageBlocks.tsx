@@ -2919,7 +2919,27 @@ const getIndividualButtonStyle = (btn: any) => {
     return style;
   };
 
-  const getIconStyle = (item: any, block: any, prefix = "icon") => {
+  const extractAlignClass = (styleObj: any) => {
+  const dAlign = styleObj["--desktop-text-align"]?.replace("px", "").trim();
+  const mAlign = styleObj["--mobile-text-align"]?.replace("px", "").trim();
+  let cls = "";
+  if (mAlign === "center") cls += " mx-auto ";
+  else if (mAlign === "right") cls += " ml-auto mr-0 ";
+  else if (mAlign === "left") cls += " ml-0 mr-auto ";
+  if (dAlign === "center") cls += " md:mx-auto md:ml-auto md:mr-auto ";
+  else if (dAlign === "right") cls += " md:ml-auto md:mr-0 ";
+  else if (dAlign === "left") cls += " md:ml-0 md:mr-auto ";
+  return cls.trim();
+};
+
+const removeAlignStyles = (styleObj: any) => {
+  const newStyle = { ...styleObj };
+  delete newStyle["--desktop-text-align"];
+  delete newStyle["--mobile-text-align"];
+  return newStyle;
+};
+
+const getIconStyle = (item: any, block: any, prefix = "icon") => {
     const style: React.CSSProperties = { ...getStyle(block, prefix) };
     if (item?.iconColor) style.color = item.iconColor;
     return style;
@@ -4559,19 +4579,19 @@ const getIndividualButtonStyle = (btn: any) => {
                       className={`p-6 md:p-8 rounded-[2rem] bg-white/10 border border-white/10 ${item.hoverEffect ? "hover:-translate-y-1 hover:shadow-2xl" : ""} hover:bg-white/[0.15] hover:border-white/20 transition-all duration-300 flex flex-col text-left backdrop-blur-md`}
                       style={getCardStyle(item, block)}
                     >
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner whitespace-pre-line">
+                      <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner whitespace-pre-line ${extractAlignClass(getIconStyle(item, block))}`}>
                         {typeof item.icon === "object" ||
                         (typeof item.icon === "string" &&
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview
                             data={item.icon}
                             className="text-[#5eead4] w-6 h-6 whitespace-pre-line"
-                           style={getIconStyle(item, block)} />
+                           style={removeAlignStyles(getIconStyle(item, block))} />
                         ) : (
                           <IconPreview
                             data={item.icon || "school"}
                             className="text-[#5eead4] whitespace-pre-line"
-                           style={getIconStyle(item, block)} />
+                           style={removeAlignStyles(getIconStyle(item, block))} />
                         )}
                       </div>
                       <h3
@@ -4945,10 +4965,11 @@ const getIndividualButtonStyle = (btn: any) => {
           return (
             <section
               key={index}
-              className="relative bg-[#00164f] text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+              className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+              
               style={{
-                ...getStyle(block, "container"),
-                backgroundImage: `linear-gradient(rgba(0, 22, 79, 0.7), rgba(0, 22, 79, 0.7)), url("${block.image}")`,
+                ...getStyle(block, "container"), backgroundColor: block.styles?.innerBgColor || "#00164f",
+                backgroundImage: block.image ? `linear-gradient(color-mix(in srgb, ${block.styles?.innerBgColor || "#00164f"} ${block.styles?.innerBgOpacity ?? 70}%, transparent), color-mix(in srgb, ${block.styles?.innerBgColor || "#00164f"} ${block.styles?.innerBgOpacity ?? 70}%, transparent)), url("${block.image}")` : undefined,
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
               }}
@@ -5312,11 +5333,12 @@ const getIndividualButtonStyle = (btn: any) => {
         return (
           <section
             key={block.id}
-            className="relative bg-[#00164f] text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+            className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+              
             style={
               block.image
                 ? {
-                    backgroundImage: `linear-gradient(rgba(0, 22, 79, 0.7), rgba(0, 22, 79, 0.7)), url("${block.image}")`,
+                    backgroundImage: block.image ? `linear-gradient(color-mix(in srgb, ${block.styles?.innerBgColor || "#00164f"} ${block.styles?.innerBgOpacity ?? 70}%, transparent), color-mix(in srgb, ${block.styles?.innerBgColor || "#00164f"} ${block.styles?.innerBgOpacity ?? 70}%, transparent)), url("${block.image}")` : undefined,
                     backgroundSize: "cover",
                     backgroundPosition: "center center",
                   }

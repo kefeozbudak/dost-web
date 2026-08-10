@@ -28,7 +28,7 @@ export const defaultHomePageData = [
       { title: 'Ümitköy Kampüsü', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' }
     ],
     buttons: [
-      { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '/on-kayit' },
+      { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '#campuses-section' },
       { label: 'Hemen Başvur', style: 'secondary' }
     ]
   },
