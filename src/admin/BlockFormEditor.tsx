@@ -4362,6 +4362,8 @@ export default function BlockFormEditor({
                   type: "textarea",
                 },
                 { key: "icon", label: "İkon", type: "icon" },
+                { key: "buttonText", label: "Buton Yazısı (Örn: Detaylı Bilgi)", type: "text" },
+                { key: "url", label: "Buton Linki", type: "url" },
                 {
                   key: "styleType",
                   label: "Stil Tipi",

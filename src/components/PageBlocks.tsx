@@ -6860,7 +6860,7 @@ const getIndividualButtonStyle = (btn: any) => {
                   )}
                   <h1
                     className="font-display-lg text-display-lg text-on-surface whitespace-pre-line"
-                    style={getTitleStyle(block)}
+                    style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
                   >
                     {block.titlePart1 || block.title}{" "}
                     {block.titlePart2 && (
@@ -7182,7 +7182,7 @@ const getIndividualButtonStyle = (btn: any) => {
               )}
               <h1
                 className="font-display-lg text-display-lg text-on-surface mb-6 leading-tight whitespace-pre-line"
-                style={getTitleStyle(block)}
+                style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
               >
                 {block.titlePart1 || block.title}{" "}
                 {block.titlePart2 && (
@@ -7190,7 +7190,7 @@ const getIndividualButtonStyle = (btn: any) => {
                     <br />
                     <span
                       className="text-primary whitespace-pre-line"
-                      style={{ color: block.titlePart2Color || undefined }}
+                      style={{ color: block.styles?.titlePart2Color || block.titlePart2Color || undefined }}
                     >
                       {block.titlePart2}
                     </span>
@@ -7506,7 +7506,7 @@ const getIndividualButtonStyle = (btn: any) => {
                 )}
                 <h1
                   className="font-display-lg text-display-lg text-main whitespace-pre-line"
-                  style={getTitleStyle(block)}
+                  style={{ ...getTitleStyle(block), color: block.styles?.titlePart1Color || block.styles?.titleColor || undefined }}
                 >
                   {block.titlePart1 || block.title}{" "}
                   {block.titlePart2 && (
@@ -7515,13 +7515,13 @@ const getIndividualButtonStyle = (btn: any) => {
                       <span
                         className="text-primary whitespace-pre-line"
                         style={{
-                          color: block.titlePart2Color || undefined,
+                          color: block.styles?.titlePart2Color || block.titlePart2Color || undefined,
                           backgroundClip: "text",
                           WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: block.titlePart2Color
+                          WebkitTextFillColor: (block.styles?.titlePart2Color || block.titlePart2Color)
                             ? undefined
                             : "transparent",
-                          backgroundImage: block.titlePart2Color
+                          backgroundImage: (block.styles?.titlePart2Color || block.titlePart2Color)
                             ? undefined
                             : "linear-gradient(90deg, #1d4eca, #006a62)",
                         }}
@@ -7646,6 +7646,15 @@ const getIndividualButtonStyle = (btn: any) => {
                       key={i}
                       className="bg-surface-card border border-border-subtle rounded-xl p-8 hover:shadow-sm transition-all group cursor-pointer relative overflow-hidden whitespace-pre-line"
                       style={getCardStyle(item, block)}
+                      onClick={() => {
+                        if (item.url) {
+                          if (item.url.startsWith("http")) {
+                            window.open(item.url, "_blank", "noopener,noreferrer");
+                          } else {
+                            window.location.href = item.url;
+                          }
+                        }
+                      }}
                     >
                       <div
                         className={`absolute top-0 right-0 w-32 h-32 ${isPrimary ? "bg-primary/5" : "bg-secondary-container/20"} rounded-bl-full -z-10 transition-transform group-hover:scale-110`}
@@ -7707,18 +7716,20 @@ const getIndividualButtonStyle = (btn: any) => {
                         </ul>
                       )}
 
-                      <div
-                        className={`font-label-md text-label-md ${isPrimary ? "text-primary" : "text-secondary"} group-hover:translate-x-2 transition-transform flex items-center gap-1`}
-                      >
-                        Detaylı Bilgi{" "}
-                        <span
-                          className="material-symbols-outlined text-sm whitespace-pre-line"
-                          translate="no"
-                          aria-hidden="true"
+                      {item.buttonText !== "" && (
+                        <div
+                          className={`font-label-md text-label-md ${isPrimary ? "text-primary" : "text-secondary"} group-hover:translate-x-2 transition-transform flex items-center gap-1`}
                         >
-                          arrow_forward
-                        </span>
-                      </div>
+                          {item.buttonText || "Detaylı Bilgi"}{" "}
+                          <span
+                            className="material-symbols-outlined text-sm whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            arrow_forward
+                          </span>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
