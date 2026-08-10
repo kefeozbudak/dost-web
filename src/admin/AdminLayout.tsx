@@ -107,12 +107,20 @@ export default function AdminLayout() {
                 titlePart2: "Kulüp Kayıt",
                 subtitle: "Öğrenci Kulüp Kayıt Portalı",
                 clubs: [
-                    { id: "spor", label: "Spor", icon: "sports_basketball" },
-                    { id: "sanat", label: "Sanat", icon: "palette" },
-                    { id: "bilim", label: "Bilim", icon: "biotech" },
-                    { id: "muzik", label: "Müzik", icon: "music_note" },
-                    { id: "robotik", label: "Robotik", icon: "smart_toy" },
-                    { id: "drama", label: "Drama", icon: "theater_comedy" }
+                    { id: "cimnastik", label: "Cimnastik", icon: "sports_gymnastics" },
+                    { id: "basketbol", label: "Basketbol", icon: "sports_basketball" },
+                    { id: "voleybol", label: "Voleybol", icon: "sports_volleyball" },
+                    { id: "halk_oyunlari", label: "Halk Oyunları", icon: "accessibility_new" },
+                    { id: "oryantiring", label: "Oryantiring", icon: "explore" },
+                    { id: "masa_tenisi", label: "Masa Tenisi", icon: "sports_tennis" },
+                    { id: "okculuk", label: "Okçuluk", icon: "sports_martial_arts" },
+                    { id: "atletik_koordinasyon", label: "Atletik Koordinasyon", icon: "fitness_center" },
+                    { id: "yuzme", label: "Yüzme", icon: "pool" },
+                    { id: "taekwondo", label: "Taekwondo", icon: "sports_martial_arts" },
+                    { id: "futsal", label: "Futsal", icon: "sports_soccer" },
+                    { id: "keman", label: "Keman", icon: "music_note" },
+                    { id: "gitar", label: "Gitar", icon: "music_note" },
+                    { id: "piyano", label: "Piyano", icon: "piano" }
                 ],
                 inputs: [
                     { type: 'section_title', label: 'Öğrenci Bilgileri', icon: 'person' },
@@ -140,8 +148,17 @@ export default function AdminLayout() {
           const data = docSnap.data();
           if (!data.blocks || data.blocks.length === 0 || !data.blocks.some((b: any) => b.type === 'club_registration_form')) {
             await setDoc(docRef, { blocks: defaultBlocks }, { merge: true });
-          } else if (data.blocks.some((b: any) => b.type === 'club_registration_form' && (!b.clubs || b.clubs.length === 0))) {
-            await setDoc(docRef, { blocks: defaultBlocks }, { merge: true });
+          } else {
+            const hasCimnastik = data.blocks.some((b: any) => b.type === 'club_registration_form' && b.clubs && b.clubs.some((c: any) => c.id === 'cimnastik'));
+            if (!hasCimnastik) {
+              const newBlocks = data.blocks.map((b: any) => {
+                if (b.type === 'club_registration_form') {
+                  return { ...b, clubs: defaultBlocks[0].clubs };
+                }
+                return b;
+              });
+              await setDoc(docRef, { blocks: newBlocks }, { merge: true });
+            }
           }
         }
 

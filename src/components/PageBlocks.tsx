@@ -846,12 +846,20 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
       ? block.clubs
       : type === "club_registration_form"
         ? [
-            { id: "spor", label: "Spor", icon: "sports_basketball" },
-            { id: "sanat", label: "Sanat", icon: "palette" },
-            { id: "bilim", label: "Bilim", icon: "biotech" },
-            { id: "muzik", label: "Müzik", icon: "music_note" },
-            { id: "robotik", label: "Robotik", icon: "smart_toy" },
-            { id: "drama", label: "Drama", icon: "theater_comedy" },
+            { id: "cimnastik", label: "Cimnastik", icon: "sports_gymnastics" },
+            { id: "basketbol", label: "Basketbol", icon: "sports_basketball" },
+            { id: "voleybol", label: "Voleybol", icon: "sports_volleyball" },
+            { id: "halk_oyunlari", label: "Halk Oyunları", icon: "accessibility_new" },
+            { id: "oryantiring", label: "Oryantiring", icon: "explore" },
+            { id: "masa_tenisi", label: "Masa Tenisi", icon: "sports_tennis" },
+            { id: "okculuk", label: "Okçuluk", icon: "sports_martial_arts" },
+            { id: "atletik_koordinasyon", label: "Atletik Koordinasyon", icon: "fitness_center" },
+            { id: "yuzme", label: "Yüzme", icon: "pool" },
+            { id: "taekwondo", label: "Taekwondo", icon: "sports_martial_arts" },
+            { id: "futsal", label: "Futsal", icon: "sports_soccer" },
+            { id: "keman", label: "Keman", icon: "music_note" },
+            { id: "gitar", label: "Gitar", icon: "music_note" },
+            { id: "piyano", label: "Piyano", icon: "piano" }
           ]
         : [];
   const [formData, setFormData] = useState<any>({});
