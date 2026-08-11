@@ -3169,6 +3169,19 @@ export default function BlockFormEditor({
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderInputWithStyle('Kategoriler (Virgülle Ayırın)', 'categories')}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={block.hideCategories || false}
+                onChange={(e) =>
+                  handleChange("hideCategories", e.target.checked)
+                }
+                id="hideCategories"
+              />
+              <label htmlFor="hideCategories" className="text-sm">
+                Kategorileri / Etiketleri Gizle
+              </label>
+            </div>
             {renderArrayEditor(
               'items',
               [

@@ -114,17 +114,19 @@ const ClubsGridBlock = ({
             >
               {block.title || "Kulüp Branşları"}
             </h2>
-            <div className="flex flex-wrap justify-center gap-2 whitespace-pre-line">
-              {categories.map((cat, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveFilter(cat)}
-                  className={`px-5 py-2 rounded-full font-label-md text-label-md transition-all ${activeFilter === cat ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-primary-fixed"}`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+            {block.hideCategories !== true && (
+              <div className="flex flex-wrap justify-center gap-2 whitespace-pre-line">
+                {categories.map((cat, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveFilter(cat)}
+                    className={`px-5 py-2 rounded-full font-label-md text-label-md transition-all ${activeFilter === cat ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-primary-fixed"}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
