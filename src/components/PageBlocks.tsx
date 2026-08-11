@@ -3860,34 +3860,37 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                 <div className="absolute inset-0 bg-primary/60 mix-blend-multiply whitespace-pre-line"></div>
               </div>
               <div
-                className={getHeroInnerClass(
-                  block,
-                  `relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-gutter max-w-4xl`,
-                )}
+                className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter w-full`}
               >
-                <h1
-                  className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line"
-                  style={getTitleStyle(block)}
-                >
-                  {block.titlePart1 || block.title}{" "}
-                  {block.titlePart2 && (
-                    <>
-                      <br />
-                      {block.titlePart2}
-                    </>
+                <div
+                  className={getHeroInnerClass(
+                    block,
+                    `relative ${block.styles?.textAlign ? "" : "text-center"} max-w-4xl w-full`,
                   )}
-                </h1>
-                {block.subtitle && (
-                  <p
-                    className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line`}
-                    style={getSubtitleStyle(block)}
+                >
+                  <h1
+                    className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line"
+                    style={getTitleStyle(block)}
                   >
-                    {block.subtitle}
-                  </p>
-                )}
-                {block.buttons && block.buttons.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-4 whitespace-pre-line">
-                    {block.buttons.map((btn: any, i: number) => {
+                    {block.titlePart1 || block.title}{" "}
+                    {block.titlePart2 && (
+                      <>
+                        <br />
+                        {block.titlePart2}
+                      </>
+                    )}
+                  </h1>
+                  {block.subtitle && (
+                    <p
+                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line`}
+                      style={getSubtitleStyle(block)}
+                    >
+                      {block.subtitle}
+                    </p>
+                  )}
+                  {block.buttons && block.buttons.length > 0 && (
+                    <div className={`flex flex-wrap gap-4 whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'justify-start' : block.styles?.textAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
+                      {block.buttons.map((btn: any, i: number) => {
                       const isCustom =
                         btn.bgColor ||
                         btn.textColor ||
@@ -3914,6 +3917,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                     })}
                   </div>
                 )}
+                </div>
               </div>
             </section>
           );

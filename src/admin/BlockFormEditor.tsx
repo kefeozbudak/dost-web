@@ -3128,6 +3128,7 @@ export default function BlockFormEditor({
 
         {block.type === 'clubs_hero' && (
           <div className="space-y-4">
+            {renderImageUpload('Arka Plan Görseli', 'image')}
             {renderInputWithStyle('Başlık Bölüm 1', 'title')}
             {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
