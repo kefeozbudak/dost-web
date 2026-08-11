@@ -149,7 +149,7 @@ const ClubsGridBlock = ({
                     className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 whitespace-pre-line"
                     style={getImageStyle(item, "image", i)}
                   ></div>
-                  {item.badge && (
+                  {item.badge && item.hideBadge !== true && (
                     <span
                       className={`absolute top-4 right-4 ${badgeClass} px-3 py-1 rounded-full font-label-sm text-label-sm`}
                     >
