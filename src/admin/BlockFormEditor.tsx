@@ -3129,7 +3129,28 @@ export default function BlockFormEditor({
         {block.type === 'clubs_hero' && (
           <div className="space-y-4">
             {renderImageUpload('Arka Plan Görseli', 'image')}
-            {renderInputWithStyle('Başlık Bölüm 1', 'title')}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                İçerik Hizalaması
+              </label>
+              <select
+                value={block.styles?.textAlign || ""}
+                onChange={(e) => {
+                  const newStyles = {
+                    ...(block.styles || {}),
+                    textAlign: e.target.value,
+                  };
+                  handleChange("styles", newStyles);
+                }}
+                className="w-full px-3 py-2 border border-slate-200 rounded-md text-sm outline-none focus:border-blue-500 bg-white"
+              >
+                <option value="">Varsayılan (Ortada)</option>
+                <option value="left">Sola Yasla</option>
+                <option value="center">Ortala</option>
+                <option value="right">Sağa Yasla</option>
+              </select>
+            </div>
+            {renderInputWithStyle('Başlık Bölüm 1', 'titlePart1')}
             {renderInputWithStyle('Başlık Bölüm 2', 'titlePart2')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderArrayEditor(
@@ -3155,7 +3176,10 @@ export default function BlockFormEditor({
                 { key: 'title', label: 'Kulüp Adı', type: 'text' },
                 { key: 'desc', label: 'Açıklama', type: 'textarea' },
                 { key: 'icon', label: 'İkon', type: 'icon' },
-                { key: 'image', label: 'Görsel', type: 'image' }
+                { key: 'image', label: 'Görsel', type: 'image' },
+                { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Buton Linki', type: 'url' },
+                { key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox' }
               ],
               'Kulüpler'
             )}

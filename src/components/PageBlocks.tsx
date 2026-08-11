@@ -80,6 +80,7 @@ const ClubsGridBlock = ({
   getIconStyle
 }: any) => {
   const [activeFilter, setActiveFilter] = React.useState("Hepsi");
+  const [selectedItem, setSelectedItem] = React.useState<any>(null);
   const categoriesStr =
     block.categories ||
     "Spor, Sanat, Bilim & Teknoloji, Sosyal Sorumluluk, Dil & Kültür";
@@ -188,27 +189,83 @@ const ClubsGridBlock = ({
                   >
                     {item.subtitle || item.desc}
                   </p>
-                  <div className="mt-auto flex items-center justify-between whitespace-pre-line">
-                    <a
-                      href={item.url || "#"}
-                      className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-pre-line"
-                    >
-                      Detaylı Bilgi
-                      <span
-                        className="material-symbols-outlined whitespace-pre-line"
-                        translate="no"
-                        aria-hidden="true"
-                      >
-                        arrow_forward
-                      </span>
-                    </a>
-                  </div>
+                  {item.hideButton !== true && (
+                    <div className="mt-auto flex items-center justify-between whitespace-pre-line">
+                      {item.url && item.url !== "#" ? (
+                        <a
+                          href={item.url}
+                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-pre-line"
+                        >
+                          {item.buttonText || "Detaylı Bilgi"}
+                          <span
+                            className="material-symbols-outlined whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            arrow_forward
+                          </span>
+                        </a>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedItem({ ...item, imageStyle: getImageStyle(item, "image", i) });
+                          }}
+                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-pre-line text-left"
+                        >
+                          {item.buttonText || "Detaylı Bilgi"}
+                          <span
+                            className="material-symbols-outlined whitespace-pre-line"
+                            translate="no"
+                            aria-hidden="true"
+                          >
+                            arrow_forward
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
       </section>
+
+      {selectedItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-300">
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
+            >
+              <span className="material-symbols-outlined text-lg" translate="no">close</span>
+            </button>
+            <div 
+              className="w-full h-64 sm:h-80 bg-cover bg-center" 
+              style={selectedItem.imageStyle}
+            ></div>
+            <div className="p-8">
+              <div className="flex items-center gap-2 mb-4">
+                {selectedItem.icon && (
+                  typeof selectedItem.icon === "string" && selectedItem.icon === selectedItem.icon.toLowerCase() ? (
+                    <IconPreview data={selectedItem.icon} className="text-primary text-[28px]" />
+                  ) : (
+                    <IconPreview data={selectedItem.icon} className="w-[28px] h-[28px] text-primary" />
+                  )
+                )}
+                <span className="text-primary font-label-md uppercase tracking-wider">
+                  {selectedItem.category}
+                </span>
+              </div>
+              <h3 className="font-headline-lg text-on-surface mb-6">{selectedItem.title}</h3>
+              <div className="text-on-surface-variant font-body-lg whitespace-pre-wrap leading-relaxed">
+                {selectedItem.desc || selectedItem.subtitle}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -3869,7 +3926,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   )}
                 >
                   <h1
-                    className="font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line"
+                    className={`font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'text-left w-full' : block.styles?.textAlign === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -3882,14 +3939,14 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   </h1>
                   {block.subtitle && (
                     <p
-                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line`}
+                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'text-left w-full' : block.styles?.textAlign === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
                     </p>
                   )}
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className={`flex flex-wrap gap-4 whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'justify-start' : block.styles?.textAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
+                    <div className={`flex flex-wrap gap-4 whitespace-pre-line w-full ${block.styles?.textAlign === 'left' ? 'justify-start' : block.styles?.textAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
                       {block.buttons.map((btn: any, i: number) => {
                       const isCustom =
                         btn.bgColor ||
