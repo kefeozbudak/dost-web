@@ -46,7 +46,7 @@ export const getAlignClass = (block: any, fieldKey: string = "", defaultClass: s
 
 export const getHeroInnerClass = (block: any, defaultClasses: string = "") => {
   if (!block.type || !block.type.includes("hero")) return defaultClasses;
-  const alignX = block.styles?.heroAlignX || block.styles?.textAlign;
+  const alignX = block.styles?.heroAlignX || block.styles?.subtitleAlign || block.styles?.textAlign;
   let alignClass = "";
   if (alignX === "center") alignClass = "mx-auto text-center items-center";
   else if (alignX === "right") alignClass = "ml-auto text-right items-end";
@@ -3926,7 +3926,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   )}
                 >
                   <h1
-                    className={`font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'text-left w-full' : block.styles?.textAlign === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
+                    className={`font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -3939,14 +3939,14 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   </h1>
                   {block.subtitle && (
                     <p
-                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line ${block.styles?.textAlign === 'left' ? 'text-left w-full' : block.styles?.textAlign === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
+                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
                     </p>
                   )}
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className={`flex flex-wrap gap-4 whitespace-pre-line w-full ${block.styles?.textAlign === 'left' ? 'justify-start' : block.styles?.textAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
+                    <div className={`flex flex-wrap gap-4 whitespace-pre-line w-full ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'justify-start' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'justify-end' : 'justify-center'}`}>
                       {block.buttons.map((btn: any, i: number) => {
                       const isCustom =
                         btn.bgColor ||
