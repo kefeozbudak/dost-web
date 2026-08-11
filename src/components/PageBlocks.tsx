@@ -236,7 +236,7 @@ const ClubsGridBlock = ({
 
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-300">
+          <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden relative animate-in fade-in zoom-in duration-300">
             <button
               onClick={() => setSelectedItem(null)}
               className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
@@ -244,10 +244,10 @@ const ClubsGridBlock = ({
               <span className="material-symbols-outlined text-lg" translate="no">close</span>
             </button>
             <div 
-              className="w-full h-64 sm:h-80 bg-cover bg-center" 
+              className="w-full shrink-0 h-64 sm:h-80 bg-cover bg-center" 
               style={selectedItem.imageStyle}
             ></div>
-            <div className="p-8">
+            <div className="p-8 overflow-y-auto">
               <div className="flex items-center gap-2 mb-4">
                 {selectedItem.icon && (
                   typeof selectedItem.icon === "string" && selectedItem.icon === selectedItem.icon.toLowerCase() ? (
