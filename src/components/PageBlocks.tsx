@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextWithKvkkLink from "./TextWithKvkkLink";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
+import { ManagementHeroBlock, ManagementRectorBlock, ManagementTeamGridBlock } from './ManagementBlocks';
 import {
   DEFAULT_PRE_REGISTRATION_INPUTS,
   DEFAULT_CLUB_INPUTS,
@@ -3016,6 +3017,37 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
   const renderBlock = (block: any, index: number) => {
     const renderContent = () => {
       switch (block.type) {
+        case "management_hero":
+          return (
+            <ManagementHeroBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "management_rector":
+          return (
+            <ManagementRectorBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "management_vice_rectors":
+        case "management_deans":
+          return (
+            <ManagementTeamGridBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
         case "campus_hero":
           return (
             <section

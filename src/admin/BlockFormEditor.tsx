@@ -3126,6 +3126,48 @@ export default function BlockFormEditor({
           </div>
         )}
 
+        {block.type === 'management_hero' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderImageUpload('Arka Plan Görseli', 'image')}
+          </div>
+        )}
+
+        {block.type === 'management_rector' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('İsim', 'title')}
+            {renderInputWithStyle('Unvan', 'subtitle')}
+            {renderTextareaWithStyle('Özgeçmiş / Açıklama (HTML)', 'desc')}
+            {renderImageUpload('Fotoğraf', 'image')}
+            {renderArrayEditor('buttons', [
+              { key: 'label', label: 'Buton Metni', type: 'text' },
+              { key: 'url', label: 'Buton Linki', type: 'url' },
+              { key: 'style', label: 'Stil (primary/outline)', type: 'text' }
+            ], 'Butonlar')}
+          </div>
+        )}
+
+        {(block.type === 'management_vice_rectors' || block.type === 'management_deans') && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Başlığı', 'title')}
+            {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'name', label: 'İsim', type: 'text' },
+                { key: 'role', label: 'Unvan/Görev', type: 'text' },
+                { key: 'image', label: 'Fotoğraf', type: 'image' },
+                { key: 'desc', label: 'Kısa Bilgi', type: 'textarea' },
+                { key: 'buttonText', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Buton URL', type: 'url' },
+                { key: 'hideButton', label: 'Butonu Gizle', type: 'checkbox' },
+              ],
+              block.type === 'management_vice_rectors' ? 'Rektör Yardımcıları' : 'Dekanlar/Yöneticiler'
+            )}
+          </div>
+        )}
+
         {block.type === 'clubs_hero' && (
           <div className="space-y-4">
             {renderImageUpload('Arka Plan Görseli', 'image')}
