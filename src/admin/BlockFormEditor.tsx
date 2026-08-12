@@ -237,6 +237,20 @@ export default function BlockFormEditor({
     </div>
   );
 
+  const renderCheckbox = (label: string, key: string) => (
+    <div className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+      <input
+        type="checkbox"
+        checked={block[key] === true}
+        onChange={(e) => handleChange(key, e.target.checked)}
+        className="w-4 h-4 text-blue-600 rounded border-gray-300"
+      />
+      <label className="text-sm font-bold text-slate-700">
+        {label}
+      </label>
+    </div>
+  );
+
   const renderImageUpload = (label: string, key: string) => (
     <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
       <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
@@ -3148,7 +3162,6 @@ export default function BlockFormEditor({
         {(block.type === 'kindergarten_bento' || block.type === 'primary_school_bento') && (
           <div className="space-y-4">
             {renderInputWithStyle('Bölüm Başlığı', 'title')}
-            {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
             {renderArrayEditor(
               'items',
               [
@@ -3279,6 +3292,14 @@ export default function BlockFormEditor({
 
         {block.type === 'management_rector' && (
           <div className="space-y-4">
+            <div className="bg-slate-100 p-4 rounded-xl space-y-4 mb-4">
+               <h4 className="text-xs font-bold text-slate-500 uppercase">Bölüm Üst Bilgisi</h4>
+               {renderCheckbox('Üst Bilgiyi (Rektör yazısını) Gizle', 'hideHeader')}
+               {renderInputWithStyle('Bölüm Başlığı', 'sectionTitle')}
+               {renderInputWithStyle('Bölüm İkonu (Material)', 'sectionIcon')}
+               {renderCheckbox('Rozeti (Rektörlük Makamı) Gizle', 'hideBadge')}
+               {renderInputWithStyle('Rozet Metni', 'badge')}
+            </div>
             {renderInputWithStyle('İsim', 'title')}
             {renderInputWithStyle('Unvan', 'subtitle')}
             {renderTextareaWithStyle('Özgeçmiş / Açıklama (HTML)', 'desc')}
@@ -3293,8 +3314,13 @@ export default function BlockFormEditor({
 
         {(block.type === 'management_vice_rectors' || block.type === 'management_deans') && (
           <div className="space-y-4">
-            {renderInputWithStyle('Bölüm Başlığı', 'title')}
-            {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
+            <div className="bg-slate-100 p-4 rounded-xl space-y-4 mb-4">
+               <h4 className="text-xs font-bold text-slate-500 uppercase">Bölüm Üst Bilgisi</h4>
+               {renderCheckbox('Bölüm Başlığını Gizle', 'hideHeader')}
+               {renderInputWithStyle('Bölüm Başlığı', 'title')}
+               {renderInputWithStyle('Bölüm İkonu (Material)', 'sectionIcon')}
+               {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
+            </div>
             {renderArrayEditor(
               'items',
               [

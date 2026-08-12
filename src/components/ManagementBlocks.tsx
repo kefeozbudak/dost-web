@@ -36,10 +36,12 @@ export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
 export const ManagementRectorBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto mb-12 whitespace-pre-line`} style={getStyle(block)}>
+      {block.hideHeader !== true && (
       <div className="flex items-center gap-3 mb-6 border-b border-primary/20 pb-2">
-        <span className="material-symbols-outlined text-primary">school</span>
-        <h2 className="text-2xl font-bold text-slate-900">Rektör</h2>
+        {block.sectionIcon !== '' && <span className="material-symbols-outlined text-primary">{block.sectionIcon || "school"}</span>}
+        <h2 className="text-2xl font-bold text-slate-900">{block.sectionTitle || "Rektör"}</h2>
       </div>
+  )}
       
       <div className="group relative flex flex-col md:flex-row items-stretch gap-0 rounded-xl bg-white shadow-xl overflow-hidden border border-slate-100">
         <div className="md:w-2/5 relative h-[350px] md:h-auto overflow-hidden">
@@ -57,7 +59,11 @@ export const ManagementRectorBlock = ({ block, getStyle, getTitleStyle, getSubti
         </div>
         <div className="md:w-3/5 flex flex-col justify-center p-8 md:p-12 gap-6 bg-gradient-to-br from-white to-slate-50">
           <div className="space-y-2">
-            <span className="inline-block px-3 py-1 rounded bg-primary text-white text-xs font-bold uppercase tracking-widest">Rektörlük Makamı</span>
+            {block.hideBadge !== true && (
+    <span className="inline-block px-3 py-1 rounded bg-primary text-white text-xs font-bold uppercase tracking-widest">
+      {block.badge || "Rektörlük Makamı"}
+    </span>
+  )}
             <h3 className="text-3xl font-bold text-slate-900" style={getTitleStyle(block)}>{block.title || "İsim Belirtilmemiş"}</h3>
             <p className="text-primary font-bold text-lg" style={getSubtitleStyle(block)}>{block.subtitle || "Unvan Belirtilmemiş"}</p>
           </div>
@@ -95,28 +101,30 @@ export const ManagementRectorBlock = ({ block, getStyle, getTitleStyle, getSubti
 export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const items = block.items || [];
   const isDeans = block.type === 'management_deans';
-
   return (
     <div className={`mb-16 w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto whitespace-pre-line`} style={getStyle(block)}>
+      {block.hideHeader !== true && (
       <div className={`flex items-center ${isDeans ? 'justify-between' : 'gap-3'} mb-8 border-b border-primary/20 pb-2`}>
         {isDeans ? (
           <>
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary">account_balance</span>
+              {block.sectionIcon !== '' && <span className="material-symbols-outlined text-primary">{block.sectionIcon || "account_balance"}</span>}
               <h2 className="text-2xl font-bold text-slate-900" style={getTitleStyle(block)}>{block.title || "Fakülte Dekanları"}</h2>
             </div>
             {block.subtitle && <div className="text-xs font-bold text-slate-400 uppercase tracking-widest hidden sm:block" style={getSubtitleStyle(block)}>{block.subtitle}</div>}
           </>
         ) : (
           <>
-            <span className="material-symbols-outlined text-primary">groups</span>
-            <h2 className="text-2xl font-bold text-slate-900" style={getTitleStyle(block)}>{block.title || "Rektör Yardımcıları & Genel Sekreter"}</h2>
+            <div className="flex items-center gap-3">
+              {block.sectionIcon !== '' && <span className="material-symbols-outlined text-primary">{block.sectionIcon || "groups"}</span>}
+              <h2 className="text-2xl font-bold text-slate-900" style={getTitleStyle(block)}>{block.title || "Rektör Yardımcıları & Genel Sekreter"}</h2>
+            </div>
             {block.subtitle && <p className="text-sm text-slate-500 ml-4 hidden md:block" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
           </>
         )}
       </div>
-
-      <div className={`grid gap-6 ${isDeans ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+      )}
+      <div className={`grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${items.length <= 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
         {items.map((item: any, idx: number) => {
           if (isDeans) {
             return (
@@ -146,7 +154,6 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
               </div>
             );
           }
-
           return (
             <div key={idx} className="flex flex-col bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300">
               {item.image ? (

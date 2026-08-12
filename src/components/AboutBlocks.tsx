@@ -28,7 +28,16 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
           {block.buttons && block.buttons.length > 0 && (
             <div className="flex gap-4">
               {block.buttons.map((btn: any, idx: number) => (
-                <a key={idx} href={btn.url || "#"} className={`px-8 py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:bg-[#dce1ff]' : 'border-2 border-white text-white hover:bg-white/10'}`}>
+                <a key={idx} href={btn.url || "#"} 
+                   className={`px-8 py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:opacity-90' : 'border-2 border-white text-white hover:bg-white/10'}`}
+                   style={{
+                     backgroundColor: btn.bgColor || undefined,
+                     color: btn.textColor || undefined,
+                     borderColor: btn.borderColor || undefined,
+                     borderRadius: btn.borderRadius || undefined,
+                     borderWidth: btn.borderColor ? '2px' : undefined,
+                     borderStyle: btn.borderColor ? 'solid' : undefined
+                   }}>
                   {btn.label}
                 </a>
               ))}

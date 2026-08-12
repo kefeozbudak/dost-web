@@ -24,15 +24,27 @@ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleSty
           {block.buttons && block.buttons.length > 0 && (
             <div className="flex flex-wrap gap-4 pt-4">
               {block.buttons.map((btn: any, idx: number) => {
+                const btnStyle = {
+                  backgroundColor: btn.bgColor || undefined,
+                  color: btn.textColor || undefined,
+                  borderColor: btn.borderColor || undefined,
+                  borderRadius: btn.borderRadius || undefined,
+                  borderWidth: btn.borderColor ? '2px' : undefined,
+                  borderStyle: btn.borderColor ? 'solid' : undefined
+                };
                 if (btn.style === 'outline' || btn.primary === false || btn.primary === "false") {
                   return (
-                    <a key={idx} href={btn.url || "#"} className="border-2 border-[#1d4eca] text-[#1d4eca] px-8 py-3 rounded-lg text-sm font-bold hover:bg-[#1d4eca]/5 transition-colors">
+                    <a key={idx} href={btn.url || "#"} 
+                       className="border-2 border-[#1d4eca] text-[#1d4eca] px-8 py-3 rounded-lg text-sm font-bold hover:bg-[#1d4eca]/5 transition-colors"
+                       style={btnStyle}>
                       {btn.label}
                     </a>
                   );
                 }
                 return (
-                  <a key={idx} href={btn.url || "#"} className="bg-[#1d4eca] text-white px-8 py-3 rounded-lg text-sm font-bold hover:bg-[#3f68e4] transition-colors shadow-sm">
+                  <a key={idx} href={btn.url || "#"} 
+                     className="bg-[#1d4eca] text-white px-8 py-3 rounded-lg text-sm font-bold hover:opacity-90 transition-opacity shadow-sm"
+                     style={btnStyle}>
                     {btn.label}
                   </a>
                 );
@@ -282,7 +294,16 @@ export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
           {block.buttons && block.buttons.length > 0 && (
             <div className="flex flex-wrap gap-4 pt-4">
               {block.buttons.map((btn: any, idx: number) => (
-                <a key={idx} href={btn.url || "#"} className={`px-8 py-3 rounded-lg text-[14px] font-bold transition-all flex items-center gap-2 shadow-sm ${btn.primary !== false ? 'bg-[#1d4eca] text-white hover:bg-[#2654d0]' : 'border-2 border-[#1d4eca] text-[#1d4eca] bg-transparent hover:bg-[#1d4eca]/5'}`}>
+                <a key={idx} href={btn.url || "#"} 
+                   className={`px-8 py-3 rounded-lg text-[14px] font-bold transition-all flex items-center gap-2 shadow-sm ${btn.primary !== false ? 'bg-[#1d4eca] text-white hover:opacity-90' : 'border-2 border-[#1d4eca] text-[#1d4eca] bg-transparent hover:bg-[#1d4eca]/5'}`}
+                   style={{
+                     backgroundColor: btn.bgColor || undefined,
+                     color: btn.textColor || undefined,
+                     borderColor: btn.borderColor || undefined,
+                     borderRadius: btn.borderRadius || undefined,
+                     borderWidth: btn.borderColor ? '2px' : undefined,
+                     borderStyle: btn.borderColor ? 'solid' : undefined
+                   }}>
                   {btn.label} 
                   {btn.primary !== false && <span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
                 </a>
