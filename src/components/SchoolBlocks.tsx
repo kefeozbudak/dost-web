@@ -218,22 +218,34 @@ export const SchoolPedagogyBlock = ({ block, getStyle, getTitleStyle, getSubtitl
 
 export const SchoolLgsBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const items = block.items || [];
+  
+  const innerBgStyle = block.styles?.innerBgColor || block.styles?.innerBgOpacity !== undefined 
+    ? { backgroundColor: `color-mix(in srgb, ${block.styles?.innerBgColor || '#0f172a'} ${block.styles?.innerBgOpacity ?? 100}%, transparent)` }
+    : {};
+  
+  const defaultBgClass = !block.styles?.innerBgColor && block.styles?.innerBgOpacity === undefined 
+    ? "bg-gradient-to-br from-[#0f172a] to-[#1a1b23] text-white" 
+    : (block.styles?.innerBgOpacity === 0 ? "text-[#1e293b]" : "text-white");
+
   return (
     <div className={`py-20 w-full px-6 md:px-8 bg-[#f6f6f8] whitespace-pre-line`} style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto bg-gradient-to-br from-[#0f172a] to-[#1a1b23] rounded-3xl p-8 md:p-12 text-white shadow-lg">
-        <div className="text-center mb-12">
+      <div 
+        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-6"} mx-auto rounded-3xl p-8 md:p-12 shadow-lg ${defaultBgClass}`}
+        style={innerBgStyle}
+      >
+        <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
           <span className="inline-block px-3 py-1 bg-[#3f68e4]/20 text-[#b6c4ff] font-bold uppercase tracking-widest text-xs rounded-full mb-4">LGS Hazırlık</span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white" style={getTitleStyle(block)}>{block.title || "LGS Hazırlık Programı"}</h2>
-          {block.subtitle && <p className="text-lg text-[#c4c5d6] max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${block.styles?.innerBgOpacity === 0 ? "text-[#1e293b]" : "text-white"}`} style={getTitleStyle(block)}>{block.title || "LGS Hazırlık Programı"}</h2>
+          {block.subtitle && <p className={`text-lg max-w-2xl mx-auto ${block.styles?.innerBgOpacity === 0 ? "text-[#475569]" : "text-[#c4c5d6]"}`} style={getSubtitleStyle(block)}>{block.subtitle}</p>}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {items.map((item: any, idx: number) => (
-            <div key={idx} className="bg-[#2f3038]/50 p-6 rounded-2xl border border-[#434654]/50 backdrop-blur-sm">
+            <div key={idx} className={`${block.styles?.innerBgOpacity === 0 ? "bg-white border-slate-200 shadow-sm" : "bg-[#2f3038]/50 border-[#434654]/50 text-white"} p-6 rounded-2xl border backdrop-blur-sm`}>
                <div className="w-12 h-12 bg-[#3f68e4]/20 rounded-lg flex items-center justify-center mb-4 text-[#61f9e9]">
                   <IconPreview data={item.icon || 'star'} />
                </div>
-               <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-               <p className="text-[#c4c5d6] text-sm leading-relaxed">{item.desc}</p>
+               <h3 className={`text-xl font-bold mb-2 ${block.styles?.innerBgOpacity === 0 ? "text-[#1e293b]" : "text-white"}`}>{item.title}</h3>
+               <p className={`text-sm leading-relaxed ${block.styles?.innerBgOpacity === 0 ? "text-[#475569]" : "text-[#c4c5d6]"}`}>{item.desc}</p>
             </div>
           ))}
         </div>
@@ -245,7 +257,7 @@ export const SchoolLgsBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
 export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section className="relative w-full py-20 overflow-hidden bg-white border-b border-[#e2e8f0]" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto grid md:grid-cols-2 gap-12 items-center`}>
         <div className="z-10 flex flex-col gap-6">
           {block.badge && (
             <div className="inline-flex items-center gap-2 bg-[#dce1ff]/20 text-[#3f68e4] px-3 py-1 rounded-full w-fit">
@@ -297,7 +309,7 @@ export const HighSchoolProgramsBlock = ({ block, getStyle, getTitleStyle, getSub
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#f6f6f8]" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold text-[#0f172a] mb-4 leading-[1.3]" style={getTitleStyle(block)}>{block.title || "Akademik Seçenekler"}</h2>
           {block.subtitle && <p className="text-[16px] text-[#64748b] max-w-2xl mx-auto leading-[1.6]" style={getSubtitleStyle(block)}>{block.subtitle}</p>}

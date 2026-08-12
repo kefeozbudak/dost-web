@@ -3199,6 +3199,62 @@ export default function BlockFormEditor({
 
         {block.type === 'middle_school_lgs' && (
           <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  İç Zemin Rengi
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={block.styles?.innerBgColor || "#0f172a"}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
+                  />
+                  <input
+                    type="text"
+                    value={block.styles?.innerBgColor || ""}
+                    onChange={(e) => {
+                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
+                      handleChange("styles", newStyles);
+                    }}
+                    placeholder="#0f172a"
+                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newStyles = { ...(block.styles || {}) };
+                      delete newStyles.innerBgColor;
+                      handleChange("styles", newStyles);
+                    }}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  İç Zemin Şeffaflığı (0 - 100)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={block.styles?.innerBgOpacity ?? 100}
+                  onChange={(e) => {
+                    const val = e.target.value ? parseInt(e.target.value) : 100;
+                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
+                    handleChange("styles", newStyles);
+                  }}
+                  placeholder="100"
+                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderArrayEditor(

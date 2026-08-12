@@ -10,7 +10,7 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
           <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${block.image})` }} />
         )}
       </div>
-      <div className="max-w-[1280px] mx-auto px-8 relative z-20 w-full">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto relative z-20 w-full`}>
         <div className="max-w-2xl text-white">
           {block.badge && (
             <span className="inline-block bg-[#5ef6e6] text-[#006f66] px-4 py-1 rounded-full text-[12px] font-bold mb-6 uppercase tracking-wider">
@@ -92,7 +92,7 @@ export const TimelineBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#faf8ff]" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold leading-[1.3] mb-4 text-[#1a1b23]" style={getTitleStyle(block)}>{block.title || "Başarı Yolculuğumuz"}</h2>
           {block.subtitle && <p className="text-[#64748b] text-[16px] max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
@@ -126,7 +126,7 @@ export const MissionVisionBlock = ({ block, getStyle, getTitleStyle, getSubtitle
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#f3f2fd]" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8 grid md:grid-cols-2 gap-6">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto grid md:grid-cols-2 gap-6`}>
         {items.map((item: any, idx: number) => {
            const colorText = idx % 2 === 1 ? 'text-[#006a62]' : 'text-[#1d4eca]';
            const colorBg = idx % 2 === 1 ? 'bg-[#006a62]/10' : 'bg-[#1d4eca]/10';
@@ -151,7 +151,7 @@ export const ValuesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#faf8ff]" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold mb-4 leading-[1.3] text-[#1a1b23]" style={getTitleStyle(block)}>{block.title || "Temel Değerlerimiz"}</h2>
           {block.subtitle && <p className="text-[#64748b] text-[16px] max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
@@ -180,7 +180,7 @@ export const ValuesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }
 export const QuoteImageBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section className="py-20 bg-[#e2e1ec]/30" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
         <div className="bg-white rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl">
           <div className="md:w-1/2 h-96 md:h-auto bg-cover bg-center" style={block.image ? { backgroundImage: `url(${block.image})` } : { backgroundColor: '#e2e8f0' }} />
           <div className="md:w-1/2 p-12 flex flex-col justify-center relative">
