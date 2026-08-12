@@ -1496,8 +1496,8 @@ export default function BlockFormEditor({
   );
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
+    <div className="flex flex-col">
+      <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0 rounded-t-xl">
         <h3 className="font-bold text-slate-800 flex items-center gap-2">
           Modül Düzenleyici
         </h3>
@@ -1513,7 +1513,7 @@ export default function BlockFormEditor({
           </span>
         </label>
       </div>
-      <div className="p-4 overflow-y-auto flex-1">
+      <div className="p-4">
         <div className="mb-6 p-4 bg-white border border-slate-200 rounded-xl space-y-4 shadow-sm">
           <h4 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-3">
             Genel Modül Ayarları
@@ -3126,11 +3126,22 @@ export default function BlockFormEditor({
           </div>
         )}
 
-        {(block.type === 'kindergarten_hero' || block.type === 'primary_school_hero' || block.type === 'middle_school_hero') && (
+        {(block.type === 'kindergarten_hero' || block.type === 'primary_school_hero' || block.type === 'middle_school_hero' || block.type === 'high_school_hero') && (
           <div className="space-y-4">
-            {renderInputWithStyle('Başlık', 'title')}
+            {renderInputWithStyle('Etiket (Rozet)', 'badge')}
+            {renderInputWithStyle('Başlık (1. Satır - İçinde HTML olabilir)', 'title')}
+            {renderInputWithStyle('İkinci Başlık (2. Satır - Mavi Renkli)', 'title2')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli', 'image')}
+            {renderArrayEditor(
+              'buttons',
+              [
+                { key: 'label', label: 'Buton Metni', type: 'text' },
+                { key: 'url', label: 'Link', type: 'url' },
+                { key: 'primary', label: 'Birincil Stil (Mavi Arka Plan - İşaretlenmezse saydam olur)', type: 'checkbox' }
+              ],
+              'Butonlar'
+            )}
           </div>
         )}
 
@@ -3143,8 +3154,9 @@ export default function BlockFormEditor({
               [
                 { key: 'title', label: 'Madde Başlığı', type: 'text' },
                 { key: 'desc', label: 'Açıklama', type: 'textarea' },
-                { key: 'icon', label: 'İkon (Material)', type: 'text' },
-                { key: 'image', label: 'Görsel', type: 'image' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+                { key: 'buttonText', label: 'Buton Metni (Mavi kart için)', type: 'text' },
+                { key: 'url', label: 'Buton Linki (Mavi kart için)', type: 'url' },
               ],
               'Bento Öğeleri'
             )}
@@ -3159,7 +3171,9 @@ export default function BlockFormEditor({
               'items',
               [
                 { key: 'title', label: 'Branş Adı', type: 'text' },
-                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
+                { key: 'image', label: 'Görsel', type: 'image' },
               ],
               'Branşlar'
             )}
@@ -3176,7 +3190,7 @@ export default function BlockFormEditor({
               [
                 { key: 'title', label: 'Madde Başlığı', type: 'text' },
                 { key: 'desc', label: 'Madde Açıklaması', type: 'textarea' },
-                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
               ],
               'Pedagoji Maddeleri'
             )}
@@ -3192,7 +3206,7 @@ export default function BlockFormEditor({
               [
                 { key: 'title', label: 'Özellik Başlığı', type: 'text' },
                 { key: 'desc', label: 'Açıklama', type: 'textarea' },
-                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+                { key: 'icon', label: 'İkon (Material)', type: 'icon' },
               ],
               'LGS Özellikleri'
             )}
