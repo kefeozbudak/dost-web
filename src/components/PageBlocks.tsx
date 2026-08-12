@@ -8,6 +8,8 @@ import TextWithKvkkLink from "./TextWithKvkkLink";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
 import { ManagementHeroBlock, ManagementRectorBlock, ManagementTeamGridBlock } from './ManagementBlocks';
+import { SchoolHeroBlock, SchoolBentoBlock, SchoolBranchesBlock, SchoolPedagogyBlock, SchoolLgsBlock } from './SchoolBlocks';
+import { AboutHeroBlock, AcademicHeroBlock, AkademikKadroBlock, TimelineBlock, MissionVisionBlock, ValuesBlock, QuoteImageBlock } from './AboutBlocks';
 import {
   DEFAULT_PRE_REGISTRATION_INPUTS,
   DEFAULT_CLUB_INPUTS,
@@ -2728,31 +2730,7 @@ export const DynamicBlockRenderer = ({
   console.log("DynamicBlockRenderer blocks:", blocks);
   if (!blocks || !Array.isArray(blocks)) return null;
 
-  // Pre-process blocks to handle unmigrated tuition_fees blocks
-  const processedBlocks: any[] = [];
-  blocks.forEach(block => {
-    if (block.type === 'tuition_fees' && block.title) {
-      // Split into hero and table
-      processedBlocks.push({
-        type: 'tuition_fees_hero',
-        id: block.id ? block.id + '_hero' : undefined,
-        title: block.title,
-        subtitle: block.subtitle,
-        badge: block.badge,
-        image: block.image,
-        styles: block.styles
-      });
-      processedBlocks.push({
-        ...block,
-        title: undefined,
-        subtitle: undefined,
-        badge: undefined,
-        image: undefined
-      });
-    } else {
-      processedBlocks.push(block);
-    }
-  });
+  const processedBlocks: any[] = blocks;
 
   const getStyle = (block: any, prefix: string) => {
     const style: any = {};
@@ -3017,6 +2995,129 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
   const renderBlock = (block: any, index: number) => {
     const renderContent = () => {
       switch (block.type) {
+        case "about_hero":
+          return (
+            <AboutHeroBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "academic_hero":
+          return (
+            <AcademicHeroBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "akademik_kadro":
+          return (
+            <AkademikKadroBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "timeline":
+          return (
+            <TimelineBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "mission_vision":
+          return (
+            <MissionVisionBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "values":
+          return (
+            <ValuesBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "quote_image":
+          return (
+            <QuoteImageBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "kindergarten_hero":
+        case "primary_school_hero":
+        case "middle_school_hero":
+          return (
+            <SchoolHeroBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "kindergarten_bento":
+        case "primary_school_bento":
+          return (
+            <SchoolBentoBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "kindergarten_branches":
+          return (
+            <SchoolBranchesBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "middle_school_pedagogy":
+          return (
+            <SchoolPedagogyBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "middle_school_lgs":
+          return (
+            <SchoolLgsBlock
+              key={index}
+              block={block}
+              getStyle={getStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
         case "management_hero":
           return (
             <ManagementHeroBlock

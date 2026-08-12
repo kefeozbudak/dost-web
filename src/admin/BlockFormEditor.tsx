@@ -3126,6 +3126,79 @@ export default function BlockFormEditor({
           </div>
         )}
 
+        {(block.type === 'kindergarten_hero' || block.type === 'primary_school_hero' || block.type === 'middle_school_hero') && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderImageUpload('Arka Plan Görseli', 'image')}
+          </div>
+        )}
+
+        {(block.type === 'kindergarten_bento' || block.type === 'primary_school_bento') && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Başlığı', 'title')}
+            {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Madde Başlığı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+                { key: 'image', label: 'Görsel', type: 'image' },
+              ],
+              'Bento Öğeleri'
+            )}
+          </div>
+        )}
+
+        {block.type === 'kindergarten_branches' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Bölüm Başlığı', 'title')}
+            {renderTextareaWithStyle('Bölüm Açıklaması', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Branş Adı', type: 'text' },
+                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              ],
+              'Branşlar'
+            )}
+          </div>
+        )}
+
+        {block.type === 'middle_school_pedagogy' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama (HTML destekli)', 'subtitle')}
+            {renderImageUpload('Görsel', 'image')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Madde Başlığı', type: 'text' },
+                { key: 'desc', label: 'Madde Açıklaması', type: 'textarea' },
+                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              ],
+              'Pedagoji Maddeleri'
+            )}
+          </div>
+        )}
+
+        {block.type === 'middle_school_lgs' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Açıklama', 'subtitle')}
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'title', label: 'Özellik Başlığı', type: 'text' },
+                { key: 'desc', label: 'Açıklama', type: 'textarea' },
+                { key: 'icon', label: 'İkon (Material)', type: 'text' },
+              ],
+              'LGS Özellikleri'
+            )}
+          </div>
+        )}
+
         {block.type === 'management_hero' && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}

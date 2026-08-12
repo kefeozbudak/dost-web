@@ -1,0 +1,54 @@
+--- src/components/SchoolBlocks.tsx
++++ src/components/SchoolBlocks.tsx
+@@ -1,5 +1,6 @@
+ import React from 'react';
++import { IconPreview } from './IconField';
+ 
+ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
+   return (
+@@ -43,7 +44,11 @@
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+         {items.map((item: any, idx: number) => (
+           <div key={idx} className="bg-white rounded-xl shadow-md border border-slate-100 p-6 flex flex-col gap-4">
+-            {item.icon && <span className="material-symbols-outlined text-4xl text-primary">{item.icon}</span>}
++            {item.icon && (
++               <div className="text-4xl text-primary">
++                 <IconPreview data={item.icon} />
++               </div>
++            )}
+             {item.image && (
+                <div className="h-40 bg-center bg-cover rounded-lg" style={{ backgroundImage: \`url(\${item.image})\` }} />
+             )}
+@@ -69,7 +74,11 @@
+       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6">
+         {items.map((item: any, idx: number) => (
+           <div key={idx} className="bg-white p-4 rounded-xl shadow-sm text-center border border-slate-100 hover:shadow-md transition-all">
+-             {item.icon && <span className="material-symbols-outlined text-3xl text-primary mb-2 block">{item.icon}</span>}
++             {item.icon && (
++               <div className="text-3xl text-primary mb-2 flex justify-center">
++                 <IconPreview data={item.icon} />
++               </div>
++             )}
+              <h4 className="font-bold text-slate-800">{item.title}</h4>
+           </div>
+         ))}
+@@ -102,7 +111,9 @@
+           <div className="space-y-4">
+              {items.map((item: any, idx: number) => (
+                <div key={idx} className="flex gap-4">
+-                 <span className="material-symbols-outlined text-primary text-2xl shrink-0">{item.icon || 'check_circle'}</span>
++                 <div className="text-primary text-2xl shrink-0">
++                   <IconPreview data={item.icon || 'check_circle'} />
++                 </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900">{item.title}</h4>
+                    <p className="text-slate-600 text-sm">{item.desc}</p>
+@@ -128,7 +139,9 @@
+         {items.map((item: any, idx: number) => (
+           <div key={idx} className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-4 text-primary-300">
+-                <span className="material-symbols-outlined">{item.icon || 'star'}</span>
++                <IconPreview data={item.icon || 'star'} />
+              </div>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
