@@ -1,3 +1,4 @@
+import { getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle } from "../lib/styleUtils";
 import React from 'react';
 
 export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
@@ -128,7 +129,7 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
         {items.map((item: any, idx: number) => {
           if (isDeans) {
             return (
-              <div key={idx} className="p-4 rounded-xl bg-white shadow hover:shadow-lg transition-shadow border border-slate-100 flex flex-col">
+              <div key={idx} className={getCardClass(item, "p-4 rounded-xl bg-white shadow hover:shadow-lg transition-shadow border border-slate-100 flex flex-col")} style={getCardStyle(item, block)}>
                 {item.image ? (
                   <div 
                     className="aspect-square bg-center bg-cover rounded-lg mb-4 shrink-0" 
@@ -141,8 +142,8 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
                 )}
                 <div className="space-y-1 flex-grow">
                   <p className="text-[11px] font-bold text-primary uppercase leading-tight line-clamp-2">{item.desc || "Bölüm"}</p>
-                  <h5 className="text-md font-bold text-slate-900 leading-snug">{item.name}</h5>
-                  <p className="text-xs text-slate-500">{item.role}</p>
+                  <h5 className="text-md font-bold text-slate-900 leading-snug" style={getCardTitleStyle(item, block)}>{item.name}</h5>
+                  <p className="text-xs text-slate-500" style={getCardDescStyle(item, block)}>{item.role}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-slate-50">
                   {item.hideButton !== true && (
@@ -155,7 +156,7 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
             );
           }
           return (
-            <div key={idx} className="flex flex-col bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div key={idx} className={getCardClass(item, "flex flex-col bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300")} style={getCardStyle(item, block)}>
               {item.image ? (
                 <div 
                   className="h-64 bg-center bg-cover shrink-0" 
@@ -169,8 +170,8 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
               <div className="p-6 flex flex-col gap-3 flex-grow">
                 <div className="flex-grow">
                   <p className="text-xs font-bold text-primary uppercase tracking-wider mb-1 line-clamp-2">{item.desc || "Birim"}</p>
-                  <h4 className="text-xl font-bold text-slate-900">{item.name}</h4>
-                  <p className="text-sm text-slate-500 font-medium">{item.role}</p>
+                  <h4 className="text-xl font-bold text-slate-900" style={getCardTitleStyle(item, block)}>{item.name}</h4>
+                  <p className="text-sm text-slate-500 font-medium" style={getCardDescStyle(item, block)}>{item.role}</p>
                 </div>
                 {item.hideButton !== true && (
                   <a href={item.url || "#"} className="flex items-center gap-1 text-sm font-bold text-slate-800 hover:text-primary transition-colors mt-2 cursor-pointer">

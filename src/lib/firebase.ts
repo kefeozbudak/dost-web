@@ -128,3 +128,16 @@ export function handleFirestoreError(
   console.error("Firestore Error: ", JSON.stringify(errInfo));
   return new Error(JSON.stringify(errInfo));
 }
+
+export const withTimeout = <T>(promise: Promise<T>, ms: number = 10000): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("Zaman aşımı: İşlem çok uzun sürdü. Günlük Firebase kotanız dolmuş olabilir.")), ms);
+    promise.then(res => {
+      clearTimeout(timer);
+      resolve(res);
+    }).catch(err => {
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
+};

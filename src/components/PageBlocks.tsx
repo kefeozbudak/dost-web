@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextWithKvkkLink from "./TextWithKvkkLink";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
+import { getStyle, getTitleStyle, getSubtitleStyle, getDescStyle, getBadgeStyle, getButtonStyle, getItemContainerStyle, getItemTitleStyle, getItemDescStyle, getItemButtonStyle, getTitlePart1Style, getTitlePart2Style, getValidText, getValidStyle, getIndividualButtonStyle, fallbackImages, getImageStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, extractAlignClass, removeAlignStyles, getIconStyle, getCardButtonStyle } from "../lib/styleUtils";
 import { ManagementHeroBlock, ManagementRectorBlock, ManagementTeamGridBlock } from './ManagementBlocks';
 import { SchoolHeroBlock, SchoolBentoBlock, SchoolBranchesBlock, SchoolPedagogyBlock, SchoolLgsBlock, HighSchoolHeroBlock, HighSchoolProgramsBlock } from './SchoolBlocks';
 import { AboutHeroBlock, AcademicHeroBlock, AkademikKadroBlock, TimelineBlock, MissionVisionBlock, ValuesBlock, QuoteImageBlock } from './AboutBlocks';
@@ -582,19 +583,7 @@ const EduSystemLevelsBlock = ({
             <div
               key={i}
               className="bg-surface-card rounded-xl border border-border-subtle p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full whitespace-pre-line"
-              style={{
-                backgroundColor: item.cardBgColor || undefined,
-                borderColor: item.cardBorderColor || undefined,
-                borderWidth: item.cardBorderWidth || undefined,
-                borderRadius: item.cardBorderRadius || undefined,
-                padding: item.cardPadding || undefined,
-                boxShadow:
-                  item.cardShadow === "none"
-                    ? "none"
-                    : item.cardShadow
-                      ? `var(--tw-shadow-${item.cardShadow})`
-                      : undefined,
-              }}
+              style={getCardStyle(item, block)}
             >
               <div
                 className={`w-14 h-14 rounded-full flex items-center justify-center mb-6 transition-colors ${isPrimary ? "bg-primary/10 group-hover:bg-primary text-primary" : "bg-secondary/10 group-hover:bg-secondary text-secondary"} group-hover:text-white`}
@@ -684,19 +673,7 @@ const EduSystemYadepBlock = ({
               <div
                 key={i}
                 className="bg-surface-card p-8 rounded-xl shadow-sm border border-border-subtle hover:shadow-md transition-shadow whitespace-pre-line"
-                style={{
-                  backgroundColor: item.cardBgColor || undefined,
-                  borderColor: item.cardBorderColor || undefined,
-                  borderWidth: item.cardBorderWidth || undefined,
-                  borderRadius: item.cardBorderRadius || undefined,
-                  padding: item.cardPadding || undefined,
-                  boxShadow:
-                    item.cardShadow === "none"
-                      ? "none"
-                      : item.cardShadow
-                        ? `var(--tw-shadow-${item.cardShadow})`
-                        : undefined,
-                }}
+                style={getCardStyle(item, block)}
               >
                 <div
                   className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${
@@ -2732,266 +2709,6 @@ export const DynamicBlockRenderer = ({
 
   const processedBlocks: any[] = blocks;
 
-  const getStyle = (block: any, prefix: string) => {
-    const style: any = {};
-    
-    // Normal properties
-    style.color =
-      block.styles?.[prefix + "Color"] ||
-      (prefix === "container" || prefix === ""
-        ? block.styles?.color
-        : undefined) ||
-      undefined;
-      
-    style.fontWeight = block.styles?.[prefix + "Weight"] || undefined;
-    
-    style.backgroundColor =
-      block.styles?.[prefix + "BackgroundColor"] ||
-      (prefix === "container" || prefix === ""
-        ? block.styles?.backgroundColor
-        : undefined) ||
-      undefined;
-      
-    style.borderRadius = block.styles?.[prefix + "BorderRadius"]
-      ? block.styles[prefix + "BorderRadius"] + "px"
-      : undefined;
-      
-    style.backgroundImage =
-      (prefix === "" || prefix === "container") &&
-      block.styles?.backgroundImage
-        ? `url(${block.styles.backgroundImage})`
-        : undefined;
-        
-    style.backgroundSize =
-      (prefix === "" || prefix === "container") &&
-      block.styles?.backgroundImage
-        ? "cover"
-        : undefined;
-        
-    style.backgroundPosition =
-      (prefix === "" || prefix === "container") &&
-      block.styles?.backgroundImage
-        ? "center"
-        : undefined;
-
-    // Helper for responsive variables
-    const addResponsiveVar = (cssProp: string, jsProp: string, suffix: string, unit: string = "") => {
-      let desktopVal = block.styles?.[prefix + suffix] || (prefix === "" || prefix === "container" ? block.styles?.[suffix.charAt(0).toLowerCase() + suffix.slice(1)] : undefined);
-      let mobileVal = block.styles?.[prefix + "Mobile" + suffix] || (prefix === "" || prefix === "container" ? block.styles?.["mobile" + suffix] : undefined);
-        
-      // FIX: If it's a size property and it's 0 or 0px, treat it as undefined so it falls back to CSS classes.
-      if (cssProp === 'font-size') {
-         if (desktopVal === '0' || desktopVal === '0px' || desktopVal === 0) desktopVal = undefined;
-         if (mobileVal === '0' || mobileVal === '0px' || mobileVal === 0) mobileVal = undefined;
-      }
-
-      if (mobileVal !== undefined && mobileVal !== "") {
-        style[`--desktop-${cssProp}`] = desktopVal ? desktopVal + unit : (unit === "px" ? "0px" : "inherit");
-        style[`--mobile-${cssProp}`] = mobileVal + unit;
-      } else if (desktopVal !== undefined && desktopVal !== "") {
-        style[jsProp] = desktopVal + unit;
-      }
-    };
-
-    addResponsiveVar("text-align", "textAlign", "Align");
-    addResponsiveVar("font-size", "fontSize", "Size");
-    addResponsiveVar("margin-top", "marginTop", "MarginTop", "px");
-    addResponsiveVar("margin-bottom", "marginBottom", "MarginBottom", "px");
-    addResponsiveVar("padding-top", "paddingTop", "PaddingTop", "px");
-    addResponsiveVar("padding-bottom", "paddingBottom", "PaddingBottom", "px");
-    addResponsiveVar("padding-left", "paddingLeft", "PaddingLeft", "px");
-    addResponsiveVar("padding-right", "paddingRight", "PaddingRight", "px");
-
-    // Filter out undefined
-    Object.keys(style).forEach(key => style[key] === undefined && delete style[key]);
-    
-    return style;
-  };
-
-  const getTitleStyle = (block: any) => ({
-    ...getStyle(block, "title"),
-    whiteSpace: "pre-line" as const,
-  });
-  const getSubtitleStyle = (block: any) => ({
-    ...getStyle(block, "subtitle"),
-    whiteSpace: "pre-line" as const,
-  });
-  const getDescStyle = (block: any) => ({
-    ...getStyle(block, "desc"),
-    whiteSpace: "pre-line" as const,
-  });
-  const getBadgeStyle = (block: any) => getStyle(block, "badge");
-  const getButtonStyle = (block: any) => getStyle(block, "buttons");
-  const getItemContainerStyle = (block: any) =>
-    getStyle(block, "itemContainer");
-  const getItemTitleStyle = (block: any, item?: any) => {
-    const style: React.CSSProperties = {
-      ...getStyle(block, "itemTitle"),
-      whiteSpace: "pre-line" as const,
-    };
-    if (item && item.itemTitleColor) style.color = item.itemTitleColor;
-    return style;
-  };
-  const getItemDescStyle = (block: any, item?: any) => {
-    const style: React.CSSProperties = {
-      ...getStyle(block, "itemDesc"),
-      whiteSpace: "pre-line" as const,
-    };
-    if (item && item.itemDescColor) style.color = item.itemDescColor;
-    return style;
-  };
-  const getItemButtonStyle = (block: any) => getStyle(block, "itemButton");
-  const getTitlePart1Style = (block: any) => ({
-    whiteSpace: "pre-line" as const,
-    ...getStyle(block, "titlePart1"),
-    color: block.styles?.titlePart1Color || block.styles?.titleColor || block.titlePart1Color || block.titleColor || undefined,
-  });
-  const getTitlePart2Style = (block: any) => ({
-    whiteSpace: "pre-line" as const,
-    ...getStyle(block, "titlePart2"),
-    color: block.styles?.titlePart2Color || block.styles?.titleColor || block.titlePart2Color || block.titleColor || undefined,
-  });
-
-  const getValidText = (...values: any[]) => {
-  for (const v of values) {
-    if (typeof v === 'string') {
-      const stripped = v.replace(/<[^>]*>?/gm, '').trim();
-      if (stripped.length > 0) return v;
-    } else if (v) {
-      return v;
-    }
-  }
-  return values[values.length - 1] || "";
-};
-
-const getValidStyle = (block: any, ...keys: string[]) => {
-  for (const key of keys) {
-    const s = getStyle(block, key);
-    if (Object.keys(s).length > 0) return s;
-  }
-  return {};
-};
-
-const getIndividualButtonStyle = (btn: any) => {
-    const style: any = {};
-
-    if (btn.bgColor) style.backgroundColor = btn.bgColor;
-    if (btn.textColor) style.color = btn.textColor;
-    if (btn.borderColor) {
-      style.borderColor = btn.borderColor;
-      style.borderWidth = "2px";
-      style.borderStyle = "solid";
-    }
-    if (btn.borderRadius) style.borderRadius = btn.borderRadius;
-    return style;
-  };
-
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80",
-  ];
-
-  const getImageStyle = (obj: any, key: string, fallbackIndex = 0) => {
-    let url = obj[key];
-    if (!url || url.includes("lh3.googleusercontent.com/aida-public/")) {
-      url = fallbackImages[fallbackIndex % fallbackImages.length];
-    }
-    const posX = obj[`${key}_posX`] ?? 50;
-    const posY = obj[`${key}_posY`] ?? 50;
-    const scale = obj[`${key}_scale`] ?? 100;
-
-    return {
-      backgroundImage: `url('${url}')`,
-      backgroundPosition: `${posX}% ${posY}%`,
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-      transformOrigin: `${posX}% ${posY}%`,
-      scale: scale !== 100 ? scale / 100 : undefined,
-    } as React.CSSProperties;
-  };
-
-  const getCardStyle = (item: any, block?: any) => {
-    if (!item) return {};
-    const style: React.CSSProperties = {};
-    if (item.cardBgColor || block?.styles?.cardBgColor) style.backgroundColor = item.cardBgColor || block?.styles?.cardBgColor;
-    
-    const bgImage = item.cardBgImage || block?.styles?.cardBgImage;
-    if (bgImage) {
-      style.backgroundImage = `url('${bgImage}')`;
-      style.backgroundSize = "cover";
-      style.backgroundPosition = "center";
-      style.backgroundRepeat = "no-repeat";
-    }
-    
-    if (item.cardBorderColor || block?.styles?.cardBorderColor) style.borderColor = item.cardBorderColor || block?.styles?.cardBorderColor;
-    if (item.cardBorderWidth || block?.styles?.cardBorderWidth) style.borderWidth = item.cardBorderWidth || block?.styles?.cardBorderWidth;
-    return style;
-  };
-
-  const getCardClass = (item: any, baseClass: string) => {
-    let cls = baseClass;
-    if (!item) return cls;
-
-    if (item.cardShadow) {
-      // Remove any existing shadow classes
-      cls = cls.replace(/shadow(-\w+)?/g, "").trim();
-      if (item.cardShadow !== "none") {
-        cls += ` shadow-${item.cardShadow}`;
-      }
-    }
-    if (item.hoverEffect) {
-      cls +=
-        " transition-all duration-300 hover:-translate-y-2 hover:shadow-xl";
-    }
-    return cls.replace(/\s+/g, " ").trim();
-  };
-
-  const getCardTitleStyle = (item: any, block: any) => {
-    const style = { ...getItemTitleStyle(block) };
-    if (item?.itemTitleColor) style.color = item.itemTitleColor;
-    return style;
-  };
-
-  const getCardDescStyle = (item: any, block: any) => {
-    const style = { ...getItemDescStyle(block) };
-    if (item?.itemDescColor) style.color = item.itemDescColor;
-    return style;
-  };
-
-  const extractAlignClass = (styleObj: any) => {
-  const dAlign = styleObj["--desktop-text-align"]?.replace("px", "").trim();
-  const mAlign = styleObj["--mobile-text-align"]?.replace("px", "").trim();
-  let cls = "";
-  if (mAlign === "center") cls += " mx-auto ";
-  else if (mAlign === "right") cls += " ml-auto mr-0 ";
-  else if (mAlign === "left") cls += " ml-0 mr-auto ";
-  if (dAlign === "center") cls += " md:mx-auto md:ml-auto md:mr-auto ";
-  else if (dAlign === "right") cls += " md:ml-auto md:mr-0 ";
-  else if (dAlign === "left") cls += " md:ml-0 md:mr-auto ";
-  return cls.trim();
-};
-
-const removeAlignStyles = (styleObj: any) => {
-  const newStyle = { ...styleObj };
-  delete newStyle["--desktop-text-align"];
-  delete newStyle["--mobile-text-align"];
-  return newStyle;
-};
-
-const getIconStyle = (item: any, block: any, prefix = "icon") => {
-    const style: React.CSSProperties = { ...getStyle(block, prefix) };
-    if (item?.iconColor) style.color = item.iconColor;
-    return style;
-  };
-
-  const getCardButtonStyle = (item: any, block: any) => {
-    const style = { ...getItemButtonStyle(block) };
-    if (item?.buttonTextColor) style.color = item.buttonTextColor;
-    if (item?.buttonBgColor) style.backgroundColor = item.buttonBgColor;
-    return style;
-  };
-
   const renderBlock = (block: any, index: number) => {
     const renderContent = () => {
       switch (block.type) {
@@ -3194,7 +2911,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                           key={btnIdx}
                           url={btn.url || btn.buttonUrl || btn.link}
                           className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2 whitespace-pre-line"
-                          style={getIndividualButtonStyle(btn)}
+                          style={getIndividualButtonStyle(btn, block)}
                         >
                           {btn.label}{" "}
                           {btn.icon && <IconPreview data={btn.icon}  style={getIconStyle(btn, block)} />}
@@ -3510,7 +3227,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                           key={btnIdx}
                           url={btn.url || btn.buttonUrl || btn.link}
                           className={`px-8 py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === "outline" ? "border-2 border-primary text-primary hover:bg-primary/5" : "bg-secondary text-white hover:opacity-90"}`}
-                          style={getIndividualButtonStyle(btn)}
+                          style={getIndividualButtonStyle(btn, block)}
                         >
                           {btn.label}
                         </SmartLink>
@@ -4083,11 +3800,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   {block.buttons && block.buttons.length > 0 && (
                     <div className={`flex flex-wrap gap-4 whitespace-pre-line w-full ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'justify-start' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'justify-end' : 'justify-center'}`}>
                       {block.buttons.map((btn: any, i: number) => {
-                      const isCustom =
-                        btn.bgColor ||
-                        btn.textColor ||
-                        btn.borderColor ||
-                        btn.borderRadius;
+                      const isCustom = btn.bgColor || btn.textColor || btn.borderColor || btn.borderRadius || btn.cardBgColor || btn.cardTextColor || btn.cardBorderColor || btn.cardBorderRadius;
                       const defaultClass =
                         btn.style === "outline"
                           ? "bg-white/10 backdrop-blur-md text-on-primary border border-white/20 px-8 py-3 rounded-xl font-label-md hover:bg-white/20 transition-all"
@@ -4096,7 +3809,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         <a
                           key={i}
                           href={btn.url || "#"}
-                          style={getIndividualButtonStyle(btn)}
+                          style={getIndividualButtonStyle(btn, block)}
                           className={
                             !isCustom
                               ? defaultClass
@@ -4232,18 +3945,14 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                   <div className="relative z-10 whitespace-pre-line">
                     {block.buttons &&
                       block.buttons.map((btn: any, i: number) => {
-                        const isCustom =
-                          btn.bgColor ||
-                          btn.textColor ||
-                          btn.borderColor ||
-                          btn.borderRadius;
+                        const isCustom = btn.bgColor || btn.textColor || btn.borderColor || btn.borderRadius || btn.cardBgColor || btn.cardTextColor || btn.cardBorderColor || btn.cardBorderRadius;
                         const defaultClass =
                           "bg-secondary-container text-on-secondary-container px-12 py-4 rounded-2xl font-label-md text-lg hover:scale-105 transition-transform shadow-xl";
                         return (
                           <a
                             key={i}
                             href={btn.url || "#"}
-                            style={getIndividualButtonStyle(btn)}
+                            style={getIndividualButtonStyle(btn, block)}
                             className={
                               !isCustom
                                 ? defaultClass
@@ -4353,11 +4062,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                     <div
                       key={i}
                       className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden hover:shadow-sm transition-all group flex flex-col whitespace-pre-line"
-                      style={{
-                        backgroundColor: item.cardBgColor,
-                        borderColor: item.cardBorderColor,
-                        borderRadius: item.cardBorderRadius,
-                      }}
+                      style={getCardStyle(item, block)}
                     >
                       <div className="relative aspect-video overflow-hidden whitespace-pre-line">
                         <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
@@ -4656,7 +4361,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         className={`flex flex-col sm:flex-row gap-4 ${block.styles?.textAlign === "left" ? "justify-start items-start" : block.styles?.textAlign === "right" ? "justify-end items-end" : "justify-center items-center"} w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto relative z-10`}
                       >
                         {block.buttons.map((btn: any, i: number) => {
-                          const isCustomColors = btn.bgColor || btn.textColor;
+                          const isCustomColors = btn.bgColor || btn.textColor || btn.cardBgColor || btn.cardTextColor;
                           const defaultClasses = btn.primary
                             ? "bg-primary text-white hover:bg-primary/90 hover:shadow-lg"
                             : "bg-white text-primary border border-border-subtle hover:bg-surface-container";
@@ -4670,7 +4375,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                             <SmartLink
                               key={i}
                               url={buttonUrl}
-                              style={getIndividualButtonStyle(btn)}
+                              style={getIndividualButtonStyle(btn, block)}
                               className={`inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold transition-all ${!isCustomColors ? defaultClasses : "hover:opacity-90 hover:shadow-lg"}`}
                             >
                               {btn.label}
@@ -5231,7 +4936,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                         <a
                           key={i}
                           href={btn.url || "#"}
-                          style={getIndividualButtonStyle(btn)}
+                          style={getIndividualButtonStyle(btn, block)}
                           className={
                             btn.primary
                               ? "bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:opacity-90 transition-opacity"
@@ -5515,7 +5220,7 @@ const getIconStyle = (item: any, block: any, prefix = "icon") => {
                       <a
                         key={i}
                         href={btn.url || "#"}
-                        style={getIndividualButtonStyle(btn)}
+                        style={getIndividualButtonStyle(btn, block)}
                         className="px-8 py-3 rounded-xl text-[14px] font-bold flex items-center gap-2 hover:opacity-90 transition-opacity whitespace-pre-line"
                       >
                         {btn.label}

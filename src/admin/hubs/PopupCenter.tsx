@@ -1,7 +1,7 @@
 import { resolveMediaUrls } from '../../lib/resolveMedia';
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { db, withTimeout } from '../../lib/firebase';
 import { extractAndSaveBase64Images } from '../../lib/imageCompressor';
 import { PopupData } from '../../components/PopupOverlay';
 
@@ -236,12 +236,12 @@ export default function PopupCenter() {
       sessionStorage.removeItem(`dost_popup_closed_${selectedPopup.id}`);
       localStorage.removeItem(`dost_popup_closed_${selectedPopup.id}`);
 
-      const popupToSave = await extractAndSaveBase64Images({
+      const popupToSave = await withTimeout(extractAndSaveBase64Images({
         ...selectedPopup,
         updatedAt: Date.now()
-      }, db);
+      }, db), 15000);
 
-      await setDoc(doc(db, 'popups', selectedPopup.id), popupToSave);
+      await withTimeout(setDoc(doc(db, 'popups', selectedPopup.id), popupToSave));
 
       if (selectedPopup.status === 'AKTİF') {
         showToast('Popup kaydedildi ve CANLI SİTEDE YAYINLANDI!');

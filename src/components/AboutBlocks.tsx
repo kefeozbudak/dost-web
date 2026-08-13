@@ -1,3 +1,4 @@
+import { getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle } from "../lib/styleUtils";
 import React from 'react';
 import { IconPreview } from './IconField';
 
@@ -29,18 +30,10 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
             <div className="flex gap-4">
               {block.buttons.map((btn: any, idx: number) => (
                 <a key={idx} href={btn.url || "#"} 
-                   className={`px-8 py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:opacity-90' : 'border-2 border-white text-white hover:bg-white/10'}`}
-                   style={{
-                     backgroundColor: btn.bgColor || undefined,
-                     color: btn.textColor || undefined,
-                     borderColor: btn.borderColor || undefined,
-                     borderRadius: btn.borderRadius || undefined,
-                     borderWidth: btn.borderColor ? '2px' : undefined,
-                     borderStyle: btn.borderColor ? 'solid' : undefined
-                   }}>
+                   className={`px-8 py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:opacity-90' : 'border-2 border-white text-white hover:bg-white/10'}`} 
+                   style={getIndividualButtonStyle(btn, block)}>
                   {btn.label}
-                </a>
-              ))}
+                </a>              ))}
             </div>
           )}
         </div>
@@ -76,7 +69,7 @@ export const AkademikKadroBlock = ({ block, getStyle, getTitleStyle, getSubtitle
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {items.map((item: any, idx: number) => (
-             <div key={idx} className="bg-white rounded-xl shadow border border-slate-100 overflow-hidden group">
+             <div key={idx} className={getCardClass(item, "bg-white rounded-xl shadow border border-slate-100 overflow-hidden group")} style={getCardStyle(item, block)}>
                {item.image ? (
                  <div className="h-64 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style={{ backgroundImage: `url(${item.image})` }} />
                ) : (
@@ -85,9 +78,9 @@ export const AkademikKadroBlock = ({ block, getStyle, getTitleStyle, getSubtitle
                  </div>
                )}
                <div className="p-6 text-center">
-                 <h3 className="text-lg font-bold text-slate-900 mb-1">{item.name}</h3>
-                 <p className="text-primary text-sm font-bold uppercase tracking-wider mb-2">{item.role}</p>
-                 <p className="text-slate-500 text-sm">{item.desc}</p>
+                 <h3 className="text-lg font-bold text-slate-900 mb-1" style={getCardTitleStyle(item, block)}>{item.name}</h3>
+                 <p className="text-primary text-sm font-bold uppercase tracking-wider mb-2" style={getIconStyle(item, block)}>{item.role}</p>
+                 <p className="text-slate-500 text-sm" style={getCardDescStyle(item, block)}>{item.desc}</p>
                </div>
              </div>
           ))}
@@ -142,12 +135,12 @@ export const MissionVisionBlock = ({ block, getStyle, getTitleStyle, getSubtitle
            const hoverBorder = idx % 2 === 1 ? 'hover:border-[#006a62]' : 'hover:border-[#1d4eca]';
 
            return (
-             <div key={idx} className={`bg-white p-10 rounded-2xl border border-[#e2e8f0] shadow-sm flex flex-col items-center text-center group ${hoverBorder} transition-colors duration-300`}>
-               <div className={`w-16 h-16 ${colorBg} rounded-full flex items-center justify-center mb-6 ${colorText} group-hover:scale-110 transition-transform`}>
+             <div key={idx} className={getCardClass(item, `bg-white p-10 rounded-2xl border border-[#e2e8f0] shadow-sm flex flex-col items-center text-center group ${hoverBorder} transition-colors duration-300`)} style={getCardStyle(item, block)}>
+               <div className={`w-16 h-16 ${colorBg} rounded-full flex items-center justify-center mb-6 ${colorText} group-hover:scale-110 transition-transform`} style={getIconStyle(item, block)}>
                  <IconPreview data={item.icon || 'flag'} />
                </div>
-               <h2 className="text-[36px] font-bold mb-4 text-[#1a1b23] leading-[1.3]">{item.title}</h2>
-               <p className="text-[#64748b] leading-relaxed text-[16px]">{item.desc}</p>
+               <h2 className="text-[36px] font-bold mb-4 text-[#1a1b23] leading-[1.3]" style={getCardTitleStyle(item, block)}>{item.title}</h2>
+               <p className="text-[#64748b] leading-relaxed text-[16px]" style={getCardDescStyle(item, block)}>{item.desc}</p>
              </div>
            );
         })}
@@ -171,12 +164,12 @@ export const ValuesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }
              const iconColor = colors[idx % colors.length];
              
              return (
-               <div key={idx} className="bg-white p-8 rounded-2xl border border-[#e2e8f0] hover:shadow-md transition-all">
-                 <div className={`${iconColor} text-3xl mb-4`}>
+               <div key={idx} className={getCardClass(item, "bg-white p-8 rounded-2xl border border-[#e2e8f0] hover:shadow-md transition-all")} style={getCardStyle(item, block)}>
+                 <div className={`text-3xl mb-4 text-[#1d4eca]`} style={getIconStyle(item, block)}>
                     <IconPreview data={item.icon || 'verified_user'} />
                  </div>
-                 <h4 className="text-[24px] font-bold text-[#0f172a] mb-2 leading-[1.4]">{item.title}</h4>
-                 <p className="text-sm text-[#64748b]">{item.desc}</p>
+                 <h4 className="text-[24px] font-bold text-[#0f172a] mb-2 leading-[1.4]" style={getCardTitleStyle(item, block)}>{item.title}</h4>
+                 <p className="text-sm text-[#64748b]" style={getCardDescStyle(item, block)}>{item.desc}</p>
                </div>
              );
           })}

@@ -207,13 +207,13 @@ export default function FieldStylePicker({
                   <SliderInput 
                     label="Boyut (Masaüstü, px)" 
                     value={size ? parseInt(size as string) || 0 : ''}
-                    onChange={(val: any) => handleChange(`${fieldKey}Size`, val ? val + 'px' : '')} 
+                    onChange={(val: any) => handleChange(`${fieldKey}Size`, val)} 
                     min={10} max={72} 
                   />
                   <SliderInput 
                     label="Boyut (Mobil, px)" 
                     value={mobileSize ? parseInt(mobileSize as string) || 0 : ''}
-                    onChange={(val: any) => handleChange(`${fieldKey}MobileSize`, val ? val + 'px' : '')} 
+                    onChange={(val: any) => handleChange(`${fieldKey}MobileSize`, val)} 
                     min={10} max={72} 
                   />
                 </div>

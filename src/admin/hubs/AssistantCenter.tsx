@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Bot, Save, Plus, Trash2, Settings, ToggleLeft, ToggleRight, Edit2, X, ArrowUp, ArrowDown, Check, MessageCircle, Mail, ExternalLink, CheckCircle2 } from 'lucide-react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { withTimeout } from '../../lib/firebase';
 import { db } from '../../lib/firebase';
 
 interface FormField {
@@ -104,13 +105,13 @@ export default function AssistantCenter() {
     setSaving(true);
     const formsToSave = updatedForms || forms;
     try {
-      await setDoc(doc(db, 'settings', 'assistant'), {
+      await withTimeout(setDoc(doc(db, 'settings', 'assistant'), {
         knowledgeBase,
         isActive,
         whatsapp,
         email,
         forms: formsToSave
-      }, { merge: true });
+      }, { merge: true }));
       alert('Tüm ayarlar ve formlar başarıyla kaydedildi!');
     } catch (error) {
       console.error("Error saving assistant settings:", error);

@@ -1,6 +1,7 @@
 import { resolveMediaUrls } from '../../lib/resolveMedia';
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { withTimeout } from '../../lib/firebase';
 import { db } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
 import {
@@ -174,7 +175,7 @@ export default function SettingsCenter() {
         ...settings,
         updatedAt: Date.now()
       };
-      await setDoc(docRef, updatedData, { merge: true });
+      await withTimeout(setDoc(docRef, updatedData, { merge: true }));
       showToast('Genel ayarlar başarıyla güncellendi ve kaydedildi!');
     } catch (e) {
       console.error('Save error:', e);

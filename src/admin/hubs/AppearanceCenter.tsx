@@ -2,7 +2,7 @@
 import IconField from "../../components/IconField";
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { db, withTimeout } from '../../lib/firebase';
 import MediaPickerModal from '../../components/MediaPickerModal';
 import { ChevronUp, ChevronDown, Save, Plus, Trash2, Layout, LayoutTemplate, Menu, Image as ImageIcon, Megaphone, Eye, Check , ArrowUp, ArrowDown} from 'lucide-react';
 
@@ -227,12 +227,12 @@ export default function AppearanceCenter() {
     setMessage({ type: '', text: '' });
     try {
       if (activeTab === 'header') {
-        await setDoc(doc(db, 'settings', 'header'), headerData);
+        await withTimeout(setDoc(doc(db, 'settings', 'header'), headerData));
       } else if (activeTab === 'announcement') {
         const generalRef = doc(db, 'settings', 'general');
         const generalSnap = await getDoc(generalRef);
         const currentGeneral = generalSnap.exists() ? generalSnap.data() : {};
-        await setDoc(generalRef, {
+        await withTimeout(setDoc(generalRef, {
           ...currentGeneral,
           announcementActive: announcementData.announcementActive,
           announcementText: announcementData.announcementText,
@@ -242,9 +242,9 @@ export default function AppearanceCenter() {
           announcementBgColor: announcementData.announcementBgColor,
           announcementTextColor: announcementData.announcementTextColor,
           updatedAt: Date.now()
-        });
+        }));
       } else {
-        await setDoc(doc(db, 'settings', 'footer'), footerData);
+        await withTimeout(setDoc(doc(db, 'settings', 'footer'), footerData));
       }
       setMessage({ type: 'success', text: 'Ayarlar başarıyla kaydedildi!' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);

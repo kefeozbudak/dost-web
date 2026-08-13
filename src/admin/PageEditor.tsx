@@ -330,6 +330,19 @@ export default function PageEditor() {
     window.open(previewUrl, '_blank');
   };
 
+  const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error("Zaman aşımı: İşlem çok uzun sürdü. Günlük Firebase kotanız dolmuş olabilir.")), ms);
+      promise.then(res => {
+        clearTimeout(timer);
+        resolve(res);
+      }).catch(err => {
+        clearTimeout(timer);
+        reject(err);
+      });
+    });
+  };
+
   const handleSave = async () => {
     if (!pageId) return;
     setSaving(true);
@@ -342,10 +355,10 @@ export default function PageEditor() {
         updatedAt: Date.now()
       };
       
-      dataToSave = await extractAndSaveBase64Images(dataToSave, db);
+      dataToSave = await withTimeout(extractAndSaveBase64Images(dataToSave, db), 15000);
 
       console.log("Saving dataToSave:", dataToSave);
-      await setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true });
+      await withTimeout(setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true }), 10000);
       resolveMediaUrls(dataToSave).then(resolved => setPageData(resolved));
       alert('Sayfa başarıyla kaydedildi!');
     } catch (e: any) {
