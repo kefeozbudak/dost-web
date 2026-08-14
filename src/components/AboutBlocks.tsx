@@ -71,9 +71,9 @@ export const AkademikKadroBlock = ({ block, getStyle, getTitleStyle, getSubtitle
           {items.map((item: any, idx: number) => (
              <div key={idx} className={getCardClass(item, "bg-white rounded-xl shadow border border-slate-100 overflow-hidden group")} style={getCardStyle(item, block)}>
                {item.image ? (
-                 <div className="h-64 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style={{ backgroundImage: `url(${item.image})` }} />
+                 <div className="aspect-[4/5] w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style={{ backgroundImage: `url(${item.image})` }} />
                ) : (
-                 <div className="h-64 bg-slate-100 flex items-center justify-center">
+                 <div className="aspect-[4/5] w-full bg-slate-100 flex items-center justify-center">
                     <span className="material-symbols-outlined text-6xl text-slate-300">person</span>
                  </div>
                )}

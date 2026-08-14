@@ -1,7 +1,22 @@
-const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, getDocs } = require('firebase/firestore');
-const fs = require('fs');
+import fs from 'fs';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-const firebaseConfig = {
-  // We can't access firebase credentials easily here. Wait, we can use the firebase app configured in src/lib/firebase.ts!
-};
+const firebaseConfig = JSON.parse(fs.readFileSync('./firebase-applet-config.json', 'utf8'));
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+async function run() {
+  const snapshot = await getDocs(collection(db, "pages"));
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.blocks) {
+      data.blocks.forEach((b, i) => {
+        if (b.title && (b.title.toLowerCase().includes("müdür") || b.title.toLowerCase().includes("yardımcı"))) {
+           console.log("Page:", data.title, "| Block type:", b.type, "| Block title:", b.title);
+        }
+      });
+    }
+  });
+}
+run().catch(console.error);
