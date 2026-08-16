@@ -98,9 +98,7 @@ export const SchoolBentoBlock = ({ block, getStyle, getTitleStyle, getSubtitleSt
                       <h3 className="text-[24px] font-bold mb-2 leading-[1.4]" style={getCardTitleStyle(item, block)}>{item.title}</h3>
                       <p className="max-w-md opacity-90" style={getCardDescStyle(item, block)}>{item.desc}</p>
                     </div>
-                    <a href={item.url || "#"} className="inline-flex items-center gap-2 text-sm font-bold mt-4 hover:opacity-80 transition-opacity w-fit cursor-pointer" style={getItemButtonStyle(block)}>
-                        {item.buttonText || "Kampüsümüzü İnceleyin"} <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                    </a>
+
                   </div>
                   <div className="absolute right-0 top-0 w-full h-full bg-gradient-to-l from-black/10 to-transparent z-0"></div>
                 </div>
