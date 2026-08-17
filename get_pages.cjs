@@ -3,8 +3,6 @@ const http = require('http');
 const options = {
   hostname: 'localhost',
   port: 3000,
-  path: '/api/pages/bursluluk-basvuru-formu',
+  path: '/api/debug-pages-all',
   method: 'GET',
 };
-
-// Wait, the API doesn't have an endpoint for this.

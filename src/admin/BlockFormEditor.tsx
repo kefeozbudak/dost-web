@@ -1502,6 +1502,72 @@ export default function BlockFormEditor({
     );
   };
 
+  
+  const renderHeroOverlaySetting = () => {
+    if (!block.type?.includes('hero')) return null;
+    return (
+      <div className="flex flex-col gap-2 p-4 bg-slate-50 border border-slate-200 rounded-lg mb-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={block.styles?.enableDarkOverlay || false}
+            onChange={(e) => handleStyleChange("enableDarkOverlay", e.target.checked)}
+            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+          />
+          <span className="text-sm font-bold text-slate-700">
+            Karanlık Katman Uygula (Görsellerin üzerine yarı saydam karanlık filtre ekler)
+          </span>
+        </label>
+        {block.styles?.enableDarkOverlay && (
+          <div className="mt-2 pl-6 space-y-4">
+            
+            <div>
+              <label className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                <span>Karanlık Derecesi (Görünürlük)</span>
+                <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{block.styles?.overlayOpacity ?? 100}%</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={block.styles?.overlayOpacity ?? 100}
+                onChange={(e) => handleStyleChange("overlayOpacity", parseInt(e.target.value))}
+                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+              <div className="flex justify-between text-xs text-slate-400 mt-1 font-medium">
+                <span>Şeffaf (0%)</span>
+                <span>Tamamen Kapalı (100%)</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+               <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">Katman Rengi</label>
+               <input
+                 type="color"
+                 value={block.styles?.overlayColor || "#000000"}
+                 onChange={(e) => handleStyleChange("overlayColor", e.target.value)}
+                 className="w-8 h-8 rounded cursor-pointer border border-slate-300 p-0"
+               />
+            </div>
+
+            <label className="flex items-center gap-2 cursor-pointer mt-2">
+              <input
+                type="checkbox"
+                checked={block.styles?.overlayHoverReveal !== false} // default true
+                onChange={(e) => handleStyleChange("overlayHoverReveal", e.target.checked)}
+                className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+              />
+              <span className="text-xs font-bold text-slate-600">
+                Üzerine gelince (Hover) katmanı gizle ve orijinal resmi göster
+              </span>
+            </label>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderCommonFields = () => (
     <div className="space-y-4">
       {renderTextareaWithStyle("Başlık", "title")}
@@ -1786,6 +1852,7 @@ export default function BlockFormEditor({
 
         {block.type === "hero" && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
                 Görünüm Düzeni
@@ -2056,6 +2123,7 @@ export default function BlockFormEditor({
 
         {block.type === "news_hero" && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderTextareaWithStyle("Başlık", "title")}
             {renderTextareaWithStyle("Alt Başlık", "subtitle")}
             {renderImageUpload("Arkaplan Görseli", "image")}
@@ -2161,6 +2229,7 @@ export default function BlockFormEditor({
         )}
         {block.type === "menu_hero" && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderInputWithStyle("Badge (Etiket)", "badge")}
             {renderTextareaWithStyle("Başlık", "title")}
             {renderTextareaWithStyle("Açıklama", "subtitle")}
@@ -2224,6 +2293,7 @@ export default function BlockFormEditor({
         )}
         {block.type === "academic_calendar_hero" && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderTextareaWithStyle("Başlık", "title")}
             {renderTextareaWithStyle("Açıklama", "subtitle")}
             {renderImageUpload("Arkaplan Resmi", "image")}
@@ -2549,8 +2619,77 @@ export default function BlockFormEditor({
       )}
 
       
-      {block.type === "tuition_fees_hero" && (
+      
+      {block.type === "bursluluk_hero" && (
         <div className="space-y-4">
+            {renderHeroOverlaySetting()}
+          {renderCommonFields()}
+          {renderInputWithStyle("Rozet (Badge)", "badge")}
+          {renderImageUpload("Arka Plan Görseli", "image")}
+          {renderArrayEditor("stats", [
+            { key: "value", label: "Değer (Örn: 16-17 Mart)", type: "text" },
+            { key: "label", label: "Etiket (Örn: Sınav Tarihi)", type: "text" }
+          ], "İstatistikler")}
+        </div>
+      )}
+
+      {block.type === "bursluluk_exam_form" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+        </div>
+      )}
+
+      {block.type === "bursluluk_info_cards" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor("items", [
+            { key: "title", label: "Kart Başlığı", type: "text" },
+            { key: "icon", label: "İkon (Material)", type: "icon" },
+            { key: "rules", label: "Kurallar/Maddeler (Satır başı yaparak giriniz)", type: "textarea" }
+          ], "Bilgi Kartları")}
+        </div>
+      )}
+
+      {block.type === "bursluluk_result_query" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderInputWithStyle("Buton Metni", "buttonText")}
+          {renderImageUpload("Görsel", "image")}
+        </div>
+      )}
+
+      {block.type === "career_hero" && (
+        <div className="space-y-4">
+            {renderHeroOverlaySetting()}
+          {renderCommonFields()}
+          {renderImageUpload("Arka Plan Görseli", "image")}
+        </div>
+      )}
+
+      {block.type === "career_benefits" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor("items", [
+            { key: "title", label: "Başlık", type: "text" },
+            { key: "desc", label: "Açıklama", type: "textarea" },
+            { key: "icon", label: "İkon (Material)", type: "icon" }
+          ], "Avantajlar / Haklar")}
+        </div>
+      )}
+
+      {block.type === "career_application" && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderArrayEditor("items", [
+            { key: "title", label: "Pozisyon Başlığı", type: "text" },
+            { key: "type", label: "Çalışma Tipi (Örn: Tam Zamanlı)", type: "text" },
+            { key: "dept", label: "Departman (Örn: İlkokul)", type: "text" }
+          ], "Açık Pozisyonlar")}
+        </div>
+      )}
+\n      {block.type === "tuition_fees_hero" && (
+        <div className="space-y-4">
+            {renderHeroOverlaySetting()}
           {renderCommonFields()}
           {renderInputWithStyle("Rozet / Etiket", "badge")}
           {renderImageUpload("Arka Plan Görseli", "image")}
@@ -2626,6 +2765,7 @@ export default function BlockFormEditor({
       
         {block.type === 'achievements_hero' && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             <div className="grid grid-cols-2 gap-4">
               {renderInputWithStyle('Badge (Rozet)', 'badge')}
               {renderImageUpload('Görsel URL', 'image')}
@@ -3099,6 +3239,7 @@ export default function BlockFormEditor({
 
         {block.type === 'edu_system_hero' && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
             {renderImageUpload('Görsel', 'image')}
@@ -3161,6 +3302,7 @@ export default function BlockFormEditor({
 
         {(block.type === 'kindergarten_hero' || block.type === 'primary_school_hero' || block.type === 'middle_school_hero' || block.type === 'high_school_hero') && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderInputWithStyle('Etiket (Rozet)', 'badge')}
             {renderInputWithStyle('Başlık (1. Satır - İçinde HTML olabilir)', 'title')}
             {renderInputWithStyle('İkinci Başlık (2. Satır - Mavi Renkli)', 'title2')}
@@ -3401,6 +3543,7 @@ export default function BlockFormEditor({
         
         {block.type === 'campus_hero' && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli', 'image')}
@@ -3489,6 +3632,7 @@ export default function BlockFormEditor({
 
         {block.type === 'management_hero' && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Açıklama', 'subtitle')}
             {renderImageUpload('Arka Plan Görseli', 'image')}
@@ -3544,6 +3688,7 @@ export default function BlockFormEditor({
 
         {block.type === 'clubs_hero' && (
           <div className="space-y-4">
+            {renderHeroOverlaySetting()}
             {renderImageUpload('Arka Plan Görseli', 'image')}
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">

@@ -105,7 +105,7 @@ export default function FieldStylePicker({
       <button 
         ref={buttonRef}
         type="button" 
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(!isOpen); }}
         className="p-1 text-slate-400 hover:text-blue-600 rounded hover:bg-blue-50 transition-colors"
         title="Yazı ve Kutu Stilini Düzenle"
       >
@@ -115,11 +115,11 @@ export default function FieldStylePicker({
       {isOpen && createPortal(
         <>
           <div 
-            className="fixed inset-0 z-[90]" 
+            className="fixed inset-0 z-[99998]" 
             onClick={() => setIsOpen(false)} 
           />
           <div 
-            className="fixed bg-white border border-slate-200 shadow-2xl rounded-xl p-4 z-[100] w-72 max-h-[85vh] overflow-y-auto custom-scrollbar"
+            className="fixed bg-white border border-slate-200 shadow-2xl rounded-xl p-4 z-[99999] w-72 max-h-[85vh] overflow-y-auto custom-scrollbar"
             style={{
               top: `${dropdownPos.top}px`,
               left: `${dropdownPos.left}px`,

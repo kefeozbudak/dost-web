@@ -1,11 +1,12 @@
-import { getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle } from "../lib/styleUtils";
+import { getHeroOverlayClass, getHeroOverlayStyle, 
+  getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle  } from "../lib/styleUtils";
 import React from 'react';
 import { IconPreview } from './IconField';
 
 export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <section className="relative pt-32 pb-20 px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#faf8ff] overflow-hidden whitespace-normal md:whitespace-pre-line" style={getStyle(block, "container")}>
-      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center relative z-10">
+    <section className="group relative pt-32 pb-20 px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#faf8ff] overflow-hidden whitespace-normal md:whitespace-pre-line" style={getStyle(block, "container")}>
+      <div className="group max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center relative z-10">
         <div className="space-y-6">
           {block.badge && (
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#61f9e9]/20 text-[#006a62] rounded-full text-xs font-bold uppercase tracking-wider">
@@ -52,7 +53,7 @@ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleSty
           ) : (
               <div className="w-full h-full bg-[#e2e8f0]"></div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+          <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-t from-black/40 to-transparent")} style={getHeroOverlayStyle(block)}></div>
                     {(block.overlayCard?.enabled !== false) && (
             <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
               <div className="backdrop-blur-sm p-4 rounded-lg border" style={{ backgroundColor: block.overlayCard?.bgColor || "rgba(250, 248, 255, 0.9)", borderColor: block.overlayCard?.borderColor || "#e2e8f0" }}>
@@ -262,7 +263,7 @@ export const SchoolLgsBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
 
 export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <section className="relative w-full py-20 overflow-hidden bg-white border-b border-[#e2e8f0]" style={getStyle(block, "container")}>
+    <section className="group relative w-full py-20 overflow-hidden bg-white border-b border-[#e2e8f0]" style={getStyle(block, "container")}>
       <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto grid md:grid-cols-2 gap-12 items-center`}>
         <div className="z-10 flex flex-col gap-6">
           {block.badge && (
@@ -309,11 +310,11 @@ export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
           {block.image ? (
             <img alt={block.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src={block.image} />
           ) : (
-            <div className="absolute inset-0 bg-[#f3f2fd] flex items-center justify-center">
+            <div className={getHeroOverlayClass(block, "absolute inset-0 bg-[#f3f2fd] flex items-center justify-center")} style={getHeroOverlayStyle(block)}>
                <span className="material-symbols-outlined text-4xl text-[#c4c5d6]">image</span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+          <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none")} style={getHeroOverlayStyle(block)}></div>
           {(block.overlayCard?.enabled !== false) && (
             <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
               <div className="backdrop-blur-sm p-4 rounded-lg border" style={{ backgroundColor: block.overlayCard?.bgColor || "rgba(250, 248, 255, 0.9)", borderColor: block.overlayCard?.borderColor || "#e2e8f0" }}>

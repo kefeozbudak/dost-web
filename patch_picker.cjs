@@ -1,7 +1,10 @@
 const fs = require('fs');
-const file = 'src/admin/components/FieldStylePicker.tsx';
-let content = fs.readFileSync(file, 'utf8');
+let content = fs.readFileSync('src/admin/components/FieldStylePicker.tsx', 'utf-8');
 
-content = content.replace(/val \? val \+ 'px' : ''/g, 'val');
-fs.writeFileSync(file, content);
-console.log("Patched px in FieldStylePicker");
+content = content.replace(
+  /onClick=\{\(\) => setIsOpen\(!isOpen\)\}/,
+  'onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(!isOpen); }}'
+);
+
+fs.writeFileSync('src/admin/components/FieldStylePicker.tsx', content);
+console.log("Patched FieldStylePicker.tsx");

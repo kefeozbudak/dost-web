@@ -61,9 +61,9 @@ export default function PagesCenter() {
           path: '/on-kayit',
           blocks: defaultPreRegistrationData
         },
-        'is-basvurusu': {
+        'is-basvuru-formu': {
           title: 'İş Başvurusu',
-          path: '/is-basvurusu',
+          path: '/is-basvuru-formu',
           blocks: defaultCareerPageData
         },
         'bursluluk-basvuru-formu': {

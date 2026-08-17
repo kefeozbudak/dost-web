@@ -7,7 +7,7 @@ import 'dotenv/config';
 import fs from 'fs';
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import firebaseConfig from './firebase-applet-config.json';
 
 let db: any = null;
@@ -25,6 +25,30 @@ async function startServer() {
   app.use(express.json({ limit: '10mb' }));
 
   // Media serving endpoint
+  app.get("/api/debug-pages-all", async (req, res) => {
+    try {
+      // using global db
+      const snapshot = await getDocs(collection(db, "pages"));
+      res.json(snapshot.docs.map(d => d.id));
+    } catch(err) {
+      res.status(500).send(err.message);
+    }
+  });
+
+  app.get("/api/debug-pages", async (req, res) => {
+    try {
+      // use global db
+      const docSnap1 = await getDoc(doc(db, "pages", "home"));
+      const docSnap2 = await getDoc(doc(db, "pages", "is-basvurusu"));
+      res.json({
+        bursluluk: docSnap1.exists() ? docSnap1.data() : null,
+        isBasvurusu: docSnap2.exists() ? docSnap2.data() : null, doc3: (await getDoc(doc(db, 'pages', 'is-basvuru-formu'))).data()
+      });
+    } catch(err) {
+      res.status(500).send(err.message);
+    }
+  });
+
   app.get("/api/media/:id", async (req, res) => {
     try {
       if (!db) {

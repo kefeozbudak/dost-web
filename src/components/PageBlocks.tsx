@@ -1,13 +1,14 @@
 import ErrorBoundary from "./ErrorBoundary";
 import React, { useState, useEffect } from "react";
 import LgsCalculator from "./LgsCalculator";
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, storage } from "../lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TextWithKvkkLink from "./TextWithKvkkLink";
 import IconField, { IconPreview } from "./IconField";
 import SmartLink from "./SmartLink";
-import { getStyle, getTitleStyle, getSubtitleStyle, getDescStyle, getBadgeStyle, getButtonStyle, getItemContainerStyle, getItemTitleStyle, getItemDescStyle, getItemButtonStyle, getTitlePart1Style, getTitlePart2Style, getValidText, getValidStyle, getIndividualButtonStyle, fallbackImages, getImageStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, extractAlignClass, removeAlignStyles, getIconStyle, getCardButtonStyle } from "../lib/styleUtils";
+import { getHeroOverlayClass, getHeroOverlayStyle,  getStyle, getTitleStyle, getSubtitleStyle, getDescStyle, getBadgeStyle, getButtonStyle, getItemContainerStyle, getItemTitleStyle, getItemDescStyle, getItemButtonStyle, getTitlePart1Style, getTitlePart2Style, getValidText, getValidStyle, getIndividualButtonStyle, fallbackImages, getImageStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, extractAlignClass, removeAlignStyles, getIconStyle, getCardButtonStyle  } from "../lib/styleUtils";
 import { ManagementHeroBlock, ManagementRectorBlock, ManagementTeamGridBlock } from './ManagementBlocks';
 import { SchoolHeroBlock, SchoolBentoBlock, SchoolBranchesBlock, SchoolPedagogyBlock, SchoolLgsBlock, HighSchoolHeroBlock, HighSchoolProgramsBlock } from './SchoolBlocks';
 import { AboutHeroBlock, AcademicHeroBlock, AkademikKadroBlock, TimelineBlock, MissionVisionBlock, ValuesBlock, QuoteImageBlock } from './AboutBlocks';
@@ -287,21 +288,22 @@ const CareerHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative w-full rounded-2xl overflow-hidden min-h-[400px] flex items-center justify-center mb-8 whitespace-normal md:whitespace-pre-line"
+      className="group relative w-full rounded-2xl overflow-hidden min-h-[400px] flex items-center justify-center mb-8 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
         className="absolute inset-0 bg-cover bg-center whitespace-normal md:whitespace-pre-line"
         style={{
-          backgroundImage: `url(${block.image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80"})`,
+          backgroundImage: `url('${block.image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80"}')`,
         }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80 whitespace-normal md:whitespace-pre-line"></div>
+      {/* Karanlık katman kaldırıldı, metin okunaklılığı için sadece alta hafif gölge eklendi */}
+      <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
       <div
         className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-2 md:px-6 py-16 md:py-24 text-white max-w-3xl ${getAlignClass(block, "title")}`}
       >
         <h1
-          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-normal md:whitespace-pre-line"
+          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-normal md:whitespace-pre-line drop-shadow-md"
           style={getTitleStyle(block)}
         >
           {block.title || "Dost Koleji'nde Kariyer"}
@@ -516,11 +518,11 @@ const EduSystemHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
+      className="group relative w-full min-h-[500px] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-on-background/80 to-on-background/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
+        <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-on-background/50 to-on-background/20 z-10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
         <div
           className="w-full h-full bg-cover whitespace-normal md:whitespace-pre-line"
           style={{
@@ -1765,11 +1767,11 @@ const TuitionFeesHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
+      className="group relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
+        <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-[#002147]/40 via-[#002147]/30 to-[#002147]/10 z-10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
         <div
           className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
           style={{ backgroundImage: `url('${heroBg}')` }}
@@ -1824,11 +1826,11 @@ const BurslulukHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
+      className="group relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
+        <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-[#002147]/40 via-[#002147]/30 to-[#002147]/10 z-10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
         <div
           className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
           style={{ backgroundImage: `url('${heroBg}')` }}
@@ -1857,10 +1859,12 @@ const BurslulukHeroBlock = ({
           <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6 whitespace-normal md:whitespace-pre-line">
             {stats.map((stat: any, idx: number) => (
               <div key={idx}>
-                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-normal md:whitespace-pre-line">
+                <p className="font-bold text-xl md:text-2xl whitespace-normal md:whitespace-pre-line"
+                   style={{ color: '#D4AF37', ...getCardTitleStyle(stat, block) }}>
                   {stat.value}
                 </p>
-                <p className="text-sm opacity-80 whitespace-normal md:whitespace-pre-line">
+                <p className="text-sm opacity-80 whitespace-normal md:whitespace-pre-line"
+                   style={getCardDescStyle(stat, block)}>
                   {stat.label}
                 </p>
               </div>
@@ -2123,7 +2127,7 @@ const BurslulukInfoCardsBlock = ({
                 {item.title}
               </h4>
               <ul className="space-y-3 text-[#434654] whitespace-normal md:whitespace-pre-line">
-                {(item.rules || item.desc || []).map(
+                {(Array.isArray(item.rules || item.desc || []) ? (item.rules || item.desc || []) : (item.rules || item.desc || '').split('\n')).map(
                   (rule: string, rIdx: number) => (
                     <li
                       key={rIdx}
@@ -2870,11 +2874,11 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative h-[600px] w-full flex items-center overflow-hidden transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
+              className="group relative h-[600px] w-full flex items-center overflow-hidden transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 whitespace-normal md:whitespace-pre-line"></div>
+                <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-primary/40 to-transparent z-10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
                 {block.image && (
                   <img
                     className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
@@ -2978,7 +2982,7 @@ export const DynamicBlockRenderer = ({
                           style={getImageStyle(item, "image", i)}
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-normal md:whitespace-pre-line">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent flex flex-col justify-end p-8 whitespace-normal md:whitespace-pre-line">
                         <h3
                           className="font-headline-md text-headline-md text-white mb-2 whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
@@ -3758,7 +3762,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative h-[60vh] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
+              className="group relative h-[60vh] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
@@ -3766,7 +3770,7 @@ export const DynamicBlockRenderer = ({
                   className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
                   style={getImageStyle(block, "image")}
                 ></div>
-                <div className="absolute inset-0 bg-primary/60 mix-blend-multiply whitespace-normal md:whitespace-pre-line"></div>
+                <div className={getHeroOverlayClass(block, "absolute inset-0 bg-primary/60 mix-blend-multiply whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
               </div>
               <div
                 className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter w-full`}
@@ -3979,7 +3983,7 @@ export const DynamicBlockRenderer = ({
               style={getStyle(block, "")}
             >
               <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
+                <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-primary/60 to-primary/20 z-10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
                 <div className="w-full h-full relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                   <div
                     className="absolute inset-0 w-full h-full whitespace-normal md:whitespace-pre-line"
@@ -4836,7 +4840,7 @@ export const DynamicBlockRenderer = ({
                       </div>
                     )}
 
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300 whitespace-normal md:whitespace-pre-line"></div>
+                    <div className={getHeroOverlayClass(block, "absolute inset-0 bg-black/40 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
 
                     {/* Video Play Interaction */}
                     <div className="absolute inset-0 flex items-center justify-center whitespace-normal md:whitespace-pre-line">
@@ -4869,7 +4873,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
+              className="group relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
               
               style={{
                 ...getStyle(block, "container"), backgroundColor: block.styles?.innerBgColor || "#00164f",
@@ -5171,7 +5175,7 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={block.id}
-            className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
+            className="group relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
               
             style={
               block.image
@@ -5519,7 +5523,7 @@ export const DynamicBlockRenderer = ({
                       ) : (
                         <div className="w-full h-full bg-slate-200 whitespace-normal md:whitespace-pre-line"></div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 whitespace-normal md:whitespace-pre-line">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 whitespace-normal md:whitespace-pre-line">
                         <p className="text-white text-[12px] font-bold tracking-[0.05em] whitespace-normal md:whitespace-pre-line">
                           {item.hoverText}
                         </p>
@@ -5640,7 +5644,7 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className="relative h-[400px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
+            className="group relative h-[400px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
             {block.image && (
@@ -5651,7 +5655,7 @@ export const DynamicBlockRenderer = ({
                 style={getImageStyle(block, "image", index)}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 whitespace-normal md:whitespace-pre-line"></div>
+            <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 whitespace-normal md:whitespace-pre-line")} style={getHeroOverlayStyle(block)}></div>
             <div
               className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop relative z-10 w-full`}
             >
@@ -5994,7 +5998,7 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className="relative bg-primary text-on-primary overflow-hidden whitespace-normal md:whitespace-pre-line"
+            className="group relative bg-primary text-on-primary overflow-hidden whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
             <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">

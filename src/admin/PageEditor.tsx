@@ -355,10 +355,10 @@ export default function PageEditor() {
         updatedAt: Date.now()
       };
       
-      dataToSave = await withTimeout(extractAndSaveBase64Images(dataToSave, db), 15000);
+      if (pageId === 'is-basvuru-formu' || pageId === 'is-basvurusu') { console.log('is-basvurusu saving: ', dataToSave); } dataToSave = await withTimeout(extractAndSaveBase64Images(dataToSave, db), 60000);
 
       console.log("Saving dataToSave:", dataToSave);
-      await withTimeout(setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true }), 10000);
+      await withTimeout(setDoc(doc(db, 'pages', pageId), dataToSave, { merge: true }), 15000);
       resolveMediaUrls(dataToSave).then(resolved => setPageData(resolved));
       alert('Sayfa başarıyla kaydedildi!');
     } catch (e: any) {

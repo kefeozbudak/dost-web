@@ -1,4 +1,5 @@
-import { getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle } from "../lib/styleUtils";
+import { getHeroOverlayClass, getHeroOverlayStyle, 
+  getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle  } from "../lib/styleUtils";
 import React from 'react';
 
 export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {

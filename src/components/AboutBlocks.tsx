@@ -1,12 +1,13 @@
-import { getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle } from "../lib/styleUtils";
+import { getHeroOverlayClass, getHeroOverlayStyle, 
+  getStyle, getTitleStyle, getSubtitleStyle, getIconStyle, getCardStyle, getCardClass, getCardTitleStyle, getCardDescStyle, getItemButtonStyle, getIndividualButtonStyle  } from "../lib/styleUtils";
 import React from 'react';
 import { IconPreview } from './IconField';
 
 export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <section className="relative h-[80vh] min-h-[600px] flex items-center overflow-hidden" style={getStyle(block, "container")}>
+    <section className="group relative h-[80vh] min-h-[600px] flex items-center overflow-hidden" style={getStyle(block, "container")}>
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1d4eca]/80 to-transparent z-10"></div>
+        <div className={getHeroOverlayClass(block, "absolute inset-0 bg-gradient-to-r from-[#1d4eca]/80 to-transparent z-10")} style={getHeroOverlayStyle(block)}></div>
         {block.image && (
           <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${block.image})` }} />
         )}

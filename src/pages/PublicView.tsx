@@ -113,7 +113,7 @@ export default function PublicView() {
     const rawPath = location.pathname;
     const cleanPath = rawPath.startsWith('/') ? rawPath : '/' + rawPath;
     const docIdRaw = rawPath === '/' ? 'home' : rawPath.substring(1);
-    const docId = ['is-basvuru-formu', 'is-basvuru', 'isbasvurusu', 'isbasvuru'].includes(docIdRaw) ? 'is-basvurusu' : docIdRaw;
+    const docId = ['is-basvuru-formu', 'is-basvurusu', 'is-basvuru', 'isbasvurusu', 'isbasvuru'].includes(docIdRaw) ? 'is-basvuru-formu' : ['bursluluk-sinavi', 'bursluluk-basvurusu'].includes(docIdRaw) ? 'bursluluk-basvuru-formu' : docIdRaw;
 
     const docRef = doc(db, 'pages', docId);
     

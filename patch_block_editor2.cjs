@@ -1,7 +1,7 @@
 const fs = require('fs');
 let content = fs.readFileSync('src/admin/BlockFormEditor.tsx', 'utf-8');
 
-const regex = /const renderHeroOverlaySetting = \(\) => \{[\s\S]*?return \([\s\S]*?<\/label>\s*<\/div>\s*\);\s*\};/;
+const regex = /const renderHeroOverlaySetting = \(\) => \{[\s\S]*?gerçek resmi gösterir.\s*<\/p>\s*<\/div>\s*\)\}\s*<\/div>\s*\);\s*\};/;
 
 const newFunction = `const renderHeroOverlaySetting = () => {
     if (!block.type?.includes('hero')) return null;
@@ -71,7 +71,7 @@ const newFunction = `const renderHeroOverlaySetting = () => {
 if (content.match(regex)) {
   content = content.replace(regex, newFunction);
   fs.writeFileSync('src/admin/BlockFormEditor.tsx', content);
-  console.log("Patched slider");
+  console.log("Patched slider 2");
 } else {
   console.log("Could not find regex match in BlockFormEditor");
 }
