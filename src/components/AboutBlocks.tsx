@@ -11,7 +11,7 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
           <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${block.image})` }} />
         )}
       </div>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto relative z-20 w-full`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto relative z-20 w-full`}>
         <div className="max-w-2xl text-white">
           {block.badge && (
             <span className="inline-block bg-[#5ef6e6] text-[#006f66] px-4 py-1 rounded-full text-[12px] font-bold mb-6 uppercase tracking-wider">
@@ -30,7 +30,7 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
             <div className="flex gap-4">
               {block.buttons.map((btn: any, idx: number) => (
                 <a key={idx} href={btn.url || "#"} 
-                   className={`px-8 py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:opacity-90' : 'border-2 border-white text-white hover:bg-white/10'}`} 
+                   className={`px-margin-mobile md:px-margin-desktop py-3 rounded-xl text-[14px] font-bold transition-colors ${btn.primary !== false ? 'bg-white text-[#1d4eca] hover:opacity-90' : 'border-2 border-white text-white hover:bg-white/10'}`} 
                    style={getIndividualButtonStyle(btn, block)}>
                   {btn.label}
                 </a>              ))}
@@ -45,7 +45,7 @@ export const AboutHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
 export const AcademicHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section className="py-20 bg-slate-50" style={getStyle(block, "container")}>
-      <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto flex flex-col md:flex-row gap-12 items-center`}>
+      <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-2 md:px-6" : "max-w-[1200px] px-2 md:px-6"} mx-auto flex flex-col md:flex-row gap-12 items-center`}>
         <div className="md:w-1/2 space-y-6">
            <h2 className="text-3xl md:text-4xl font-bold text-slate-900" style={getTitleStyle(block)}>{block.title || "Akademik Vizyon"}</h2>
            <p className="text-lg text-slate-600 leading-relaxed" style={getSubtitleStyle(block)}>{block.subtitle}</p>
@@ -62,7 +62,7 @@ export const AkademikKadroBlock = ({ block, getStyle, getTitleStyle, getSubtitle
   const items = block.items || [];
   return (
     <section className="py-20" style={getStyle(block, "container")}>
-      <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto`}>
+      <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-2 md:px-6" : "max-w-[1200px] px-2 md:px-6"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4" style={getTitleStyle(block)}>{block.title || "Akademik Kadro"}</h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>
@@ -94,7 +94,7 @@ export const TimelineBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#faf8ff]" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold leading-[1.3] mb-4 text-[#1a1b23]" style={getTitleStyle(block)}>{block.title || "Başarı Yolculuğumuz"}</h2>
           {block.subtitle && <p className="text-[#64748b] text-[16px] max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
@@ -107,13 +107,13 @@ export const TimelineBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle
 
              return (
                <div key={idx} className="flex flex-col md:flex-row items-center gap-12">
-                 <div className={`md:w-1/2 ${isEven ? 'order-2 md:order-2' : 'order-2 md:order-1'}`}>
+                 <div className={`w-full md:w-1/2 ${isEven ? 'order-2 md:order-2' : 'order-2 md:order-1'}`}>
                    <div className={`inline-block ${colorBg} ${colorText} px-4 py-1 rounded-full text-[12px] font-bold mb-4`}>{item.year || item.title}</div>
                    <h3 className="text-[36px] font-bold mb-4 leading-[1.3] text-[#1a1b23]">{item.title}</h3>
                    <p className="text-[18px] text-[#64748b] leading-relaxed">{item.desc}</p>
                  </div>
-                 <div className={`md:w-1/2 ${isEven ? 'order-1 md:order-1' : 'order-1 md:order-2'}`}>
-                   <div className="w-full h-96 bg-cover bg-center rounded-3xl shadow-lg border border-[#e2e8f0]" style={item.image ? { backgroundImage: `url(${item.image})` } : { backgroundColor: '#e2e8f0' }} />
+                 <div className={`w-full md:w-1/2 ${isEven ? 'order-1 md:order-1' : 'order-1 md:order-2'}`}>
+                   <div className="w-full h-[250px] md:h-96 bg-cover bg-center rounded-3xl shadow-lg border border-[#e2e8f0]" style={item.image ? { backgroundImage: `url(${item.image})` } : { backgroundColor: '#e2e8f0' }} />
                  </div>
                </div>
              );
@@ -128,7 +128,7 @@ export const MissionVisionBlock = ({ block, getStyle, getTitleStyle, getSubtitle
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#f3f2fd]" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto grid md:grid-cols-2 gap-6`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto grid md:grid-cols-2 gap-6`}>
         {items.map((item: any, idx: number) => {
            const colorText = idx % 2 === 1 ? 'text-[#006a62]' : 'text-[#1d4eca]';
            const colorBg = idx % 2 === 1 ? 'bg-[#006a62]/10' : 'bg-[#1d4eca]/10';
@@ -153,7 +153,7 @@ export const ValuesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#faf8ff]" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold mb-4 leading-[1.3] text-[#1a1b23]" style={getTitleStyle(block)}>{block.title || "Temel Değerlerimiz"}</h2>
           {block.subtitle && <p className="text-[#64748b] text-[16px] max-w-2xl mx-auto" style={getSubtitleStyle(block)}>{block.subtitle}</p>}
@@ -182,7 +182,7 @@ export const ValuesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }
 export const QuoteImageBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section className="py-20 bg-[#e2e1ec]/30" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto`}>
         <div className="bg-white rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-xl">
           <div className="md:w-1/2 h-96 md:h-auto bg-cover bg-center" style={block.image ? { backgroundImage: `url(${block.image})` } : { backgroundColor: '#e2e8f0' }} />
           <div className="md:w-1/2 p-12 flex flex-col justify-center relative">

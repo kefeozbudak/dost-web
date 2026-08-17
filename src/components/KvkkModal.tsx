@@ -74,7 +74,7 @@ const KvkkModal = () => {
         <div className="p-6 border-t border-slate-100 flex justify-end">
           <button 
             onClick={() => setIsOpen(false)}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            className="px-2 md:px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
           >
             Anladım, Kapat
           </button>

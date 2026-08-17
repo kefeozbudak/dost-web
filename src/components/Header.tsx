@@ -106,7 +106,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
 
       {/* Main Header Navigation Container */}
       <div className="bg-white/95 backdrop-header border-b border-border-subtle shadow-sm">
-        <div className="max-w-container-max mx-auto px-margin-desktop h-20 flex justify-between items-center w-full relative">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop h-20 flex justify-between items-center w-full relative">
           <div className="flex items-center shrink-0">
             <Link className="block" to="/">
               <img alt="Dost Koleji Logo" className="w-auto object-contain" style={{ height: logoHeight }} src={logoSrc} />
@@ -221,7 +221,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
           
           <div className="flex items-center gap-4 md:gap-6">
             {ctaLabel && !ctaHidden && (
-              <SmartLink className={`hidden sm:flex items-center bg-primary text-white ${data?.menuTypography?.topMenuFontSize || 'text-sm'} ${data?.menuTypography?.topMenuFontWeight || 'font-bold'} px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all`} url={ctaUrl}>
+              <SmartLink className={`hidden sm:flex items-center bg-primary text-white ${data?.menuTypography?.topMenuFontSize || 'text-sm'} ${data?.menuTypography?.topMenuFontWeight || 'font-bold'} px-2 md:px-6 py-3 rounded-lg custom-hover-bg/90 hover:shadow-lg active:scale-95 transition-all`} url={ctaUrl}>
                 <span>{ctaLabel}</span>
               </SmartLink>
             )}
@@ -237,7 +237,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
       
       {/* Mobile Menu Panel */}
       <div className={`fixed top-0 right-0 h-full w-full max-w-[320px] bg-white z-[70] lg:hidden flex flex-col shadow-2xl transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="h-20 flex items-center justify-between px-6 border-b border-border-subtle shrink-0">
+        <div className="h-20 flex items-center justify-between px-2 md:px-6 border-b border-border-subtle shrink-0">
           <Link to="/" onClick={() => setMobileMenuOpen(false)}>
             <img alt="Logo" className="w-auto object-contain" style={{ height: `calc(${logoHeight} * 0.7)` }} src={logoSrc} />
           </Link>
@@ -335,7 +335,7 @@ export default function Header({ data, announcement }: { data?: any; announcemen
             <SmartLink 
               url={ctaUrl} 
               onClick={() => setMobileMenuOpen(false)}
-              className="flex justify-center items-center w-full bg-primary text-white font-bold px-6 py-3 rounded-lg active:scale-95 transition-all"
+              className="flex justify-center items-center w-full bg-primary text-white font-bold px-2 md:px-6 py-3 rounded-lg active:scale-95 transition-all"
             >
               <span>{ctaLabel}</span>
             </SmartLink>

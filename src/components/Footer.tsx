@@ -116,7 +116,7 @@ export default function Footer({ data, headerData }: { data?: any; headerData?: 
       className={`w-full ${!customBg ? 'bg-surface-container dark:bg-inverse-surface' : ''} border-t ${!customBorderColor ? 'border-border-subtle dark:border-outline-variant' : ''} pt-12 md:pt-section-gap pb-8 font-sans transition-colors`}
       style={footerStyle}
     >
-      <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop">
+      <div className="max-w-container-max mx-auto px-4 sm:px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-gutter mb-12 md:mb-16">
           
           {!data?.hideBrand && (
@@ -209,7 +209,7 @@ export default function Footer({ data, headerData }: { data?: any; headerData?: 
                     />
                   </div>
                   <button 
-                    className="bg-primary hover:bg-primary-container text-white font-bold text-sm px-8 py-3 rounded-xl transition-all active:scale-95 duration-150 shadow-md shrink-0" 
+                    className="inline-flex items-center w-full sm:w-auto justify-center text-center bg-primary hover:bg-primary-container text-white font-bold text-sm px-6 md:px-8 py-3 md:py-3.5 rounded-xl transition-all active:scale-95 duration-150 shadow-md shrink-0" 
                     type="submit"
                   >
                     {data?.newsletterButtonText || 'Kaydol'}

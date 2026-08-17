@@ -1,0 +1,482 @@
+        case "campus_hero":
+          return (
+            <section
+              key={index}
+              className="relative h-[600px] w-full flex items-center overflow-hidden transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
+              style={getStyle(block, "container")}
+            >
+              <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 whitespace-normal md:whitespace-pre-line"></div>
+                {block.image && (
+                  <img
+                    className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                    src={block.image}
+                    alt=""
+                    style={{
+                      ...getImageStyle(block, "image"),
+                      backgroundSize: "cover",
+                      backgroundPosition: "center center",
+                    }}
+                  />
+                )}
+              </div>
+              <div
+                className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop w-full`}
+              >
+                <div className={getHeroInnerClass(block, "max-w-2xl")}>
+                  <h1
+                    className="font-display-lg text-display-lg text-white mb-6 whitespace-normal md:whitespace-pre-line"
+                    style={getTitleStyle(block)}
+                  >
+                    {block.title}
+                  </h1>
+                  <p
+                    className="font-body-md text-body-lg text-white/90 mb-8 leading-relaxed whitespace-normal md:whitespace-pre-line"
+                    style={getSubtitleStyle(block)}
+                  >
+                    {block.subtitle}
+                  </p>
+                  {block.buttons && block.buttons.length > 0 && (
+                    <div className="flex gap-4 flex-wrap whitespace-normal md:whitespace-pre-line">
+                      {block.buttons.map((btn: any, btnIdx: number) => (
+                        <SmartLink
+                          key={btnIdx}
+                          url={btn.url || btn.buttonUrl || btn.link}
+                          className="bg-white text-primary px-margin-mobile md:px-margin-desktop py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2 whitespace-normal md:whitespace-pre-line"
+                          style={getIndividualButtonStyle(btn, block)}
+                        >
+                          {btn.label}{" "}
+                          {btn.icon && <IconPreview data={btn.icon}  style={getIconStyle(btn, block)} />}
+                        </SmartLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          );
+
+        case "campus_bento":
+          // Tailwind safelist: col-span-12 md:col-span-6 lg:col-span-4 lg:col-span-8
+          return (
+            <section
+              key={index}
+              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
+              style={getStyle(block, "container")}
+            >
+              <div
+                className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
+              >
+                <h2
+                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
+                  style={getTitleStyle(block)}
+                >
+                  {block.title}
+                </h2>
+                {block.subtitle && (
+                  <p
+                    className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} mb-4 whitespace-normal md:whitespace-pre-line`}
+                    style={getSubtitleStyle(block)}
+                    dangerouslySetInnerHTML={{ __html: block.subtitle }}
+                  />
+                )}
+                <div className="w-20 h-1 bg-primary mx-auto rounded-full whitespace-normal md:whitespace-pre-line"></div>
+              </div>
+              <div className="grid grid-cols-12 gap-6 whitespace-normal md:whitespace-pre-line">
+                {(block.items || []).map((item: any, i: number) => {
+                  const cols =
+                    item.colSpan || "col-span-12 md:col-span-6 lg:col-span-4";
+                  const baseStyle = getCardStyle(item, block);
+                  if (
+                    !item.image &&
+                    !baseStyle.backgroundColor &&
+                    !item.styles?.backgroundColor
+                  ) {
+                    baseStyle.backgroundColor = "#747685";
+} else if (item.styles?.backgroundColor) {
+                    baseStyle.backgroundColor = item.styles.backgroundColor;
+                  }
+                  return (
+                    <div
+                      key={i}
+                      className={`${cols} group relative overflow-hidden rounded-3xl h-[400px] border border-border-subtle hover:border-primary transition-all duration-500 shadow-sm`}
+                      style={baseStyle}
+                    >
+                      {item.image && (
+                        <img
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 whitespace-normal md:whitespace-pre-line"
+                          src={item.image}
+                          alt=""
+                          style={getImageStyle(item, "image", i)}
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-normal md:whitespace-pre-line">
+                        <h3
+                          className="font-headline-md text-headline-md text-white mb-2 whitespace-normal md:whitespace-pre-line"
+                          style={getCardTitleStyle(item, block)}
+                        >
+                          {item.title}
+                        </h3>
+                        {item.desc && (
+                          <p
+                            className="text-white/80 font-body-md whitespace-normal md:whitespace-pre-line"
+                            style={getCardDescStyle(item, block)}
+                          >
+                            {item.subtitle || item.desc}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+
+        case "campus_gallery":
+          return (
+            <section
+              key={index}
+              className="bg-surface-container-low py-section-gap transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
+              style={getStyle(block, "container")}
+            >
+              <div
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
+              >
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-normal md:whitespace-pre-line">
+                  <div className="w-full md:w-auto flex-1">
+                    <h2
+                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
+                      style={getTitleStyle(block)}
+                    >
+                      {block.title}
+                    </h2>
+                    <p
+                      className={`font-body-md text-text-muted max-w-xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
+                      style={getSubtitleStyle(block)}
+                    >
+                      {block.subtitle}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 whitespace-normal md:whitespace-pre-line">
+                    <button
+                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-normal md:whitespace-pre-line"
+                      onClick={(e) => {
+                        const c =
+                          e.currentTarget.parentElement?.parentElement
+                            ?.nextElementSibling;
+                        if (c) {
+                          c.scrollBy({ left: -350, behavior: "smooth" });
+                        }
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
+                        translate="no"
+                        aria-hidden="true"
+                      >
+                        chevron_left
+                      </span>
+                    </button>
+                    <button
+                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-normal md:whitespace-pre-line"
+                      onClick={(e) => {
+                        const c =
+                          e.currentTarget.parentElement?.parentElement
+                            ?.nextElementSibling;
+                        if (c) {
+                          c.scrollBy({ left: 350, behavior: "smooth" });
+                        }
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
+                        translate="no"
+                        aria-hidden="true"
+                      >
+                        chevron_right
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className="flex gap-6 overflow-x-auto no-scrollbar pb-4 whitespace-normal md:whitespace-pre-line"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {(block.items || []).map((item: any, i: number) => (
+                    <div
+                      key={i}
+                      className="min-w-[350px] bg-white rounded-2xl overflow-hidden shadow-sm border border-border-subtle group flex-shrink-0 whitespace-normal md:whitespace-pre-line"
+                      style={getCardStyle(item, block)}
+                    >
+                      <div className="h-64 overflow-hidden relative whitespace-normal md:whitespace-pre-line">
+                        {item.image && (
+                          <img
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 whitespace-normal md:whitespace-pre-line"
+                            src={item.image}
+                            alt=""
+                            style={getImageStyle(item, "image", i)}
+                          />
+                        )}
+                      </div>
+                      <div className="p-6 whitespace-normal md:whitespace-pre-line">
+                        <h4
+                          className="font-headline-md text-[20px] mb-2 whitespace-normal md:whitespace-pre-line"
+                          style={getCardTitleStyle(item, block)}
+                        >
+                          {item.title}
+                        </h4>
+                        <p
+                          className="text-text-muted text-label-md whitespace-normal md:whitespace-pre-line"
+                          style={getCardDescStyle(item, block)}
+                        >
+                          {item.subtitle || item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <style
+                dangerouslySetInnerHTML={{
+                  __html: `
+              .no-scrollbar::-webkit-scrollbar { display: none; }
+            `,
+                }}
+              />
+            </section>
+          );
+
+        case "campus_life":
+          return (
+            <section
+              key={index}
+              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
+              style={getStyle(block, "container")}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center whitespace-normal md:whitespace-pre-line">
+                <div className="order-2 lg:order-1 whitespace-normal md:whitespace-pre-line">
+                  <div className="grid grid-cols-2 gap-6 items-center whitespace-normal md:whitespace-pre-line">
+                    <div className="flex flex-col gap-6 whitespace-normal md:whitespace-pre-line">
+                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-normal md:whitespace-pre-line">
+                        {block.image1 && (
+                          <img
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                            src={block.image1}
+                            alt=""
+                          />
+                        )}
+                      </div>
+                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-normal md:whitespace-pre-line">
+                        {block.image2 && (
+                          <img
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                            src={block.image2}
+                            alt=""
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-6 pt-12 whitespace-normal md:whitespace-pre-line">
+                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-normal md:whitespace-pre-line">
+                        {block.image3 && (
+                          <img
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                            src={block.image3}
+                            alt=""
+                          />
+                        )}
+                      </div>
+                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-normal md:whitespace-pre-line">
+                        {block.image4 && (
+                          <img
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                            src={block.image4}
+                            alt=""
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="order-1 lg:order-2 space-y-8 whitespace-normal md:whitespace-pre-line">
+                  {block.badge && (
+                    <span
+                      className="text-primary font-bold text-label-md tracking-widest uppercase whitespace-normal md:whitespace-pre-line"
+                      style={getBadgeStyle(block)}
+                    >
+                      {block.badge}
+                    </span>
+                  )}
+                  <h2
+                    className="font-headline-xl text-headline-xl text-text-main whitespace-normal md:whitespace-pre-line"
+                    style={getTitleStyle(block)}
+                  >
+                    {block.titlePart1}{" "}
+                    {block.titlePart2 && (
+                      <div style={getTitlePart2Style(block)}>
+                        {block.titlePart2}
+                      </div>
+                    )}
+                  </h2>
+                  <p
+                    className="font-body-md text-text-muted leading-relaxed whitespace-normal md:whitespace-pre-line"
+                    style={getSubtitleStyle(block)}
+                  >
+                    {block.subtitle}
+                  </p>
+                  <ul className="space-y-4 whitespace-normal md:whitespace-pre-line">
+                    {(block.items || []).map((item: any, i: number) => (
+                      <li
+                        key={i}
+                        className="flex items-center gap-4 whitespace-normal md:whitespace-pre-line"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 whitespace-normal md:whitespace-pre-line">
+                          {item.icon &&
+                            (typeof item.icon === "string" &&
+                            item.icon === item.icon.toLowerCase() ? (
+                              <IconPreview data={item.icon}  style={getIconStyle(item, block)} />
+                            ) : (
+                              <IconPreview
+                                data={item.icon}
+                                className="w-6 h-6 fill-current whitespace-normal md:whitespace-pre-line"
+                               style={getIconStyle(item, block)} />
+                            ))}
+                        </div>
+                        <span
+                          className="font-label-md text-text-main whitespace-normal md:whitespace-pre-line"
+                          style={getCardTitleStyle(item, block)}
+                        >
+                          {item.title}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {block.buttons && block.buttons.length > 0 && (
+                    <div className="flex gap-4 flex-wrap whitespace-normal md:whitespace-pre-line">
+                      {block.buttons.map((btn: any, btnIdx: number) => (
+                        <SmartLink
+                          key={btnIdx}
+                          url={btn.url || btn.buttonUrl || btn.link}
+                          className={`px-margin-mobile md:px-margin-desktop py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === "outline" ? "border-2 border-primary text-primary hover:bg-primary/5" : "bg-secondary text-white hover:opacity-90"}`}
+                          style={getIndividualButtonStyle(btn, block)}
+                        >
+                          {btn.label}
+                        </SmartLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          );
+
+        case "campus_contact":
+          return (
+            <section
+              key={index}
+              className="py-section-gap bg-surface-dim/30 transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
+              style={getStyle(block, "container")}
+            >
+              <div
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
+              >
+                <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row whitespace-normal md:whitespace-pre-line">
+                  <div className="p-12 w-full lg:w-1/2 space-y-8 flex flex-col justify-center whitespace-normal md:whitespace-pre-line">
+                    <h2
+                      className="font-headline-xl text-headline-xl whitespace-normal md:whitespace-pre-line"
+                      style={getTitleStyle(block)}
+                    >
+                      {block.title}
+                    </h2>
+                    {block.subtitle && (
+                      <p
+                        className="font-body-lg text-text-muted whitespace-normal md:whitespace-pre-line"
+                        style={getSubtitleStyle(block)}
+                        dangerouslySetInnerHTML={{ __html: block.subtitle }}
+                      />
+                    )}
+                    <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
+                      {(block.items || []).map((item: any, i: number) => (
+                        <div
+                          key={i}
+                          className="flex gap-4 items-start whitespace-normal md:whitespace-pre-line"
+                        >
+                          <IconPreview
+                            data={item.icon}
+                            className="text-primary whitespace-normal md:whitespace-pre-line"
+                           style={getIconStyle(item, block)} />
+                          <div>
+                            <h4
+                              className="font-bold text-text-main whitespace-normal md:whitespace-pre-line"
+                              style={getCardTitleStyle(item, block)}
+                            >
+                              {item.title}
+                            </h4>
+                            <p
+                              className="text-text-muted whitespace-normal md:whitespace-pre-line"
+                              style={getCardDescStyle(item, block)}
+                            >
+                              {item.subtitle || item.desc}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-1/2 min-h-[400px] relative overflow-hidden whitespace-normal md:whitespace-pre-line">
+                    {block.mapCode ? (
+                      <div
+                        className="w-full h-full flex flex-col [&>iframe]:flex-1 [&>iframe]:w-full [&>iframe]:min-h-[400px] min-h-[400px] whitespace-normal md:whitespace-pre-line"
+                        dangerouslySetInnerHTML={{ __html: block.mapCode }}
+                      />
+                    ) : (
+                      <>
+                        {block.image && (
+                          <img
+                            className="absolute inset-0 w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
+                            src={block.image}
+                            alt=""
+                            style={getImageStyle(block, "image")}
+                          />
+                        )}
+                        <div className="absolute bottom-8 left-8 right-8 bg-white/80 backdrop-blur-md p-6 rounded-2xl flex items-center justify-between border border-border-subtle/80 whitespace-normal md:whitespace-pre-line">
+                          <div className="w-full md:w-auto flex-1">
+                            <h4 className="font-bold whitespace-normal md:whitespace-pre-line">
+                              {block.cardTitle}
+                            </h4>
+                            <p className="text-sm text-text-muted whitespace-normal md:whitespace-pre-line">
+                              {block.cardDesc}
+                            </p>
+                          </div>
+                          {block.buttons && block.buttons[0] && (
+                            <SmartLink
+                              url={
+                                block.buttons[0].url ||
+                                block.buttons[0].buttonUrl ||
+                                block.buttons[0].link
+                              }
+                              className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity whitespace-normal md:whitespace-pre-line"
+                            >
+                              <IconPreview
+                                data={block.buttons[0].icon || "directions"}
+                               style={getIconStyle(null, block)} />
+                            </SmartLink>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </section>
+          );
+
+        case "contact_hero":
+          return (
+            <section
+              key={index}
+              className="bg-white py-16 whitespace-normal md:whitespace-pre-line"
+              style={getStyle(block, "container")}
+            >
+              <div

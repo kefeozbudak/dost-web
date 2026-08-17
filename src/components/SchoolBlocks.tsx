@@ -4,7 +4,7 @@ import { IconPreview } from './IconField';
 
 export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <section className="relative pt-32 pb-20 px-6 md:px-8 bg-[#faf8ff] overflow-hidden whitespace-pre-line" style={getStyle(block, "container")}>
+    <section className="relative pt-32 pb-20 px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#faf8ff] overflow-hidden whitespace-normal md:whitespace-pre-line" style={getStyle(block, "container")}>
       <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center relative z-10">
         <div className="space-y-6">
           {block.badge && (
@@ -29,7 +29,7 @@ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleSty
                 if (btn.style === 'outline' || btn.primary === false || btn.primary === "false") {
                   return (
                     <a key={idx} href={btn.url || "#"} 
-                       className="border-2 border-[#1d4eca] text-[#1d4eca] px-8 py-3 rounded-lg text-sm font-bold hover:bg-[#1d4eca]/5 transition-colors"
+                       className="inline-flex items-center w-full sm:w-auto justify-center text-center border-2 border-[#1d4eca] text-[#1d4eca] px-6 md:px-8 py-3 md:py-3.5 rounded-lg text-sm font-bold hover:bg-[#1d4eca]/5 transition-colors"
                        style={btnStyle}>
                       {btn.label}
                     </a>
@@ -37,7 +37,7 @@ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleSty
                 }
                 return (
                   <a key={idx} href={btn.url || "#"} 
-                     className="bg-[#1d4eca] text-white px-8 py-3 rounded-lg text-sm font-bold hover:opacity-90 transition-opacity shadow-sm"
+                     className="inline-flex items-center w-full sm:w-auto justify-center text-center bg-[#1d4eca] text-white px-6 md:px-8 py-3 md:py-3.5 rounded-lg text-sm font-bold hover:opacity-90 transition-opacity shadow-sm"
                      style={btnStyle}>
                     {btn.label}
                   </a>
@@ -76,7 +76,7 @@ export const SchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleSty
 export const SchoolBentoBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const items = block.items || [];
   return (
-    <section className="py-20 px-6 md:px-8 bg-[#f6f6f8] whitespace-pre-line" style={getStyle(block, "container")}>
+    <section className="py-20 px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#f6f6f8] whitespace-normal md:whitespace-pre-line" style={getStyle(block, "container")}>
       <div className="max-w-[1280px] mx-auto">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-[36px] font-bold text-[#1a1b23] mb-4 leading-[1.3]" style={getTitleStyle(block)}>{block.title}</h2>
@@ -141,7 +141,7 @@ export const SchoolBentoBlock = ({ block, getStyle, getTitleStyle, getSubtitleSt
 export const SchoolBranchesBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const items = block.items || [];
   return (
-    <section className="py-20 px-6 md:px-8 bg-[#faf8ff] border-t border-[#e2e8f0] whitespace-pre-line" style={getStyle(block, "container")}>
+    <section className="py-20 px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#faf8ff] border-t border-[#e2e8f0] whitespace-normal md:whitespace-pre-line" style={getStyle(block, "container")}>
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div className="max-w-2xl">
@@ -187,7 +187,7 @@ export const SchoolBranchesBlock = ({ block, getStyle, getTitleStyle, getSubtitl
 export const SchoolPedagogyBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   const items = block.items || [];
   return (
-    <div className={`py-20 w-full px-6 md:px-8 bg-[#faf8ff] whitespace-pre-line`} style={getStyle(block, "container")}>
+    <div className={`py-20 w-full px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#faf8ff] whitespace-normal md:whitespace-pre-line`} style={getStyle(block, "container")}>
       <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row gap-12 items-stretch">
         <div className="md:w-1/2 relative min-h-[300px] rounded-2xl overflow-hidden shadow-xl">
           {block.image ? (
@@ -234,9 +234,9 @@ export const SchoolLgsBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
     : (block.styles?.innerBgOpacity === 0 ? "text-[#1e293b]" : "text-white");
 
   return (
-    <div className={`py-20 w-full px-6 md:px-8 bg-[#f6f6f8] whitespace-pre-line`} style={getStyle(block, "container")}>
+    <div className={`py-20 w-full px-2 md:px-6 md:px-margin-mobile md:px-margin-desktop bg-[#f6f6f8] whitespace-normal md:whitespace-pre-line`} style={getStyle(block, "container")}>
       <div 
-        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-6"} mx-auto rounded-3xl p-8 md:p-12 shadow-lg ${defaultBgClass}`}
+        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-2 md:px-6"} mx-auto rounded-3xl p-8 md:p-12 shadow-lg ${defaultBgClass}`}
         style={innerBgStyle}
       >
         <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
@@ -263,7 +263,7 @@ export const SchoolLgsBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyl
 export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section className="relative w-full py-20 overflow-hidden bg-white border-b border-[#e2e8f0]" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto grid md:grid-cols-2 gap-12 items-center`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto grid md:grid-cols-2 gap-12 items-center`}>
         <div className="z-10 flex flex-col gap-6">
           {block.badge && (
             <div className="inline-flex items-center gap-2 bg-[#dce1ff]/20 text-[#3f68e4] px-3 py-1 rounded-full w-fit">
@@ -289,7 +289,7 @@ export const HighSchoolHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
             <div className="flex flex-wrap gap-4 pt-4">
               {block.buttons.map((btn: any, idx: number) => (
                 <a key={idx} href={btn.url || "#"} 
-                   className={`px-8 py-3 rounded-lg text-[14px] font-bold transition-all flex items-center gap-2 shadow-sm ${btn.primary !== false ? 'bg-[#1d4eca] text-white hover:opacity-90' : 'border-2 border-[#1d4eca] text-[#1d4eca] bg-transparent hover:bg-[#1d4eca]/5'}`}
+                   className={`w-full sm:w-auto justify-center text-center px-6 md:px-8 py-3 md:py-3.5 rounded-lg text-[14px] font-bold transition-all flex items-center gap-2 shadow-sm ${btn.primary !== false ? 'bg-[#1d4eca] text-white hover:opacity-90' : 'border-2 border-[#1d4eca] text-[#1d4eca] bg-transparent hover:bg-[#1d4eca]/5'}`}
                    style={{
                      backgroundColor: btn.bgColor || undefined,
                      color: btn.textColor || undefined,
@@ -337,7 +337,7 @@ export const HighSchoolProgramsBlock = ({ block, getStyle, getTitleStyle, getSub
   const items = block.items || [];
   return (
     <section className="py-20 bg-[#f6f6f8]" style={getStyle(block, "container")}>
-      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-8"} mx-auto`}>
+      <div className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-[1280px] px-margin-mobile md:px-margin-desktop"} mx-auto`}>
         <div className="text-center mb-16">
           <h2 className="text-[36px] font-bold text-[#0f172a] mb-4 leading-[1.3]" style={getTitleStyle(block)}>{block.title || "Akademik Seçenekler"}</h2>
           {block.subtitle && <p className="text-[16px] text-[#64748b] max-w-2xl mx-auto leading-[1.6]" style={getSubtitleStyle(block)}>{block.subtitle}</p>}

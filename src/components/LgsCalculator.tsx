@@ -456,7 +456,7 @@ export default function LgsCalculator({ block }: { block: any }) {
 
   return (
     <section
-      className="w-full bg-surface-background py-section-gap px-margin-mobile md:px-margin-desktop min-h-screen whitespace-pre-line"
+      className="w-full bg-surface-background py-section-gap px-margin-mobile md:px-margin-desktop min-h-screen whitespace-normal md:whitespace-pre-line"
       style={
         block.styles?.backgroundColor
           ? { backgroundColor: block.styles.backgroundColor }
@@ -484,7 +484,7 @@ export default function LgsCalculator({ block }: { block: any }) {
 
           {/* Student Info Card */}
           <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-gutter print:shadow-none print:border-black">
-            <div className="bg-primary/5 border-b border-border-subtle px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
+            <div className="bg-primary/5 border-b border-border-subtle px-2 md:px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary print:hidden">
                 <IconPreview data="person" className="text-xl" />
               </div>
@@ -568,7 +568,7 @@ export default function LgsCalculator({ block }: { block: any }) {
 
           {/* Sözel Oturum Card */}
           <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm print:shadow-none print:border-black">
-            <div className="bg-primary/5 border-b border-border-subtle px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
+            <div className="bg-primary/5 border-b border-border-subtle px-2 md:px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary print:hidden">
                 <IconPreview data="menu_book" className="text-xl" />
               </div>
@@ -627,7 +627,7 @@ export default function LgsCalculator({ block }: { block: any }) {
 
           {/* Sayısal Oturum Card */}
           <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mt-4 print:shadow-none print:border-black">
-            <div className="bg-secondary/5 border-b border-border-subtle px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
+            <div className="bg-secondary/5 border-b border-border-subtle px-2 md:px-6 py-4 flex items-center gap-3 print:bg-white print:border-black">
               <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary print:hidden">
                 <IconPreview data="calculate" className="text-xl" />
               </div>
@@ -682,14 +682,14 @@ export default function LgsCalculator({ block }: { block: any }) {
           <div className="flex justify-end gap-4 mt-4 print:hidden">
             <button
               onClick={handleReset}
-              className="px-6 py-2.5 rounded-lg border border-border-subtle bg-surface-card text-text-main font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center gap-2"
+              className="px-2 md:px-6 py-2.5 rounded-lg border border-border-subtle bg-surface-card text-text-main font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center gap-2"
             >
               {block.resetButtonLabel || "Sıfırla"}
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="px-6 py-2.5 rounded-lg bg-primary text-white font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="px-2 md:px-6 py-2.5 rounded-lg bg-primary text-white font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
             >
               <IconPreview
                 data={

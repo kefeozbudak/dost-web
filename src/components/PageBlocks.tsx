@@ -105,21 +105,21 @@ const ClubsGridBlock = ({
   return (
     <div key={block.id || "clubs-grid"} style={getStyle(block, "container")}>
       <section
-        className="py-12 bg-white border-b border-border-subtle sticky top-20 z-40 whitespace-pre-line"
+        className="py-12 bg-white border-b border-border-subtle sticky top-20 z-40 whitespace-normal md:whitespace-pre-line"
         id="clubs"
       >
         <div
           className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 whitespace-pre-line">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 whitespace-normal md:whitespace-pre-line">
             <h2
-              className="font-headline-md text-headline-md text-primary whitespace-pre-line"
+              className="font-headline-md text-headline-md text-primary whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Kulüp Branşları"}
             </h2>
             {block.hideCategories !== true && (
-              <div className="flex flex-wrap justify-center gap-2 whitespace-pre-line">
+              <div className="flex flex-wrap justify-center gap-2 whitespace-normal md:whitespace-pre-line">
                 {categories.map((cat, idx) => (
                   <button
                     key={idx}
@@ -138,7 +138,7 @@ const ClubsGridBlock = ({
       <section
         className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 whitespace-pre-line">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 whitespace-normal md:whitespace-pre-line">
           {filteredItems.map((item: any, i: number) => {
             const isError = item.badgeColor === "error";
             const badgeClass = isError
@@ -147,12 +147,12 @@ const ClubsGridBlock = ({
             return (
               <div
                 key={i}
-                className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group whitespace-pre-line"
+                className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group whitespace-normal md:whitespace-pre-line"
                 style={getCardStyle(item, block)}
               >
-                <div className="h-56 relative overflow-hidden whitespace-pre-line">
+                <div className="h-56 relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                   <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 whitespace-pre-line"
+                    className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105 whitespace-normal md:whitespace-pre-line"
                     style={getImageStyle(item, "image", i)}
                   ></div>
                   {item.badge && item.hideBadge !== true && (
@@ -163,48 +163,48 @@ const ClubsGridBlock = ({
                     </span>
                   )}
                 </div>
-                <div className="p-6 flex-grow flex flex-col whitespace-pre-line">
-                  <div className="flex items-center gap-2 mb-2 whitespace-pre-line">
+                <div className="p-6 flex-grow flex flex-col whitespace-normal md:whitespace-pre-line">
+                  <div className="flex items-center gap-2 mb-2 whitespace-normal md:whitespace-pre-line">
                     {item.icon &&
                       (typeof item.icon === "string" &&
                       item.icon === item.icon.toLowerCase() ? (
                         <IconPreview
                           data={item.icon}
-                          className="text-primary text-[24px] whitespace-pre-line"
+                          className="text-primary text-[24px] whitespace-normal md:whitespace-pre-line"
                           style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                         />
                       ) : (
                         <IconPreview
                           data={item.icon}
-                          className="w-[24px] h-[24px] text-primary whitespace-pre-line"
+                          className="w-[24px] h-[24px] text-primary whitespace-normal md:whitespace-pre-line"
                          style={getIconStyle(item, block)} />
                       ))}
-                    <span className="text-primary font-label-sm uppercase tracking-wider whitespace-pre-line">
+                    <span className="text-primary font-label-sm uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                       {item.category}
                     </span>
                   </div>
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-pre-line"
+                    className="font-headline-md text-headline-md text-on-surface mb-3 whitespace-normal md:whitespace-pre-line"
                     style={getCardTitleStyle(item, block)}
                   >
                     {item.title}
                   </h3>
                   <p
-                    className="text-on-surface-variant font-body-md mb-6 line-clamp-3 whitespace-pre-line"
+                    className="text-on-surface-variant font-body-md mb-6 line-clamp-3 whitespace-normal md:whitespace-pre-line"
                     style={getCardDescStyle(item, block)}
                   >
                     {item.subtitle || item.desc}
                   </p>
                   {item.hideButton !== true && (
-                    <div className="mt-auto flex items-center justify-between whitespace-pre-line">
+                    <div className="mt-auto flex items-center justify-between whitespace-normal md:whitespace-pre-line">
                       {item.url && item.url !== "#" ? (
                         <a
                           href={item.url}
-                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-pre-line"
+                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-normal md:whitespace-pre-line"
                         >
                           {item.buttonText || "Detaylı Bilgi"}
                           <span
-                            className="material-symbols-outlined whitespace-pre-line"
+                            className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                             translate="no"
                             aria-hidden="true"
                           >
@@ -217,11 +217,11 @@ const ClubsGridBlock = ({
                             e.preventDefault();
                             setSelectedItem({ ...item, imageStyle: getImageStyle(item, "image", i) });
                           }}
-                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-pre-line text-left"
+                          className="flex items-center gap-2 text-primary font-label-md hover:translate-x-1 transition-transform whitespace-normal md:whitespace-pre-line text-left"
                         >
                           {item.buttonText || "Detaylı Bilgi"}
                           <span
-                            className="material-symbols-outlined whitespace-pre-line"
+                            className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                             translate="no"
                             aria-hidden="true"
                           >
@@ -287,27 +287,27 @@ const CareerHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative w-full rounded-2xl overflow-hidden min-h-[400px] flex items-center justify-center mb-8 whitespace-pre-line"
+      className="relative w-full rounded-2xl overflow-hidden min-h-[400px] flex items-center justify-center mb-8 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className="absolute inset-0 bg-cover bg-center whitespace-pre-line"
+        className="absolute inset-0 bg-cover bg-center whitespace-normal md:whitespace-pre-line"
         style={{
           backgroundImage: `url(${block.image || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80"})`,
         }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80 whitespace-pre-line"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#002147]/90 to-[#1d4eca]/80 whitespace-normal md:whitespace-pre-line"></div>
       <div
-        className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-6 py-16 md:py-24 text-white max-w-3xl ${getAlignClass(block, "title")}`}
+        className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} px-2 md:px-6 py-16 md:py-24 text-white max-w-3xl ${getAlignClass(block, "title")}`}
       >
         <h1
-          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-pre-line"
+          className="font-display-lg text-display-lg font-black text-white mb-6 leading-[1.2] tracking-tight whitespace-normal md:whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Dost Koleji'nde Kariyer"}
         </h1>
         <p
-          className={`font-body-lg text-[18px] text-white/90 mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+          className={`font-body-lg text-[18px] text-white/90 mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle ||
@@ -315,11 +315,11 @@ const CareerHeroBlock = ({
         </p>
         <a
           href="#application-form"
-          className="inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-yellow-500 text-[#002147] font-bold text-[14px] px-8 py-3 rounded-full transition-colors shadow-sm whitespace-pre-line"
+          className="w-full sm:w-auto justify-center text-center inline-flex items-center gap-2 bg-[#D4AF37] hover:bg-yellow-500 text-[#002147] font-bold text-[14px] px-6 md:px-8 py-3 md:py-3.5 rounded-full transition-colors shadow-sm whitespace-normal md:whitespace-pre-line"
         >
           <span>{block.buttonText || "Açık Pozisyonları Görüntüle"}</span>
           <span
-            className="material-symbols-outlined whitespace-pre-line"
+            className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
             translate="no"
             aria-hidden="true"
           >
@@ -367,25 +367,25 @@ const CareerBenefitsBlock = ({
   return (
     <section
       key={index}
-      className="w-full px-4 md:px-0 mb-16 whitespace-pre-line"
+      className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop mb-16 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}>
         <h2
-          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-pre-line"
+          className="font-bold text-2xl md:text-3xl text-[#002147] mb-4 whitespace-normal md:whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Neden Bize Katılmalısınız?"}
         </h2>
         <p
-          className={`font-normal text-[16px] text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+          className={`font-normal text-[16px] text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle ||
             "Dost Koleji ailesinin bir parçası olmanın avantajlarını keşfedin."}
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-pre-line">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-normal md:whitespace-pre-line">
         {items.map((item: any, i: number) => (
           <div
             key={i}
@@ -399,10 +399,10 @@ const CareerBenefitsBlock = ({
                 style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
               />
             </div>
-            <h3 className="font-bold text-[20px] text-slate-900 mb-2 whitespace-pre-line">
+            <h3 className="font-bold text-[20px] text-slate-900 mb-2 whitespace-normal md:whitespace-pre-line">
               {item.title}
             </h3>
-            <p className="font-normal text-[16px] text-slate-500 whitespace-pre-line">
+            <p className="font-normal text-[16px] text-slate-500 whitespace-normal md:whitespace-pre-line">
               {item.subtitle || item.desc}
             </p>
           </div>
@@ -426,37 +426,37 @@ const CareerApplicationBlock = ({
     <section
       key={index}
       id="application-form"
-      className="w-full px-4 md:px-0 mb-16 whitespace-pre-line"
+      className="w-full px-4 md:px-0 mb-16 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
         className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto flex flex-col lg:flex-row gap-12`}
       >
         {/* Left Side: Open Positions */}
-        <div className="w-full lg:w-1/3 whitespace-pre-line">
-          <div className="sticky top-24 whitespace-pre-line">
+        <div className="w-full lg:w-1/3 whitespace-normal md:whitespace-pre-line">
+          <div className="sticky top-24 whitespace-normal md:whitespace-pre-line">
             <h2
-              className="font-bold text-2xl text-[#002147] mb-6 whitespace-pre-line"
+              className="font-bold text-2xl text-[#002147] mb-6 whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Açık Pozisyonlar"}
             </h2>
             {positions.length > 0 ? (
-              <div className="space-y-4 whitespace-pre-line">
+              <div className="space-y-4 whitespace-normal md:whitespace-pre-line">
                 {positions.map((pos: any, idx: number) => (
                   <div
                     key={idx}
-                    className="bg-white border border-slate-200 rounded-xl p-5 hover:border-[#D4AF37] hover:shadow-md transition-all group whitespace-pre-line"
+                    className="bg-white border border-slate-200 rounded-xl p-5 hover:border-[#D4AF37] hover:shadow-md transition-all group whitespace-normal md:whitespace-pre-line"
                   >
-                    <div className="flex items-start justify-between mb-2 whitespace-pre-line">
-                      <h4 className="font-bold text-[#002147] group-hover:text-[#D4AF37] transition-colors whitespace-pre-line">
+                    <div className="flex items-start justify-between mb-2 whitespace-normal md:whitespace-pre-line">
+                      <h4 className="font-bold text-[#002147] group-hover:text-[#D4AF37] transition-colors whitespace-normal md:whitespace-pre-line">
                         {pos.title}
                       </h4>
-                      <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded whitespace-pre-line">
+                      <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded whitespace-normal md:whitespace-pre-line">
                         {pos.type}
                       </span>
                     </div>
-                    <p className="text-[13px] text-slate-500 whitespace-pre-line">
+                    <p className="text-[13px] text-slate-500 whitespace-normal md:whitespace-pre-line">
                       {pos.dept}
                     </p>
                   </div>
@@ -474,21 +474,21 @@ const CareerApplicationBlock = ({
         </div>
 
         {/* Right Side: Application Form */}
-        <div className="w-full lg:w-2/3 whitespace-pre-line">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 relative whitespace-pre-line">
+        <div className="w-full lg:w-2/3 whitespace-normal md:whitespace-pre-line">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 relative whitespace-normal md:whitespace-pre-line">
             {/* Header */}
             <div
-              className={`bg-[#002147] px-8 py-6 text-white ${block.styles?.textAlign ? "" : "text-center"}`}
+              className={`bg-[#002147] px-margin-mobile md:px-margin-desktop py-6 text-white ${block.styles?.textAlign ? "" : "text-center"}`}
             >
-              <h2 className="font-bold text-[24px] whitespace-pre-line">
+              <h2 className="font-bold text-[24px] whitespace-normal md:whitespace-pre-line">
                 İş Başvurusu
               </h2>
-              <p className="text-white/80 mt-2 whitespace-pre-line">
+              <p className="text-white/80 mt-2 whitespace-normal md:whitespace-pre-line">
                 Dost Koleji ailesine katılmak için formu doldurun
               </p>
             </div>
 
-            <div className="p-8 whitespace-pre-line">
+            <div className="p-8 whitespace-normal md:whitespace-pre-line">
               <DynamicFormBuilder getIconStyle={getIconStyle} block={block} type="career_application" />
             </div>
           </div>
@@ -516,13 +516,13 @@ const EduSystemHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden whitespace-pre-line"
+      className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
-      <div className="absolute inset-0 z-0 whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-on-background/80 to-on-background/40 z-10 whitespace-pre-line"></div>
+      <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+        <div className="absolute inset-0 bg-gradient-to-r from-on-background/80 to-on-background/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
         <div
-          className="w-full h-full bg-cover whitespace-pre-line"
+          className="w-full h-full bg-cover whitespace-normal md:whitespace-pre-line"
           style={{
             backgroundImage: `url('${bgImage}')`,
             backgroundPosition: `${posX}% ${posY}%`,
@@ -534,13 +534,13 @@ const EduSystemHeroBlock = ({
         className={`relative z-20 w-full ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} px-margin-mobile md:px-margin-desktop py-20 ${block.styles?.textAlign ? "" : "text-center"} text-white`}
       >
         <h1
-          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-pre-line"
+          className="font-display-lg text-display-lg font-extrabold mb-6 whitespace-normal md:whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title || "Eğitim Sistemimiz"}
         </h1>
         <p
-          className={`font-body-lg text-lg md:text-xl max-w-3xl ${getAlignClass(block, "subtitle")} text-surface-bright/90 whitespace-pre-line`}
+          className={`font-body-lg text-lg md:text-xl max-w-3xl ${getAlignClass(block, "subtitle")} text-surface-bright/90 whitespace-normal md:whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle || "Geleceğe Güvenle Hazırlıyoruz"}
@@ -568,21 +568,21 @@ const EduSystemLevelsBlock = ({
     >
       <div className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}>
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
+          className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title}
         </h2>
-        <div className="h-1 w-20 bg-secondary rounded-full mx-auto whitespace-pre-line"></div>
+        <div className="h-1 w-20 bg-secondary rounded-full mx-auto whitespace-normal md:whitespace-pre-line"></div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 whitespace-pre-line">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 whitespace-normal md:whitespace-pre-line">
         {(block.items || []).map((item: any, i: number) => {
           const isPrimary = i % 2 === 0;
           const colorClass = isPrimary ? "primary" : "secondary";
           return (
             <div
               key={i}
-              className="bg-surface-card rounded-xl border border-border-subtle p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full whitespace-pre-line"
+              className="bg-surface-card rounded-xl border border-border-subtle p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full whitespace-normal md:whitespace-pre-line"
               style={getCardStyle(item, block)}
             >
               <div
@@ -590,17 +590,17 @@ const EduSystemLevelsBlock = ({
               >
                 <IconPreview
                   data={item.icon || "school"}
-                  className="text-3xl transition-colors whitespace-pre-line"
+                  className="text-3xl transition-colors whitespace-normal md:whitespace-pre-line"
                  style={getIconStyle(item, block)} />
               </div>
               <h3
-                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
+                className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-normal md:whitespace-pre-line"
                 style={getCardTitleStyle(item, block)}
               >
                 {item.title}
               </h3>
               <p
-                className="font-body-md text-text-muted mb-6 flex-grow whitespace-pre-line"
+                className="font-body-md text-text-muted mb-6 flex-grow whitespace-normal md:whitespace-pre-line"
                 style={getCardDescStyle(item, block)}
               >
                 {item.subtitle || item.desc}
@@ -612,7 +612,7 @@ const EduSystemLevelsBlock = ({
                 >
                   {item.buttonText || "Detaylı Bilgi"}
                   <span
-                    className="material-symbols-outlined text-sm ml-1 group-hover/link:translate-x-1 transition-transform whitespace-pre-line"
+                    className="material-symbols-outlined text-sm ml-1 group-hover/link:translate-x-1 transition-transform whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
@@ -641,7 +641,7 @@ const EduSystemYadepBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap bg-surface-container-low whitespace-pre-line"
+      className="py-section-gap bg-surface-container-low whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
@@ -651,19 +651,19 @@ const EduSystemYadepBlock = ({
           className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
         >
           <h2
-            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-pre-line"
+            className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title}
           </h2>
           <p
-            className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+            className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
             style={getSubtitleStyle(block)}
           >
             {block.subtitle}
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 whitespace-pre-line">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 whitespace-normal md:whitespace-pre-line">
           {(block.items || []).map((item: any, i: number) => {
             let colorClass = "primary";
             if (i === 1) colorClass = "secondary";
@@ -672,7 +672,7 @@ const EduSystemYadepBlock = ({
             return (
               <div
                 key={i}
-                className="bg-surface-card p-8 rounded-xl shadow-sm border border-border-subtle hover:shadow-md transition-shadow whitespace-pre-line"
+                className="bg-surface-card p-8 rounded-xl shadow-sm border border-border-subtle hover:shadow-md transition-shadow whitespace-normal md:whitespace-pre-line"
                 style={getCardStyle(item, block)}
               >
                 <div
@@ -686,17 +686,17 @@ const EduSystemYadepBlock = ({
                 >
                   <IconPreview
                     data={item.icon}
-                    className="text-3xl whitespace-pre-line"
+                    className="text-3xl whitespace-normal md:whitespace-pre-line"
                    style={getIconStyle(item, block)} />
                 </div>
                 <h3
-                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-pre-line"
+                  className="font-headline-md text-xl font-bold text-text-main mb-3 whitespace-normal md:whitespace-pre-line"
                   style={getCardTitleStyle(item, block)}
                 >
                   {item.title}
                 </h3>
                 <p
-                  className="font-body-md text-text-muted whitespace-pre-line"
+                  className="font-body-md text-text-muted whitespace-normal md:whitespace-pre-line"
                   style={getCardDescStyle(item, block)}
                 >
                   {item.subtitle || item.desc}
@@ -730,51 +730,51 @@ const EduSystemPhilosophyBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap bg-surface-container relative overflow-hidden whitespace-pre-line"
+      className="py-section-gap bg-surface-container relative overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none whitespace-pre-line"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none whitespace-pre-line"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none whitespace-normal md:whitespace-pre-line"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none whitespace-normal md:whitespace-pre-line"></div>
 
       <div
         className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop relative z-10`}
       >
-        <div className="flex flex-col lg:flex-row gap-16 items-center whitespace-pre-line">
-          <div className="w-full lg:w-1/2 space-y-8 whitespace-pre-line">
+        <div className="flex flex-col lg:flex-row gap-16 items-center whitespace-normal md:whitespace-pre-line">
+          <div className="w-full lg:w-1/2 space-y-8 whitespace-normal md:whitespace-pre-line">
             <div>
-              <span className="text-secondary font-label-md tracking-wider uppercase mb-2 block whitespace-pre-line">
+              <span className="text-secondary font-label-md tracking-wider uppercase mb-2 block whitespace-normal md:whitespace-pre-line">
                 {block.badge}
               </span>
               <h2
-                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-pre-line"
+                className="font-headline-xl text-2xl md:text-4xl font-bold text-text-main whitespace-normal md:whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.title}
               </h2>
             </div>
             <p
-              className="font-body-md text-text-muted text-lg whitespace-pre-line"
+              className="font-body-md text-text-muted text-lg whitespace-normal md:whitespace-pre-line"
               style={getSubtitleStyle(block)}
             >
               {block.subtitle || block.desc}
             </p>
-            <div className="space-y-6 whitespace-pre-line">
+            <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
               {(block.items || []).map((item: any, i: number) => {
                 const colorClass = i % 2 === 0 ? "primary" : "secondary";
                 return (
-                  <div key={i} className="flex gap-4 whitespace-pre-line">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-card border border-border-subtle flex items-center justify-center shadow-sm whitespace-pre-line">
+                  <div key={i} className="flex gap-4 whitespace-normal md:whitespace-pre-line">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-card border border-border-subtle flex items-center justify-center shadow-sm whitespace-normal md:whitespace-pre-line">
                       <IconPreview data={item.icon}  style={getIconStyle(item, block)} />
                     </div>
                     <div>
                       <h4
-                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-pre-line"
+                        className="font-headline-md text-lg font-bold text-text-main mb-1 whitespace-normal md:whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
                       </h4>
                       <p
-                        className="font-body-md text-text-muted text-sm whitespace-pre-line"
+                        className="font-body-md text-text-muted text-sm whitespace-normal md:whitespace-pre-line"
                         style={getCardDescStyle(item, block)}
                       >
                         {item.subtitle || item.desc}
@@ -786,10 +786,10 @@ const EduSystemPhilosophyBlock = ({
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 relative whitespace-pre-line">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white whitespace-pre-line">
+          <div className="w-full lg:w-1/2 relative whitespace-normal md:whitespace-pre-line">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white whitespace-normal md:whitespace-pre-line">
               <div
-                className="w-full h-full bg-cover whitespace-pre-line"
+                className="w-full h-full bg-cover whitespace-normal md:whitespace-pre-line"
                 style={{
                   backgroundImage: `url('${bgImage}')`,
                   backgroundPosition: `${posX}% ${posY}%`,
@@ -798,20 +798,20 @@ const EduSystemPhilosophyBlock = ({
               ></div>
             </div>
             {block.cardTitle && (
-              <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-white/80 backdrop-blur-md p-6 rounded-xl border border-white shadow-lg max-w-xs hidden sm:block whitespace-pre-line">
-                <div className="flex items-center gap-3 mb-2 whitespace-pre-line">
+              <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-white/80 backdrop-blur-md p-6 rounded-xl border border-white shadow-lg max-w-xs hidden sm:block whitespace-normal md:whitespace-pre-line">
+                <div className="flex items-center gap-3 mb-2 whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-secondary text-3xl whitespace-pre-line"
+                    className="material-symbols-outlined text-secondary text-3xl whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
                     {block.cardIcon || "emoji_events"}
                   </span>
-                  <span className="font-headline-md font-bold text-text-main whitespace-pre-line">
+                  <span className="font-headline-md font-bold text-text-main whitespace-normal md:whitespace-pre-line">
                     {block.cardTitle}
                   </span>
                 </div>
-                <p className="font-body-md text-sm text-text-muted whitespace-pre-line">
+                <p className="font-body-md text-sm text-text-muted whitespace-normal md:whitespace-pre-line">
                   {block.cardDesc}
                 </p>
               </div>
@@ -834,11 +834,11 @@ const EduSystemCtaBlock = ({
   return (
     <section
       key={index}
-      className="py-24 bg-primary text-white relative overflow-hidden whitespace-pre-line"
+      className="py-24 bg-primary text-white relative overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none whitespace-pre-line"
+        className="absolute inset-0 opacity-10 pointer-events-none whitespace-normal md:whitespace-pre-line"
         style={{
           backgroundImage:
             "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
@@ -849,23 +849,23 @@ const EduSystemCtaBlock = ({
         className={`max-w-4xl ${getAlignClass(block, "title")} px-margin-mobile ${block.styles?.textAlign ? "" : "text-center"} relative z-10`}
       >
         <h2
-          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-pre-line"
+          className="font-headline-xl text-2xl md:text-4xl font-bold mb-6 whitespace-normal md:whitespace-pre-line"
           style={getTitleStyle(block)}
         >
           {block.title}
         </h2>
         <p
-          className={`font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+          className={`font-body-lg text-lg text-primary-fixed-dim mb-10 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
           style={getSubtitleStyle(block)}
         >
           {block.subtitle || block.desc}
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 whitespace-pre-line">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 whitespace-normal md:whitespace-pre-line">
           {(block.buttons || []).map((btn: any, btnIdx: number) => (
             <SmartLink
               key={btnIdx}
               url={btn.url}
-              className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-label-md font-bold rounded-lg hover:bg-surface-bright hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-pre-line"
+              className="w-full sm:w-auto px-6 md:px-8 py-3.5 md:py-4 bg-white text-primary font-label-md font-bold rounded-lg hover:bg-surface-bright hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-normal md:whitespace-pre-line"
             >
               {btn.icon && <IconPreview data={btn.icon}  style={getIconStyle(btn, block)} />}
               {btn.label || btn.buttonText}
@@ -1078,19 +1078,19 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           <div
             className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} min-h-[400px] flex flex-col items-center justify-center space-y-6`}
           >
-            <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner whitespace-pre-line">
+            <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner whitespace-normal md:whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-4xl whitespace-pre-line"
+                className="material-symbols-outlined text-4xl whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-[#002147] whitespace-pre-line">
+            <h3 className="text-2xl font-bold text-[#002147] whitespace-normal md:whitespace-pre-line">
               Bursluluk Sınavı Başvurunuz Başarıyla Alındı!
             </h3>
-            <p className={`text-slate-600 max-w-md ${getAlignClass(block)} text-sm leading-relaxed whitespace-pre-line`}>
+            <p className={`text-slate-600 max-w-md ${getAlignClass(block)} text-sm leading-relaxed whitespace-normal md:whitespace-pre-line`}>
               Sınav giriş belgeniz oluşturulmuştur. Belgenizi hemen görüntülemek
               ve indirmek için aşağıdaki butona tıklayabilirsiniz.
             </p>
@@ -1100,10 +1100,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                   ? `/bursluluk-basvuru-onay?id=${submittedDocId}`
                   : `/bursluluk-basvuru-onay`
               }
-              className="px-6 py-3.5 bg-[#002147] text-white font-bold rounded-xl hover:bg-[#002147]/90 transition-all text-sm inline-flex items-center gap-2 shadow-lg hover:shadow-xl cursor-pointer whitespace-pre-line"
+              className="px-2 md:px-6 py-3.5 bg-[#002147] text-white font-bold rounded-xl hover:bg-[#002147]/90 transition-all text-sm inline-flex items-center gap-2 shadow-lg hover:shadow-xl cursor-pointer whitespace-normal md:whitespace-pre-line"
             >
               <span
-                className="material-symbols-outlined whitespace-pre-line"
+                className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
@@ -1116,19 +1116,19 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           <div
             className={`p-12 ${block.styles?.textAlign ? "" : "text-center"} bg-green-50 rounded-xl border border-green-100 min-h-[300px] flex flex-col items-center justify-center`}
           >
-            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 whitespace-normal md:whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line"
+                className="material-symbols-outlined text-3xl whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="text-xl font-bold text-green-800 mb-2 whitespace-pre-line">
+            <h3 className="text-xl font-bold text-green-800 mb-2 whitespace-normal md:whitespace-pre-line">
               Mesajınız İletildi
             </h3>
-            <p className="text-green-700 whitespace-pre-line">
+            <p className="text-green-700 whitespace-normal md:whitespace-pre-line">
               Mesajınız başarıyla gönderilmiştir. En kısa sürede sizinle
               iletişime geçeceğiz.
             </p>
@@ -1137,19 +1137,19 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
           <div
             className={`p-12 ${block.styles?.textAlign ? "" : "text-center"} min-h-[400px] flex flex-col items-center justify-center`}
           >
-            <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4 whitespace-pre-line">
+            <div className="w-16 h-16 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mx-auto mb-4 whitespace-normal md:whitespace-pre-line">
               <span
-                className="material-symbols-outlined text-3xl whitespace-pre-line"
+                className="material-symbols-outlined text-3xl whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 check_circle
               </span>
             </div>
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-pre-line">
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-2 whitespace-normal md:whitespace-pre-line">
               Başvurunuz Alındı
             </h3>
-            <p className="font-body-md text-body-md text-text-muted whitespace-pre-line">
+            <p className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line">
               Kayıt başvurunuz başarıyla alınmıştır.
             </p>
           </div>
@@ -1179,7 +1179,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
               Lütfen yönetim panelinden form alanlarını (inputlar) ekleyiniz.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 whitespace-pre-line">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 whitespace-normal md:whitespace-pre-line">
               {defaultInputs.map((input: any, i: number) => {
                 const inputKey = input.id || input.name || `inp_${i}`;
                 const colSpan =
@@ -1201,10 +1201,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                         {input.icon && (
                           <IconPreview
                             data={input.icon}
-                            className="text-primary whitespace-pre-line"
+                            className="text-primary whitespace-normal md:whitespace-pre-line"
                            style={getIconStyle(input, block)} />
                         )}
-                        <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider whitespace-pre-line">
+                        <h2 className="font-label-md text-label-md text-text-main uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                           {input.label}
                         </h2>
                       </div>
@@ -1218,10 +1218,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                       {input.icon && (
                         <IconPreview
                           data={input.icon}
-                          className="text-primary whitespace-pre-line"
+                          className="text-primary whitespace-normal md:whitespace-pre-line"
                          style={getIconStyle(input, block)} />
                       )}
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-normal md:whitespace-pre-line">
                         {input.label}
                       </h2>
                     </div>
@@ -1234,8 +1234,8 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                       key={inputKey}
                       className={`pt-2 border-t border-border-subtle ${colSpan}`}
                     >
-                      <label className="flex items-start gap-3 cursor-pointer group whitespace-pre-line">
-                        <div className="relative mt-1 whitespace-pre-line">
+                      <label className="flex items-start gap-3 cursor-pointer group whitespace-normal md:whitespace-pre-line">
+                        <div className="relative mt-1 whitespace-normal md:whitespace-pre-line">
                           <input
                             type="checkbox"
                             required={input.required}
@@ -1243,10 +1243,10 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                             onChange={(e) =>
                               handleChange(input.name, e.target.checked)
                             }
-                            className="peer h-5 w-5 rounded border-border-subtle text-primary focus:ring-primary/20 transition-all cursor-pointer whitespace-pre-line"
+                            className="peer h-5 w-5 rounded border-border-subtle text-primary focus:ring-primary/20 transition-all cursor-pointer whitespace-normal md:whitespace-pre-line"
                           />
                         </div>
-                        <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors whitespace-pre-line">
+                        <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors whitespace-normal md:whitespace-pre-line">
                           <TextWithKvkkLink text={input.label} />
                         </span>
                       </label>
@@ -1260,14 +1260,14 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                     .map((o: string) => o.trim());
                   return (
                     <div key={inputKey} className={`space-y-2 ${colSpan}`}>
-                      <label className="font-label-md text-label-md text-on-surface-variant block whitespace-pre-line">
+                      <label className="font-label-md text-label-md text-on-surface-variant block whitespace-normal md:whitespace-pre-line">
                         {input.label}
                       </label>
-                      <div className="space-y-2 whitespace-pre-line">
+                      <div className="space-y-2 whitespace-normal md:whitespace-pre-line">
                         {opts.map((opt: string, optIdx: number) => (
                           <label
                             key={`${inputKey}_opt_${optIdx}`}
-                            className="flex items-center gap-2 cursor-pointer whitespace-pre-line"
+                            className="flex items-center gap-2 cursor-pointer whitespace-normal md:whitespace-pre-line"
                           >
                             <input
                               type="radio"
@@ -1278,9 +1278,9 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                               onChange={(e) =>
                                 handleChange(input.name, e.target.value)
                               }
-                              className="text-primary focus:ring-primary/20 whitespace-pre-line"
+                              className="text-primary focus:ring-primary/20 whitespace-normal md:whitespace-pre-line"
                             />
-                            <span className="font-body-md text-body-md text-on-surface whitespace-pre-line">
+                            <span className="font-body-md text-body-md text-on-surface whitespace-normal md:whitespace-pre-line">
                               {opt}
                             </span>
                           </label>
@@ -1293,7 +1293,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                 if (input.type === "textarea") {
                   return (
                     <div key={inputKey} className={`space-y-2 ${colSpan}`}>
-                      <label className="font-label-md text-label-md text-on-surface-variant block whitespace-pre-line">
+                      <label className="font-label-md text-label-md text-on-surface-variant block whitespace-normal md:whitespace-pre-line">
                         {input.label}
                       </label>
                       <textarea
@@ -1303,7 +1303,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                         onChange={(e) =>
                           handleChange(input.name, e.target.value)
                         }
-                        className="w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none whitespace-pre-line"
+                        className="w-full px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-body-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none whitespace-normal md:whitespace-pre-line"
                         placeholder={input.placeholder || ""}
                       />
                     </div>
@@ -1484,20 +1484,20 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
               {type === "club_registration_form" &&
                 defaultClubs &&
                 defaultClubs.length > 0 && (
-                  <div className="md:col-span-2 space-y-6 mt-0 whitespace-pre-line">
-                    <div className="flex items-center gap-2 border-b border-border-subtle pb-3 whitespace-pre-line">
+                  <div className="md:col-span-2 space-y-6 mt-0 whitespace-normal md:whitespace-pre-line">
+                    <div className="flex items-center gap-2 border-b border-border-subtle pb-3 whitespace-normal md:whitespace-pre-line">
                       <span
-                        className="material-symbols-outlined text-primary whitespace-pre-line"
+                        className="material-symbols-outlined text-primary whitespace-normal md:whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
                         explore
                       </span>
-                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-pre-line">
+                      <h2 className="font-headline-md text-headline-md text-on-surface whitespace-normal md:whitespace-pre-line">
                         Kulüp Seçimi
                       </h2>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 whitespace-pre-line">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 whitespace-normal md:whitespace-pre-line">
                       {defaultClubs.map((clubOpt: any, clubIdx: number) => {
                         const isSelected = formData.club === clubOpt.label;
                         const clubId = clubOpt.id || `club_${clubIdx}`;
@@ -1509,7 +1509,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                         return (
                           <div
                             key={clubId}
-                            className="relative whitespace-pre-line"
+                            className="relative whitespace-normal md:whitespace-pre-line"
                           >
                             <input
                               type="radio"
@@ -1521,7 +1521,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                               onChange={(e) =>
                                 handleChange("club", e.target.value)
                               }
-                              className="peer hidden whitespace-pre-line"
+                              className="peer hidden whitespace-normal md:whitespace-pre-line"
                             />
                             <label
                               htmlFor={`club_${clubId}`}
@@ -1531,7 +1531,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                                   : "bg-white border-border-subtle text-on-surface hover:border-blue-300 hover:bg-slate-50"
                               }`}
                             >
-                              <div className="mb-2 whitespace-pre-line">
+                              <div className="mb-2 whitespace-normal md:whitespace-pre-line">
                                 {isMaterialIcon ? (
                                   <span
                                     className={`material-symbols-outlined text-3xl transition-colors ${isSelected ? "text-white" : "text-text-muted group-hover:text-primary"}`}
@@ -1553,7 +1553,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                                 {clubOpt.label}
                               </span>
                               {isSelected && (
-                                <div className="absolute top-2 right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-white text-[10px] whitespace-pre-line">
+                                <div className="absolute top-2 right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-white text-[10px] whitespace-normal md:whitespace-pre-line">
                                   ✓
                                 </div>
                               )}
@@ -1567,7 +1567,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
             </div>
           )}
 
-          <div className="pt-6 whitespace-pre-line">
+          <div className="pt-6 whitespace-normal md:whitespace-pre-line">
             <button
               type="submit"
               disabled={submitting}
@@ -1586,7 +1586,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                   : "Kaydı Tamamla"}
               {!submitting && (
                 <span
-                  className="material-symbols-outlined whitespace-pre-line"
+                  className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                   translate="no"
                   aria-hidden="true"
                 >
@@ -1595,13 +1595,13 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
               )}
               {submitting && (
                 <svg
-                  className="animate-spin h-5 w-5 text-white whitespace-pre-line"
+                  className="animate-spin h-5 w-5 text-white whitespace-normal md:whitespace-pre-line"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                 >
                   <circle
-                    className="opacity-25 whitespace-pre-line"
+                    className="opacity-25 whitespace-normal md:whitespace-pre-line"
                     cx="12"
                     cy="12"
                     r="10"
@@ -1609,7 +1609,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
                     strokeWidth="4"
                   ></circle>
                   <path
-                    className="opacity-75 whitespace-pre-line"
+                    className="opacity-75 whitespace-normal md:whitespace-pre-line"
                     fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
@@ -1643,15 +1643,15 @@ const ClubRegistrationFormBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-pre-line"
+      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
-      <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700 whitespace-pre-line">
+      <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-700 whitespace-normal md:whitespace-pre-line">
         <div className={`mb-8 ${block.styles?.textAlign ? "" : "text-center"}`}>
-          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-pre-line">
+          <h1 className="font-display-lg text-display-lg text-primary mb-2 whitespace-normal md:whitespace-pre-line">
             {block.title || "Dost Koleji"}
           </h1>
-          <p className="font-body-lg text-body-lg text-text-muted whitespace-pre-line">
+          <p className="font-body-lg text-body-lg text-text-muted whitespace-normal md:whitespace-pre-line">
             {block.subtitle || "Öğrenci Kulüp Kayıt Portalı"}
           </p>
         </div>
@@ -1690,11 +1690,11 @@ const PreRegistrationFormBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-pre-line"
+      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative whitespace-pre-line"
+        className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative whitespace-normal md:whitespace-pre-line"
         style={
           block.styles?.cardBgColor
             ? { backgroundColor: block.styles.cardBgColor }
@@ -1706,22 +1706,22 @@ const PreRegistrationFormBlock = ({
           className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} relative overflow-hidden`}
           style={{ backgroundColor: block.styles?.headerBgColor || "#002147" }}
         >
-          <div className="relative z-10 whitespace-pre-line">
+          <div className="relative z-10 whitespace-normal md:whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "ÖĞRENCİ ÖN KAYIT FORMU"}
             </h1>
             <p
-              className="font-body-md text-body-md text-blue-200 whitespace-pre-line"
+              className="font-body-md text-body-md text-blue-200 whitespace-normal md:whitespace-pre-line"
               style={getSubtitleStyle(block)}
             >
               {block.subtitle || "Lütfen Formu Eksiksiz Doldurunuz."}
             </p>
-            <div className="mt-6 flex justify-center whitespace-pre-line">
+            <div className="mt-6 flex justify-center whitespace-normal md:whitespace-pre-line">
               <div
-                className="h-1 w-20 bg-primary rounded-full whitespace-pre-line"
+                className="h-1 w-20 bg-primary rounded-full whitespace-normal md:whitespace-pre-line"
                 style={
                   block.styles?.titlePart1Color
                     ? { backgroundColor: block.styles.titlePart1Color }
@@ -1739,11 +1739,11 @@ const PreRegistrationFormBlock = ({
         />
 
         {/* Aesthetic Footer Graphic */}
-        <div className="h-2 w-full flex whitespace-pre-line">
-          <div className="h-full flex-1 bg-primary whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-[#002147] whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-secondary-fixed-dim whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-primary whitespace-pre-line"></div>
+        <div className="h-2 w-full flex whitespace-normal md:whitespace-pre-line">
+          <div className="h-full flex-1 bg-primary whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-[#002147] whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-secondary-fixed-dim whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-primary whitespace-normal md:whitespace-pre-line"></div>
         </div>
       </div>
     </section>
@@ -1765,33 +1765,33 @@ const TuitionFeesHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-pre-line"
+      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
-      <div className="absolute inset-0 z-0 whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-pre-line"></div>
+      <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
         <div
-          className="w-full h-full bg-cover bg-center whitespace-pre-line"
+          className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
           style={{ backgroundImage: `url('${heroBg}')` }}
         />
       </div>
       <div
-        className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}
+        className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop w-full`}
       >
         <div className={getHeroInnerClass(block, "max-w-2xl text-white")}>
           {block.badge && (
-            <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md whitespace-pre-line">
+            <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md whitespace-normal md:whitespace-pre-line">
               {block.badge}
             </span>
           )}
           <h1
-            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line"
+            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-normal md:whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title || "2026-2027 Eğitim-Öğretim Yılı Ücretleri"}
           </h1>
           <p
-            className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed whitespace-pre-line"
+            className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed whitespace-normal md:whitespace-pre-line"
             style={getSubtitleStyle(block)}
           >
             {block.subtitle ||
@@ -1824,43 +1824,43 @@ const BurslulukHeroBlock = ({
   return (
     <section
       key={index}
-      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-pre-line"
+      className="relative h-[550px] md:h-[600px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
-      <div className="absolute inset-0 z-0 whitespace-pre-line">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-pre-line"></div>
+      <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/70 to-[#002147]/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
         <div
-          className="w-full h-full bg-cover bg-center whitespace-pre-line"
+          className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
           style={{ backgroundImage: `url('${heroBg}')` }}
         />
       </div>
       <div
-        className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}
+        className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop w-full`}
       >
         <div className={getHeroInnerClass(block, "max-w-2xl text-white")}>
-          <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md whitespace-pre-line">
+          <span className="inline-block px-4 py-1.5 bg-[#D4AF37] text-[#002147] font-bold text-caption rounded-full mb-6 tracking-widest uppercase shadow-md whitespace-normal md:whitespace-pre-line">
             {block.badge || "2026-2027 EĞİTİM YILI"}
           </span>
           <h1
-            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-pre-line"
+            className="font-display-lg text-3xl sm:text-4xl md:text-display-lg mb-6 leading-tight font-extrabold whitespace-normal md:whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title || "Akademik Başarıya Giden Yolunuz"}
           </h1>
           <p
-            className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed whitespace-pre-line"
+            className="font-body-lg text-base md:text-body-lg mb-8 opacity-90 leading-relaxed whitespace-normal md:whitespace-pre-line"
             style={getSubtitleStyle(block)}
           >
             {block.subtitle ||
               "Geleceğin liderlerini yetiştiren Dost Koleji'nde yerinizi ayırtın. Bursluluk sınavımıza katılarak %100'e varan eğitim desteği fırsatlarından yararlanın."}
           </p>
-          <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6 whitespace-pre-line">
+          <div className="mt-8 flex flex-wrap gap-8 border-l-2 border-[#D4AF37] pl-6 whitespace-normal md:whitespace-pre-line">
             {stats.map((stat: any, idx: number) => (
               <div key={idx}>
-                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-pre-line">
+                <p className="text-[#D4AF37] font-bold text-xl md:text-2xl whitespace-normal md:whitespace-pre-line">
                   {stat.value}
                 </p>
-                <p className="text-sm opacity-80 whitespace-pre-line">
+                <p className="text-sm opacity-80 whitespace-normal md:whitespace-pre-line">
                   {stat.label}
                 </p>
               </div>
@@ -1962,11 +1962,11 @@ const BurslulukExamFormBlock = ({
     <section
       key={index}
       id="basvuru-formu"
-      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-pre-line"
+      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className="w-full max-w-4xl bg-surface-card rounded-xl shadow-sm border border-border-subtle overflow-hidden relative whitespace-pre-line"
+        className="w-full max-w-4xl bg-surface-card rounded-xl shadow-sm border border-border-subtle overflow-hidden relative whitespace-normal md:whitespace-pre-line"
         style={
           block.styles?.cardBgColor
             ? { backgroundColor: block.styles.cardBgColor }
@@ -1978,22 +1978,22 @@ const BurslulukExamFormBlock = ({
           className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} relative overflow-hidden`}
           style={{ backgroundColor: block.styles?.headerBgColor || "#002147" }}
         >
-          <div className="relative z-10 whitespace-pre-line">
+          <div className="relative z-10 whitespace-normal md:whitespace-pre-line">
             <h1
-              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-pre-line"
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "BURSLULUK SINAVI BAŞVURU FORMU"}
             </h1>
             <p
-              className="font-body-md text-body-md text-blue-200 whitespace-pre-line"
+              className="font-body-md text-body-md text-blue-200 whitespace-normal md:whitespace-pre-line"
               style={getSubtitleStyle(block)}
             >
               {block.subtitle || "Lütfen Formu Eksiksiz Doldurunuz."}
             </p>
-            <div className="mt-6 flex justify-center whitespace-pre-line">
+            <div className="mt-6 flex justify-center whitespace-normal md:whitespace-pre-line">
               <div
-                className="h-1 w-20 bg-primary rounded-full whitespace-pre-line"
+                className="h-1 w-20 bg-primary rounded-full whitespace-normal md:whitespace-pre-line"
                 style={
                   block.styles?.titlePart1Color
                     ? { backgroundColor: block.styles.titlePart1Color }
@@ -2011,18 +2011,18 @@ const BurslulukExamFormBlock = ({
             submitForm={submitForm}
           />
         ) : (
-          <div className="p-8 md:p-12 whitespace-pre-line">
+          <div className="p-8 md:p-12 whitespace-normal md:whitespace-pre-line">
             <div
               className={`${block.styles?.textAlign ? "" : "text-center"} bg-blue-50 border border-blue-100 p-8 rounded-xl`}
             >
               <span
-                className="material-symbols-outlined text-blue-500 text-5xl mb-4 whitespace-pre-line"
+                className="material-symbols-outlined text-blue-500 text-5xl mb-4 whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 info
               </span>
-              <p className={`text-lg text-slate-700 whitespace-pre-line leading-relaxed max-w-2xl ${getAlignClass(block)} whitespace-pre-line`}>
+              <p className={`text-lg text-slate-700 whitespace-normal md:whitespace-pre-line leading-relaxed max-w-2xl ${getAlignClass(block)} whitespace-normal md:whitespace-pre-line`}>
                 {burslulukInactiveMessage ||
                   "Değerli Velimiz,\n2026-2027 Eğitim-Öğretim yılı Bursluluk ve Kabul Sınavı başvuru sürecimiz şu an için aktif değildir. Yeni dönem sınav takvimimiz ve başvuru tarihlerimiz belirlendiğinde web sitemiz ve sosyal medya hesaplarımız üzerinden duyurulacaktır. Kurumumuza gösterdiğiniz değerli ilgi için teşekkür ederiz."}
               </p>
@@ -2031,11 +2031,11 @@ const BurslulukExamFormBlock = ({
         )}
 
         {/* Aesthetic Footer Graphic */}
-        <div className="h-2 w-full flex whitespace-pre-line">
-          <div className="h-full flex-1 bg-primary whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-[#002147] whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-secondary-fixed-dim whitespace-pre-line"></div>
-          <div className="h-full flex-1 bg-primary whitespace-pre-line"></div>
+        <div className="h-2 w-full flex whitespace-normal md:whitespace-pre-line">
+          <div className="h-full flex-1 bg-primary whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-[#002147] whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-secondary-fixed-dim whitespace-normal md:whitespace-pre-line"></div>
+          <div className="h-full flex-1 bg-primary whitespace-normal md:whitespace-pre-line"></div>
         </div>
       </div>
     </section>
@@ -2081,25 +2081,25 @@ const BurslulukInfoCardsBlock = ({
     <section
       key={index}
       id="bilgilendirme"
-      className="py-section-gap bg-white whitespace-pre-line"
+      className="py-section-gap bg-white whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
       >
         {block.title && (
           <div
             className={`${block.styles?.textAlign ? "" : "text-center"} mb-12`}
           >
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-pre-line"
+              className="font-headline-xl text-2xl md:text-headline-xl text-[#002147] mb-4 font-bold whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title}
             </h2>
             {block.subtitle && (
               <p
-                className={`text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base whitespace-pre-line`}
+                className={`text-slate-500 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base whitespace-normal md:whitespace-pre-line`}
                 style={getSubtitleStyle(block)}
               >
                 {block.subtitle}
@@ -2107,30 +2107,30 @@ const BurslulukInfoCardsBlock = ({
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 whitespace-pre-line">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 whitespace-normal md:whitespace-pre-line">
           {items.map((item: any, idx: number) => (
             <div
               key={idx}
-              className="group p-8 rounded-2xl bg-[#f3f2fd] border border-[#e2e8f0] hover:border-[#1d4eca]/30 transition-all shadow-sm hover:shadow-md whitespace-pre-line"
+              className="group p-8 rounded-2xl bg-[#f3f2fd] border border-[#e2e8f0] hover:border-[#1d4eca]/30 transition-all shadow-sm hover:shadow-md whitespace-normal md:whitespace-pre-line"
             >
-              <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform whitespace-pre-line">
+              <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform whitespace-normal md:whitespace-pre-line">
                 <IconPreview
                   data={item.icon || "info"}
-                  className="text-[#1d4eca] text-3xl whitespace-pre-line"
+                  className="text-[#1d4eca] text-3xl whitespace-normal md:whitespace-pre-line"
                  style={getIconStyle(item, block)} />
               </div>
-              <h4 className="text-xl font-bold text-[#002147] mb-4 whitespace-pre-line">
+              <h4 className="text-xl font-bold text-[#002147] mb-4 whitespace-normal md:whitespace-pre-line">
                 {item.title}
               </h4>
-              <ul className="space-y-3 text-[#434654] whitespace-pre-line">
+              <ul className="space-y-3 text-[#434654] whitespace-normal md:whitespace-pre-line">
                 {(item.rules || item.desc || []).map(
                   (rule: string, rIdx: number) => (
                     <li
                       key={rIdx}
-                      className="flex items-start gap-2 text-sm leading-relaxed whitespace-pre-line"
+                      className="flex items-start gap-2 text-sm leading-relaxed whitespace-normal md:whitespace-pre-line"
                     >
                       <span
-                        className="material-symbols-outlined text-[#1d4eca] text-base mt-0.5 shrink-0 whitespace-pre-line"
+                        className="material-symbols-outlined text-[#1d4eca] text-base mt-0.5 shrink-0 whitespace-normal md:whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -2163,35 +2163,35 @@ const BurslulukResultQueryBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap bg-[#e2e1ec]/20 whitespace-pre-line"
+      className="py-section-gap bg-[#e2e1ec]/20 whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
       >
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl whitespace-pre-line">
-          <div className="flex-1 p-8 md:p-12 text-white whitespace-pre-line">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 bg-[#002147] rounded-[40px] overflow-hidden shadow-xl whitespace-normal md:whitespace-pre-line">
+          <div className="flex-1 p-8 md:p-12 text-white whitespace-normal md:whitespace-pre-line">
             <h2
-              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-pre-line"
+              className="font-headline-xl text-2xl md:text-headline-xl mb-4 md:mb-6 font-bold whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Sınav Sonuç Sorgulama"}
             </h2>
             <p
-              className="text-base md:text-lg opacity-80 mb-8 whitespace-pre-line"
+              className="text-base md:text-lg opacity-80 mb-8 whitespace-normal md:whitespace-pre-line"
               style={getSubtitleStyle(block)}
             >
               {block.subtitle ||
                 "Aşağıdaki butona tıklayarak sınav sonuç sorgulama sayfasına ulaşabilirsiniz."}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md whitespace-pre-line">
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md whitespace-normal md:whitespace-pre-line">
               <button
                 type="button"
                 onClick={() => setQueryModal(true)}
-                className="w-full bg-[#D4AF37] text-[#002147] font-bold py-4 px-6 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg text-sm md:text-base uppercase tracking-wider cursor-pointer whitespace-pre-line"
+                className="w-full bg-[#D4AF37] text-[#002147] font-bold py-4 px-2 md:px-6 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg text-sm md:text-base uppercase tracking-wider cursor-pointer whitespace-normal md:whitespace-pre-line"
               >
                 <span
-                  className="material-symbols-outlined whitespace-pre-line"
+                  className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                   translate="no"
                   aria-hidden="true"
                 >
@@ -2201,9 +2201,9 @@ const BurslulukResultQueryBlock = ({
               </button>
             </div>
           </div>
-          <div className="w-full md:w-1/3 h-[280px] md:h-[360px] relative shrink-0 whitespace-pre-line">
+          <div className="w-full md:w-1/3 h-[280px] md:h-[360px] relative shrink-0 whitespace-normal md:whitespace-pre-line">
             <div
-              className="w-full h-full bg-cover bg-center whitespace-pre-line"
+              className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
               style={{
                 backgroundImage: `url('${block.image || "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80"}')`,
               }}
@@ -2213,25 +2213,25 @@ const BurslulukResultQueryBlock = ({
       </div>
 
       {queryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 whitespace-pre-line">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative whitespace-pre-line">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 whitespace-normal md:whitespace-pre-line">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative whitespace-normal md:whitespace-pre-line">
             <button
               type="button"
               onClick={() => setQueryModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 cursor-pointer whitespace-pre-line"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 cursor-pointer whitespace-normal md:whitespace-pre-line"
             >
               <span
-                className="material-symbols-outlined whitespace-pre-line"
+                className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                 translate="no"
                 aria-hidden="true"
               >
                 close
               </span>
             </button>
-            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-pre-line">
+            <h3 className="text-2xl font-bold text-[#002147] mb-2 whitespace-normal md:whitespace-pre-line">
               Sınav Sonuç Sorgulama
             </h3>
-            <p className="text-slate-500 text-sm mb-6 whitespace-pre-line">
+            <p className="text-slate-500 text-sm mb-6 whitespace-normal md:whitespace-pre-line">
               Lütfen öğrencinin T.C. Kimlik Numarasını giriniz.
             </p>
             <input
@@ -2240,7 +2240,7 @@ const BurslulukResultQueryBlock = ({
               value={tcQuery}
               onChange={(e) => setTcQuery(e.target.value)}
               placeholder="11 haneli T.C. Kimlik No"
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-[#1d4eca] text-sm whitespace-pre-line"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-[#1d4eca] text-sm whitespace-normal md:whitespace-pre-line"
             />
             <button
               type="button"
@@ -2254,7 +2254,7 @@ const BurslulukResultQueryBlock = ({
                 );
                 setQueryModal(false);
               }}
-              className="w-full bg-[#1d4eca] text-white py-3.5 rounded-xl font-bold hover:bg-[#1d4eca]/90 transition-all text-sm cursor-pointer whitespace-pre-line"
+              className="w-full bg-[#1d4eca] text-white py-3.5 rounded-xl font-bold hover:bg-[#1d4eca]/90 transition-all text-sm cursor-pointer whitespace-normal md:whitespace-pre-line"
             >
               Sorgula
             </button>
@@ -2382,7 +2382,7 @@ const BurslulukConfirmationBlock = ({
   return (
     <section
       key={index}
-      className="py-12 md:py-16 bg-surface-background min-h-screen whitespace-pre-line"
+      className="py-12 md:py-16 bg-surface-background min-h-screen whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <style>{`
@@ -2409,14 +2409,14 @@ const BurslulukConfirmationBlock = ({
           }
         }
       `}</style>
-      <div className={`max-w-4xl ${getAlignClass(block)} px-4 sm:px-6 whitespace-pre-line`}>
+      <div className={`max-w-4xl ${getAlignClass(block)} px-4 sm:px-2 md:px-6 whitespace-normal md:whitespace-pre-line`}>
         {/* Success Header */}
         <div
           className={`${block.styles?.textAlign ? "" : "text-center"} mb-10 no-print`}
         >
-          <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner whitespace-pre-line">
+          <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner whitespace-normal md:whitespace-pre-line">
             <span
-              className="material-symbols-outlined text-5xl whitespace-pre-line"
+              className="material-symbols-outlined text-5xl whitespace-normal md:whitespace-pre-line"
               translate="no"
               aria-hidden="true"
             >
@@ -2424,13 +2424,13 @@ const BurslulukConfirmationBlock = ({
             </span>
           </div>
           <h1
-            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-pre-line"
+            className="font-headline-xl text-2xl md:text-4xl text-[#002147] mb-3 font-bold whitespace-normal md:whitespace-pre-line"
             style={getTitleStyle(block)}
           >
             {block.title || "Başvurunuz Başarıyla Alındı!"}
           </h1>
           <p
-            className={`text-slate-600 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base leading-relaxed whitespace-pre-line`}
+            className={`text-slate-600 max-w-2xl ${getAlignClass(block, "subtitle")} text-sm md:text-base leading-relaxed whitespace-normal md:whitespace-pre-line`}
             style={getSubtitleStyle(block)}
           >
             {block.subtitle ||
@@ -2439,14 +2439,14 @@ const BurslulukConfirmationBlock = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8 no-print whitespace-pre-line">
+        <div className="flex flex-wrap justify-center gap-4 mb-8 no-print whitespace-normal md:whitespace-pre-line">
           <button
             type="button"
             onClick={handlePrint}
-            className="flex items-center gap-2 bg-[#002147] text-white px-6 py-3.5 rounded-xl font-bold hover:bg-[#002147]/90 transition-all shadow-md active:scale-95 cursor-pointer text-sm whitespace-pre-line"
+            className="flex items-center gap-2 bg-[#002147] text-white px-2 md:px-6 py-3.5 rounded-xl font-bold hover:bg-[#002147]/90 transition-all shadow-md active:scale-95 cursor-pointer text-sm whitespace-normal md:whitespace-pre-line"
           >
             <span
-              className="material-symbols-outlined text-xl whitespace-pre-line"
+              className="material-symbols-outlined text-xl whitespace-normal md:whitespace-pre-line"
               translate="no"
               aria-hidden="true"
             >
@@ -2457,10 +2457,10 @@ const BurslulukConfirmationBlock = ({
           <button
             type="button"
             onClick={handlePrint}
-            className="flex items-center gap-2 bg-white text-[#002147] border-2 border-[#002147] px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 cursor-pointer text-sm whitespace-pre-line"
+            className="flex items-center gap-2 bg-white text-[#002147] border-2 border-[#002147] px-2 md:px-6 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 cursor-pointer text-sm whitespace-normal md:whitespace-pre-line"
           >
             <span
-              className="material-symbols-outlined text-xl whitespace-pre-line"
+              className="material-symbols-outlined text-xl whitespace-normal md:whitespace-pre-line"
               translate="no"
               aria-hidden="true"
             >
@@ -2473,7 +2473,7 @@ const BurslulukConfirmationBlock = ({
         {/* PDF Preview Container (A4 Mockup Card) */}
         <div
           id="printable-exam-document"
-          className="bg-white shadow-2xl rounded-2xl mx-auto overflow-hidden border border-slate-200 p-6 md:p-12 relative whitespace-pre-line"
+          className="bg-white shadow-2xl rounded-2xl mx-auto overflow-hidden border border-slate-200 p-6 md:p-12 relative whitespace-normal md:whitespace-pre-line"
           style={{
             maxWidth: "800px",
             minHeight: "550px",
@@ -2482,97 +2482,97 @@ const BurslulukConfirmationBlock = ({
               : {}),
           }}
         >
-          <div className="h-full flex flex-col whitespace-pre-line">
+          <div className="h-full flex flex-col whitespace-normal md:whitespace-pre-line">
             {/* Document Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-[#002147] pb-6 mb-8 gap-4 whitespace-pre-line">
-              <div className="flex items-center gap-4 whitespace-pre-line">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-[#002147] pb-6 mb-8 gap-4 whitespace-normal md:whitespace-pre-line">
+              <div className="flex items-center gap-4 whitespace-normal md:whitespace-pre-line">
                 <img
                   src={block.documentLogo || "/dost-logo-png.png"}
                   alt="Dost Koleji Logo"
-                  className="h-12 w-auto object-contain whitespace-pre-line"
+                  className="h-12 w-auto object-contain whitespace-normal md:whitespace-pre-line"
                   onError={(e: any) => {
                     e.target.src =
                       "https://lh3.googleusercontent.com/aida-public/AB6AXuAcW18movsC69qnz9zpsbzsrJLWPy_Geo5sAAAi9nqoC0YE-bdMj0AiEUe-Z78NoFFBpFQy5UuXaMmRO0quff6khOovxlJfE1ptuTa38PqzHcJhVeJMUlPxZqHhxVw08UApxaSzgRKctOtlTu4DtjMgzPIZdZ0WMLs8KuA96cHwv2jaeSc1OpVg0rX0eqzr2iTpWL0N0C_Y9PkoQ7IeERePRqYH46NNAxWyoW03nr17RN7GXuwfevi2RYWTPiQtM4pg9fysMIgmkuk";
                   }}
                 />
                 <div>
-                  <h3 className="font-bold text-[#002147] text-lg uppercase tracking-wider whitespace-pre-line">
+                  <h3 className="font-bold text-[#002147] text-lg uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                     {block.documentTitle || "Bursluluk Sınavı Giriş Belgesi"}
                   </h3>
-                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold whitespace-pre-line">
+                  <p className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold whitespace-normal md:whitespace-pre-line">
                     DOST KOLEJİ EĞİTİM KURUMLARI
                   </p>
                 </div>
               </div>
-              <div className="text-left sm:text-right border-l sm:border-l-0 border-slate-200 pl-3 sm:pl-0 whitespace-pre-line">
-                <p className="text-xs font-bold text-[#002147] tracking-wide whitespace-pre-line">
+              <div className="text-left sm:text-right border-l sm:border-l-0 border-slate-200 pl-3 sm:pl-0 whitespace-normal md:whitespace-pre-line">
+                <p className="text-xs font-bold text-[#002147] tracking-wide whitespace-normal md:whitespace-pre-line">
                   {block.documentNoPrefix || "BELGE NO: "}
                   {docNo}
                 </p>
-                <p className="text-xs text-slate-500 whitespace-pre-line">
+                <p className="text-xs text-slate-500 whitespace-normal md:whitespace-pre-line">
                   Tarih: {formattedDocDate}
                 </p>
               </div>
             </div>
 
             {/* Document Body - Student & Exam Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-10 bg-slate-50/80 p-6 rounded-xl border border-slate-200/80 whitespace-pre-line">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12 mb-10 bg-slate-50/80 p-6 rounded-xl border border-slate-200/80 whitespace-normal md:whitespace-pre-line">
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   Adı Soyadı
                 </p>
-                <p className="font-bold text-[#002147] text-lg uppercase whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg uppercase whitespace-normal md:whitespace-pre-line">
                   {studentName}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   T.C. Kimlik No
                 </p>
-                <p className="font-bold text-[#002147] text-lg whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg whitespace-normal md:whitespace-pre-line">
                   {studentTc}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   Sınıf Seviyesi
                 </p>
-                <p className="font-bold text-[#002147] text-lg whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg whitespace-normal md:whitespace-pre-line">
                   {formattedGrade}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   Sınav Tarihi
                 </p>
-                <p className="font-bold text-[#002147] text-lg whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg whitespace-normal md:whitespace-pre-line">
                   {examDate}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   Sınav Saati
                 </p>
-                <p className="font-bold text-[#002147] text-lg whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg whitespace-normal md:whitespace-pre-line">
                   {examTime}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-pre-line">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 whitespace-normal md:whitespace-pre-line">
                   Sınav Merkezi
                 </p>
-                <p className="font-bold text-[#002147] text-lg whitespace-pre-line">
+                <p className="font-bold text-[#002147] text-lg whitespace-normal md:whitespace-pre-line">
                   {campusName}
                 </p>
               </div>
             </div>
 
             {/* Bottom Section - Rules, Required Docs, Campus Address */}
-            <div className="mt-auto border-t border-slate-200 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left whitespace-pre-line">
+            <div className="mt-auto border-t border-slate-200 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left whitespace-normal md:whitespace-pre-line">
               <div>
-                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-pre-line">
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-sm text-primary whitespace-pre-line"
+                    className="material-symbols-outlined text-sm text-primary whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
@@ -2580,7 +2580,7 @@ const BurslulukConfirmationBlock = ({
                   </span>
                   Sınav Kuralları
                 </h4>
-                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed whitespace-pre-line">
+                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed whitespace-normal md:whitespace-pre-line">
                   {rulesList.map((rule: string, rIdx: number) => (
                     <li key={rIdx}>{rule}</li>
                   ))}
@@ -2588,9 +2588,9 @@ const BurslulukConfirmationBlock = ({
               </div>
 
               <div>
-                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-pre-line">
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-sm text-primary whitespace-pre-line"
+                    className="material-symbols-outlined text-sm text-primary whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
@@ -2598,7 +2598,7 @@ const BurslulukConfirmationBlock = ({
                   </span>
                   Gerekli Belgeler
                 </h4>
-                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed whitespace-pre-line">
+                <ul className="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed whitespace-normal md:whitespace-pre-line">
                   {docsList.map((docItem: string, dIdx: number) => (
                     <li key={dIdx}>{docItem}</li>
                   ))}
@@ -2606,9 +2606,9 @@ const BurslulukConfirmationBlock = ({
               </div>
 
               <div>
-                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-pre-line">
+                <h4 className="text-xs font-bold text-[#002147] mb-2 uppercase tracking-wider flex items-center gap-1.5 whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined text-sm text-primary whitespace-pre-line"
+                    className="material-symbols-outlined text-sm text-primary whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
@@ -2616,16 +2616,16 @@ const BurslulukConfirmationBlock = ({
                   </span>
                   Kampüs Adresi
                 </h4>
-                <p className="text-[11px] text-slate-600 leading-relaxed whitespace-pre-line">
+                <p className="text-[11px] text-slate-600 leading-relaxed whitespace-normal md:whitespace-pre-line">
                   {currentCampusAddress}
                 </p>
               </div>
             </div>
 
             {/* Watermark / Footer Strip */}
-            <div className="mt-8 pt-4 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400 whitespace-pre-line">
+            <div className="mt-8 pt-4 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400 whitespace-normal md:whitespace-pre-line">
               <span>Dost Koleji Sınav Hizmetleri © 2026</span>
-              <span className="font-mono whitespace-pre-line">
+              <span className="font-mono whitespace-normal md:whitespace-pre-line">
                 VERIFIED OFFICIAL ENTRY TICKET
               </span>
             </div>
@@ -2638,10 +2638,10 @@ const BurslulukConfirmationBlock = ({
         >
           <a
             href="/"
-            className="text-primary font-bold inline-flex items-center justify-center gap-2 hover:underline text-sm whitespace-pre-line"
+            className="text-primary font-bold inline-flex items-center justify-center gap-2 hover:underline text-sm whitespace-normal md:whitespace-pre-line"
           >
             <span
-              className="material-symbols-outlined text-lg whitespace-pre-line"
+              className="material-symbols-outlined text-lg whitespace-normal md:whitespace-pre-line"
               translate="no"
               aria-hidden="true"
             >
@@ -2666,23 +2666,23 @@ const ContactFormBlock = ({
   return (
     <section
       key={index}
-      className="py-section-gap bg-surface-container-low whitespace-pre-line"
+      className="py-section-gap bg-surface-container-low whitespace-normal md:whitespace-pre-line"
       style={getStyle(block, "container")}
     >
       <div
-        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+        className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
       >
-        <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border-subtle whitespace-pre-line">
-          <div className="mb-8 whitespace-pre-line">
+        <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border-subtle whitespace-normal md:whitespace-pre-line">
+          <div className="mb-8 whitespace-normal md:whitespace-pre-line">
             <h2
-              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-pre-line"
+              className="font-headline-xl text-headline-xl text-on-surface mb-2 whitespace-normal md:whitespace-pre-line"
               style={getTitleStyle(block)}
             >
               {block.title || "Bize Ulaşın"}
             </h2>
             {block.subtitle && (
               <p
-                className="font-body-md text-body-md text-text-muted whitespace-pre-line"
+                className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line"
                 style={getSubtitleStyle(block)}
               >
                 {block.subtitle}
@@ -2870,14 +2870,14 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative h-[600px] w-full flex items-center overflow-hidden transition-all duration-1000 opacity-100 translate-y-0 whitespace-pre-line"
+              className="relative h-[600px] w-full flex items-center overflow-hidden transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
-              <div className="absolute inset-0 z-0 whitespace-pre-line">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 whitespace-pre-line"></div>
+              <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 whitespace-normal md:whitespace-pre-line"></div>
                 {block.image && (
                   <img
-                    className="w-full h-full object-cover whitespace-pre-line"
+                    className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                     src={block.image}
                     alt=""
                     style={{
@@ -2889,28 +2889,28 @@ export const DynamicBlockRenderer = ({
                 )}
               </div>
               <div
-                className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop w-full`}
+                className={`relative z-20 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop w-full`}
               >
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
                   <h1
-                    className="font-display-lg text-display-lg text-white mb-6 whitespace-pre-line"
+                    className="font-display-lg text-display-lg text-white mb-6 whitespace-normal md:whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
                   </h1>
                   <p
-                    className="font-body-md text-body-lg text-white/90 mb-8 leading-relaxed whitespace-pre-line"
+                    className="font-body-md text-body-lg text-white/90 mb-8 leading-relaxed whitespace-normal md:whitespace-pre-line"
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
                   </p>
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex gap-4 flex-wrap whitespace-pre-line">
+                    <div className="flex gap-4 flex-wrap whitespace-normal md:whitespace-pre-line">
                       {block.buttons.map((btn: any, btnIdx: number) => (
                         <SmartLink
                           key={btnIdx}
                           url={btn.url || btn.buttonUrl || btn.link}
-                          className="bg-white text-primary px-8 py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2 whitespace-pre-line"
+                          className="w-full sm:w-auto justify-center text-center bg-white text-primary px-6 md:px-8 py-3.5 md:py-4 rounded-xl font-bold hover:bg-surface-container-low transition-all shadow-lg flex items-center gap-2 whitespace-normal md:whitespace-pre-line"
                           style={getIndividualButtonStyle(btn, block)}
                         >
                           {btn.label}{" "}
@@ -2929,28 +2929,28 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
+              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
               style={getStyle(block, "container")}
             >
               <div
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
                 <h2
-                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
+                  className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
                 </h2>
                 {block.subtitle && (
                   <p
-                    className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} mb-4 whitespace-pre-line`}
+                    className={`font-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} mb-4 whitespace-normal md:whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                     dangerouslySetInnerHTML={{ __html: block.subtitle }}
                   />
                 )}
-                <div className="w-20 h-1 bg-primary mx-auto rounded-full whitespace-pre-line"></div>
+                <div className="w-20 h-1 bg-primary mx-auto rounded-full whitespace-normal md:whitespace-pre-line"></div>
               </div>
-              <div className="grid grid-cols-12 gap-6 whitespace-pre-line">
+              <div className="grid grid-cols-12 gap-6 whitespace-normal md:whitespace-pre-line">
                 {(block.items || []).map((item: any, i: number) => {
                   const cols =
                     item.colSpan || "col-span-12 md:col-span-6 lg:col-span-4";
@@ -2972,22 +2972,22 @@ export const DynamicBlockRenderer = ({
                     >
                       {item.image && (
                         <img
-                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 whitespace-pre-line"
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 whitespace-normal md:whitespace-pre-line"
                           src={item.image}
                           alt=""
                           style={getImageStyle(item, "image", i)}
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-pre-line">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 whitespace-normal md:whitespace-pre-line">
                         <h3
-                          className="font-headline-md text-headline-md text-white mb-2 whitespace-pre-line"
+                          className="font-headline-md text-headline-md text-white mb-2 whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
                         </h3>
                         {item.desc && (
                           <p
-                            className="text-white/80 font-body-md whitespace-pre-line"
+                            className="text-white/80 font-body-md whitespace-normal md:whitespace-pre-line"
                             style={getCardDescStyle(item, block)}
                           >
                             {item.subtitle || item.desc}
@@ -3005,30 +3005,30 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="bg-surface-container-low py-section-gap transition-all duration-1000 opacity-100 translate-y-0 whitespace-pre-line"
+              className="bg-surface-container-low py-section-gap transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
               >
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-pre-line">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full mb-12 gap-6 whitespace-normal md:whitespace-pre-line">
                   <div className="w-full md:w-auto flex-1">
                     <h2
-                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl text-text-main mb-4 whitespace-normal md:whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
                     </h2>
                     <p
-                      className={`font-body-md text-text-muted max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                      className={`font-body-md text-text-muted max-w-xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
                     </p>
                   </div>
-                  <div className="flex gap-2 whitespace-pre-line">
+                  <div className="flex gap-2 whitespace-normal md:whitespace-pre-line">
                     <button
-                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-pre-line"
+                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-normal md:whitespace-pre-line"
                       onClick={(e) => {
                         const c =
                           e.currentTarget.parentElement?.parentElement
@@ -3039,7 +3039,7 @@ export const DynamicBlockRenderer = ({
                       }}
                     >
                       <span
-                        className="material-symbols-outlined whitespace-pre-line"
+                        className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -3047,7 +3047,7 @@ export const DynamicBlockRenderer = ({
                       </span>
                     </button>
                     <button
-                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-pre-line"
+                      className="w-12 h-12 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all whitespace-normal md:whitespace-pre-line"
                       onClick={(e) => {
                         const c =
                           e.currentTarget.parentElement?.parentElement
@@ -3058,7 +3058,7 @@ export const DynamicBlockRenderer = ({
                       }}
                     >
                       <span
-                        className="material-symbols-outlined whitespace-pre-line"
+                        className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                         translate="no"
                         aria-hidden="true"
                       >
@@ -3068,34 +3068,34 @@ export const DynamicBlockRenderer = ({
                   </div>
                 </div>
                 <div
-                  className="flex gap-6 overflow-x-auto no-scrollbar pb-4 whitespace-pre-line"
+                  className="flex gap-6 overflow-x-auto no-scrollbar pb-4 whitespace-normal md:whitespace-pre-line"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                   {(block.items || []).map((item: any, i: number) => (
                     <div
                       key={i}
-                      className="min-w-[350px] bg-white rounded-2xl overflow-hidden shadow-sm border border-border-subtle group flex-shrink-0 whitespace-pre-line"
+                      className="min-w-[350px] bg-white rounded-2xl overflow-hidden shadow-sm border border-border-subtle group flex-shrink-0 whitespace-normal md:whitespace-pre-line"
                       style={getCardStyle(item, block)}
                     >
-                      <div className="h-64 overflow-hidden relative whitespace-pre-line">
+                      <div className="h-64 overflow-hidden relative whitespace-normal md:whitespace-pre-line">
                         {item.image && (
                           <img
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 whitespace-pre-line"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 whitespace-normal md:whitespace-pre-line"
                             src={item.image}
                             alt=""
                             style={getImageStyle(item, "image", i)}
                           />
                         )}
                       </div>
-                      <div className="p-6 whitespace-pre-line">
+                      <div className="p-6 whitespace-normal md:whitespace-pre-line">
                         <h4
-                          className="font-headline-md text-[20px] mb-2 whitespace-pre-line"
+                          className="font-headline-md text-[20px] mb-2 whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
                         </h4>
                         <p
-                          className="text-text-muted text-label-md whitespace-pre-line"
+                          className="text-text-muted text-label-md whitespace-normal md:whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
                           {item.subtitle || item.desc}
@@ -3119,46 +3119,46 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
+              className={`py-section-gap ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop transition-all duration-1000 opacity-100 translate-y-0`}
               style={getStyle(block, "container")}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center whitespace-pre-line">
-                <div className="order-2 lg:order-1 whitespace-pre-line">
-                  <div className="grid grid-cols-2 gap-6 items-center whitespace-pre-line">
-                    <div className="flex flex-col gap-6 whitespace-pre-line">
-                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-pre-line">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center whitespace-normal md:whitespace-pre-line">
+                <div className="order-2 lg:order-1 whitespace-normal md:whitespace-pre-line">
+                  <div className="grid grid-cols-2 gap-6 items-center whitespace-normal md:whitespace-pre-line">
+                    <div className="flex flex-col gap-6 whitespace-normal md:whitespace-pre-line">
+                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-normal md:whitespace-pre-line">
                         {block.image1 && (
                           <img
-                            className="w-full h-full object-cover whitespace-pre-line"
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                             src={block.image1}
                             alt=""
                           />
                         )}
                       </div>
-                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-pre-line">
+                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-normal md:whitespace-pre-line">
                         {block.image2 && (
                           <img
-                            className="w-full h-full object-cover whitespace-pre-line"
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                             src={block.image2}
                             alt=""
                           />
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-col gap-6 pt-12 whitespace-pre-line">
-                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-pre-line">
+                    <div className="flex flex-col gap-6 pt-12 whitespace-normal md:whitespace-pre-line">
+                      <div className="h-64 rounded-2xl overflow-hidden shadow-lg whitespace-normal md:whitespace-pre-line">
                         {block.image3 && (
                           <img
-                            className="w-full h-full object-cover whitespace-pre-line"
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                             src={block.image3}
                             alt=""
                           />
                         )}
                       </div>
-                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-pre-line">
+                      <div className="h-48 rounded-2xl overflow-hidden shadow-lg  whitespace-normal md:whitespace-pre-line">
                         {block.image4 && (
                           <img
-                            className="w-full h-full object-cover whitespace-pre-line"
+                            className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                             src={block.image4}
                             alt=""
                           />
@@ -3167,17 +3167,17 @@ export const DynamicBlockRenderer = ({
                     </div>
                   </div>
                 </div>
-                <div className="order-1 lg:order-2 space-y-8 whitespace-pre-line">
+                <div className="order-1 lg:order-2 space-y-8 whitespace-normal md:whitespace-pre-line">
                   {block.badge && (
                     <span
-                      className="text-primary font-bold text-label-md tracking-widest uppercase whitespace-pre-line"
+                      className="text-primary font-bold text-label-md tracking-widest uppercase whitespace-normal md:whitespace-pre-line"
                       style={getBadgeStyle(block)}
                     >
                       {block.badge}
                     </span>
                   )}
                   <h2
-                    className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-text-main whitespace-normal md:whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1}{" "}
@@ -3188,18 +3188,18 @@ export const DynamicBlockRenderer = ({
                     )}
                   </h2>
                   <p
-                    className="font-body-md text-text-muted leading-relaxed whitespace-pre-line"
+                    className="font-body-md text-text-muted leading-relaxed whitespace-normal md:whitespace-pre-line"
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
                   </p>
-                  <ul className="space-y-4 whitespace-pre-line">
+                  <ul className="space-y-4 whitespace-normal md:whitespace-pre-line">
                     {(block.items || []).map((item: any, i: number) => (
                       <li
                         key={i}
-                        className="flex items-center gap-4 whitespace-pre-line"
+                        className="flex items-center gap-4 whitespace-normal md:whitespace-pre-line"
                       >
-                        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 whitespace-pre-line">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 whitespace-normal md:whitespace-pre-line">
                           {item.icon &&
                             (typeof item.icon === "string" &&
                             item.icon === item.icon.toLowerCase() ? (
@@ -3207,12 +3207,12 @@ export const DynamicBlockRenderer = ({
                             ) : (
                               <IconPreview
                                 data={item.icon}
-                                className="w-6 h-6 fill-current whitespace-pre-line"
+                                className="w-6 h-6 fill-current whitespace-normal md:whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             ))}
                         </div>
                         <span
-                          className="font-label-md text-text-main whitespace-pre-line"
+                          className="font-label-md text-text-main whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
@@ -3221,12 +3221,12 @@ export const DynamicBlockRenderer = ({
                     ))}
                   </ul>
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex gap-4 flex-wrap whitespace-pre-line">
+                    <div className="flex gap-4 flex-wrap whitespace-normal md:whitespace-pre-line">
                       {block.buttons.map((btn: any, btnIdx: number) => (
                         <SmartLink
                           key={btnIdx}
                           url={btn.url || btn.buttonUrl || btn.link}
-                          className={`px-8 py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === "outline" ? "border-2 border-primary text-primary hover:bg-primary/5" : "bg-secondary text-white hover:opacity-90"}`}
+                          className={`inline-flex items-center w-full sm:w-auto justify-center text-center px-6 md:px-8 py-3.5 md:py-4 rounded-xl font-bold transition-all shadow-md ${btn.style === "outline" ? "border-2 border-primary text-primary hover:bg-primary/5" : "bg-secondary text-white hover:opacity-90"}`}
                           style={getIndividualButtonStyle(btn, block)}
                         >
                           {btn.label}
@@ -3243,46 +3243,46 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-section-gap bg-surface-dim/30 transition-all duration-1000 opacity-100 translate-y-0 whitespace-pre-line"
+              className="py-section-gap bg-surface-dim/30 transition-all duration-1000 opacity-100 translate-y-0 whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
               >
-                <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row whitespace-pre-line">
-                  <div className="p-12 w-full lg:w-1/2 space-y-8 flex flex-col justify-center whitespace-pre-line">
+                <div className="bg-white rounded-[32px] overflow-hidden shadow-2xl flex flex-col lg:flex-row whitespace-normal md:whitespace-pre-line">
+                  <div className="p-12 w-full lg:w-1/2 space-y-8 flex flex-col justify-center whitespace-normal md:whitespace-pre-line">
                     <h2
-                      className="font-headline-xl text-headline-xl whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl whitespace-normal md:whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title}
                     </h2>
                     {block.subtitle && (
                       <p
-                        className="font-body-lg text-text-muted whitespace-pre-line"
+                        className="font-body-lg text-text-muted whitespace-normal md:whitespace-pre-line"
                         style={getSubtitleStyle(block)}
                         dangerouslySetInnerHTML={{ __html: block.subtitle }}
                       />
                     )}
-                    <div className="space-y-6 whitespace-pre-line">
+                    <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
                       {(block.items || []).map((item: any, i: number) => (
                         <div
                           key={i}
-                          className="flex gap-4 items-start whitespace-pre-line"
+                          className="flex gap-4 items-start whitespace-normal md:whitespace-pre-line"
                         >
                           <IconPreview
                             data={item.icon}
-                            className="text-primary whitespace-pre-line"
+                            className="text-primary whitespace-normal md:whitespace-pre-line"
                            style={getIconStyle(item, block)} />
                           <div>
                             <h4
-                              className="font-bold text-text-main whitespace-pre-line"
+                              className="font-bold text-text-main whitespace-normal md:whitespace-pre-line"
                               style={getCardTitleStyle(item, block)}
                             >
                               {item.title}
                             </h4>
                             <p
-                              className="text-text-muted whitespace-pre-line"
+                              className="text-text-muted whitespace-normal md:whitespace-pre-line"
                               style={getCardDescStyle(item, block)}
                             >
                               {item.subtitle || item.desc}
@@ -3292,28 +3292,28 @@ export const DynamicBlockRenderer = ({
                       ))}
                     </div>
                   </div>
-                  <div className="w-full lg:w-1/2 min-h-[400px] relative overflow-hidden whitespace-pre-line">
+                  <div className="w-full lg:w-1/2 min-h-[400px] relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                     {block.mapCode ? (
                       <div
-                        className="w-full h-full flex flex-col [&>iframe]:flex-1 [&>iframe]:w-full [&>iframe]:min-h-[400px] min-h-[400px] whitespace-pre-line"
+                        className="w-full h-full flex flex-col [&>iframe]:flex-1 [&>iframe]:w-full [&>iframe]:min-h-[400px] min-h-[400px] whitespace-normal md:whitespace-pre-line"
                         dangerouslySetInnerHTML={{ __html: block.mapCode }}
                       />
                     ) : (
                       <>
                         {block.image && (
                           <img
-                            className="absolute inset-0 w-full h-full object-cover whitespace-pre-line"
+                            className="absolute inset-0 w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                             src={block.image}
                             alt=""
                             style={getImageStyle(block, "image")}
                           />
                         )}
-                        <div className="absolute bottom-8 left-8 right-8 bg-white/80 backdrop-blur-md p-6 rounded-2xl flex items-center justify-between border border-border-subtle/80 whitespace-pre-line">
+                        <div className="absolute bottom-8 left-8 right-8 bg-white/80 backdrop-blur-md p-6 rounded-2xl flex items-center justify-between border border-border-subtle/80 whitespace-normal md:whitespace-pre-line">
                           <div className="w-full md:w-auto flex-1">
-                            <h4 className="font-bold whitespace-pre-line">
+                            <h4 className="font-bold whitespace-normal md:whitespace-pre-line">
                               {block.cardTitle}
                             </h4>
-                            <p className="text-sm text-text-muted whitespace-pre-line">
+                            <p className="text-sm text-text-muted whitespace-normal md:whitespace-pre-line">
                               {block.cardDesc}
                             </p>
                           </div>
@@ -3324,7 +3324,7 @@ export const DynamicBlockRenderer = ({
                                 block.buttons[0].buttonUrl ||
                                 block.buttons[0].link
                               }
-                              className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity whitespace-pre-line"
+                              className="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity whitespace-normal md:whitespace-pre-line"
                             >
                               <IconPreview
                                 data={block.buttons[0].icon || "directions"}
@@ -3344,20 +3344,20 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="bg-white py-16 whitespace-pre-line"
+              className="bg-white py-16 whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
               >
                 <h1
-                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-pre-line"
+                  className="font-display-lg text-display-lg text-primary mb-4 whitespace-normal md:whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title || "İletişim"}
                 </h1>
                 <p
-                  className={`font-body-lg text-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                  className={`font-body-lg text-body-lg text-text-muted max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                 >
                   {block.subtitle}
@@ -3370,56 +3370,56 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-section-gap bg-surface-background whitespace-pre-line"
+              className="py-section-gap bg-surface-background whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
               >
-                <div className="flex flex-col gap-12 whitespace-pre-line">
+                <div className="flex flex-col gap-12 whitespace-normal md:whitespace-pre-line">
                   {(block.items || []).map((item: any, i: number) => (
                     <div
                       key={i}
-                      className="grid grid-cols-1 md:grid-cols-3 gap-0 bg-white rounded-2xl border border-border-subtle overflow-hidden shadow-sm whitespace-pre-line"
+                      className="grid grid-cols-1 md:grid-cols-3 gap-0 bg-white rounded-2xl border border-border-subtle overflow-hidden shadow-sm whitespace-normal md:whitespace-pre-line"
                       style={getCardStyle(item, block)}
                     >
-                      <div className="md:col-span-1 p-8 flex flex-col justify-center border-r border-border-subtle whitespace-pre-line">
+                      <div className="md:col-span-1 p-8 flex flex-col justify-center border-r border-border-subtle whitespace-normal md:whitespace-pre-line">
                         {item.badge && (
-                          <div className="bg-primary text-on-primary px-3 py-1 rounded text-caption font-caption w-fit mb-4 uppercase whitespace-pre-line">
+                          <div className="bg-primary text-on-primary px-3 py-1 rounded text-caption font-caption w-fit mb-4 uppercase whitespace-normal md:whitespace-pre-line">
                             {item.badge}
                           </div>
                         )}
                         <h3
-                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line"
+                          className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.title}
                         </h3>
-                        <div className="space-y-4 mb-6 whitespace-pre-line">
+                        <div className="space-y-4 mb-6 whitespace-normal md:whitespace-pre-line">
                           {item.address && (
-                            <div className="flex items-start gap-3 whitespace-pre-line">
+                            <div className="flex items-start gap-3 whitespace-normal md:whitespace-pre-line">
                               <span
-                                className="material-symbols-outlined text-primary text-[24px] whitespace-pre-line"
+                                className="material-symbols-outlined text-primary text-[24px] whitespace-normal md:whitespace-pre-line"
                                 translate="no"
                                 aria-hidden="true"
                               >
                                 location_on
                               </span>
-                              <p className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line">
+                              <p className="font-body-md text-body-md text-on-surface-variant whitespace-normal md:whitespace-pre-line">
                                 {item.address}
                               </p>
                             </div>
                           )}
                           {item.phone && (
-                            <div className="flex items-start gap-3 whitespace-pre-line">
+                            <div className="flex items-start gap-3 whitespace-normal md:whitespace-pre-line">
                               <span
-                                className="material-symbols-outlined text-primary text-[24px] whitespace-pre-line"
+                                className="material-symbols-outlined text-primary text-[24px] whitespace-normal md:whitespace-pre-line"
                                 translate="no"
                                 aria-hidden="true"
                               >
                                 call
                               </span>
-                              <p className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line">
+                              <p className="font-body-md text-body-md text-on-surface-variant whitespace-normal md:whitespace-pre-line">
                                 {item.phone}
                               </p>
                             </div>
@@ -3428,10 +3428,10 @@ export const DynamicBlockRenderer = ({
                         {item.buttonText && (
                           <a
                             href={item.url || "#"}
-                            className="w-full border-2 border-primary text-primary py-3 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-2 whitespace-pre-line"
+                            className="w-full border-2 border-primary text-primary py-3 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors flex items-center justify-center gap-2 whitespace-normal md:whitespace-pre-line"
                           >
                             <span
-                              className="material-symbols-outlined text-[20px] whitespace-pre-line"
+                              className="material-symbols-outlined text-[20px] whitespace-normal md:whitespace-pre-line"
                               translate="no"
                               aria-hidden="true"
                             >
@@ -3441,25 +3441,25 @@ export const DynamicBlockRenderer = ({
                           </a>
                         )}
                       </div>
-                      <div className="md:col-span-2 h-[400px] relative bg-surface-container overflow-hidden whitespace-pre-line">
+                      <div className="md:col-span-2 h-[400px] relative bg-surface-container overflow-hidden whitespace-normal md:whitespace-pre-line">
                         {item.mapCode ? (
                           <div
-                            className="w-full h-full flex flex-col [&>iframe]:flex-1 [&>iframe]:w-full [&>iframe]:min-h-[400px] whitespace-pre-line"
+                            className="w-full h-full flex flex-col [&>iframe]:flex-1 [&>iframe]:w-full [&>iframe]:min-h-[400px] whitespace-normal md:whitespace-pre-line"
                             dangerouslySetInnerHTML={{ __html: item.mapCode }}
                           />
                         ) : (
                           <>
                             <div
-                              className="absolute inset-0 grayscale-[0.5] opacity-80 whitespace-pre-line"
+                              className="absolute inset-0 grayscale-[0.5] opacity-80 whitespace-normal md:whitespace-pre-line"
                               style={{
                                 ...getImageStyle(item, "image", i),
                                 backgroundSize: "cover",
                                 backgroundPosition: "center center",
                               }}
                             ></div>
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none whitespace-pre-line">
-                              <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg shadow-lg border border-primary/20 pointer-events-auto whitespace-pre-line">
-                                <p className="font-label-md text-primary whitespace-pre-line">
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none whitespace-normal md:whitespace-pre-line">
+                              <div className="bg-white/90 backdrop-blur-sm px-2 md:px-6 py-3 rounded-lg shadow-lg border border-primary/20 pointer-events-auto whitespace-normal md:whitespace-pre-line">
+                                <p className="font-label-md text-primary whitespace-normal md:whitespace-pre-line">
                                   {item.title} Haritası
                                 </p>
                               </div>
@@ -3703,15 +3703,15 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-12 bg-white border-t border-border-subtle whitespace-pre-line"
+              className="py-12 bg-white border-t border-border-subtle whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop ${block.styles?.textAlign ? "" : "text-center"}`}
               >
                 {block.title && (
                   <h3
-                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-pre-line"
+                    className="font-headline-md text-headline-md text-on-surface mb-6 whitespace-normal md:whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title}
@@ -3719,31 +3719,31 @@ export const DynamicBlockRenderer = ({
                 )}
                 {block.subtitle && (
                   <p
-                    className={`font-body-md text-body-md text-text-muted mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                    className={`font-body-md text-body-md text-text-muted mb-8 max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
                   </p>
                 )}
                 {validItems.length > 0 && (
-                  <div className="flex justify-center gap-6 whitespace-pre-line">
+                  <div className="flex justify-center gap-6 whitespace-normal md:whitespace-pre-line">
                     {validItems.map((item: any, i: number) => (
                       <a
                         key={i}
                         href={item.url || "#"}
-                        className="w-14 h-14 rounded-xl border border-border-subtle flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all group whitespace-pre-line"
+                        className="w-14 h-14 rounded-xl border border-border-subtle flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all group whitespace-normal md:whitespace-pre-line"
                       >
                         {item.icon &&
                           (typeof item.icon === "string" &&
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-2xl whitespace-pre-line"
+                              className="text-2xl whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
                               data={item.icon}
-                              className="w-6 h-6 fill-current group-hover:fill-white transition-colors whitespace-pre-line"
+                              className="w-6 h-6 fill-current group-hover:fill-white transition-colors whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ))}
                       </a>
@@ -3758,15 +3758,15 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative h-[60vh] flex items-center justify-center overflow-hidden whitespace-pre-line"
+              className="relative h-[60vh] flex items-center justify-center overflow-hidden whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
-              <div className="absolute inset-0 z-0 whitespace-pre-line">
+              <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
                 <div
-                  className="w-full h-full bg-cover bg-center whitespace-pre-line"
+                  className="w-full h-full bg-cover bg-center whitespace-normal md:whitespace-pre-line"
                   style={getImageStyle(block, "image")}
                 ></div>
-                <div className="absolute inset-0 bg-primary/60 mix-blend-multiply whitespace-pre-line"></div>
+                <div className="absolute inset-0 bg-primary/60 mix-blend-multiply whitespace-normal md:whitespace-pre-line"></div>
               </div>
               <div
                 className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter w-full`}
@@ -3778,7 +3778,7 @@ export const DynamicBlockRenderer = ({
                   )}
                 >
                   <h1
-                    className={`font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
+                    className={`font-display-lg text-display-lg text-on-primary mb-6 drop-shadow-lg whitespace-normal md:whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                     style={getTitleStyle(block)}
                   >
                     {block.titlePart1 || block.title}{" "}
@@ -3791,20 +3791,20 @@ export const DynamicBlockRenderer = ({
                   </h1>
                   {block.subtitle && (
                     <p
-                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
+                      className={`font-body-lg text-body-lg text-on-primary-container opacity-90 max-w-2xl ${getAlignClass(block, "subtitle")} mb-8 whitespace-normal md:whitespace-pre-line ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'text-left w-full' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'text-right w-full' : 'text-center w-full'}`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
                     </p>
                   )}
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className={`flex flex-wrap gap-4 whitespace-pre-line w-full ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'justify-start' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'justify-end' : 'justify-center'}`}>
+                    <div className={`flex flex-wrap gap-4 whitespace-normal md:whitespace-pre-line w-full ${(block.styles?.subtitleAlign || block.styles?.textAlign) === 'left' ? 'justify-start' : (block.styles?.subtitleAlign || block.styles?.textAlign) === 'right' ? 'justify-end' : 'justify-center'}`}>
                       {block.buttons.map((btn: any, i: number) => {
                       const isCustom = btn.bgColor || btn.textColor || btn.borderColor || btn.borderRadius || btn.cardBgColor || btn.cardTextColor || btn.cardBorderColor || btn.cardBorderRadius;
                       const defaultClass =
                         btn.style === "outline"
-                          ? "bg-white/10 backdrop-blur-md text-on-primary border border-white/20 px-8 py-3 rounded-xl font-label-md hover:bg-white/20 transition-all"
-                          : "bg-secondary-container text-on-secondary-container px-8 py-3 rounded-xl font-label-md hover:scale-105 transition-transform";
+                          ? "w-full sm:w-auto justify-center inline-flex items-center bg-white/10 backdrop-blur-md text-on-primary border border-white/20 px-6 md:px-8 py-3 md:py-3.5 rounded-xl font-label-md hover:bg-white/20 transition-all"
+                          : "w-full sm:w-auto justify-center inline-flex items-center bg-secondary-container text-on-secondary-container px-6 md:px-8 py-3 md:py-3.5 rounded-xl font-label-md hover:scale-105 transition-transform";
                       return (
                         <a
                           key={i}
@@ -3813,7 +3813,7 @@ export const DynamicBlockRenderer = ({
                           className={
                             !isCustom
                               ? defaultClass
-                              : "px-8 py-3 rounded-xl font-label-md transition-all hover:scale-105"
+                              : "w-full sm:w-auto justify-center inline-flex items-center px-6 md:px-8 py-3 md:py-3.5 rounded-xl font-label-md transition-all hover:scale-105"
                           }
                         >
                           {btn.label}
@@ -3847,7 +3847,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-section-gap bg-surface-container-low whitespace-pre-line"
+              className="py-section-gap bg-surface-container-low whitespace-normal md:whitespace-pre-line"
               id="benefits"
               style={getStyle(block, "container")}
             >
@@ -3858,50 +3858,50 @@ export const DynamicBlockRenderer = ({
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
                   <h2
-                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-headline-xl text-primary mb-4 whitespace-normal md:whitespace-pre-line"
                     style={getTitleStyle(block)}
                   >
                     {block.title || "Neden Kulüplere Katılmalısın?"}
                   </h2>
                   {block.subtitle && (
                     <p
-                      className={`text-on-surface-variant max-w-2xl ${getAlignClass(block, "subtitle")} font-body-lg whitespace-pre-line`}
+                      className={`text-on-surface-variant max-w-2xl ${getAlignClass(block, "subtitle")} font-body-lg whitespace-normal md:whitespace-pre-line`}
                       style={getSubtitleStyle(block)}
                     >
                       {block.subtitle}
                     </p>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 whitespace-pre-line">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 whitespace-normal md:whitespace-pre-line">
                   {(block.items || []).map((item: any, i: number) => (
                     <div
                       key={i}
                       className={`bg-white p-8 rounded-2xl border border-border-subtle ${block.styles?.textAlign ? "" : "text-center"} hover:-translate-y-1 transition-transform shadow-sm`}
                       style={getCardStyle(item, block)}
                     >
-                      <div className="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center mx-auto mb-6 whitespace-pre-line">
+                      <div className="w-16 h-16 bg-primary-fixed rounded-2xl flex items-center justify-center mx-auto mb-6 whitespace-normal md:whitespace-pre-line">
                         {item.icon &&
                           (typeof item.icon === "string" &&
                           item.icon === item.icon.toLowerCase() ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-primary text-3xl whitespace-pre-line"
+                              className="text-primary text-3xl whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
                               data={item.icon}
-                              className="w-[32px] h-[32px] text-primary whitespace-pre-line"
+                              className="w-[32px] h-[32px] text-primary whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ))}
                       </div>
                       <h4
-                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-on-surface mb-3 text-lg whitespace-normal md:whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
                       </h4>
                       <p
-                        className="text-on-surface-variant text-sm whitespace-pre-line"
+                        className="text-on-surface-variant text-sm whitespace-normal md:whitespace-pre-line"
                         style={getCardDescStyle(item, block)}
                       >
                         {item.subtitle || item.desc}
@@ -3917,32 +3917,32 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-section-gap whitespace-pre-line"
+              className="py-section-gap whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
                 className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-gutter`}
               >
-                <div className="bg-primary rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-md whitespace-pre-line">
+                <div className="bg-primary rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-md whitespace-normal md:whitespace-pre-line">
                   <div
                     className={`relative z-10 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
                   >
                     <h2
-                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-pre-line"
+                      className="font-headline-xl text-headline-xl text-on-primary mb-4 whitespace-normal md:whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.title || "Bir Kulübe Katılmak İster misin?"}
                     </h2>
                     {block.subtitle && (
                       <p
-                        className={`text-primary-fixed opacity-90 max-w-lg font-body-lg ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                        className={`text-primary-fixed opacity-90 max-w-lg font-body-lg ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                         style={getSubtitleStyle(block)}
                       >
                         {block.subtitle}
                       </p>
                     )}
                   </div>
-                  <div className="relative z-10 whitespace-pre-line">
+                  <div className="relative z-10 whitespace-normal md:whitespace-pre-line">
                     {block.buttons &&
                       block.buttons.map((btn: any, i: number) => {
                         const isCustom = btn.bgColor || btn.textColor || btn.borderColor || btn.borderRadius || btn.cardBgColor || btn.cardTextColor || btn.cardBorderColor || btn.cardBorderRadius;
@@ -3964,8 +3964,8 @@ export const DynamicBlockRenderer = ({
                         );
                       })}
                   </div>
-                  <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl whitespace-pre-line"></div>
-                  <div className="absolute -left-20 -top-20 w-60 h-60 bg-white/5 rounded-full blur-2xl whitespace-pre-line"></div>
+                  <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl whitespace-normal md:whitespace-pre-line"></div>
+                  <div className="absolute -left-20 -top-20 w-60 h-60 bg-white/5 rounded-full blur-2xl whitespace-normal md:whitespace-pre-line"></div>
                 </div>
               </div>
             </section>
@@ -3978,11 +3978,11 @@ export const DynamicBlockRenderer = ({
               className={`relative pt-32 pb-20 overflow-hidden ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
-              <div className="absolute inset-0 z-0 whitespace-pre-line">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 z-10 whitespace-pre-line"></div>
-                <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
+              <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40 z-10 whitespace-normal md:whitespace-pre-line"></div>
+                <div className="w-full h-full relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                   <div
-                    className="absolute inset-0 w-full h-full whitespace-pre-line"
+                    className="absolute inset-0 w-full h-full whitespace-normal md:whitespace-pre-line"
                     style={getImageStyle(block, "image")}
                   ></div>
                 </div>
@@ -3999,7 +3999,7 @@ export const DynamicBlockRenderer = ({
                   {block.title && (
                     <h1
                       style={getTitleStyle(block)}
-                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-pre-line"
+                      className="font-display-lg text-3xl md:text-display-lg mb-4 whitespace-normal md:whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4011,7 +4011,7 @@ export const DynamicBlockRenderer = ({
                   {block.subtitle && (
                     <p
                       style={getSubtitleStyle(block)}
-                      className="font-body-lg text-base md:text-body-lg opacity-90 leading-relaxed whitespace-pre-line"
+                      className="font-body-lg text-base md:text-body-lg opacity-90 leading-relaxed whitespace-normal md:whitespace-pre-line"
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
@@ -4032,13 +4032,13 @@ export const DynamicBlockRenderer = ({
               style={getStyle(block, "")}
             >
               <section
-                className="bg-surface-container-lowest sticky top-20 z-40 border-b border-border-subtle whitespace-pre-line"
+                className="bg-surface-container-lowest sticky top-20 z-40 border-b border-border-subtle whitespace-normal md:whitespace-pre-line"
                 style={getStyle(block, "filterContainer")}
               >
                 <div
                   className={`px-margin-mobile md:px-margin-desktop ${block.fullWidth || block.styles?.fullWidth ? "max-w-container-max mx-auto" : "w-full"}`}
                 >
-                  <div className="flex flex-nowrap md:flex-wrap overflow-x-auto items-center gap-6 md:gap-8 py-4 no-scrollbar whitespace-pre-line">
+                  <div className="flex flex-nowrap md:flex-wrap overflow-x-auto items-center gap-6 md:gap-8 py-4 no-scrollbar whitespace-normal md:whitespace-pre-line">
                     {block.categories?.map((cat: any, i: number) => (
                       <button
                         key={i}
@@ -4052,7 +4052,7 @@ export const DynamicBlockRenderer = ({
               </section>
 
               <section
-                className="py-10 md:py-section-gap px-margin-mobile md:px-margin-desktop whitespace-pre-line"
+                className="py-10 md:py-section-gap px-margin-mobile md:px-margin-desktop whitespace-normal md:whitespace-pre-line"
                 style={getStyle(block, "")}
               >
                 <div
@@ -4061,13 +4061,13 @@ export const DynamicBlockRenderer = ({
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
-                      className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden hover:shadow-sm transition-all group flex flex-col whitespace-pre-line"
+                      className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden hover:shadow-sm transition-all group flex flex-col whitespace-normal md:whitespace-pre-line"
                       style={getCardStyle(item, block)}
                     >
-                      <div className="relative aspect-video overflow-hidden whitespace-pre-line">
-                        <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
+                      <div className="relative aspect-video overflow-hidden whitespace-normal md:whitespace-pre-line">
+                        <div className="w-full h-full relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                           <div
-                            className="absolute inset-0 w-full h-full group-hover:scale-105 transition-transform duration-500 whitespace-pre-line"
+                            className="absolute inset-0 w-full h-full group-hover:scale-105 transition-transform duration-500 whitespace-normal md:whitespace-pre-line"
                             style={getImageStyle(item, "image")}
                           ></div>
                         </div>
@@ -4080,13 +4080,13 @@ export const DynamicBlockRenderer = ({
                         )}
                       </div>
                       <div
-                        className="p-6 flex flex-col flex-grow whitespace-pre-line"
+                        className="p-6 flex flex-col flex-grow whitespace-normal md:whitespace-pre-line"
                         style={{ padding: item.cardPadding }}
                       >
                         {item.date && (
-                          <div className="flex items-center gap-2 text-text-muted mb-3 font-label-sm text-xs md:text-label-sm whitespace-pre-line">
+                          <div className="flex items-center gap-2 text-text-muted mb-3 font-label-sm text-xs md:text-label-sm whitespace-normal md:whitespace-pre-line">
                             <span
-                              className="material-symbols-outlined text-[16px] md:text-[18px] whitespace-pre-line"
+                              className="material-symbols-outlined text-[16px] md:text-[18px] whitespace-normal md:whitespace-pre-line"
                               translate="no"
                               aria-hidden="true"
                             >
@@ -4098,7 +4098,7 @@ export const DynamicBlockRenderer = ({
                         {item.title && (
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-pre-line"
+                            className="font-headline-md text-xl md:text-headline-md mb-3 group-hover:text-primary transition-colors line-clamp-2 whitespace-normal md:whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
@@ -4106,20 +4106,20 @@ export const DynamicBlockRenderer = ({
                         {item.desc && (
                           <p
                             style={getCardDescStyle(item, block)}
-                            className="font-body-md text-sm md:text-body-md text-on-surface-variant mb-6 line-clamp-3 whitespace-pre-line"
+                            className="font-body-md text-sm md:text-body-md text-on-surface-variant mb-6 line-clamp-3 whitespace-normal md:whitespace-pre-line"
                           >
                             {item.subtitle || item.desc}
                           </p>
                         )}
                         {!item.hideButton && (
-                          <div className="mt-auto whitespace-pre-line">
+                          <div className="mt-auto whitespace-normal md:whitespace-pre-line">
                             <a
                               href={item.url || "#"}
-                              className="flex items-center gap-2 text-primary font-label-md text-sm md:text-label-md hover:underline group/link whitespace-pre-line"
+                              className="flex items-center gap-2 text-primary font-label-md text-sm md:text-label-md hover:underline group/link whitespace-normal md:whitespace-pre-line"
                             >
                               {item.buttonText || "Devamını Oku"}
                               <span
-                                className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base whitespace-pre-line"
+                                className="material-symbols-outlined transition-transform group-hover/link:translate-x-1 text-sm md:text-base whitespace-normal md:whitespace-pre-line"
                                 translate="no"
                                 aria-hidden="true"
                               >
@@ -4149,14 +4149,14 @@ export const DynamicBlockRenderer = ({
                 {block.icon && (
                   <IconPreview
                     data={block.icon}
-                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-pre-line"
+                    className="text-primary text-2xl md:text-4xl mb-4 whitespace-normal md:whitespace-pre-line"
                     style={{ ...getIconStyle(block, block), fontVariationSettings: "'FILL' 1" }}
                   />
                 )}
                 {block.title && (
                   <h2
                     style={getTitleStyle(block)}
-                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-pre-line"
+                    className="font-headline-xl text-2xl md:text-headline-xl text-primary mb-4 whitespace-normal md:whitespace-pre-line"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4168,23 +4168,23 @@ export const DynamicBlockRenderer = ({
                 {block.desc && (
                   <p
                     style={getDescStyle(block)}
-                    className="font-body-lg text-base md:text-body-lg text-on-surface-variant mb-6 md:mb-8 whitespace-pre-line"
+                    className="font-body-lg text-base md:text-body-lg text-on-surface-variant mb-6 md:mb-8 whitespace-normal md:whitespace-pre-line"
                     dangerouslySetInnerHTML={{ __html: block.desc }}
                     ></p>
                 )}
 
                 <form
-                  className={`flex flex-col sm:flex-row gap-4 max-w-xl ${getAlignClass(block)} w-full whitespace-pre-line`}
+                  className={`flex flex-col sm:flex-row gap-4 max-w-xl ${getAlignClass(block)} w-full whitespace-normal md:whitespace-pre-line`}
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <input
-                    className="flex-grow px-4 md:px-6 py-3 md:py-4 rounded-xl border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-sm md:text-body-md whitespace-pre-line"
+                    className="flex-grow px-4 md:px-2 md:px-6 py-3 md:py-4 rounded-xl border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-sm md:text-body-md whitespace-normal md:whitespace-pre-line"
                     placeholder={block.inputPlaceholder || "E-posta adresiniz"}
                     required
                     type="email"
                   />
                   <button
-                    className="bg-primary text-on-primary px-6 md:px-8 py-3 md:py-4 rounded-xl font-label-md text-sm md:text-label-md hover:opacity-90 transition-all shadow-md whitespace-pre-line"
+                    className="inline-flex items-center w-full sm:w-auto justify-center text-center w-full sm:w-auto justify-center inline-flex items-center bg-primary text-on-primary px-6 md:px-8 py-3.5 md:py-4 rounded-xl font-label-md text-sm md:text-label-md hover:opacity-90 transition-all shadow-md whitespace-normal md:whitespace-pre-line"
                     type="submit"
                   >
                     {block.buttonText || "Abone Ol"}
@@ -4192,7 +4192,7 @@ export const DynamicBlockRenderer = ({
                 </form>
                 {block.caption && (
                   <p
-                    className="mt-4 text-xs md:text-caption text-text-muted whitespace-pre-line"
+                    className="mt-4 text-xs md:text-caption text-text-muted whitespace-normal md:whitespace-pre-line"
                     ><TextWithKvkkLink text={block.caption} /></p>
 
 
@@ -4207,7 +4207,7 @@ export const DynamicBlockRenderer = ({
               className={`relative flex flex-col justify-center items-center pt-8 pb-8 md:pt-12 md:pb-10 px-margin-mobile md:px-margin-desktop bg-[#f8f9fa] overflow-hidden ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
-              <div className="w-full flex flex-col gap-6 md:gap-10 whitespace-pre-line">
+              <div className="w-full flex flex-col gap-6 md:gap-10 whitespace-normal md:whitespace-pre-line">
                 {(() => {
                   const layoutOrder =
                     block.layoutOrder || "text_images_buttons";
@@ -4219,7 +4219,7 @@ export const DynamicBlockRenderer = ({
                       {block.badge && (
                         <span
                           style={getBadgeStyle(block)}
-                          className="inline-block py-1.5 px-6 rounded-full bg-blue-100/80 text-blue-800 text-[11px] font-bold mb-4 tracking-widest whitespace-pre-line"
+                          className="inline-block py-1.5 px-2 md:px-6 rounded-full bg-blue-100/80 text-blue-800 text-[11px] font-bold mb-4 tracking-widest whitespace-normal md:whitespace-pre-line"
                         >
                           {block.badge}
                         </span>
@@ -4250,7 +4250,7 @@ export const DynamicBlockRenderer = ({
                               {hasPart1 && (
                                 <span
                                   style={getTitlePart1Style(block)}
-                                  className="block md:inline-block whitespace-pre-line"
+                                  className="block md:inline-block whitespace-normal md:whitespace-pre-line"
                                 >
                                   {block.titlePart1}
                                 </span>
@@ -4258,7 +4258,7 @@ export const DynamicBlockRenderer = ({
                               {hasPart2 && (
                                 <span
                                   style={getTitlePart2Style(block)}
-                                  className="block md:inline-block whitespace-pre-line"
+                                  className="block md:inline-block whitespace-normal md:whitespace-pre-line"
                                 >
                                   {block.titlePart2}
                                 </span>
@@ -4270,7 +4270,7 @@ export const DynamicBlockRenderer = ({
                         return (
                           <h1
                             style={getTitleStyle(block)}
-                            className={`text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl ${getAlignClass(block, "title")} leading-tight whitespace-pre-line`}
+                            className={`text-2xl md:text-4xl lg:text-5xl font-extrabold text-[#232b38] mb-4 max-w-4xl ${getAlignClass(block, "title")} leading-tight whitespace-normal md:whitespace-pre-line`}
                             dangerouslySetInnerHTML={{
                               __html: (block.title || "").replace(
                                 "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4282,7 +4282,7 @@ export const DynamicBlockRenderer = ({
                       })()}
                       <p
                         style={getSubtitleStyle(block)}
-                        className={`text-base md:text-[17px] text-[#556987] max-w-3xl ${getAlignClass(block, "subtitle")} whitespace-pre-line font-medium leading-relaxed whitespace-pre-line`}
+                        className={`text-base md:text-[17px] text-[#556987] max-w-3xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line font-medium leading-relaxed whitespace-normal md:whitespace-pre-line`}
                         dangerouslySetInnerHTML={{
                           __html: block.subtitle || "",
                         }}
@@ -4291,7 +4291,7 @@ export const DynamicBlockRenderer = ({
                   );
 
                   const imagesContent = (
-                    <div className="w-full whitespace-pre-line">
+                    <div className="w-full whitespace-normal md:whitespace-pre-line">
                       {(() => {
                         const itemsToRender =
                           block.items && block.items.length > 0
@@ -4320,28 +4320,28 @@ export const DynamicBlockRenderer = ({
                             {itemsToRender.map((item: any, i: number) => (
                               <div
                                 key={i}
-                                className="group relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[110px] md:min-h-0 h-full flex-1 hover:flex-[2.5] active:flex-[2.5] md:hover:flex-[2] lg:hover:flex-[3] transition-all duration-700 ease-in-out cursor-pointer select-none whitespace-pre-line"
+                                className="group relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[110px] md:min-h-0 h-full flex-1 hover:flex-[2.5] active:flex-[2.5] md:hover:flex-[2] lg:hover:flex-[3] transition-all duration-700 ease-in-out cursor-pointer select-none whitespace-normal md:whitespace-pre-line"
                               >
-                                <div className="absolute inset-0 overflow-hidden whitespace-pre-line">
+                                <div className="absolute inset-0 overflow-hidden whitespace-normal md:whitespace-pre-line">
                                   <div
-                                    className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 whitespace-pre-line"
+                                    className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 whitespace-normal md:whitespace-pre-line"
                                     style={getImageStyle(item, "image", i)}
                                   ></div>
                                 </div>
-                                <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent group-active:bg-transparent transition-colors duration-500 whitespace-pre-line"></div>
-                                <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-max max-w-[90%] z-10 whitespace-pre-line">
+                                <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent group-active:bg-transparent transition-colors duration-500 whitespace-normal md:whitespace-pre-line"></div>
+                                <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-max max-w-[90%] z-10 whitespace-normal md:whitespace-pre-line">
                                   {item.url ? (
                                     <a
                                       href={item.url}
                                       style={getCardTitleStyle(item, block)}
-                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300 hover:bg-primary hover:text-white cursor-pointer`}
+                                      className={`inline-flex items-center w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300 hover:bg-primary hover:text-white cursor-pointer`}
                                     >
                                       {item.title}
                                     </a>
                                   ) : (
                                     <span
                                       style={getCardTitleStyle(item, block)}
-                                      className={`bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap block ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300`}
+                                      className={`inline-flex items-center w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300`}
                                     >
                                       {item.title}
                                     </span>
@@ -4376,7 +4376,7 @@ export const DynamicBlockRenderer = ({
                               key={i}
                               url={buttonUrl}
                               style={getIndividualButtonStyle(btn, block)}
-                              className={`inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold transition-all ${!isCustomColors ? defaultClasses : "hover:opacity-90 hover:shadow-lg"}`}
+                              className={`w-full sm:w-auto justify-center inline-flex items-center gap-2 px-6 md:px-8 py-3.5 md:py-4 rounded-full text-[15px] md:text-base font-bold transition-all ${!isCustomColors ? defaultClasses : "hover:opacity-90 hover:shadow-lg"}`}
                             >
                               {btn.label}
                               {btn.icon &&
@@ -4384,12 +4384,12 @@ export const DynamicBlockRenderer = ({
                                 btn.icon === btn.icon.toLowerCase() ? (
                                   <IconPreview
                                     data={btn.icon}
-                                    className="text-[1.1em] whitespace-pre-line"
+                                    className="text-[1.1em] whitespace-normal md:whitespace-pre-line"
                                    style={getIconStyle(btn, block)} />
                                 ) : (
                                   <IconPreview
                                     data={btn.icon}
-                                    className="w-[1.1em] h-[1.1em] whitespace-pre-line"
+                                    className="w-[1.1em] h-[1.1em] whitespace-normal md:whitespace-pre-line"
                                    style={getIconStyle(btn, block)} />
                                 ))}
                             </SmartLink>
@@ -4445,10 +4445,10 @@ export const DynamicBlockRenderer = ({
                     : "w-full"
                 }
               >
-                <div className="flex flex-row items-center gap-4 mb-10 md:mb-12 whitespace-pre-line">
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm whitespace-pre-line">
+                <div className="flex flex-row items-center gap-4 mb-10 md:mb-12 whitespace-normal md:whitespace-pre-line">
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0 shadow-lg backdrop-blur-sm whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-white text-3xl whitespace-pre-line"
+                      className="material-symbols-outlined text-white text-3xl whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -4459,13 +4459,13 @@ export const DynamicBlockRenderer = ({
                     {block.subtitle && (
                       <span
                         style={getSubtitleStyle(block)}
-                        className="text-white/80 text-xs md:text-sm font-bold tracking-widest mb-1 block whitespace-pre-line"
+                        className="text-white/80 text-xs md:text-sm font-bold tracking-widest mb-1 block whitespace-normal md:whitespace-pre-line"
                         dangerouslySetInnerHTML={{ __html: block.subtitle }}
                       ></span>
                     )}
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-pre-line leading-tight whitespace-pre-line"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold text-white whitespace-normal md:whitespace-pre-line leading-tight whitespace-normal md:whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4475,7 +4475,7 @@ export const DynamicBlockRenderer = ({
                     ></h2>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 whitespace-pre-line">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 whitespace-normal md:whitespace-pre-line">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -4483,30 +4483,30 @@ export const DynamicBlockRenderer = ({
                       className={`p-6 md:p-8 rounded-[2rem] bg-white/10 border border-white/10 ${item.hoverEffect ? "hover:-translate-y-1 hover:shadow-2xl" : ""} hover:bg-white/[0.15] hover:border-white/20 transition-all duration-300 flex flex-col text-left backdrop-blur-md`}
                       style={getCardStyle(item, block)}
                     >
-                      <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner whitespace-pre-line ${extractAlignClass(getIconStyle(item, block))}`}>
+                      <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner whitespace-normal md:whitespace-pre-line ${extractAlignClass(getIconStyle(item, block))}`}>
                         {typeof item.icon === "object" ||
                         (typeof item.icon === "string" &&
                           item.icon !== item.icon.toLowerCase()) ? (
                           <IconPreview
                             data={item.icon}
-                            className="text-[#5eead4] w-6 h-6 whitespace-pre-line"
+                            className="text-[#5eead4] w-6 h-6 whitespace-normal md:whitespace-pre-line"
                            style={removeAlignStyles(getIconStyle(item, block))} />
                         ) : (
                           <IconPreview
                             data={item.icon || "school"}
-                            className="text-[#5eead4] whitespace-pre-line"
+                            className="text-[#5eead4] whitespace-normal md:whitespace-pre-line"
                            style={removeAlignStyles(getIconStyle(item, block))} />
                         )}
                       </div>
                       <h3
                         style={getCardTitleStyle(item, block)}
-                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-pre-line"
+                        className="text-xl md:text-2xl font-bold mb-3 text-white whitespace-normal md:whitespace-pre-line"
                       >
                         {item.title}
                       </h3>
                       <p
                         style={getCardDescStyle(item, block)}
-                        className="text-white/80 text-sm leading-relaxed mb-8 flex-1 whitespace-pre-line"
+                        className="text-white/80 text-sm leading-relaxed mb-8 flex-1 whitespace-normal md:whitespace-pre-line"
                       >
                         {item.subtitle || item.desc}
                       </p>
@@ -4530,7 +4530,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className={`py-section-gap px-margin-desktop ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
+              className={`py-section-gap px-margin-mobile md:px-margin-desktop ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
               <div
@@ -4545,12 +4545,12 @@ export const DynamicBlockRenderer = ({
                 >
                   <span
                     style={getSubtitleStyle(block)}
-                    className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
+                    className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-normal md:whitespace-pre-line"
                     dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
                   ></span>
                   <h2
                     style={getTitleStyle(block)}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-pre-line"
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-on-background whitespace-normal md:whitespace-pre-line"
                     dangerouslySetInnerHTML={{
                       __html: (block.title || "").replace(
                         "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4559,7 +4559,7 @@ export const DynamicBlockRenderer = ({
                     }}
                   ></h2>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 h-auto whitespace-pre-line">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 h-auto whitespace-normal md:whitespace-pre-line">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
@@ -4569,40 +4569,40 @@ export const DynamicBlockRenderer = ({
                       {item.highlight ? (
                         <>
                           {item.image && (
-                            <div className="absolute inset-0 z-0 whitespace-pre-line">
+                            <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
                               <img
                                 src={item.image}
                                 alt={item.title}
-                                className="w-full h-full object-cover opacity-40 mix-blend-overlay whitespace-pre-line"
+                                className="w-full h-full object-cover opacity-40 mix-blend-overlay whitespace-normal md:whitespace-pre-line"
                               />
                             </div>
                           )}
                           <div
                             className={`relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 ${block.styles?.textAlign ? "" : "text-center"} md:text-left`}
                           >
-                            <div className="flex-1 whitespace-pre-line">
+                            <div className="flex-1 whitespace-normal md:whitespace-pre-line">
                               <h3
                                 style={getCardTitleStyle(item, block)}
-                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-pre-line"
+                                className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white whitespace-normal md:whitespace-pre-line"
                               >
                                 {item.title}
                               </h3>
                               <p
                                 style={getCardDescStyle(item, block)}
-                                className="text-white/80 mb-5 md:mb-6 text-sm md:text-base whitespace-pre-line"
+                                className="text-white/80 mb-5 md:mb-6 text-sm md:text-base whitespace-normal md:whitespace-pre-line"
                               >
                                 {item.subtitle || item.desc}
                               </p>
                               {item.buttonText && (
                                 <SmartLink
                                   url={item.buttonUrl || item.url || item.link}
-                                  className="bg-white text-primary text-sm md:text-base font-bold px-5 py-2.5 md:px-6 md:py-3 rounded-lg hover:bg-surface-container transition-all inline-block whitespace-pre-line"
+                                  className="bg-white text-primary text-sm md:text-base font-bold px-5 py-2.5 md:px-2 md:px-6 md:py-3 rounded-lg hover:bg-surface-container transition-all inline-block whitespace-normal md:whitespace-pre-line"
                                   style={getCardButtonStyle(item, block)}
                                 >
                                   {item.buttonText}{" "}
                                   {item.buttonIcon && (
                                     <span
-                                      className="material-symbols-outlined ml-1 text-[0.9em] whitespace-pre-line"
+                                      className="material-symbols-outlined ml-1 text-[0.9em] whitespace-normal md:whitespace-pre-line"
                                       translate="no"
                                       aria-hidden="true"
                                     >
@@ -4617,55 +4617,55 @@ export const DynamicBlockRenderer = ({
                       ) : (
                         <>
                           {item.image && (
-                            <div className="w-full h-48 md:h-64 rounded-xl overflow-hidden mb-5 shrink-0 relative whitespace-pre-line">
+                            <div className="w-full h-48 md:h-64 rounded-xl overflow-hidden mb-5 shrink-0 relative whitespace-normal md:whitespace-pre-line">
                               <img
                                 src={item.image}
                                 alt={item.title}
-                                className="w-full h-full object-cover whitespace-pre-line"
+                                className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                               />
-                              <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm text-primary flex items-center justify-center shadow-sm whitespace-pre-line">
+                              <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm text-primary flex items-center justify-center shadow-sm whitespace-normal md:whitespace-pre-line">
                                 {typeof item.icon === "object" ||
                                 (typeof item.icon === "string" &&
                                   item.icon !== item.icon.toLowerCase()) ? (
                                   <IconPreview
                                     data={item.icon}
-                                    className="w-5 h-5 whitespace-pre-line"
+                                    className="w-5 h-5 whitespace-normal md:whitespace-pre-line"
                                    style={getIconStyle(item, block)} />
                                 ) : (
                                   <IconPreview
                                     data={item.icon}
-                                    className="text-xl whitespace-pre-line"
+                                    className="text-xl whitespace-normal md:whitespace-pre-line"
                                    style={getIconStyle(item, block)} />
                                 )}
                               </div>
                             </div>
                           )}
                           {!item.image && (
-                            <div className="w-12 h-12 rounded-xl bg-surface-container text-primary flex items-center justify-center mb-5 shrink-0 whitespace-pre-line">
+                            <div className="w-12 h-12 rounded-xl bg-surface-container text-primary flex items-center justify-center mb-5 shrink-0 whitespace-normal md:whitespace-pre-line">
                               {typeof item.icon === "object" ||
                               (typeof item.icon === "string" &&
                                 item.icon !== item.icon.toLowerCase()) ? (
                                 <IconPreview
                                   data={item.icon}
-                                  className="w-6 h-6 whitespace-pre-line"
+                                  className="w-6 h-6 whitespace-normal md:whitespace-pre-line"
                                  style={getIconStyle(item, block)} />
                               ) : (
                                 <IconPreview
                                   data={item.icon}
-                                  className="text-2xl whitespace-pre-line"
+                                  className="text-2xl whitespace-normal md:whitespace-pre-line"
                                  style={getIconStyle(item, block)} />
                               )}
                             </div>
                           )}
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="text-lg font-bold mb-2 whitespace-pre-line"
+                            className="text-lg font-bold mb-2 whitespace-normal md:whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
                           <p
                             style={getCardDescStyle(item, block)}
-                            className="text-text-muted text-sm leading-relaxed whitespace-pre-line"
+                            className="text-text-muted text-sm leading-relaxed whitespace-normal md:whitespace-pre-line"
                           >
                             {item.subtitle || item.desc}
                           </p>
@@ -4683,7 +4683,7 @@ export const DynamicBlockRenderer = ({
             <section
               key={index}
               id="campuses-section"
-              className={`py-section-gap px-margin-desktop bg-surface-container/50 ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
+              className={`py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container/50 ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
               <div
@@ -4693,16 +4693,16 @@ export const DynamicBlockRenderer = ({
                     : "w-full"
                 }
               >
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6 whitespace-pre-line">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6 whitespace-normal md:whitespace-pre-line">
                   <div className="w-full md:w-auto flex-1">
                     <span
                       style={getSubtitleStyle(block)}
-                      className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-pre-line"
+                      className="text-primary text-xs md:text-sm font-bold tracking-widest mb-3 md:mb-4 block whitespace-normal md:whitespace-pre-line"
                       dangerouslySetInnerHTML={{ __html: block.subtitle || "" }}
                     ></span>
                     <h2
                       style={getTitleStyle(block)}
-                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-pre-line"
+                      className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-normal md:whitespace-pre-line"
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
                           "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4712,31 +4712,31 @@ export const DynamicBlockRenderer = ({
                     ></h2>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 whitespace-pre-line">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 whitespace-normal md:whitespace-pre-line">
                   {block.items?.map((item: any, i: number) => (
                     <div
                       key={i}
-                      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group border border-border-subtle flex flex-col whitespace-pre-line"
+                      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group border border-border-subtle flex flex-col whitespace-normal md:whitespace-pre-line"
                       style={getCardStyle(item, block)}
                     >
-                      <div className="h-48 md:h-64 overflow-hidden shrink-0 whitespace-pre-line">
-                        <div className="w-full h-full relative overflow-hidden whitespace-pre-line">
+                      <div className="h-48 md:h-64 overflow-hidden shrink-0 whitespace-normal md:whitespace-pre-line">
+                        <div className="w-full h-full relative overflow-hidden whitespace-normal md:whitespace-pre-line">
                           <div
-                            className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700 whitespace-pre-line"
+                            className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700 whitespace-normal md:whitespace-pre-line"
                             style={getImageStyle(item, "image")}
                           ></div>
                         </div>
                       </div>
-                      <div className="p-5 md:p-6 flex flex-col flex-1 whitespace-pre-line">
-                        <div className="flex items-center justify-between mb-3 md:mb-4 whitespace-pre-line">
+                      <div className="p-5 md:p-6 flex flex-col flex-1 whitespace-normal md:whitespace-pre-line">
+                        <div className="flex items-center justify-between mb-3 md:mb-4 whitespace-normal md:whitespace-pre-line">
                           <h3
                             style={getCardTitleStyle(item, block)}
-                            className="text-xl md:text-2xl font-bold whitespace-pre-line"
+                            className="text-xl md:text-2xl font-bold whitespace-normal md:whitespace-pre-line"
                           >
                             {item.title}
                           </h3>
                           <span
-                            className="text-primary material-symbols-outlined whitespace-pre-line"
+                            className="text-primary material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                             translate="no"
                             aria-hidden="true"
                           >
@@ -4745,7 +4745,7 @@ export const DynamicBlockRenderer = ({
                         </div>
                         <p
                           style={getCardDescStyle(item, block)}
-                          className="text-text-muted text-sm md:text-base mb-5 md:mb-6 flex-1 whitespace-pre-line"
+                          className="text-text-muted text-sm md:text-base mb-5 md:mb-6 flex-1 whitespace-normal md:whitespace-pre-line"
                         >
                           {item.subtitle || item.desc}
                         </p>
@@ -4757,7 +4757,7 @@ export const DynamicBlockRenderer = ({
                             {item.buttonText || "İncele"}{" "}
                             {item.buttonIcon && (
                               <span
-                                className="material-symbols-outlined ml-1 text-[0.9em] whitespace-pre-line"
+                                className="material-symbols-outlined ml-1 text-[0.9em] whitespace-normal md:whitespace-pre-line"
                                 translate="no"
                                 aria-hidden="true"
                               >
@@ -4788,16 +4788,16 @@ export const DynamicBlockRenderer = ({
                     : "relative z-10"
                 }
               >
-                <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl whitespace-pre-line"></div>
-                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-3xl whitespace-pre-line"></div>
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl whitespace-normal md:whitespace-pre-line"></div>
+                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-3xl whitespace-normal md:whitespace-pre-line"></div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 whitespace-pre-line">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 whitespace-normal md:whitespace-pre-line">
                   {/* Left: Text Content */}
-                  <div className="lg:col-span-5 flex flex-col justify-center whitespace-pre-line">
+                  <div className="lg:col-span-5 flex flex-col justify-center whitespace-normal md:whitespace-pre-line">
                     {block.title && (
                       <h2
                         style={getTitleStyle(block)}
-                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-pre-line"
+                        className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface mb-6 leading-tight whitespace-normal md:whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                           __html: (block.title || "").replace(
                             "Eğitimde Dostluk, Gelecekte Başarı",
@@ -4809,47 +4809,47 @@ export const DynamicBlockRenderer = ({
                     {block.subtitle && (
                       <p
                         style={getSubtitleStyle(block)}
-                        className="font-body-lg text-lg md:text-body-lg text-text-muted mb-8 whitespace-pre-line"
+                        className="font-body-lg text-lg md:text-body-lg text-text-muted mb-8 whitespace-normal md:whitespace-pre-line"
                         dangerouslySetInnerHTML={{ __html: block.subtitle }}
                       ></p>
                     )}
                     {block.desc && (
                       <div
                         style={getDescStyle(block)}
-                        className="prose prose-slate max-w-none text-on-surface-variant whitespace-pre-line"
+                        className="prose prose-slate max-w-none text-on-surface-variant whitespace-normal md:whitespace-pre-line"
                         dangerouslySetInnerHTML={{ __html: block.desc }}
                       ></div>
                     )}
                   </div>
 
                   {/* Right: Video Area */}
-                  <div className="lg:col-span-7 group relative aspect-video bg-inverse-surface rounded-2xl overflow-hidden shadow-2xl border border-border-subtle cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(29,78,202,0.2)] whitespace-pre-line">
+                  <div className="lg:col-span-7 group relative aspect-video bg-inverse-surface rounded-2xl overflow-hidden shadow-2xl border border-border-subtle cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(29,78,202,0.2)] whitespace-normal md:whitespace-pre-line">
                     {block.thumbnailUrl ? (
                       <img
                         src={block.thumbnailUrl}
                         alt="Video thumbnail"
-                        className="w-full h-full object-cover whitespace-pre-line"
+                        className="w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                       />
                     ) : (
-                      <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500 whitespace-pre-line">
+                      <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500 whitespace-normal md:whitespace-pre-line">
                         Video Kapak Görseli
                       </div>
                     )}
 
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300 whitespace-pre-line"></div>
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300 whitespace-normal md:whitespace-pre-line"></div>
 
                     {/* Video Play Interaction */}
-                    <div className="absolute inset-0 flex items-center justify-center whitespace-pre-line">
-                      <div className="relative whitespace-pre-line">
-                        <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-75 duration-1000 whitespace-pre-line"></div>
+                    <div className="absolute inset-0 flex items-center justify-center whitespace-normal md:whitespace-pre-line">
+                      <div className="relative whitespace-normal md:whitespace-pre-line">
+                        <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-75 duration-1000 whitespace-normal md:whitespace-pre-line"></div>
                         <a
                           href={block.videoUrl || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="relative w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 z-10 text-primary whitespace-pre-line"
+                          className="relative w-20 h-20 md:w-24 md:h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 z-10 text-primary whitespace-normal md:whitespace-pre-line"
                         >
                           <span
-                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-pre-line"
+                            className="material-symbols-outlined text-2xl md:text-4xl whitespace-normal md:whitespace-pre-line"
                             translate="no"
                             aria-hidden="true"
                             style={{ fontVariationSettings: "'FILL' 1" }}
@@ -4869,7 +4869,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+              className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
               
               style={{
                 ...getStyle(block, "container"), backgroundColor: block.styles?.innerBgColor || "#00164f",
@@ -4879,7 +4879,7 @@ export const DynamicBlockRenderer = ({
               }}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} w-full mx-auto px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} w-full mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center`}
               >
                 <div
                   className={getHeroInnerClass(
@@ -4888,20 +4888,20 @@ export const DynamicBlockRenderer = ({
                   )}
                 >
                   {block.badge && (
-                    <span className="inline-block bg-primary-container/20 text-inverse-primary px-4 py-1 rounded-full text-label-sm font-label-sm whitespace-pre-line">
+                    <span className="inline-block bg-primary-container/20 text-inverse-primary px-4 py-1 rounded-full text-label-sm font-label-sm whitespace-normal md:whitespace-pre-line">
                       {block.badge}
                     </span>
                   )}
                   {block.titlePart1 || block.titlePart2 ? (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
+                      className="font-display-lg text-display-lg leading-tight whitespace-normal md:whitespace-pre-line"
                       style={getTitleStyle(block)}
                     >
                       {block.titlePart1}
                       {block.titlePart1 && block.titlePart2 && " "}
                       {block.titlePart2 && (
                         <span
-                          className="text-gold whitespace-pre-line"
+                          className="text-gold whitespace-normal md:whitespace-pre-line"
                           style={
                             block.titlePart2Color
                               ? { color: block.titlePart2Color }
@@ -4914,7 +4914,7 @@ export const DynamicBlockRenderer = ({
                     </h1>
                   ) : (
                     <h1
-                      className="font-display-lg text-display-lg leading-tight whitespace-pre-line"
+                      className="font-display-lg text-display-lg leading-tight whitespace-normal md:whitespace-pre-line"
                       style={getTitleStyle(block)}
                       dangerouslySetInnerHTML={{
                         __html: (block.title || "").replace(
@@ -4926,12 +4926,12 @@ export const DynamicBlockRenderer = ({
                   )}
                   {block.subtitle && (
                     <p
-                      className={`text-body-lg text-primary-fixed max-w-xl whitespace-pre-line`}
+                      className={`text-body-lg text-primary-fixed max-w-xl whitespace-normal md:whitespace-pre-line`}
                       dangerouslySetInnerHTML={{ __html: block.subtitle }}
                     ></p>
                   )}
                   {block.buttons && block.buttons.length > 0 && (
-                    <div className="flex gap-4 pt-4 whitespace-pre-line">
+                    <div className="flex gap-4 pt-4 whitespace-normal md:whitespace-pre-line">
                       {block.buttons.map((btn: any, i: number) => (
                         <a
                           key={i}
@@ -4939,8 +4939,8 @@ export const DynamicBlockRenderer = ({
                           style={getIndividualButtonStyle(btn, block)}
                           className={
                             btn.primary
-                              ? "bg-primary text-on-primary px-8 py-3 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:opacity-90 transition-opacity"
-                              : "border-2 border-white text-white px-8 py-3 rounded-xl font-label-md hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                              ? "w-full sm:w-auto justify-center inline-flex items-center bg-primary text-on-primary px-6 md:px-8 py-3 md:py-3.5 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:opacity-90 transition-opacity"
+                              : "w-full sm:w-auto justify-center inline-flex items-center border-2 border-white text-white px-6 md:px-8 py-3 md:py-3.5 rounded-xl font-label-md hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
                           }
                         >
                           {btn.label}
@@ -4961,60 +4961,60 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className="py-section-gap bg-surface whitespace-pre-line"
+              className="py-section-gap bg-surface whitespace-normal md:whitespace-pre-line"
               style={getStyle(block, "container")}
             >
               <div
-                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+                className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
               >
                 <div
                   className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
                 >
-                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-on-surface mb-4 whitespace-normal md:whitespace-pre-line">
                     {block.title}
                   </h2>
                   <div
-                    className="w-24 h-1 bg-gold mx-auto rounded-full whitespace-pre-line"
+                    className="w-24 h-1 bg-gold mx-auto rounded-full whitespace-normal md:whitespace-pre-line"
                     style={{ backgroundColor: "#D4AF37" }}
                   ></div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-pre-line">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-normal md:whitespace-pre-line">
                   {/* LGS Card */}
                   {block.items && block.items[0] && (
-                    <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2 whitespace-pre-line">
+                    <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2 whitespace-normal md:whitespace-pre-line">
                       <div
-                        className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -mr-16 -mt-16 whitespace-pre-line"
+                        className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -mr-16 -mt-16 whitespace-normal md:whitespace-pre-line"
                         style={{ backgroundColor: "rgba(212, 175, 55, 0.05)" }}
                       ></div>
                       <IconPreview
                         data={block.items[0].icon || "school"}
-                        className="text-primary text-4xl mb-6 whitespace-pre-line"
+                        className="text-primary text-4xl mb-6 whitespace-normal md:whitespace-pre-line"
                        style={getIconStyle(null, block)} />
-                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
+                      <h3 className="font-headline-md text-headline-md mb-2 whitespace-normal md:whitespace-pre-line">
                         {block.items[0].title}
                       </h3>
-                      <p className="text-on-surface-variant mb-8 whitespace-pre-line">
+                      <p className="text-on-surface-variant mb-8 whitespace-normal md:whitespace-pre-line">
                         {block.items[0].desc}
                       </p>
-                      <div className="space-y-6 whitespace-pre-line">
-                        <div className="flex items-end gap-3 whitespace-pre-line">
+                      <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
+                        <div className="flex items-end gap-3 whitespace-normal md:whitespace-pre-line">
                           <span
-                            className="text-4xl font-extrabold text-gold whitespace-pre-line"
+                            className="text-4xl font-extrabold text-gold whitespace-normal md:whitespace-pre-line"
                             style={{ color: "#D4AF37" }}
                           >
                             {block.items[0].stat !== undefined ? block.items[0].stat : block.items[0].statValue}
                           </span>
-                          <span className="text-label-md text-on-surface-variant pb-1 whitespace-pre-line">
+                          <span className="text-label-md text-on-surface-variant pb-1 whitespace-normal md:whitespace-pre-line">
                             {block.items[0].statLabel}
                           </span>
                         </div>
-                        <div className="h-2 w-full bg-surface-container rounded-full overflow-hidden whitespace-pre-line">
+                        <div className="h-2 w-full bg-surface-container rounded-full overflow-hidden whitespace-normal md:whitespace-pre-line">
                           <div
-                            className="h-full bg-gold w-[98%] whitespace-pre-line"
+                            className="h-full bg-gold w-[98%] whitespace-normal md:whitespace-pre-line"
                             style={{ backgroundColor: "#D4AF37" }}
                           ></div>
                         </div>
-                        <p className="text-label-sm font-label-sm text-primary uppercase whitespace-pre-line">
+                        <p className="text-label-sm font-label-sm text-primary uppercase whitespace-normal md:whitespace-pre-line">
                           {block.items[0].tag !== undefined ? block.items[0].tag : block.items[0].badge}
                         </p>
                       </div>
@@ -5023,22 +5023,22 @@ export const DynamicBlockRenderer = ({
 
                   {/* YKS Card */}
                   {block.items && block.items[1] && (
-                    <div className="bg-primary text-on-primary rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2 whitespace-pre-line">
-                      <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-pre-line"></div>
+                    <div className="bg-primary text-on-primary rounded-3xl p-8 bento-card relative overflow-hidden transition-all duration-700 hover:-translate-y-2 whitespace-normal md:whitespace-pre-line">
+                      <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-normal md:whitespace-pre-line"></div>
                       <IconPreview
                         data={block.items[1].icon || "star"}
-                        className="text-gold text-4xl mb-6 whitespace-pre-line"
+                        className="text-gold text-4xl mb-6 whitespace-normal md:whitespace-pre-line"
                         style={{ ...getIconStyle(null, block), fontVariationSettings: "'FILL' 1",
                           color: "#D4AF37",
                         }}
                       />
-                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-pre-line">
+                      <h3 className="font-headline-md text-headline-md mb-2 text-white whitespace-normal md:whitespace-pre-line">
                         {block.items[1].title}
                       </h3>
-                      <p className="text-primary-fixed mb-8 whitespace-pre-line">
+                      <p className="text-primary-fixed mb-8 whitespace-normal md:whitespace-pre-line">
                         {block.items[1].desc}
                       </p>
-                      <div className="grid grid-cols-2 gap-6 items-center whitespace-pre-line">
+                      <div className="grid grid-cols-2 gap-6 items-center whitespace-normal md:whitespace-pre-line">
                         {(() => {
                           let stats: any[] = [];
                           if (block.items[1].stat1Label !== undefined || block.items[1].stat1Value !== undefined) {
@@ -5054,15 +5054,15 @@ export const DynamicBlockRenderer = ({
                           return stats.map((stat: any, i: number) => (
                             <div
                               key={i}
-                              className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
+                              className="bg-white/10 p-4 rounded-2xl whitespace-normal md:whitespace-pre-line"
                             >
                               <div
-                                className="text-2xl font-bold text-gold whitespace-pre-line"
+                                className="text-2xl font-bold text-gold whitespace-normal md:whitespace-pre-line"
                                 style={{ color: "#D4AF37" }}
                               >
                                 {stat.value}
                               </div>
-                              <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
+                              <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                                 {stat.label}
                               </div>
                             </div>
@@ -5083,20 +5083,20 @@ export const DynamicBlockRenderer = ({
 
                   {/* Rankings Card */}
                   {block.items && block.items[2] && (
-                    <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card flex flex-col justify-between transition-all duration-700 hover:-translate-y-2 whitespace-pre-line">
+                    <div className="bg-surface-card border border-border-subtle rounded-3xl p-8 bento-card flex flex-col justify-between transition-all duration-700 hover:-translate-y-2 whitespace-normal md:whitespace-pre-line">
                       <div className="w-full md:w-auto flex-1">
                         <IconPreview
                           data={block.items[2].icon || "analytics"}
-                          className="text-primary text-4xl mb-6 whitespace-pre-line"
+                          className="text-primary text-4xl mb-6 whitespace-normal md:whitespace-pre-line"
                          style={getIconStyle(null, block)} />
-                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-pre-line">
+                        <h3 className="font-headline-md text-headline-md mb-2 whitespace-normal md:whitespace-pre-line">
                           {block.items[2].title}
                         </h3>
-                        <p className="text-on-surface-variant mb-6 whitespace-pre-line">
+                        <p className="text-on-surface-variant mb-6 whitespace-normal md:whitespace-pre-line">
                           {block.items[2].desc}
                         </p>
                       </div>
-                      <ul className="space-y-4 whitespace-pre-line">
+                      <ul className="space-y-4 whitespace-normal md:whitespace-pre-line">
                         {(() => {
                           let list = [];
                           if (block.items[2].listString !== undefined) {
@@ -5113,16 +5113,16 @@ export const DynamicBlockRenderer = ({
                             (listItem: string, i: number) => (
                               <li
                                 key={i}
-                                className="flex items-center gap-3 whitespace-pre-line"
+                                className="flex items-center gap-3 whitespace-normal md:whitespace-pre-line"
                               >
                                 <div
-                                  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 whitespace-pre-line"
+                                  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 whitespace-normal md:whitespace-pre-line"
                                   style={{
                                     backgroundColor: "rgba(212, 175, 55, 0.1)",
                                   }}
                                 >
                                   <span
-                                    className="material-symbols-outlined text-gold text-lg whitespace-pre-line"
+                                    className="material-symbols-outlined text-gold text-lg whitespace-normal md:whitespace-pre-line"
                                     translate="no"
                                     aria-hidden="true"
                                     style={{ color: "#D4AF37" }}
@@ -5130,7 +5130,7 @@ export const DynamicBlockRenderer = ({
                                     check_circle
                                   </span>
                                 </div>
-                                <span className="font-body-md text-body-md whitespace-pre-line">
+                                <span className="font-body-md text-body-md whitespace-normal md:whitespace-pre-line">
                                   {listItem}
                                 </span>
                               </li>
@@ -5171,7 +5171,7 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={block.id}
-            className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-pre-line"
+            className="relative text-white overflow-hidden min-h-[600px] flex items-center whitespace-normal md:whitespace-pre-line"
               
             style={
               block.image
@@ -5184,18 +5184,18 @@ export const DynamicBlockRenderer = ({
             }
           >
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8 grid grid-cols-1 gap-6 relative z-10 py-20 items-center w-full`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 gap-6 relative z-10 py-20 items-center w-full`}
             >
               <div
                 className={`space-y-6 ${block.styles?.textAlign ? "" : "text-center"} mx-auto`}
               >
                 {block.badge && (
-                  <span className="inline-block bg-[#3f68e4]/20 text-[#b6c4ff] px-4 py-1 rounded-full text-[12px] font-bold tracking-[0.05em] whitespace-pre-line">
+                  <span className="inline-block bg-[#3f68e4]/20 text-[#b6c4ff] px-4 py-1 rounded-full text-[12px] font-bold tracking-[0.05em] whitespace-normal md:whitespace-pre-line">
                     {block.badge}
                   </span>
                 )}
                 <h1
-                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-pre-line"
+                  className="font-bold text-2xl md:text-4xl leading-tight tracking-[-0.02em] whitespace-normal md:whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.titlePart1}{" "}
@@ -5207,7 +5207,7 @@ export const DynamicBlockRenderer = ({
                 </h1>
                 {block.subtitle && (
                   <p
-                    className={`text-lg md:text-[18px] text-[#dce1ff] max-w-xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                    className={`text-lg md:text-[18px] text-[#dce1ff] max-w-xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                     style={getSubtitleStyle(block)}
                   >
                     {block.subtitle}
@@ -5215,13 +5215,13 @@ export const DynamicBlockRenderer = ({
                 )}
 
                 {block.buttons && block.buttons.length > 0 && (
-                  <div className="flex flex-wrap gap-4 pt-4 justify-center whitespace-pre-line">
+                  <div className="flex flex-wrap gap-4 pt-4 justify-center whitespace-normal md:whitespace-pre-line">
                     {block.buttons.map((btn: any, i: number) => (
                       <a
                         key={i}
                         href={btn.url || "#"}
                         style={getIndividualButtonStyle(btn, block)}
-                        className="px-8 py-3 rounded-xl text-[14px] font-bold flex items-center gap-2 hover:opacity-90 transition-opacity whitespace-pre-line"
+                        className="w-full sm:w-auto justify-center text-center px-6 md:px-8 py-3 md:py-3.5 rounded-xl text-[14px] font-bold flex items-center gap-2 hover:opacity-90 transition-opacity whitespace-normal md:whitespace-pre-line"
                       >
                         {btn.label}
                         {btn.icon &&
@@ -5229,12 +5229,12 @@ export const DynamicBlockRenderer = ({
                           btn.icon === btn.icon.toLowerCase() ? (
                             <IconPreview
                               data={btn.icon}
-                              className="text-[1.1em] whitespace-pre-line"
+                              className="text-[1.1em] whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(btn, block)} />
                           ) : (
                             <IconPreview
                               data={btn.icon}
-                              className="w-[1.1em] h-[1.1em] whitespace-pre-line"
+                              className="w-[1.1em] h-[1.1em] whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(btn, block)} />
                           ))}
                       </a>
@@ -5251,21 +5251,21 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={block.id}
-            className="py-20 bg-[#faf8ff] whitespace-pre-line"
+            className="py-20 bg-[#faf8ff] whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "")}
           >
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
               <div
                 className={`${block.styles?.textAlign ? "" : "text-center"} mb-16`}
               >
-                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
+                <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-normal md:whitespace-pre-line">
                   {block.title}
                 </h2>
-                <div className="w-24 h-1 bg-[#D4AF37] mx-auto rounded-full whitespace-pre-line"></div>
+                <div className="w-24 h-1 bg-[#D4AF37] mx-auto rounded-full whitespace-normal md:whitespace-pre-line"></div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-pre-line">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-normal md:whitespace-pre-line">
                 {(block.items || []).map((item: any, idx: number) => {
                   if (item.style === "primary") {
                     return (
@@ -5277,44 +5277,44 @@ export const DynamicBlockRenderer = ({
                         )}
                         style={getCardStyle(item, block)}
                       >
-                        <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-pre-line"></div>
-                        <div className="mb-6 whitespace-pre-line">
+                        <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full -mb-24 -mr-24 rotate-45 whitespace-normal md:whitespace-pre-line"></div>
+                        <div className="mb-6 whitespace-normal md:whitespace-pre-line">
                           {typeof item.icon === "object" ||
                           (typeof item.icon === "string" &&
                             item.icon !== item.icon.toLowerCase()) ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-[#D4AF37] w-10 h-10 whitespace-pre-line"
+                              className="text-[#D4AF37] w-10 h-10 whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
                               data={item.icon || "star"}
-                              className="text-[#D4AF37] text-4xl whitespace-pre-line"
+                              className="text-[#D4AF37] text-4xl whitespace-normal md:whitespace-pre-line"
                               style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                             />
                           )}
                         </div>
-                        <h3 className="font-bold text-[24px] mb-2 text-white whitespace-pre-line">
+                        <h3 className="font-bold text-[24px] mb-2 text-white whitespace-normal md:whitespace-pre-line">
                           {item.title}
                         </h3>
                         <p
-                          className="text-[#dce1ff] mb-8 whitespace-pre-line"
+                          className="text-[#dce1ff] mb-8 whitespace-normal md:whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
                           {item.subtitle || item.desc}
                         </p>
 
                         {item.stats && item.stats.length > 0 && (
-                          <div className="grid grid-cols-2 gap-6 items-center whitespace-pre-line">
+                          <div className="grid grid-cols-2 gap-6 items-center whitespace-normal md:whitespace-pre-line">
                             {(Array.isArray(item.stats) ? item.stats : (item.stats || "").split("\n").filter((x:string)=>x.trim()).map((x:string) => { const [val, lab] = x.split("|"); return {value: val?.trim() || "", label: lab?.trim() || ""} })).map((st: any, i: number) => (
                               <div
                                 key={i}
-                                className="bg-white/10 p-4 rounded-2xl whitespace-pre-line"
+                                className="bg-white/10 p-4 rounded-2xl whitespace-normal md:whitespace-pre-line"
                               >
-                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-pre-line">
+                                <div className="text-2xl font-bold text-[#D4AF37] whitespace-normal md:whitespace-pre-line">
                                   {st.value}
                                 </div>
-                                <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-pre-line">
+                                <div className="text-[10px] opacity-80 uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                                   {st.label}
                                 </div>
                               </div>
@@ -5342,48 +5342,48 @@ export const DynamicBlockRenderer = ({
                         style={getCardStyle(item, block)}
                       >
                         <div>
-                          <div className="mb-6 whitespace-pre-line">
+                          <div className="mb-6 whitespace-normal md:whitespace-pre-line">
                             {typeof item.icon === "object" ||
                             (typeof item.icon === "string" &&
                               item.icon !== item.icon.toLowerCase()) ? (
                               <IconPreview
                                 data={item.icon}
-                                className="text-[#1d4eca] w-10 h-10 whitespace-pre-line"
+                                className="text-[#1d4eca] w-10 h-10 whitespace-normal md:whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             ) : (
                               <IconPreview
                                 data={item.icon || "analytics"}
-                                className="text-[#1d4eca] text-4xl whitespace-pre-line"
+                                className="text-[#1d4eca] text-4xl whitespace-normal md:whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
-                          <h3 className="font-bold text-[24px] mb-2 whitespace-pre-line">
+                          <h3 className="font-bold text-[24px] mb-2 whitespace-normal md:whitespace-pre-line">
                             {item.title}
                           </h3>
                           <p
-                            className="text-[#434654] mb-6 whitespace-pre-line"
+                            className="text-[#434654] mb-6 whitespace-normal md:whitespace-pre-line"
                             style={getCardDescStyle(item, block)}
                           >
                             {item.subtitle || item.desc}
                           </p>
                         </div>
                         {item.listItems && item.listItems.length > 0 && (
-                          <ul className="space-y-4 whitespace-pre-line">
+                          <ul className="space-y-4 whitespace-normal md:whitespace-pre-line">
                             {(Array.isArray(item.listItems) ? item.listItems : (item.listItems || "").split("\n").filter((x:string)=>x.trim())).map((li: any, i: number) => (
                               <li
                                 key={i}
-                                className="flex items-center gap-3 whitespace-pre-line"
+                                className="flex items-center gap-3 whitespace-normal md:whitespace-pre-line"
                               >
-                                <div className="w-8 h-8 rounded-full bg-[#D4AF37]/10 flex items-center justify-center shrink-0 whitespace-pre-line">
+                                <div className="w-8 h-8 rounded-full bg-[#D4AF37]/10 flex items-center justify-center shrink-0 whitespace-normal md:whitespace-pre-line">
                                   <span
-                                    className="material-symbols-outlined text-[#D4AF37] text-lg whitespace-pre-line"
+                                    className="material-symbols-outlined text-[#D4AF37] text-lg whitespace-normal md:whitespace-pre-line"
                                     translate="no"
                                     aria-hidden="true"
                                   >
                                     check_circle
                                   </span>
                                 </div>
-                                <span className="text-[14px] font-semibold whitespace-pre-line">
+                                <span className="text-[14px] font-semibold whitespace-normal md:whitespace-pre-line">
                                   {li}
                                 </span>
                               </li>
@@ -5402,51 +5402,51 @@ export const DynamicBlockRenderer = ({
                         )}
                         style={getCardStyle(item, block)}
                       >
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full -mr-16 -mt-16 whitespace-pre-line"></div>
-                        <div className="mb-6 whitespace-pre-line">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full -mr-16 -mt-16 whitespace-normal md:whitespace-pre-line"></div>
+                        <div className="mb-6 whitespace-normal md:whitespace-pre-line">
                           {typeof item.icon === "object" ||
                           (typeof item.icon === "string" &&
                             item.icon !== item.icon.toLowerCase()) ? (
                             <IconPreview
                               data={item.icon}
-                              className="text-[#1d4eca] w-10 h-10 whitespace-pre-line"
+                              className="text-[#1d4eca] w-10 h-10 whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           ) : (
                             <IconPreview
                               data={item.icon || "school"}
-                              className="text-[#1d4eca] text-4xl whitespace-pre-line"
+                              className="text-[#1d4eca] text-4xl whitespace-normal md:whitespace-pre-line"
                              style={getIconStyle(item, block)} />
                           )}
                         </div>
-                        <h3 className="font-bold text-[24px] mb-2 whitespace-pre-line">
+                        <h3 className="font-bold text-[24px] mb-2 whitespace-normal md:whitespace-pre-line">
                           {item.title}
                         </h3>
                         <p
-                          className="text-[#434654] mb-8 whitespace-pre-line"
+                          className="text-[#434654] mb-8 whitespace-normal md:whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
                           {item.subtitle || item.desc}
                         </p>
-                        <div className="space-y-6 whitespace-pre-line">
+                        <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
                           {item.statValue && (
-                            <div className="flex flex-col gap-1 whitespace-pre-line">
-                              <div className="flex items-end gap-3 whitespace-pre-line">
-                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-pre-line">
+                            <div className="flex flex-col gap-1 whitespace-normal md:whitespace-pre-line">
+                              <div className="flex items-end gap-3 whitespace-normal md:whitespace-pre-line">
+                                <span className="text-4xl font-extrabold text-[#D4AF37] whitespace-normal md:whitespace-pre-line">
                                   {item.statValue}
                                 </span>
                                 {item.statLabel && (
-                                  <span className="text-[14px] font-semibold text-[#434654] pb-1 whitespace-pre-line">
+                                  <span className="text-[14px] font-semibold text-[#434654] pb-1 whitespace-normal md:whitespace-pre-line">
                                     {item.statLabel}
                                   </span>
                                 )}
                               </div>
-                              <div className="h-2 w-full bg-[#ededf8] rounded-full overflow-hidden whitespace-pre-line">
-                                <div className="h-full bg-[#D4AF37] w-[98%] whitespace-pre-line"></div>
+                              <div className="h-2 w-full bg-[#ededf8] rounded-full overflow-hidden whitespace-normal md:whitespace-pre-line">
+                                <div className="h-full bg-[#D4AF37] w-[98%] whitespace-normal md:whitespace-pre-line"></div>
                               </div>
                             </div>
                           )}
                           {item.badge && (
-                            <p className="text-[12px] font-bold tracking-[0.05em] text-[#1d4eca] whitespace-pre-line">
+                            <p className="text-[12px] font-bold tracking-[0.05em] text-[#1d4eca] whitespace-normal md:whitespace-pre-line">
                               {item.badge}
                             </p>
                           )}
@@ -5465,36 +5465,36 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={block.id}
-            className="py-20 bg-white whitespace-pre-line"
+            className="py-20 bg-white whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "")}
           >
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-pre-line">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 mb-12 whitespace-normal md:whitespace-pre-line">
                 <div className={getHeroInnerClass(block, "max-w-2xl")}>
-                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-pre-line">
+                  <h2 className="font-bold text-2xl md:text-3xl text-[#1a1b23] mb-4 whitespace-normal md:whitespace-pre-line">
                     {block.title}
                   </h2>
                   {block.subtitle && (
-                    <p className="text-[18px] text-[#434654] whitespace-pre-line">
+                    <p className="text-[18px] text-[#434654] whitespace-normal md:whitespace-pre-line">
                       {block.subtitle}
                     </p>
                   )}
                 </div>
-                <div className="flex gap-2 whitespace-pre-line">
-                  <button className="p-3 rounded-full border border-[#e2e8f0] hover:bg-[#faf8ff] transition-colors flex items-center justify-center whitespace-pre-line">
+                <div className="flex gap-2 whitespace-normal md:whitespace-pre-line">
+                  <button className="p-3 rounded-full border border-[#e2e8f0] hover:bg-[#faf8ff] transition-colors flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined whitespace-pre-line"
+                      className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
                       chevron_left
                     </span>
                   </button>
-                  <button className="p-3 rounded-full border border-[#e2e8f0] bg-[#1d4eca] text-white hover:opacity-90 transition-colors flex items-center justify-center whitespace-pre-line">
+                  <button className="p-3 rounded-full border border-[#e2e8f0] bg-[#1d4eca] text-white hover:opacity-90 transition-colors flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined whitespace-pre-line"
+                      className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -5503,33 +5503,33 @@ export const DynamicBlockRenderer = ({
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 whitespace-pre-line">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 whitespace-normal md:whitespace-pre-line">
                 {(block.items || []).map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="group cursor-pointer whitespace-pre-line"
+                    className="group cursor-pointer whitespace-normal md:whitespace-pre-line"
                   >
-                    <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative whitespace-pre-line">
+                    <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative whitespace-normal md:whitespace-pre-line">
                       {item.image ? (
                         <img
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 whitespace-pre-line"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 whitespace-normal md:whitespace-pre-line"
                           src={item.image}
                           alt={item.title}
                         />
                       ) : (
-                        <div className="w-full h-full bg-slate-200 whitespace-pre-line"></div>
+                        <div className="w-full h-full bg-slate-200 whitespace-normal md:whitespace-pre-line"></div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 whitespace-pre-line">
-                        <p className="text-white text-[12px] font-bold tracking-[0.05em] whitespace-pre-line">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 whitespace-normal md:whitespace-pre-line">
+                        <p className="text-white text-[12px] font-bold tracking-[0.05em] whitespace-normal md:whitespace-pre-line">
                           {item.hoverText}
                         </p>
                       </div>
                     </div>
-                    <h4 className="font-bold text-lg mb-1 text-slate-900 whitespace-pre-line">
+                    <h4 className="font-bold text-lg mb-1 text-slate-900 whitespace-normal md:whitespace-pre-line">
                       {item.title}
                     </h4>
                     <p
-                      className="text-[#434654] text-[12px] font-bold tracking-[0.05em] whitespace-pre-line"
+                      className="text-[#434654] text-[12px] font-bold tracking-[0.05em] whitespace-normal md:whitespace-pre-line"
                       style={getCardDescStyle(item, block)}
                     >
                       {item.subtitle || item.desc}
@@ -5546,36 +5546,36 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={block.id}
-            className="py-20 bg-[#f3f2fd] overflow-hidden whitespace-pre-line"
+            className="py-20 bg-[#f3f2fd] overflow-hidden whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "")}
           >
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-8`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-7xl"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
-              <div className="rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white whitespace-pre-line"
+              <div className="rounded-[40px] p-8 md:p-20 relative overflow-hidden text-white whitespace-normal md:whitespace-pre-line"
                   style={{
                     backgroundColor: block.styles?.innerBgColor 
                       ? `color-mix(in srgb, ${block.styles.innerBgColor} ${block.styles.innerBgOpacity ?? 100}%, transparent)` 
                       : `color-mix(in srgb, #0f172a ${block.styles?.innerBgOpacity ?? 100}%, transparent)`
                   }}>
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#1d4eca]/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px] whitespace-pre-line"></div>
-                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center whitespace-pre-line">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#1d4eca]/10 rounded-full blur-[100px] -mr-[250px] -mt-[250px] whitespace-normal md:whitespace-pre-line"></div>
+                <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center whitespace-normal md:whitespace-pre-line">
                   <div>
                     {block.badge && (
-                      <span className="inline-block bg-[#D4AF37]/20 text-[#D4AF37] px-4 py-1 rounded-full text-[12px] font-bold tracking-[0.05em] mb-6 whitespace-pre-line">
+                      <span className="inline-block bg-[#D4AF37]/20 text-[#D4AF37] px-4 py-1 rounded-full text-[12px] font-bold tracking-[0.05em] mb-6 whitespace-normal md:whitespace-pre-line">
                         {block.badge}
                       </span>
                     )}
-                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-pre-line">
+                    <h2 className="font-bold text-2xl md:text-3xl mb-6 leading-tight whitespace-normal md:whitespace-pre-line">
                       {block.title}
                     </h2>
                     {block.subtitle && (
-                      <p className="text-[#dce1ff] mb-10 text-lg whitespace-pre-line">
+                      <p className="text-[#dce1ff] mb-10 text-lg whitespace-normal md:whitespace-pre-line">
                         {block.subtitle}
                       </p>
                     )}
 
-                    <div className="space-y-6 whitespace-pre-line">
+                    <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
                       {(block.items || []).map((item: any, idx: number) => (
                         <div
                           key={idx}
@@ -5585,27 +5585,27 @@ export const DynamicBlockRenderer = ({
                           )}
                           style={getCardStyle(item, block)}
                         >
-                          <div className="shrink-0 mt-1 whitespace-pre-line">
+                          <div className="shrink-0 mt-1 whitespace-normal md:whitespace-pre-line">
                             {typeof item.icon === "object" ||
                             (typeof item.icon === "string" &&
                               item.icon !== item.icon.toLowerCase()) ? (
                               <IconPreview
                                 data={item.icon}
-                                className="text-[#D4AF37] w-8 h-8 whitespace-pre-line"
+                                className="text-[#D4AF37] w-8 h-8 whitespace-normal md:whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             ) : (
                               <IconPreview
                                 data={item.icon || "science"}
-                                className="text-[#D4AF37] text-3xl whitespace-pre-line"
+                                className="text-[#D4AF37] text-3xl whitespace-normal md:whitespace-pre-line"
                                style={getIconStyle(item, block)} />
                             )}
                           </div>
                           <div>
-                            <h4 className="font-bold text-lg mb-1 whitespace-pre-line">
+                            <h4 className="font-bold text-lg mb-1 whitespace-normal md:whitespace-pre-line">
                               {item.title}
                             </h4>
                             <p
-                              className="text-sm opacity-70 leading-relaxed whitespace-pre-line"
+                              className="text-sm opacity-70 leading-relaxed whitespace-normal md:whitespace-pre-line"
                               style={getCardDescStyle(item, block)}
                             >
                               {item.subtitle || item.desc}
@@ -5615,16 +5615,16 @@ export const DynamicBlockRenderer = ({
                       ))}
                     </div>
                   </div>
-                  <div className="relative mt-10 md:mt-0 whitespace-pre-line">
+                  <div className="relative mt-10 md:mt-0 whitespace-normal md:whitespace-pre-line">
                     {block.image && (
                       <img
-                        className="rounded-3xl shadow-2xl border border-white/10 w-full object-cover aspect-video whitespace-pre-line"
+                        className="rounded-3xl shadow-2xl border border-white/10 w-full object-cover aspect-video whitespace-normal md:whitespace-pre-line"
                         src={block.image}
                         alt={block.title}
                       />
                     )}
                     {block.imageBadge && (
-                      <div className="absolute -top-4 -right-4 bg-[#D4AF37] text-[#00164f] p-4 rounded-xl font-bold shadow-lg whitespace-pre-line">
+                      <div className="absolute -top-4 -right-4 bg-[#D4AF37] text-[#00164f] p-4 rounded-xl font-bold shadow-lg whitespace-normal md:whitespace-pre-line">
                         {block.highlightTag || block.imageBadge}
                       </div>
                     )}
@@ -5640,38 +5640,38 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className="relative h-[400px] flex items-center overflow-hidden whitespace-pre-line"
+            className="relative h-[400px] flex items-center overflow-hidden whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
             {block.image && (
               <img
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover whitespace-pre-line"
+                className="absolute inset-0 w-full h-full object-cover whitespace-normal md:whitespace-pre-line"
                 src={block.image}
                 style={getImageStyle(block, "image", index)}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 whitespace-pre-line"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 whitespace-normal md:whitespace-pre-line"></div>
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop relative z-10 w-full`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop relative z-10 w-full`}
             >
               <div className={getHeroInnerClass(block, "max-w-2xl")}>
                 {block.badge && (
                   <span
-                    className="inline-block py-1 px-3 rounded-full bg-primary/20 text-[#b6c4ff] text-sm font-semibold mb-4 backdrop-blur-sm border border-white/10 whitespace-pre-line"
+                    className="inline-block py-1 px-3 rounded-full bg-primary/20 text-[#b6c4ff] text-sm font-semibold mb-4 backdrop-blur-sm border border-white/10 whitespace-normal md:whitespace-pre-line"
                     style={getBadgeStyle(block)}
                   >
                     {block.badge}
                   </span>
                 )}
                 <h1
-                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-pre-line"
+                  className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight whitespace-normal md:whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
                 </h1>
                 {block.subtitle && (
-                  <p className="text-lg lg:text-xl text-white/80 font-light leading-relaxed whitespace-pre-line">
+                  <p className="text-lg lg:text-xl text-white/80 font-light leading-relaxed whitespace-normal md:whitespace-pre-line">
                     {block.subtitle}
                   </p>
                 )}
@@ -5685,30 +5685,30 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className="py-12 bg-surface-background whitespace-pre-line"
+            className="py-12 bg-surface-background whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
             <div
-              className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+              className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
               <div className="w-full md:w-auto flex-1">
                 <h2
-                  className="text-2xl font-bold text-slate-800 whitespace-pre-line"
+                  className="text-2xl font-bold text-slate-800 whitespace-normal md:whitespace-pre-line"
                   style={getTitleStyle(block)}
                 >
                   {block.title}
                 </h2>
                 {block.subtitle && (
-                  <p className="text-slate-500 whitespace-pre-line">
+                  <p className="text-slate-500 whitespace-normal md:whitespace-pre-line">
                     {block.subtitle}
                   </p>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-4 whitespace-pre-line">
-                <div className="flex items-center bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm whitespace-pre-line">
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-pre-line">
+              <div className="flex flex-wrap items-center gap-4 whitespace-normal md:whitespace-pre-line">
+                <div className="flex items-center bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm whitespace-normal md:whitespace-pre-line">
+                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-slate-500 whitespace-pre-line"
+                      className="material-symbols-outlined text-slate-500 whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -5716,13 +5716,13 @@ export const DynamicBlockRenderer = ({
                     </span>
                   </button>
                   <span
-                    className={`px-6 font-bold text-slate-800 min-w-[140px] ${block.styles?.textAlign ? "" : "text-center"}`}
+                    className={`px-2 md:px-6 font-bold text-slate-800 min-w-[140px] ${block.styles?.textAlign ? "" : "text-center"}`}
                   >
                     {block.month || "Ekim 2023"}
                   </span>
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-pre-line">
+                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-slate-500 whitespace-pre-line"
+                      className="material-symbols-outlined text-slate-500 whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -5734,11 +5734,11 @@ export const DynamicBlockRenderer = ({
             </div>
 
             <div
-              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+              className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
-              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden overflow-x-auto whitespace-pre-line">
-                <div className="min-w-[800px] whitespace-pre-line">
-                  <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200 whitespace-pre-line">
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden overflow-x-auto whitespace-normal md:whitespace-pre-line">
+                <div className="min-w-[800px] whitespace-normal md:whitespace-pre-line">
+                  <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200 whitespace-normal md:whitespace-pre-line">
                     <div
                       className={`py-5 ${block.styles?.textAlign ? "" : "text-center"} text-xs font-black text-slate-600 uppercase tracking-widest hidden md:block`}
                     >
@@ -5812,15 +5812,15 @@ export const DynamicBlockRenderer = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-7 divide-x divide-y divide-slate-200 whitespace-pre-line">
+                  <div className="grid grid-cols-7 divide-x divide-y divide-slate-200 whitespace-normal md:whitespace-pre-line">
                     {block.days?.map((day: any, i: number) => {
                       if (!day.isCurrentMonth) {
                         return (
                           <div
                             key={i}
-                            className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px] whitespace-pre-line"
+                            className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                           >
-                            <span className="text-slate-400 font-medium opacity-50 text-xs md:text-base whitespace-pre-line">
+                            <span className="text-slate-400 font-medium opacity-50 text-xs md:text-base whitespace-normal md:whitespace-pre-line">
                               {day.date}
                             </span>
                           </div>
@@ -5831,10 +5831,10 @@ export const DynamicBlockRenderer = ({
                         return (
                           <div
                             key={i}
-                            className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30 whitespace-pre-line"
+                            className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30 whitespace-normal md:whitespace-pre-line"
                           >
-                            <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3 whitespace-pre-line">
-                              <span className="text-sm md:text-xl font-black text-slate-800 whitespace-pre-line">
+                            <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
+                              <span className="text-sm md:text-xl font-black text-slate-800 whitespace-normal md:whitespace-pre-line">
                                 {day.date}
                               </span>
                               <span
@@ -5851,16 +5851,16 @@ export const DynamicBlockRenderer = ({
                         return (
                           <div
                             key={i}
-                            className="p-2 md:p-4 bg-primary/5 transition-colors ring-1 md:ring-2 ring-inset ring-primary relative min-h-[120px] md:min-h-[220px] whitespace-pre-line"
+                            className="p-2 md:p-4 bg-primary/5 transition-colors ring-1 md:ring-2 ring-inset ring-primary relative min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                           >
-                            <div className="absolute -top-1 -right-1 whitespace-pre-line">
-                              <span className="flex h-3 w-3 md:h-4 md:w-4 whitespace-pre-line">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 whitespace-pre-line"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-primary whitespace-pre-line"></span>
+                            <div className="absolute -top-1 -right-1 whitespace-normal md:whitespace-pre-line">
+                              <span className="flex h-3 w-3 md:h-4 md:w-4 whitespace-normal md:whitespace-pre-line">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 whitespace-normal md:whitespace-pre-line"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-primary whitespace-normal md:whitespace-pre-line"></span>
                               </span>
                             </div>
-                            <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-pre-line">
-                              <span className="text-sm md:text-xl font-black text-primary whitespace-pre-line">
+                            <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
+                              <span className="text-sm md:text-xl font-black text-primary whitespace-normal md:whitespace-pre-line">
                                 {day.date}
                               </span>
                               <span
@@ -5869,7 +5869,7 @@ export const DynamicBlockRenderer = ({
                                 Bugün
                               </span>
                             </div>
-                            <ul className="space-y-1 md:space-y-2 whitespace-pre-line">
+                            <ul className="space-y-1 md:space-y-2 whitespace-normal md:whitespace-pre-line">
                               {(Array.isArray(day.meals)
                                 ? day.meals
                                 : typeof day.meals === "string"
@@ -5881,9 +5881,9 @@ export const DynamicBlockRenderer = ({
                               )?.map((meal: string, mIndex: number) => (
                                 <li
                                   key={mIndex}
-                                  className="text-[10px] md:text-sm font-bold text-slate-800 flex items-start gap-1 md:gap-2 leading-tight whitespace-pre-line"
+                                  className="text-[10px] md:text-sm font-bold text-slate-800 flex items-start gap-1 md:gap-2 leading-tight whitespace-normal md:whitespace-pre-line"
                                 >
-                                  <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0 whitespace-pre-line"></span>{" "}
+                                  <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0 whitespace-normal md:whitespace-pre-line"></span>{" "}
                                   {meal}
                                 </li>
                               ))}
@@ -5895,10 +5895,10 @@ export const DynamicBlockRenderer = ({
                       return (
                         <div
                           key={i}
-                          className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] whitespace-pre-line"
+                          className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                         >
-                          <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-pre-line">
-                            <span className="text-sm md:text-xl font-black text-slate-800 whitespace-pre-line">
+                          <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
+                            <span className="text-sm md:text-xl font-black text-slate-800 whitespace-normal md:whitespace-pre-line">
                               {day.date}
                             </span>
                             {day.kcal && (
@@ -5909,7 +5909,7 @@ export const DynamicBlockRenderer = ({
                               </span>
                             )}
                           </div>
-                          <ul className="space-y-1 md:space-y-2 whitespace-pre-line">
+                          <ul className="space-y-1 md:space-y-2 whitespace-normal md:whitespace-pre-line">
                             {(Array.isArray(day.meals)
                               ? day.meals
                               : typeof day.meals === "string"
@@ -5921,9 +5921,9 @@ export const DynamicBlockRenderer = ({
                             )?.map((meal: string, mIndex: number) => (
                               <li
                                 key={mIndex}
-                                className="text-[10px] md:text-sm text-slate-700 flex items-start gap-1 md:gap-2 leading-tight whitespace-pre-line"
+                                className="text-[10px] md:text-sm text-slate-700 flex items-start gap-1 md:gap-2 leading-tight whitespace-normal md:whitespace-pre-line"
                               >
-                                <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0 whitespace-pre-line"></span>{" "}
+                                <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0 whitespace-normal md:whitespace-pre-line"></span>{" "}
                                 {meal}
                               </li>
                             ))}
@@ -5937,7 +5937,7 @@ export const DynamicBlockRenderer = ({
                     }).map((_, i) => (
                       <div
                         key={"empty-" + i}
-                        className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px] whitespace-pre-line"
+                        className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                       ></div>
                     ))}
                   </div>
@@ -5952,33 +5952,33 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className={`py-8 bg-surface-background ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop`}
+            className={`py-8 bg-surface-background ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
             style={getStyle(block, "container")}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-pre-line">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 whitespace-normal md:whitespace-pre-line">
               {block.items?.map((item: any, i: number) => (
                 <div
                   key={i}
-                  className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4 whitespace-pre-line"
+                  className="bg-white p-6 rounded-xl border border-border-subtle shadow-sm flex items-center gap-4 whitespace-normal md:whitespace-pre-line"
                   style={getCardStyle(item, block)}
                 >
                   {item.icon && (
                     <IconPreview
                       data={item.icon}
-                      className="text-4xl whitespace-pre-line"
+                      className="text-4xl whitespace-normal md:whitespace-pre-line"
                       style={{ ...getIconStyle(item, block), color: item.iconColor || "var(--color-primary)",
                       }}
                     />
                   )}
                   <div>
                     <h4
-                      className="font-bold text-slate-800 whitespace-pre-line"
+                      className="font-bold text-slate-800 whitespace-normal md:whitespace-pre-line"
                       style={getCardTitleStyle(item, block)}
                     >
                       {item.title}
                     </h4>
                     <p
-                      className="text-sm text-slate-500 whitespace-pre-line"
+                      className="text-sm text-slate-500 whitespace-normal md:whitespace-pre-line"
                       style={getCardDescStyle(item, block)}
                     >
                       {item.subtitle || item.desc}
@@ -5994,27 +5994,27 @@ export const DynamicBlockRenderer = ({
         return (
           <section
             key={index}
-            className="relative bg-primary text-on-primary overflow-hidden whitespace-pre-line"
+            className="relative bg-primary text-on-primary overflow-hidden whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
-            <div className="absolute inset-0 z-0 whitespace-pre-line">
+            <div className="absolute inset-0 z-0 whitespace-normal md:whitespace-pre-line">
               <div
-                className="w-full h-full bg-cover bg-center opacity-30 mix-blend-multiply whitespace-pre-line"
+                className="w-full h-full bg-cover bg-center opacity-30 mix-blend-multiply whitespace-normal md:whitespace-pre-line"
                 style={getImageStyle(block, "image", index)}
               />
             </div>
             <div
-              className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"}`}
+              className={`relative z-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col items-center ${block.styles?.textAlign ? "" : "text-center"}`}
             >
               <h1
-                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-pre-line"
+                className="font-display-lg text-display-lg text-on-primary mb-6 whitespace-normal md:whitespace-pre-line"
                 style={getTitleStyle(block)}
               >
                 {block.title}
               </h1>
               {block.subtitle && (
                 <p
-                  className={`font-body-lg text-body-lg text-on-primary-container max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-pre-line`}
+                  className={`font-body-lg text-body-lg text-on-primary-container max-w-2xl ${getAlignClass(block, "subtitle")} whitespace-normal md:whitespace-pre-line`}
                   style={getSubtitleStyle(block)}
                 >
                   {block.subtitle}
@@ -6029,26 +6029,26 @@ export const DynamicBlockRenderer = ({
         return (
           <div
             key={index}
-            className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-desktop py-section-gap`}
+            className={`${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop py-section-gap`}
             style={getStyle(block, "container")}
           >
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm whitespace-pre-line">
-              <div className="flex items-center space-x-6 mb-4 md:mb-0 whitespace-pre-line">
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-pre-line">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm whitespace-normal md:whitespace-pre-line">
+              <div className="flex items-center space-x-6 mb-4 md:mb-0 whitespace-normal md:whitespace-pre-line">
+                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined whitespace-pre-line"
+                    className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
                     chevron_left
                   </span>
                 </button>
-                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-pre-line">
+                <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-normal md:whitespace-pre-line">
                   {block.month || "Ekim 2023"}
                 </h2>
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-pre-line">
+                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                   <span
-                    className="material-symbols-outlined whitespace-pre-line"
+                    className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
                     translate="no"
                     aria-hidden="true"
                   >
@@ -6056,16 +6056,16 @@ export const DynamicBlockRenderer = ({
                   </span>
                 </button>
               </div>
-              <div className="flex space-x-4 whitespace-pre-line">
+              <div className="flex space-x-4 whitespace-normal md:whitespace-pre-line">
                 {block.pdfUrl && (
                   <SmartLink
                     url={block.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors whitespace-pre-line"
+                    className="flex items-center space-x-2 border-2 border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/5 transition-colors whitespace-normal md:whitespace-pre-line"
                   >
                     <span
-                      className="material-symbols-outlined text-xl whitespace-pre-line"
+                      className="material-symbols-outlined text-xl whitespace-normal md:whitespace-pre-line"
                       translate="no"
                       aria-hidden="true"
                     >
@@ -6077,9 +6077,9 @@ export const DynamicBlockRenderer = ({
               </div>
             </div>
 
-            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-section-gap overflow-x-auto whitespace-pre-line">
-              <div className="min-w-[800px] whitespace-pre-line">
-                <div className="grid grid-cols-7 border-b border-border-subtle bg-surface-container-low whitespace-pre-line">
+            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-section-gap overflow-x-auto whitespace-normal md:whitespace-pre-line">
+              <div className="min-w-[800px] whitespace-normal md:whitespace-pre-line">
+                <div className="grid grid-cols-7 border-b border-border-subtle bg-surface-container-low whitespace-normal md:whitespace-pre-line">
                   <div
                     className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}
                   >
@@ -6153,15 +6153,15 @@ export const DynamicBlockRenderer = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-7 border-l border-t border-border-subtle whitespace-pre-line">
+                <div className="grid grid-cols-7 border-l border-t border-border-subtle whitespace-normal md:whitespace-pre-line">
                   {block.days?.map((day: any, i: number) => {
                     if (!day.isCurrentMonth) {
                       return (
                         <div
                           key={i}
-                          className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container relative whitespace-pre-line"
+                          className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container relative whitespace-normal md:whitespace-pre-line"
                         >
-                          <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-pre-line">
+                          <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-normal md:whitespace-pre-line">
                             {day.date}
                           </span>
                         </div>
@@ -6172,9 +6172,9 @@ export const DynamicBlockRenderer = ({
                       return (
                         <div
                           key={i}
-                          className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container-high relative whitespace-pre-line"
+                          className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container-high relative whitespace-normal md:whitespace-pre-line"
                         >
-                          <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-pre-line">
+                          <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-normal md:whitespace-pre-line">
                             {day.date}
                           </span>
                           <div
@@ -6192,7 +6192,7 @@ export const DynamicBlockRenderer = ({
                         className={`min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle relative group hover:bg-surface-container-lowest transition-colors ${day.isToday ? "ring-2 ring-primary ring-inset" : ""} ${day.bgColor ? day.bgColor : "bg-surface-card"}`}
                       >
                         {day.isToday && (
-                          <span className="absolute top-1 md:top-2 left-1 md:left-2 bg-primary text-on-primary font-caption text-[8px] md:text-caption px-1.5 py-0.5 rounded uppercase tracking-wider whitespace-pre-line">
+                          <span className="absolute top-1 md:top-2 left-1 md:left-2 bg-primary text-on-primary font-caption text-[8px] md:text-caption px-1.5 py-0.5 rounded uppercase tracking-wider whitespace-normal md:whitespace-pre-line">
                             Bugün
                           </span>
                         )}
@@ -6202,7 +6202,7 @@ export const DynamicBlockRenderer = ({
                           {day.date}
                         </span>
 
-                        <div className="mt-6 md:mt-8 space-y-1 whitespace-pre-line">
+                        <div className="mt-6 md:mt-8 space-y-1 whitespace-normal md:whitespace-pre-line">
                           {day.events && day.events.length > 0 ? (
                             day.events.map((event: any, eIndex: number) => (
                               <div
@@ -6248,14 +6248,14 @@ export const DynamicBlockRenderer = ({
             </div>
 
             {block.legends && block.legends.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter whitespace-pre-line">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter whitespace-normal md:whitespace-pre-line">
                 {block.legends.map((legend: any, i: number) => (
                   <div
                     key={i}
-                    className="bg-surface-card border border-border-subtle rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow whitespace-pre-line"
+                    className="bg-surface-card border border-border-subtle rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow whitespace-normal md:whitespace-pre-line"
                     style={getCardStyle(legend, block)}
                   >
-                    <div className="flex items-center space-x-3 mb-4 whitespace-pre-line">
+                    <div className="flex items-center space-x-3 mb-4 whitespace-normal md:whitespace-pre-line">
                       <div
                         className={`w-8 h-8 rounded flex items-center justify-center ${legend.iconBgClass || "bg-surface-container"}`}
                       >
@@ -6266,14 +6266,14 @@ export const DynamicBlockRenderer = ({
                         />
                       </div>
                       <h3
-                        className="font-headline-md text-headline-md text-on-surface whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-on-surface whitespace-normal md:whitespace-pre-line"
                         style={getCardTitleStyle(legend, block)}
                       >
                         {legend.title}
                       </h3>
                     </div>
                     <p
-                      className="font-body-md text-body-md text-on-surface-variant mb-4 whitespace-pre-line"
+                      className="font-body-md text-body-md text-on-surface-variant mb-4 whitespace-normal md:whitespace-pre-line"
                       style={getCardDescStyle(legend, block)}
                     >
                       {legend.desc}
@@ -6281,11 +6281,11 @@ export const DynamicBlockRenderer = ({
                     {legend.url && !legend.hideButton && (
                       <SmartLink
                         url={legend.url}
-                        className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline whitespace-pre-line"
+                        className="text-primary font-label-md text-label-md font-bold flex items-center space-x-1 hover:underline whitespace-normal md:whitespace-pre-line"
                       >
                         <span>{legend.buttonText || "İncele"}</span>
                         <span
-                          className="material-symbols-outlined text-sm whitespace-pre-line"
+                          className="material-symbols-outlined text-sm whitespace-normal md:whitespace-pre-line"
                           translate="no"
                           aria-hidden="true"
                         >
@@ -6304,62 +6304,62 @@ export const DynamicBlockRenderer = ({
         return (
           <main
             key={index}
-            className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-background text-on-background min-h-screen whitespace-pre-line"
+            className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-background text-on-background min-h-screen whitespace-normal md:whitespace-pre-line"
             style={getStyle(block, "container")}
           >
             
 
             {/* Pricing Cards */}
-            <section className="mb-section-gap whitespace-pre-line">
-              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-pre-line">
+            <section className="mb-section-gap whitespace-normal md:whitespace-pre-line">
+              <h2 className="font-headline-xl text-headline-xl text-primary mb-8 text-center whitespace-normal md:whitespace-pre-line">
                 {block.tableTitle || "Eğitim Kadranları Ücret Tablosu"}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter whitespace-pre-line">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter whitespace-normal md:whitespace-pre-line">
                 {(block.items || []).map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="bg-surface-card rounded-xl border border-border-subtle p-6 flex flex-col relative overflow-hidden group hover:bg-surface-container-low transition-colors duration-300 whitespace-pre-line"
+                    className="bg-surface-card rounded-xl border border-border-subtle p-6 flex flex-col relative overflow-hidden group hover:bg-surface-container-low transition-colors duration-300 whitespace-normal md:whitespace-pre-line"
                     style={getCardStyle(item, block)}
                   >
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-10 group-hover:bg-primary/10 transition-colors duration-300 whitespace-pre-line"></div>
-                    <div className="flex items-center gap-3 mb-6 whitespace-pre-line">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-10 group-hover:bg-primary/10 transition-colors duration-300 whitespace-normal md:whitespace-pre-line"></div>
+                    <div className="flex items-center gap-3 mb-6 whitespace-normal md:whitespace-pre-line">
                       <IconPreview
                         data={item.icon || "school"}
                         className="text-primary text-3xl"
                         style={{ ...getIconStyle(item, block), fontVariationSettings: "'FILL' 1" }}
                       />
                       <h3
-                        className="font-headline-md text-headline-md text-text-main whitespace-pre-line"
+                        className="font-headline-md text-headline-md text-text-main whitespace-normal md:whitespace-pre-line"
                         style={getCardTitleStyle(item, block)}
                       >
                         {item.title}
                       </h3>
                     </div>
 
-                    <div className="space-y-4 flex-grow whitespace-pre-line">
-                      <div className="flex justify-between items-center border-b border-border-subtle pb-2 whitespace-pre-line">
+                    <div className="space-y-4 flex-grow whitespace-normal md:whitespace-pre-line">
+                      <div className="flex justify-between items-center border-b border-border-subtle pb-2 whitespace-normal md:whitespace-pre-line">
                         <span
-                          className="font-body-md text-body-md text-text-muted whitespace-pre-line"
+                          className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
                           Eğitim Ücreti
                         </span>
                         <span
-                          className="font-label-md text-label-md text-text-main whitespace-pre-line"
+                          className="font-label-md text-label-md text-text-main whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.tuitionFee}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center border-b border-border-subtle pb-2 whitespace-pre-line">
+                      <div className="flex justify-between items-center border-b border-border-subtle pb-2 whitespace-normal md:whitespace-pre-line">
                         <span
-                          className="font-body-md text-body-md text-text-muted whitespace-pre-line"
+                          className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line"
                           style={getCardDescStyle(item, block)}
                         >
                           Yemek Ücreti
                         </span>
                         <span
-                          className="font-label-md text-label-md text-text-main whitespace-pre-line"
+                          className="font-label-md text-label-md text-text-main whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           {item.foodFee}
@@ -6367,20 +6367,20 @@ export const DynamicBlockRenderer = ({
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-4 border-t-2 border-primary/20 whitespace-pre-line">
-                      <div className="flex justify-between items-end whitespace-pre-line">
+                    <div className="mt-8 pt-4 border-t-2 border-primary/20 whitespace-normal md:whitespace-pre-line">
+                      <div className="flex justify-between items-end whitespace-normal md:whitespace-pre-line">
                         <span
-                          className="font-body-lg text-body-lg text-text-main whitespace-pre-line"
+                          className="font-body-lg text-body-lg text-text-main whitespace-normal md:whitespace-pre-line"
                           style={getCardTitleStyle(item, block)}
                         >
                           Toplam
                         </span>
-                        <span className="font-headline-md text-headline-md text-primary whitespace-pre-line">
+                        <span className="font-headline-md text-headline-md text-primary whitespace-normal md:whitespace-pre-line">
                           {item.totalFee}
                         </span>
                       </div>
                       <p
-                        className="font-caption text-caption text-text-muted mt-1 text-right whitespace-pre-line"
+                        className="font-caption text-caption text-text-muted mt-1 text-right whitespace-normal md:whitespace-pre-line"
                         style={getCardDescStyle(item, block)}
                       >
                         {item.vatText || "*KDV Dahildir"}
@@ -6391,37 +6391,37 @@ export const DynamicBlockRenderer = ({
               </div>
             </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-section-gap whitespace-pre-line">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-section-gap whitespace-normal md:whitespace-pre-line">
               {/* Discounts */}
-              <section className="bg-surface-card rounded-xl border border-border-subtle p-8 whitespace-pre-line">
-                <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border-subtle whitespace-pre-line">
-                  <div className="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center whitespace-pre-line">
+              <section className="bg-surface-card rounded-xl border border-border-subtle p-8 whitespace-normal md:whitespace-pre-line">
+                <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border-subtle whitespace-normal md:whitespace-pre-line">
+                  <div className="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-secondary whitespace-pre-line"
+                      className="material-symbols-outlined text-secondary whitespace-normal md:whitespace-pre-line"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       percent
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-text-main whitespace-normal md:whitespace-pre-line">
                     {block.discountsTitle || "İndirimler"}
                   </h2>
                 </div>
-                <ul className="space-y-6 whitespace-pre-line">
+                <ul className="space-y-6 whitespace-normal md:whitespace-pre-line">
                   {(block.discounts || []).map((disc: any, idx: number) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-4 whitespace-pre-line"
+                      className="flex items-start gap-4 whitespace-normal md:whitespace-pre-line"
                     >
                       <IconPreview
                         data={disc.icon || "schedule"}
                         className="text-secondary mt-1"
                        style={getIconStyle(disc, block)} />
-                      <div className="whitespace-pre-line">
-                        <h4 className="font-label-md text-label-md text-text-main whitespace-pre-line">
+                      <div className="whitespace-normal md:whitespace-pre-line">
+                        <h4 className="font-label-md text-label-md text-text-main whitespace-normal md:whitespace-pre-line">
                           {disc.title}
                         </h4>
-                        <p className="font-body-md text-body-md text-text-muted whitespace-pre-line">
+                        <p className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line">
                           {disc.desc}
                         </p>
                       </div>
@@ -6431,49 +6431,49 @@ export const DynamicBlockRenderer = ({
               </section>
 
               {/* Payment Plans */}
-              <section className="bg-primary/5 rounded-xl border border-primary/20 p-8 whitespace-pre-line">
-                <div className="flex items-center gap-4 mb-6 pb-4 border-b border-primary/20 whitespace-pre-line">
-                  <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center whitespace-pre-line">
+              <section className="bg-primary/5 rounded-xl border border-primary/20 p-8 whitespace-normal md:whitespace-pre-line">
+                <div className="flex items-center gap-4 mb-6 pb-4 border-b border-primary/20 whitespace-normal md:whitespace-pre-line">
+                  <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center whitespace-normal md:whitespace-pre-line">
                     <span
-                      className="material-symbols-outlined text-primary whitespace-pre-line"
+                      className="material-symbols-outlined text-primary whitespace-normal md:whitespace-pre-line"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       account_balance
                     </span>
                   </div>
-                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-pre-line">
+                  <h2 className="font-headline-xl text-headline-xl text-primary whitespace-normal md:whitespace-pre-line">
                     {block.paymentsTitle || "Ödeme Seçenekleri"}
                   </h2>
                 </div>
-                <div className="space-y-6 whitespace-pre-line">
+                <div className="space-y-6 whitespace-normal md:whitespace-pre-line">
                   {(block.payments || []).map((pay: any, idx: number) => (
                     <div
                       key={idx}
-                      className="bg-surface-card p-4 rounded-lg border border-border-subtle shadow-sm whitespace-pre-line"
+                      className="bg-surface-card p-4 rounded-lg border border-border-subtle shadow-sm whitespace-normal md:whitespace-pre-line"
                     >
-                      <h4 className="font-label-md text-label-md text-primary mb-2 flex items-center gap-2 whitespace-pre-line">
+                      <h4 className="font-label-md text-label-md text-primary mb-2 flex items-center gap-2 whitespace-normal md:whitespace-pre-line">
                         <IconPreview
                           data={pay.icon || "credit_card"}
                           className="text-lg"
                          style={getIconStyle(pay, block)} />{" "}
                         {pay.title}
                       </h4>
-                      <p className="font-body-md text-body-md text-text-muted whitespace-pre-line">
+                      <p className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line">
                         {pay.desc}
                       </p>
 
                       {pay.banks && (
-                        <div className="mt-4 pt-4 border-t border-border-subtle whitespace-pre-line">
-                          <span className="font-label-sm text-label-sm text-text-muted block mb-2 whitespace-pre-line">
+                        <div className="mt-4 pt-4 border-t border-border-subtle whitespace-normal md:whitespace-pre-line">
+                          <span className="font-label-sm text-label-sm text-text-muted block mb-2 whitespace-normal md:whitespace-pre-line">
                             Anlaşmalı Kurumlar:
                           </span>
-                          <div className="flex gap-4 opacity-70 whitespace-pre-line">
+                          <div className="flex gap-4 opacity-70 whitespace-normal md:whitespace-pre-line">
                             {pay.banks
                               .split(",")
                               .map((bank: string, bIdx: number) => (
                                 <div
                                   key={bIdx}
-                                  className="h-8 w-16 px-2 bg-surface-variant rounded flex items-center justify-center text-[10px] font-bold text-tertiary text-center whitespace-pre-line"
+                                  className="h-8 w-16 px-2 bg-surface-variant rounded flex items-center justify-center text-[10px] font-bold text-tertiary text-center whitespace-normal md:whitespace-pre-line"
                                 >
                                   {bank.trim()}
                                 </div>
@@ -6510,7 +6510,7 @@ export const DynamicBlockRenderer = ({
         }}
       >
         {block.isHidden && onBlockClick && (
-          <div className="absolute top-2 right-2 bg-slate-800/80 text-white text-[10px] font-bold px-2 py-1 rounded z-50 shadow backdrop-blur-sm pointer-events-none whitespace-pre-line">
+          <div className="absolute top-2 right-2 bg-slate-800/80 text-white text-[10px] font-bold px-2 py-1 rounded z-50 shadow backdrop-blur-sm pointer-events-none whitespace-normal md:whitespace-pre-line">
             GİZLİ BÖLÜM
           </div>
         )}

@@ -328,14 +328,14 @@ export default function PopupOverlay() {
                 {currentPopup.title}
               </h2>
 
-              <p className="text-sm leading-relaxed mb-6 whitespace-pre-line" style={{ color: currentPopup.style?.descColor || undefined, opacity: currentPopup.style?.descColor ? 1 : 0.8 }}>
+              <p className="text-sm leading-relaxed mb-6 whitespace-normal md:whitespace-pre-line" style={{ color: currentPopup.style?.descColor || undefined, opacity: currentPopup.style?.descColor ? 1 : 0.8 }}>
                 {currentPopup.description}
               </p>
 
               <button
                 type="button"
                 onClick={handleAction}
-                className="w-full py-3.5 px-6 font-bold rounded-xl shadow-md hover:opacity-90 transition-all text-sm cursor-pointer text-center"
+                className="w-full py-3.5 px-2 md:px-6 font-bold rounded-xl shadow-md hover:opacity-90 transition-all text-sm cursor-pointer text-center"
                 style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
               >
                 {currentPopup.buttonText || 'Hemen Başvur'}

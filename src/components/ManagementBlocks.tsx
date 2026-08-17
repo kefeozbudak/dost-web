@@ -4,7 +4,7 @@ import React from 'react';
 export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
     <section
-      className={`relative w-full h-[400px] flex items-center justify-center overflow-hidden mb-12 whitespace-pre-line`}
+      className={`relative w-full h-[400px] flex items-center justify-center overflow-hidden mb-12 whitespace-normal md:whitespace-pre-line`}
       style={getStyle(block, "container")}
     >
       {block.image && (
@@ -14,7 +14,7 @@ export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
         />
       )}
       <div className="absolute inset-0 bg-slate-900/60"></div>
-      <div className={`relative z-10 w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} text-center md:text-left`}>
+      <div className={`relative z-10 w-full ${block.styles?.fullWidth ? "max-w-full px-2 md:px-6" : "max-w-[1200px] px-2 md:px-6"} text-center md:text-left`}>
         <h1
           className={`text-4xl md:text-6xl font-black text-white mb-4 tracking-tight`}
           style={getTitleStyle(block)}
@@ -36,7 +36,7 @@ export const ManagementHeroBlock = ({ block, getStyle, getTitleStyle, getSubtitl
 
 export const ManagementRectorBlock = ({ block, getStyle, getTitleStyle, getSubtitleStyle }: any) => {
   return (
-    <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto mb-12 whitespace-pre-line`} style={getStyle(block)}>
+    <div className={`w-full ${block.styles?.fullWidth ? "max-w-full px-2 md:px-6" : "max-w-[1200px] px-2 md:px-6"} mx-auto mb-12 whitespace-normal md:whitespace-pre-line`} style={getStyle(block)}>
       {block.hideHeader !== true && (
       <div className="flex items-center gap-3 mb-6 border-b border-primary/20 pb-2">
         {block.sectionIcon !== '' && <span className="material-symbols-outlined text-primary">{block.sectionIcon || "school"}</span>}
@@ -81,7 +81,7 @@ export const ManagementRectorBlock = ({ block, getStyle, getTitleStyle, getSubti
                 <a
                   key={i}
                   href={btn.url || "#"}
-                  className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold transition-all ${
+                  className={`flex items-center gap-2 rounded-lg px-2 md:px-6 py-3 text-sm font-bold transition-all ${
                     btn.style === "outline"
                       ? "border-2 border-slate-200 text-slate-700 hover:bg-slate-50"
                       : "bg-primary text-white hover:bg-primary/90 shadow-md"
@@ -103,7 +103,7 @@ export const ManagementTeamGridBlock = ({ block, getStyle, getTitleStyle, getSub
   const items = block.items || [];
   const isDeans = block.type === 'management_deans';
   return (
-    <div className={`mb-16 w-full ${block.styles?.fullWidth ? "max-w-full px-6" : "max-w-[1200px] px-6"} mx-auto whitespace-pre-line`} style={getStyle(block)}>
+    <div className={`mb-16 w-full ${block.styles?.fullWidth ? "max-w-full px-2 md:px-6" : "max-w-[1200px] px-2 md:px-6"} mx-auto whitespace-normal md:whitespace-pre-line`} style={getStyle(block)}>
       {block.hideHeader !== true && (
       <div className={`flex items-center ${isDeans ? 'justify-between' : 'gap-3'} mb-8 border-b border-primary/20 pb-2`}>
         {isDeans ? (

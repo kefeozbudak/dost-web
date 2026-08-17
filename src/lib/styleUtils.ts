@@ -22,6 +22,8 @@ export const getStyle = (block: any, prefix: string) => {
     }
     
     const clean = (val: any) => typeof val === 'string' ? val.replace(/px/g, '') : val;
+
+    
     if (desktopVal !== undefined && desktopVal !== "") {
       style[`--desktop-${cssProp}`] = clean(desktopVal) + unit;
       style[jsProp] = clean(desktopVal) + unit; 
@@ -45,21 +47,21 @@ export const getStyle = (block: any, prefix: string) => {
   return style;
 };
 
-export const getTitleStyle = (block: any) => ({ ...getStyle(block, "title"), whiteSpace: "pre-line" as const });
-export const getSubtitleStyle = (block: any) => ({ ...getStyle(block, "subtitle"), whiteSpace: "pre-line" as const });
-export const getDescStyle = (block: any) => ({ ...getStyle(block, "desc"), whiteSpace: "pre-line" as const });
+export const getTitleStyle = (block: any) => ({ ...getStyle(block, "title") });
+export const getSubtitleStyle = (block: any) => ({ ...getStyle(block, "subtitle") });
+export const getDescStyle = (block: any) => ({ ...getStyle(block, "desc") });
 export const getBadgeStyle = (block: any) => getStyle(block, "badge");
 export const getButtonStyle = (block: any) => getStyle(block, "buttons");
 export const getItemContainerStyle = (block: any) => getStyle(block, "itemContainer");
 
 export const getItemTitleStyle = (block: any, item?: any) => {
-  const style: React.CSSProperties = { ...getStyle(block, "itemTitle"), whiteSpace: "pre-line" as const };
+  const style: React.CSSProperties = { ...getStyle(block, "itemTitle") };
   if (item && item.itemTitleColor) style.color = item.itemTitleColor;
   return style;
 };
 
 export const getItemDescStyle = (block: any, item?: any) => {
-  const style: React.CSSProperties = { ...getStyle(block, "itemDesc"), whiteSpace: "pre-line" as const };
+  const style: React.CSSProperties = { ...getStyle(block, "itemDesc") };
   if (item && item.itemDescColor) style.color = item.itemDescColor;
   return style;
 };
@@ -67,13 +69,13 @@ export const getItemDescStyle = (block: any, item?: any) => {
 export const getItemButtonStyle = (block: any) => getStyle(block, "itemButton");
 
 export const getTitlePart1Style = (block: any) => ({
-  whiteSpace: "pre-line" as const,
+  
   ...getStyle(block, "titlePart1"),
   color: block.styles?.titlePart1Color || block.styles?.titleColor || block.titlePart1Color || block.titleColor || undefined,
 });
 
 export const getTitlePart2Style = (block: any) => ({
-  whiteSpace: "pre-line" as const,
+  
   ...getStyle(block, "titlePart2"),
   color: block.styles?.titlePart2Color || block.styles?.titleColor || block.titlePart2Color || block.titleColor || undefined,
 });
