@@ -599,10 +599,11 @@ export default function AdminLayout() {
           <span className="hidden sm:inline">|</span>
           <span>99.998%</span>
     </div>
-        <div className="flex gap-4 uppercase font-bold tracking-tighter">
-          <span className="hidden sm:inline">Audit Log</span>
-          <span>V2.4.12</span>
-    </div>
+        <div className="flex items-center tracking-tighter text-xs">
+          <span className="text-black font-black">yasin</span>
+          <span className="text-red-600 font-black">Art</span>
+          <span className="text-black font-bold ml-1">Web Sistem</span>
+        </div>
       </footer>
     </div>
   );
