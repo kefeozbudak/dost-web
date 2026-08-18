@@ -1736,7 +1736,7 @@ export default function BlockFormEditor({
             </div>
 
             <div>
-              {block.type.includes("hero") && (
+              {(block.type.includes("hero") || block.type === "about_hero" || block.type === "academic_hero" || block.type === "bursluluk_hero") && (
                 <div className="col-span-2 grid grid-cols-2 gap-4 border-t border-slate-100 pt-3 mt-1">
                   <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
@@ -3842,7 +3842,35 @@ export default function BlockFormEditor({
             )}
           </div>
         )}
-      <MediaPickerModal
+
+      {block.type === 'about_hero' && (
+        <div className="space-y-4">
+          {renderHeroOverlaySetting()}
+          {renderCommonFields()}
+          {renderInputWithStyle("Rozet (Badge)", "badge")}
+          {renderImageUpload("Arka Plan Görseli", "image")}
+          {renderArrayEditor('buttons', [
+            {key: 'label', label: 'Metin', type: 'text'}, 
+            {key: 'url', label: 'URL', type: 'url'}, 
+            {key: 'primary', label: 'Birincil Mi? (Boş veya true)', type: 'text'}
+          ], 'Butonlar')}
+        </div>
+      )}
+      
+      {block.type === 'academic_hero' && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+          {renderImageUpload("Görsel", "image")}
+        </div>
+      )}
+
+      {block.type === 'contact_hero' && (
+        <div className="space-y-4">
+          {renderCommonFields()}
+        </div>
+      )}
+      
+            <MediaPickerModal
         isOpen={mediaPickerConfig.isOpen}
         onClose={() =>
           setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }))
