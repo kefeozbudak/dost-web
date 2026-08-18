@@ -25,6 +25,10 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      if (this.state.error?.message?.includes("Database is closing/hidden") || this.state.error?.message?.includes("Database is closed")) {
+        // Return children directly if it's the known harmless dev environment error
+        return this.props.children;
+      }
       return (
         <div className="p-8 text-red-500 bg-red-50 rounded-lg m-8">
           <h2 className="text-xl font-bold mb-4">Bir hata oluştu</h2>
@@ -33,7 +37,6 @@ export default class ErrorBoundary extends Component<Props, State> {
         </div>
       );
     }
-
     return this.props.children;
   }
 }

@@ -75,89 +75,88 @@ export default function PageEditor() {
         const docRef = doc(db, 'pages', pageId);
         const docSnap = await getDoc(docRef);
         
-        if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
-          const data = docSnap.data(); 
-          data.blocks = data.blocks?.filter((b: any) => b.type !== "header" && b.type !== "footer");
+        if (docSnap.exists()) {
+          const data = docSnap.data() as any;
+          
+          if ((!data.blocks || data.blocks.length === 0) && pageId === 'egitim-sistemimiz') {
+            import('../lib/defaultData').then((module) => {
+              const defaultData = { title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz', blocks: module.defaultEgitimSistemiData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && (pageId === 'is-basvuru-formu' || pageId === 'is-basvurusu')) {
+            import('../lib/defaultData').then(({ defaultCareerPageData }) => {
+              const defaultData = { title: 'İş Başvurusu', path: '/is-basvurusu', blocks: defaultCareerPageData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'home') {
+             const defaultData = { title: 'Ana Sayfa', path: '/', blocks: defaultHomePageData.filter(b => b.type !== "header" && b.type !== "footer") };
+             setPageData(defaultData);
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'duyurular') {
+            import('../lib/defaultData').then((module) => {
+              const defaultData = { title: 'Duyurular', path: '/duyurular', blocks: module.defaultDuyurularData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'basarilarimiz') {
+            import('../lib/defaultData').then((module) => {
+              const defaultData = { title: 'Başarılarımız', path: '/basarilarimiz', blocks: module.defaultBasarilarimizData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'hakkimizda') {
+            import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
+              const defaultData = { title: 'Hakkımızda', path: '/hakkimizda', blocks: defaultHakkimizdaData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'on-kayit') {
+            import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
+              const defaultData = { title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit', blocks: defaultPreRegistrationData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'bursluluk-basvuru-formu') {
+            import('../lib/defaultData').then(({ defaultScholarshipPageData }) => {
+              const defaultData = { title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu', blocks: defaultScholarshipPageData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'bursluluk-basvuru-onay') {
+            import('../lib/defaultData').then(({ defaultScholarshipConfirmationPageData }) => {
+              const defaultData = { title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay', blocks: defaultScholarshipConfirmationPageData };
+              setPageData(defaultData);
+            });
+          } else if ((!data.blocks || data.blocks.length === 0) && pageId === 'lgs-puan-hesaplama') {
+            import('../lib/defaultData').then(({ defaultLgsCalculatorData }) => {
+              const defaultData = { title: 'LGS Puan Hesaplama Modülü', path: '/lgs-puan-hesaplama', blocks: defaultLgsCalculatorData };
+              setPageData(defaultData);
+            });
+          } else {
+            if (!data.blocks) data.blocks = [];
+            data.blocks = data.blocks.filter((b: any) => b && b.type !== "header" && b.type !== "footer");
 
-          // Patch for tuition_fees
-          const newBlocks = [];
-          data.blocks.forEach(block => {
-            if (block.type === 'tuition_fees' && block.title) {
-              newBlocks.push({
-                type: 'tuition_fees_hero',
-                id: block.id ? block.id + '_hero' : 'tf_hero_' + Date.now() + Math.random(),
-                title: block.title,
-                subtitle: block.subtitle,
-                badge: block.badge,
-                image: block.image,
-                styles: block.styles
-              });
-              newBlocks.push({
-                ...block,
-                title: undefined,
-                subtitle: undefined,
-                badge: undefined,
-                image: undefined
-              });
-            } else {
-              newBlocks.push(block);
-            }
-          });
-          data.blocks = newBlocks;
- 
-          resolveMediaUrls(data).then(resolved => setPageData(resolved));
-                } else if (pageId === 'egitim-sistemimiz') {
-          import('../lib/defaultData').then((module) => {
-            const defaultData = { title: 'Eğitim Sistemimiz', path: '/egitim-sistemimiz', blocks: module.defaultEgitimSistemiData };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'is-basvuru-formu' || pageId === 'is-basvurusu') {
-          import('../lib/defaultData').then(({ defaultCareerPageData }) => {
-            const defaultData = {
-              title: 'İş Başvurusu',
-              path: '/is-basvurusu',
-              blocks: defaultCareerPageData
-            };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'home') {
-          const defaultData = { title: 'Ana Sayfa', path: '/', blocks: defaultHomePageData.filter(b => b.type !== "header" && b.type !== "footer") };
-          setPageData(defaultData);
-                                } else if (pageId === 'duyurular') {
-          import('../lib/defaultData').then((module) => {
-            const defaultData = { title: 'Duyurular', path: '/duyurular', blocks: module.defaultDuyurularData };
-            setPageData(defaultData);
-          });
-} else if (pageId === 'basarilarimiz') {
-          import('../lib/defaultData').then((module) => {
-            const defaultData = { title: 'Başarılarımız', path: '/basarilarimiz', blocks: module.defaultBasarilarimizData };
-            setPageData(defaultData);
-          });
-} else if (pageId === 'hakkimizda') {
-          import('../lib/defaultData').then(({ defaultHakkimizdaData }) => {
-            const defaultData = { title: 'Hakkımızda', path: '/hakkimizda', blocks: defaultHakkimizdaData };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'on-kayit') {
-          import('../lib/defaultData').then(({ defaultPreRegistrationData }) => {
-            const defaultData = { title: 'Öğrenci Ön Kayıt Formu', path: '/on-kayit', blocks: defaultPreRegistrationData };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'bursluluk-basvuru-formu') {
-          import('../lib/defaultData').then(({ defaultScholarshipPageData }) => {
-            const defaultData = { title: 'Bursluluk Sınav Başvurusu', path: '/bursluluk-basvuru-formu', blocks: defaultScholarshipPageData };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'bursluluk-basvuru-onay') {
-          import('../lib/defaultData').then(({ defaultScholarshipConfirmationPageData }) => {
-            const defaultData = { title: 'Bursluluk Sınav Başvuru Onayı', path: '/bursluluk-basvuru-onay', blocks: defaultScholarshipConfirmationPageData };
-            setPageData(defaultData);
-          });
-        } else if (pageId === 'lgs-puan-hesaplama') {
-          import('../lib/defaultData').then(({ defaultLgsCalculatorData }) => {
-            const defaultData = { title: 'LGS Puan Hesaplama Modülü', path: '/lgs-puan-hesaplama', blocks: defaultLgsCalculatorData };
-            setPageData(defaultData);
-          });
+            const newBlocks: any[] = [];
+            data.blocks.forEach((block: any) => {
+              if (block.type === 'tuition_fees' && block.title) {
+                newBlocks.push({
+                  type: 'tuition_fees_hero',
+                  id: block.id ? block.id + '_hero' : 'tf_hero_' + Date.now() + Math.random(),
+                  title: block.title,
+                  subtitle: block.subtitle,
+                  badge: block.badge,
+                  image: block.image,
+                  styles: block.styles
+                });
+                newBlocks.push({
+                  ...block,
+                  title: undefined,
+                  subtitle: undefined,
+                  badge: undefined,
+                  image: undefined
+                });
+              } else {
+                newBlocks.push(block);
+              }
+            });
+            data.blocks = newBlocks;
+  
+            resolveMediaUrls(data).then(resolved => setPageData(resolved));
+          }
         }
       } catch (e) {
         console.error(e);
@@ -210,12 +209,13 @@ export default function PageEditor() {
         let blockContainer = originalTarget.closest('.group\\/block') || originalTarget.closest('section');
         let matchingDOMIndex = -1;
         let explicitArrayIndex = -1;
-        
-        // Look for data-editor-item-index in ancestors
+        let explicitArrayKey = null;
         let currentItem = originalTarget;
         while(currentItem && currentItem !== blockContainer) {
             if (currentItem.hasAttribute('data-editor-item-index')) {
                 explicitArrayIndex = parseInt(currentItem.getAttribute('data-editor-item-index') || '-1', 10);
+                explicitArrayKey = currentItem.getAttribute('data-editor-array-key');
+                explicitArrayKey = currentItem.getAttribute('data-editor-array-key');
                 break;
             }
             currentItem = currentItem.parentElement as HTMLElement;
@@ -240,16 +240,30 @@ export default function PageEditor() {
 
         let bestMatch: { arrayKey: string, index: number } | null = null;
         let found = false;
-
+        
+        if (explicitArrayIndex !== -1 && explicitArrayKey) {
+            bestMatch = { arrayKey: explicitArrayKey, index: explicitArrayIndex };
+            found = true;
+        } else {
+          for (const arrKey of arrays) {
+            if (block[arrKey] && Array.isArray(block[arrKey])) {
+              if (explicitArrayIndex !== -1 && explicitArrayIndex < block[arrKey].length) {
+                  bestMatch = { arrayKey: arrKey, index: explicitArrayIndex };
+                  found = true;
+                  break;
+              }
+            }
+          }
+        }
+        
+        if (!found) {
         for (const arrKey of arrays) {
           if (block[arrKey] && Array.isArray(block[arrKey])) {
-            if (explicitArrayIndex !== -1 && explicitArrayIndex < block[arrKey].length) {
-                // If it's a known array key that we added explicit indexes for, use it.
-                // Assuming explicit array indexes are mostly for 'items'.
+             if (explicitArrayIndex !== -1 && explicitArrayIndex < block[arrKey].length) {
                 bestMatch = { arrayKey: arrKey, index: explicitArrayIndex };
                 found = true;
                 break;
-            }
+             }
             let stringMatches = [];
             
             for (let i = 0; i < block[arrKey].length; i++) {
@@ -297,7 +311,7 @@ export default function PageEditor() {
                 break;
             }
           }
-        }
+        } }
         
         if (bestMatch) {
             setActiveArrayItem(bestMatch);
@@ -460,6 +474,43 @@ export default function PageEditor() {
                     pagesList={pagesList}
                     onSave={handleSave}
                     saving={saving}
+                    onMoveUp={() => {
+                      if (selectedBlockIndex > 0) {
+                        const newBlocks = [...(pageData.blocks || [])];
+                        const temp = newBlocks[selectedBlockIndex - 1];
+                        newBlocks[selectedBlockIndex - 1] = newBlocks[selectedBlockIndex];
+                        newBlocks[selectedBlockIndex] = temp;
+                        setPageData({ ...pageData, blocks: newBlocks });
+                        setSelectedBlockIndex(selectedBlockIndex - 1);
+                      }
+                    }}
+                    onMoveDown={() => {
+                      if (selectedBlockIndex < (pageData.blocks || []).length - 1) {
+                        const newBlocks = [...(pageData.blocks || [])];
+                        const temp = newBlocks[selectedBlockIndex + 1];
+                        newBlocks[selectedBlockIndex + 1] = newBlocks[selectedBlockIndex];
+                        newBlocks[selectedBlockIndex] = temp;
+                        setPageData({ ...pageData, blocks: newBlocks });
+                        setSelectedBlockIndex(selectedBlockIndex + 1);
+                      }
+                    }}
+                    onDuplicate={() => {
+                      const newBlocks = [...(pageData.blocks || [])];
+                      const blockToCopy = JSON.parse(JSON.stringify(newBlocks[selectedBlockIndex]));
+                      blockToCopy.id = blockToCopy.id + '-' + Math.random().toString(36).substr(2, 6);
+                      newBlocks.splice(selectedBlockIndex + 1, 0, blockToCopy);
+                      setPageData({ ...pageData, blocks: newBlocks });
+                      setSelectedBlockIndex(selectedBlockIndex + 1);
+                    }}
+                    onDelete={() => {
+                      if (confirm('Bu modülü silmek istediğinize emin misiniz?')) {
+                        const newBlocks = [...(pageData.blocks || [])];
+                        newBlocks.splice(selectedBlockIndex, 1);
+                        setPageData({ ...pageData, blocks: newBlocks });
+                        setSelectedBlockIndex(null);
+                        setEditorVisible(false);
+                      }
+                    }}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-60">
@@ -498,33 +549,29 @@ export default function PageEditor() {
                           { type: 'middle_school_hero', label: 'Ortaokul Hero' },
                           { type: 'middle_school_pedagogy', label: 'Ortaokul Pedagoji' },
                           { type: 'middle_school_lgs', label: 'Ortaokul LGS Bento' },
-                          
-                          
-                          
+                          { type: 'high_school_hero', label: 'Lise Hero' },
+                          { type: 'high_school_programs', label: 'Lise Programlar' },
                           { type: 'campus_hero', label: 'Kampüs Hero' },
                           { type: 'campus_bento', label: 'Kampüs Kademe (Bento)' },
                           { type: 'campus_gallery', label: 'Kampüs Tesisleri' },
                           { type: 'campus_life', label: 'Kampüs Yaşamı' },
                           { type: 'campus_contact', label: 'Kampüs İletişim' },
-
                           { type: 'contact_hero', label: 'İletişim Hero' },
                           { type: 'contact_campuses', label: 'Kampüs Kartları' },
                           { type: 'contact_form', label: 'İletişim Formu' },
                           { type: 'social_media', label: 'Sosyal Medya Linkleri' },
-
                           { type: 'tuition_fees_hero', label: 'Kayıt Ücretleri Hero' },
                           { type: 'tuition_fees', label: 'Kayıt Ücretleri (Tablolar)' },
                           { type: 'clubs_hero', label: 'Kulüp Hero' },
                           { type: 'clubs_grid', label: 'Kulüp Grid (Kartlar)' },
                           { type: 'clubs_benefits', label: 'Kulüp Avantajlar' },
                           { type: 'clubs_cta', label: 'Kulüp CTA' },
-
-                          { type: 'high_school_hero', label: 'Lise Hero' },
-                          { type: 'high_school_programs', label: 'Lise Programlar' },
                           { type: 'achievements_hero', label: 'Başarılar Hero' },
                           { type: 'achievements_academic_bento', label: 'Başarılar Akademik Bento' },
                           { type: 'achievements_social_gallery', label: 'Başarılar Sosyal Galeri' },
                           { type: 'achievements_science_projects', label: 'Başarılar Bilim Projeleri' },
+                          { type: 'achievements_science', label: 'Başarılar Bilim' },
+                          { type: 'achievements_grid', label: 'Başarılar Grid' },
                           { type: 'mission_vision', label: 'Misyon & Vizyon' },
                           { type: 'timeline', label: 'Tarihçe' },
                           { type: 'values', label: 'Değerler' },
@@ -550,6 +597,10 @@ export default function PageEditor() {
                           { type: 'bursluluk_info_cards', label: 'Bursluluk Bilgilendirme Kartları' },
                           { type: 'bursluluk_result_query', label: 'Bursluluk Sonuç Sorgulama' },
                           { type: 'lgs_calculator', label: 'LGS Puan Hesaplama Modülü' },
+                          { type: 'bento_academic', label: 'Bento Akademik' },
+                          { type: 'grid', label: 'Basit Grid' },
+                          { type: 'text_image', label: 'Yazı + Resim' },
+                          { type: 'html', label: 'Özel HTML' }
                         ].map((b, i) => (
                           <button
                             key={i}

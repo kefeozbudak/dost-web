@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, GripVertical, Trash2 } from "lucide-react";
+import { Plus, GripVertical, Trash2, ArrowUp, ArrowDown, Copy, Trash } from "lucide-react";
 import IconField from "../components/IconField";
 import MediaPickerModal from "../components/MediaPickerModal";
 import FieldStylePicker from "./components/FieldStylePicker";
@@ -11,6 +11,7 @@ import {
   DEFAULT_CONTACT_INPUTS,
 } from "../lib/defaultFormInputs";
 
+import CalendarGridEditor from "./CalendarGridEditor";
 interface BlockFormEditorProps {
   activeArrayItem?: { arrayKey: string; index: number } | null;
   block: any;
@@ -18,6 +19,10 @@ interface BlockFormEditorProps {
   pagesList?: any[];
   onSave?: () => Promise<void> | void;
   saving?: boolean;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  onDuplicate?: () => void;
+  onDelete?: () => void;
 }
 
 export default function BlockFormEditor({
@@ -27,6 +32,10 @@ export default function BlockFormEditor({
   onSave,
   saving,
   activeArrayItem,
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onDelete
 }: BlockFormEditorProps) {
   const arrayItemRefs = useRef<{ [key: string]: HTMLDetailsElement | null }>(
     {},
@@ -382,6 +391,31 @@ export default function BlockFormEditor({
       newArray.splice(index, 0, movedItem);
       handleChange(arrayKey, newArray);
     };
+    const moveItemUp = (index: number) => {
+      if (index === 0) return;
+      const newArray = [...currentArray];
+      const temp = newArray[index - 1];
+      newArray[index - 1] = newArray[index];
+      newArray[index] = temp;
+      handleChange(arrayKey, newArray);
+    };
+
+    const moveItemDown = (index: number) => {
+      if (index === currentArray.length - 1) return;
+      const newArray = [...currentArray];
+      const temp = newArray[index + 1];
+      newArray[index + 1] = newArray[index];
+      newArray[index] = temp;
+      handleChange(arrayKey, newArray);
+    };
+
+    const duplicateItem = (index: number) => {
+      const newArray = [...currentArray];
+      const itemToDuplicate = JSON.parse(JSON.stringify(newArray[index]));
+      newArray.splice(index + 1, 0, itemToDuplicate);
+      handleChange(arrayKey, newArray);
+    };
+
     return (
       <div className="border-t border-slate-200 pt-4 mt-4">
         <div className="flex flex-col gap-2 mb-2">
@@ -1581,17 +1615,40 @@ export default function BlockFormEditor({
         <h3 className="font-bold text-slate-800 flex items-center gap-2">
           Modül Düzenleyici
         </h3>
-        <label className="flex items-center gap-2 text-sm font-bold text-slate-600 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={!block.isHidden}
-            onChange={(e) => handleChange("isHidden", !e.target.checked)}
-            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-          />
-          <span className={block.isHidden ? "text-slate-400" : "text-blue-600"}>
-            {block.isHidden ? "Gizli" : "Görünür"}
-          </span>
-        </label>
+        <div className="flex items-center gap-2">
+          {onMoveUp && (
+            <button onClick={onMoveUp} className="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded" title="Yukarı Taşı">
+              <ArrowUp className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {onMoveDown && (
+            <button onClick={onMoveDown} className="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded" title="Aşağı Taşı">
+              <ArrowDown className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {onDuplicate && (
+            <button onClick={onDuplicate} className="p-1.5 bg-amber-100 hover:bg-amber-200 text-amber-600 rounded" title="Modülü Kopyala">
+              <Copy className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {onDelete && (
+            <button onClick={onDelete} className="p-1.5 bg-red-100 hover:bg-red-200 text-red-600 rounded" title="Modülü Sil">
+              <Trash className="w-3.5 h-3.5" />
+            </button>
+          )}
+          <div className="w-px h-5 bg-slate-300 mx-1"></div>
+          <label className="flex items-center gap-2 text-sm font-bold text-slate-600 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!block.isHidden}
+              onChange={(e) => handleChange("isHidden", !e.target.checked)}
+              className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+            />
+            <span className={block.isHidden ? "text-slate-400" : "text-blue-600"}>
+              {block.isHidden ? "Gizli" : "Görünür"}
+            </span>
+          </label>
+        </div>
       </div>
       <div className="p-4">
         <div className="mb-6 p-4 bg-white border border-slate-200 rounded-xl space-y-4 shadow-sm">
@@ -2018,328 +2075,11 @@ export default function BlockFormEditor({
             </div>
 
             {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-{renderArrayEditor(
-              "items",
-              [
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "title", label: "Görsel Altı Yazı (Opsiyonel)", type: "text" },
-              ],
-              "Hero Görselleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "achievements_grid" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "subtitle", label: "Alt Başlık", type: "text" },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "hoverText", label: "Hover Üzeri Yazı", type: "text" },
-              ],
-              "Kültür / Sanat Başarı Öğeleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "achievements_science" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Rozet (Badge)", "badge")}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Görsel", "image")}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kutu Zemin Rengi
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={block.styles?.innerBgColor || "#0f172a"}
-                    onChange={(e) => {
-                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
-                      handleChange("styles", newStyles);
-                    }}
-                    className="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0"
-                  />
-                  <input
-                    type="text"
-                    value={block.styles?.innerBgColor || ""}
-                    onChange={(e) => {
-                      const newStyles = { ...(block.styles || {}), innerBgColor: e.target.value };
-                      handleChange("styles", newStyles);
-                    }}
-                    placeholder="#0f172a"
-                    className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs font-mono outline-none focus:border-blue-500"
-                  />
-                  <button
-                    onClick={() => {
-                      const newStyles = { ...(block.styles || {}) };
-                      delete newStyles.innerBgColor;
-                      handleChange("styles", newStyles);
-                    }}
-                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-100 rounded-md shrink-0 transition-colors"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                  </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                  Kutu Şeffaflığı (0 - 100)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  value={block.styles?.innerBgOpacity ?? 100}
-                  onChange={(e) => {
-                    const val = e.target.value ? parseInt(e.target.value) : 100;
-                    const newStyles = { ...(block.styles || {}), innerBgOpacity: val };
-                    handleChange("styles", newStyles);
-                  }}
-                  placeholder="100"
-                  className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-xs outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-            {renderInputWithStyle("Görsel Üzeri Rozet", "highlightTag")}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "icon", label: "İkon", type: "icon" },
-              ],
-              "Bilim Projeleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "news_hero" && (
-          <div className="space-y-4">
-            {renderHeroOverlaySetting()}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Alt Başlık", "subtitle")}
-            {renderImageUpload("Arkaplan Görseli", "image")}
-          </div>
-        )}
-
-        {block.type === "news_grid" && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={block.showPagination || false}
-                onChange={(e) =>
-                  handleChange("showPagination", e.target.checked)
-                }
-                id="showPagination"
-              />
-              <label htmlFor="showPagination" className="text-sm">
-                Sayfalama (Pagination) Göster
-              </label>
-            </div>
-            {renderArrayEditor(
-              "categories",
-              [{ key: "label", label: "Kategori Adı", type: "text" }],
-              "Kategoriler",
-            )}
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                { key: "date", label: "Tarih", type: "text" },
-                {
-                  key: "tag",
-                  label: "Kategori Seç (Rozet)",
-                  type: "select",
-                  options: (block.categories || [])
-                    .filter((c: any) => c.label !== "Tümü")
-                    .map((c: any) => ({
-                      value: c.label || c,
-                      label: c.label || c,
-                    })),
-                },
-                {
-                  key: "tagColor",
-                  label: "Etiket Rengi (Tailwind class)",
-                  type: "text",
-                },
-                { key: "image", label: "Görsel", type: "image" },
-                { key: "buttonText", label: "Buton Metni", type: "text" },
-                { key: "hideButton", label: "Butonu Gizle", type: "checkbox" },
-                { key: "url", label: "Buton URL", type: "url" },
-                {
-                  key: "cardBgColor",
-                  label: "Kart Arka Plan Rengi",
-                  type: "color",
-                },
-                {
-                  key: "cardBgImage",
-                  label: "Kart Arka Plan Görseli",
-                  type: "image",
-                },
-                {
-                  key: "cardBorderColor",
-                  label: "Kart Kenarlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "cardBorderRadius",
-                  label: "Kart Oval (Örn: 12px)",
-                  type: "text",
-                },
-                {
-                  key: "cardPadding",
-                  label: "Kart İç Boşluk (Örn: 24px)",
-                  type: "text",
-                },
-                {
-                  key: "itemTitleColor",
-                  label: "Özel Başlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "itemDescColor",
-                  label: "Özel Açıklama Rengi",
-                  type: "color",
-                },
-              ],
-              "Haber / Duyuru Öğeleri",
-            )}
-          </div>
-        )}
-
-        {block.type === "newsletter" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("İkon", "icon")}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Açıklama", "desc")}
-            {renderInputWithStyle("Input Placeholder", "inputPlaceholder")}
-            {renderInputWithStyle("Buton Metni", "buttonText")}
-            {renderInputWithStyle("Alt Açıklama (Caption)", "caption")}
-          </div>
-        )}
-        {block.type === "menu_hero" && (
-          <div className="space-y-4">
-            {renderHeroOverlaySetting()}
-            {renderInputWithStyle("Badge (Etiket)", "badge")}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Açıklama", "subtitle")}
-            {renderImageUpload("Arkaplan Resmi", "image")}
-          </div>
-        )}
-        {block.type === "menu_calendar" && (
-          <div className="space-y-4">
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Açıklama", "subtitle")}
-            {renderInputWithStyle("Ay (örn: Ekim 2023)", "month")}
-            {renderArrayEditor(
-              "days",
-              [
-                { key: "date", label: "Tarih (örn: 1 Paz)", type: "text" },
-                { key: "kcal", label: "Kalori (örn: 850 kcal)", type: "text" },
-                {
-                  key: "meals",
-                  label: "Yemekler (Virgülle Ayırın)",
-                  type: "textarea",
-                },
-                {
-                  key: "isCurrentMonth",
-                  label: "Geçerli Ay Mı? (İşaretlenmezse silik görünür)",
-                  type: "checkbox",
-                },
-                {
-                  key: "isClosed",
-                  label: "Tatil / Kapalı Mı?",
-                  type: "checkbox",
-                },
-                { key: "isToday", label: "Bugün Mü?", type: "checkbox" },
-              ],
-              "Takvim Günleri",
-            )}
+<CalendarGridEditor block={block} arrayKey="days" onChange={handleChange} />
           </div>
         )}
         {block.type === "menu_features" && (
           <div className="space-y-4">
-            {renderArrayEditor(
-              "items",
-              [
-                { key: "icon", label: "İkon (örn: nutrition)", type: "icon" },
-                { key: "iconColor", label: "Özel İkon Rengi", type: "color" },
-                { key: "title", label: "Başlık", type: "text" },
-                { key: "desc", label: "Açıklama", type: "textarea" },
-                {
-                  key: "itemTitleColor",
-                  label: "Özel Başlık Rengi",
-                  type: "color",
-                },
-                {
-                  key: "itemDescColor",
-                  label: "Özel Açıklama Rengi",
-                  type: "color",
-                },
-              ],
-              "Özellikler",
-            )}
-          </div>
-        )}
-        {block.type === "academic_calendar_hero" && (
-          <div className="space-y-4">
-            {renderHeroOverlaySetting()}
-            {renderTextareaWithStyle("Başlık", "title")}
-            {renderTextareaWithStyle("Açıklama", "subtitle")}
-            {renderImageUpload("Arkaplan Resmi", "image")}
-          </div>
-        )}
-        {block.type === "academic_calendar" && (
-          <div className="space-y-4">
-            {renderInputWithStyle("Ay (örn: Ekim 2023)", "month")}
-            {renderInputWithStyle("PDF URL", "pdfUrl")}
-            {renderInputWithStyle("PDF Buton Metni", "pdfButtonText")}
-
-            {renderArrayEditor(
-              "days",
-              [
-                {
-                  key: "date",
-                  label: "Tarih (Sadece sayı, örn: 1)",
-                  type: "text",
-                },
-                {
-                  key: "isCurrentMonth",
-                  label: "Geçerli Ay Mı? (İşaretlenmezse silik görünür)",
-                  type: "checkbox",
-                },
-                { key: "isWeekend", label: "Hafta Sonu Mu?", type: "checkbox" },
-                { key: "isToday", label: "Bugün Mü?", type: "checkbox" },
-                {
-                  key: "bgColor",
-                  label: "Hücre Arkaplan Rengi (örn: bg-green-50)",
-                  type: "text",
-                },
-                { key: "eventTitle", label: "Etkinlik Başlığı", type: "text" },
-                {
-                  key: "eventSubtitle",
-                  label: "Etkinlik Alt Açıklaması",
-                  type: "text",
-                },
-                {
-                  key: "eventColorClass",
-                  label:
-                    "Etkinlik Sınıfları (örn: bg-secondary-fixed text-on-secondary-fixed-variant border-secondary/20)",
-                  type: "textarea",
-                },
-              ],
-              "Takvim Günleri",
-            )}
 
             {renderArrayEditor(
               "legends",
@@ -2381,6 +2121,50 @@ export default function BlockFormEditor({
               ],
               "Lejant (Açıklama) Kartları",
             )}
+          </div>
+        )}
+
+        {block.type === "menu_hero" && (
+          <div className="space-y-4">
+            {renderHeroOverlaySetting()}
+            {renderInputWithStyle("Badge (Etiket)", "badge")}
+            {renderTextareaWithStyle("Başlık", "title")}
+            {renderTextareaWithStyle("Açıklama", "subtitle")}
+            {renderImageUpload("Arkaplan Resmi", "image")}
+          </div>
+        )}
+
+        {block.type === "menu_calendar" && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle("Başlık", "title")}
+            {renderTextareaWithStyle("Açıklama", "subtitle")}
+            {renderInputWithStyle("Ay (örn: Ekim 2023)", "month")}
+            <CalendarGridEditor block={block} arrayKey="days" onChange={handleChange} activeArrayItem={activeArrayItem} />
+          </div>
+        )}
+
+        {block.type === "academic_calendar_hero" && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle("Başlık", "title")}
+            {renderTextareaWithStyle("Açıklama", "subtitle")}
+            {renderImageUpload("Arkaplan Resmi", "image")}
+          </div>
+        )}
+
+        {block.type === "academic_calendar" && (
+          <div className="space-y-4">
+            {renderTextareaWithStyle("Ay/Başlık", "month")}
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-bold text-slate-700">PDF Buton Ayarları</span>
+            </div>
+            {renderInputWithStyle("PDF Butonunu Gizle", "hidePdfButton", "checkbox")}
+            {!block.hidePdfButton && (
+              <>
+                {renderInputWithStyle("PDF URL", "pdfUrl")}
+                {renderInputWithStyle("PDF Buton Metni", "pdfButtonText")}
+              </>
+            )}
+            <CalendarGridEditor block={block} arrayKey="days" onChange={handleChange} activeArrayItem={activeArrayItem} />
           </div>
         )}
       </div>

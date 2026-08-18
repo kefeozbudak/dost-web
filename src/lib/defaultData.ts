@@ -23,9 +23,9 @@ export const defaultHomePageData = [
     title: '',
     subtitle: 'Modern eğitim yaklaşımları ve köklü değerlerimizle, her öğrencimizin\npotansiyelini zirveye taşıyoruz.',
     items: [
-      { title: 'Eryaman Kampüsü', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Oran Kampüsü', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Ümitköy Kampüsü', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' }
+      { title: 'Eryaman Kampüsü', url: '#eryaman-kampusu', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Oran Kampüsü', url: '#oran-kampusu', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
+      { title: 'Ümitköy Kampüsü', url: '#umitkoy-kampusu', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' }
     ],
     buttons: [
       { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '#campuses-section' },

@@ -2,7 +2,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { collection, query, where, onSnapshot, doc, getDoc, getDocs } from 'firebase/firestore';
-import { db, loginWithGoogle, auth } from '../lib/firebase';
+import { db, auth } from '../lib/firebase';
 import { Lock, Settings } from 'lucide-react';
 import AssistantWidget from '../components/AssistantWidget';
 import { DynamicBlockRenderer } from '../components/PageBlocks';
@@ -266,15 +266,6 @@ export default function PublicView() {
     }
   }, [location.pathname, pageData]);
 
-  const handleAdminLogin = async () => {
-    try {
-      await loginWithGoogle();
-      navigate('/admin');
-    } catch (e) {
-      console.error("Login failed:", e);
-    }
-  };
-
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-surface-background text-slate-500">Sayfa yükleniyor...</div>;
 
   if (generalSettings?.maintenanceMode && !user) {
@@ -320,7 +311,7 @@ export default function PublicView() {
     <div className="min-h-screen bg-surface-background relative text-on-background font-body-md selection:bg-primary/20 flex flex-col">
       <Header data={headerData} announcement={generalSettings} />
 
-      <div className={`flex-1 transition-all duration-300 ${isAnnouncementActive ? 'pt-28 md:pt-32' : 'pt-20'}`}>
+      <div className={`flex-1 transition-all duration-300 ${isAnnouncementActive ? 'pt-[140px] md:pt-[124px]' : 'pt-[80px]'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -336,27 +327,6 @@ export default function PublicView() {
       <Footer data={footerData} headerData={headerData} />
       <AssistantWidget />
       <PopupOverlay />
-      
-      {/* Floating Admin Button */}
-      <div className="fixed bottom-6 left-6 z-[999]">
-        <button 
-          onClick={() => {
-            if (user) {
-              navigate('/admin');
-            } else {
-              handleAdminLogin();
-            }
-          }}
-          className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-white text-slate-400 rounded-full shadow-md border border-slate-200 hover:bg-slate-50 hover:text-slate-700 hover:scale-105 transition-all opacity-50 hover:opacity-100 group"
-          title={user ? 'Yönetim Paneline Git' : 'Yönetici Girişi'}
-        >
-          {user ? (
-            <Settings className="w-5 h-5 md:w-6 md:h-6 group-hover:animate-spin-slow" />
-          ) : (
-            <Lock className="w-4 h-4 md:w-5 md:h-5" />
-          )}
-        </button>
-      </div>
     </div>
   );
 }

@@ -11,8 +11,41 @@ export default function PagesCenter() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newPage, setNewPage] = useState({ title: '', path: '' });
   const [creating, setCreating] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+
+  
+  const updateHomePageUrls = async () => {
+    try {
+      const docRef = doc(db, 'pages', 'home');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        let modified = false;
+        const newBlocks = (data.blocks || []).map((block: any) => {
+          if (block.type === 'hero' && block.items) {
+            block.items = block.items.map((item: any) => {
+              if (item.title === 'Eryaman Kampüsü' && !item.url) { modified = true; return { ...item, url: '#eryaman-kampusu' }; }
+              if (item.title === 'Oran Kampüsü' && !item.url) { modified = true; return { ...item, url: '#oran-kampusu' }; }
+              if (item.title === 'Ümitköy Kampüsü' && !item.url) { modified = true; return { ...item, url: '#umitkoy-kampusu' }; }
+              return item;
+            });
+          }
+          return block;
+        });
+        
+        if (modified) {
+          await setDoc(docRef, { blocks: newBlocks }, { merge: true });
+          alert('Ana sayfa kampüs linkleri güncellendi.');
+        } else {
+          alert('Güncellenecek link bulunamadı.');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const seedAllDefaults = async () => {
     try {
@@ -240,6 +273,7 @@ export default function PagesCenter() {
         title: newPage.title,
         path: formattedPath,
         blocks: [],
+        isCustom: true,
         createdAt: Date.now(),
         updatedAt: Date.now()
       });
@@ -270,11 +304,87 @@ export default function PagesCenter() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Bu sayfayı silmek istediğinize emin misiniz?')) {
+  
+  const handleDuplicatePage = async (page: any) => {
+    if (confirm(`"${page.title}" sayfasını çoğaltmak istediğinize emin misiniz?`)) {
+      setLoading(true);
       try {
-        await setDoc(doc(db, 'pages', id), { isDeleted: true }, { merge: true });
+        const docRef = doc(db, 'pages', page.id);
+        const docSnap = await getDoc(docRef);
+        let blocksToCopy = [];
+        
+        if (docSnap.exists() && docSnap.data().blocks && docSnap.data().blocks.length > 0) {
+          blocksToCopy = docSnap.data().blocks;
+        } else {
+           // Fallback to default blocks if they are missing in the DB (for default pages)
+           if (page.id === 'home') {
+             const { defaultHomePageData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultHomePageData;
+           } else if (page.id === 'hakkimizda') {
+             const { defaultHakkimizdaData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultHakkimizdaData;
+           } else if (page.id === 'iletisim') {
+             const defaultContactData: any[] = [];
+             blocksToCopy = defaultContactData;
+           } else if (page.id === 'egitim-sistemimiz') {
+             const { defaultEgitimSistemiData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultEgitimSistemiData;
+           } else if (page.id === 'is-basvurusu' || page.id === 'is-basvuru-formu') {
+             const { defaultCareerPageData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultCareerPageData;
+           } else if (page.id === 'duyurular') {
+             const { defaultDuyurularData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultDuyurularData;
+           } else if (page.id === 'basarilarimiz') {
+             const { defaultBasarilarimizData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultBasarilarimizData;
+           } else if (page.id === 'on-kayit') {
+             const { defaultPreRegistrationData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultPreRegistrationData;
+           } else if (page.id === 'bursluluk-basvuru-formu') {
+             const { defaultScholarshipPageData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultScholarshipPageData;
+           } else if (page.id === 'bursluluk-basvuru-onay') {
+             const { defaultScholarshipConfirmationPageData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultScholarshipConfirmationPageData;
+           } else if (page.id === 'lgs-puan-hesaplama') {
+             const { defaultLgsCalculatorData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultLgsCalculatorData;
+           } else if (page.id === 'kayit-fiyatlari') {
+             const { defaultTuitionFeesData } = await import('../../lib/defaultData');
+             blocksToCopy = defaultTuitionFeesData;
+           }
+        }
+
+        const newId = page.id + '-' + Math.random().toString(36).substr(2, 6);
+        const newPage = {
+          ...page,
+          id: newId,
+          title: page.title + ' (Kopya)',
+          path: page.path + '-kopya',
+          isHidden: true,
+          isCloned: true,
+          blocks: blocksToCopy,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        await setDoc(doc(db, 'pages', newId), newPage);
+        await fetchPages();
+      } catch (err) {
+        console.error("Clone error:", err);
+        alert('Sayfa çoğaltılamadı: ' + err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const confirmDeleteAction = async () => {
+    if (deleteConfirmId) {
+      try {
+        await setDoc(doc(db, 'pages', deleteConfirmId), { isDeleted: true }, { merge: true });
         fetchPages();
+        setDeleteConfirmId(null);
       } catch (err) {
         alert('Silinemedi.');
       }
@@ -439,9 +549,20 @@ export default function PagesCenter() {
                         </Link>
                         {page.id !== 'home' && (
                           <button 
-                            onClick={() => handleDelete(page.id)}
-                            className="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition-colors"
-                            title="Sil"
+                            onClick={() => {
+                              const isCustomPage = page.isCustom || page.isCloned || !['home', 'hakkimizda', 'egitim-sistemimiz', 'basarilarimiz', 'duyurular', 'iletisim', 'is-basvurusu', 'is-basvuru-formu', 'on-kayit', 'bursluluk-basvuru-formu', 'bursluluk-basvuru-onay', 'lgs-puan-hesaplama', 'kayit-fiyatlari'].includes(page.id);
+                              if (!isCustomPage) {
+                                alert('Orijinal sistem sayfaları silinemez.');
+                                return;
+                              }
+                              if (!page.isHidden) {
+                                alert('Lütfen sayfayı silmeden önce yayından kaldırın (göz ikonuna tıklayarak gizleyin).');
+                                return;
+                              }
+                              setDeleteConfirmId(page.id);
+                            }}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${(! (page.isCustom || page.isCloned || !['home', 'hakkimizda', 'egitim-sistemimiz', 'basarilarimiz', 'duyurular', 'iletisim', 'is-basvurusu', 'is-basvuru-formu', 'on-kayit', 'bursluluk-basvuru-formu', 'bursluluk-basvuru-onay', 'lgs-puan-hesaplama', 'kayit-fiyatlari'].includes(page.id)) || !page.isHidden) ? 'bg-slate-50 text-slate-300 cursor-not-allowed' : 'bg-red-50 hover:bg-red-100 text-red-600'}`}
+                            title={! (page.isCustom || page.isCloned || !['home', 'hakkimizda', 'egitim-sistemimiz', 'basarilarimiz', 'duyurular', 'iletisim', 'is-basvurusu', 'is-basvuru-formu', 'on-kayit', 'bursluluk-basvuru-formu', 'bursluluk-basvuru-onay', 'lgs-puan-hesaplama', 'kayit-fiyatlari'].includes(page.id)) ? "Sistem sayfaları silinemez" : (!page.isHidden ? "Önce yayından kaldırın" : "Sil")}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -455,6 +576,31 @@ export default function PagesCenter() {
           )}
         </div>
       </div>
+
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-slate-100">
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Sayfayı Sil</h3>
+            <p className="text-slate-600 mb-6 text-sm">
+              Bu sayfayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button 
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                İptal
+              </button>
+              <button 
+                onClick={confirmDeleteAction}
+                className="px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
+              >
+                Evet, Sil
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

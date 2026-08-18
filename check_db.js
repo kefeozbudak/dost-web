@@ -1,18 +1,22 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
-import { readFileSync } from 'fs';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import fs from 'fs';
 
-const config = JSON.parse(readFileSync('./firebase-applet-config.json', 'utf8'));
+const config = JSON.parse(fs.readFileSync('firebase-applet-config.json', 'utf8'));
 const app = initializeApp(config);
-const db = getFirestore(app, config.firestoreDatabaseId);
+const db = getFirestore(app);
 
-async function run() {
-  const docRef = doc(db, 'pages', 'kulup-kayit-formu');
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    console.log(data.blocks.find(b => b.type === 'club_registration_form').inputs);
+async function check() {
+  const pDoc = await getDoc(doc(db, 'pages', 'aylik-yemek-menusu'));
+  if (pDoc.exists()) {
+    const data = pDoc.data();
+    data.blocks.forEach(b => {
+      if (b.type === 'menu_calendar') {
+        console.log("Title:", b.title);
+        console.log("First 3 days:", JSON.stringify(b.days.slice(0,3), null, 2));
+      }
+    });
   }
   process.exit(0);
 }
-run().catch(console.error);
+check();

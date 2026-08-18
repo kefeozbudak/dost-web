@@ -1,5 +1,6 @@
 import ErrorBoundary from "./ErrorBoundary";
 import React, { useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import LgsCalculator from "./LgsCalculator";
 import {
   collection, addDoc, doc, getDoc } from "firebase/firestore";
@@ -19,6 +20,104 @@ import {
   DEFAULT_CAREER_INPUTS,
   DEFAULT_CONTACT_INPUTS,
 } from "../lib/defaultFormInputs";
+
+
+export const getAlignedCalendarDays = (blockMonth: string, originalDays: any[], monthOffset: number = 0) => {
+  if (!originalDays || !Array.isArray(originalDays)) return [];
+  
+  const currentDate = new Date();
+  let year = currentDate.getFullYear();
+  let mIndex = currentDate.getMonth();
+
+  if (blockMonth) {
+    const monthMap: Record<string, number> = {
+      "ocak": 0, "şubat": 1, "subat": 1, "mart": 2, "nisan": 3,
+      "mayıs": 4, "mayis": 4, "haziran": 5, "temmuz": 6, "ağustos": 7, "agustos": 7,
+      "eylül": 8, "eylul": 8, "ekim": 9, "kasım": 10, "kasim": 10, "aralık": 11, "aralik": 11
+    };
+    
+    const lowerMonth = blockMonth.toLocaleLowerCase('tr-TR').replace(/i̇/g, 'i');
+    for (const [m, idx] of Object.entries(monthMap)) {
+      if (lowerMonth.includes(m)) {
+        mIndex = idx;
+        break;
+      }
+    }
+    const yearMatch = blockMonth.match(/\d{4}/);
+    if (yearMatch) year = parseInt(yearMatch[0]);
+  }
+
+  // Apply offset
+  mIndex += monthOffset;
+  while (mIndex > 11) { mIndex -= 12; year++; }
+  while (mIndex < 0) { mIndex += 12; year--; }
+
+  const daysInMonth = new Date(year, mIndex + 1, 0).getDate();
+  const firstDay = new Date(year, mIndex, 1).getDay();
+  const paddingCount = firstDay === 0 ? 6 : firstDay - 1;
+  const prevMonthLastDate = new Date(year, mIndex, 0).getDate();
+
+  const alignedDays = [];
+  for (let i = 0; i < paddingCount; i++) {
+    const pDate = (prevMonthLastDate - paddingCount + 1 + i).toString();
+    alignedDays.push({
+      date: pDate,
+      isCurrentMonth: false,
+      isWeekend: false,
+    });
+  }
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dayStr = i.toString();
+    const padStr = i < 10 ? `0${i}` : dayStr;
+    const isWeekend = new Date(year, mIndex, i).getDay() === 0 || new Date(year, mIndex, i).getDay() === 6;
+    
+    let bestMatchIndex = -1;
+    let bestMatch = null;
+
+    for (let j = 0; j < originalDays.length; j++) {
+      const d = originalDays[j];
+      if (!d) continue;
+      
+      const oDate = String(d.date || "").replace(/\D/g, '');
+      if (oDate === dayStr || oDate === padStr || parseInt(oDate) === i) {
+          bestMatch = d;
+          bestMatchIndex = j;
+          break;
+      }
+    }
+
+    if (bestMatch) {
+        alignedDays.push({
+            ...bestMatch,
+            date: dayStr,
+            isCurrentMonth: true,
+            isWeekend: isWeekend,
+            _oIndex: bestMatchIndex
+         });
+    } else {
+        alignedDays.push({
+            date: dayStr,
+            isCurrentMonth: true,
+            isWeekend: isWeekend,
+            events: [],
+            meals: []
+        });
+    }
+  }
+  
+  const totalSlots = alignedDays.length <= 35 ? 35 : 42;
+  const remainingSlots = totalSlots - alignedDays.length;
+  for (let i = 1; i <= remainingSlots; i++) {
+    alignedDays.push({
+      date: i.toString(),
+      isCurrentMonth: false,
+      isWeekend: false,
+    });
+  }
+
+  return alignedDays;
+};
 
 export const getHeroAlignStyle = (block: any): React.CSSProperties => {
   if (!block.type || !block.type.includes("hero")) return {};
@@ -2701,6 +2800,8 @@ const ContactFormBlock = ({
   );
 };
 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 export const DynamicBlockRenderer = ({
   blocks,
   onBlockClick,
@@ -2708,10 +2809,31 @@ export const DynamicBlockRenderer = ({
   blocks: any[];
   onBlockClick?: (index: number, e?: React.MouseEvent) => void;
 }) => {
+  const [calendarMonthOffsets, setCalendarMonthOffsets] = React.useState<Record<number, number>>({});
   console.log("DynamicBlockRenderer blocks:", blocks);
   if (!blocks || !Array.isArray(blocks)) return null;
 
   const processedBlocks: any[] = blocks;
+  const getNavMonthYear = (baseMonth: string, offset: number) => {
+    const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    let mIndex = new Date().getMonth();
+    let year = new Date().getFullYear();
+    
+    if (baseMonth) {
+      const lowerMonth = baseMonth.toLocaleLowerCase('tr-TR').replace(/i̇/g, 'i');
+      for (let i=0; i<monthNames.length; i++) {
+        if (lowerMonth.includes(monthNames[i].toLocaleLowerCase('tr-TR'))) { mIndex = i; break; }
+      }
+      const ym = baseMonth.match(/\d{4}/);
+      if (ym) year = parseInt(ym[0]);
+    }
+    
+    mIndex += offset;
+    while(mIndex > 11) { mIndex -= 12; year++; }
+    while(mIndex < 0) { mIndex += 12; year--; }
+    return `${monthNames[mIndex]} ${year}`;
+  };
+
 
   const renderBlock = (block: any, index: number) => {
     const renderContent = () => {
@@ -4208,7 +4330,7 @@ export const DynamicBlockRenderer = ({
           return (
             <section
               key={index}
-              className={`relative flex flex-col justify-center items-center pt-8 pb-8 md:pt-12 md:pb-10 px-margin-mobile md:px-margin-desktop bg-[#f8f9fa] overflow-hidden ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
+              className={`relative flex flex-col justify-center items-center pt-6 pb-10 md:pt-12 md:pb-10 px-margin-mobile md:px-margin-desktop bg-[#f8f9fa] overflow-hidden ${block.fullWidth || block.styles?.fullWidth ? "w-full" : "max-w-container-max mx-auto rounded-3xl"}`}
               style={getStyle(block, "")}
             >
               <div className="w-full flex flex-col gap-6 md:gap-10 whitespace-normal md:whitespace-pre-line">
@@ -4338,16 +4460,18 @@ export const DynamicBlockRenderer = ({
                                     <a
                                       href={item.url}
                                       style={getCardTitleStyle(item, block)}
-                                      className={`inline-flex items-center w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300 hover:bg-primary hover:text-white cursor-pointer`}
+                                      className={`inline-flex items-center gap-1.5 w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-all duration-300 hover:bg-primary hover:text-white cursor-pointer hover:pl-5 hover:pr-5 group/btn`}
                                     >
                                       {item.title}
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 opacity-0 -ml-4 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all duration-300"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                     </a>
                                   ) : (
                                     <span
                                       style={getCardTitleStyle(item, block)}
-                                      className={`inline-flex items-center w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-transform group-hover:-translate-y-1 duration-300`}
+                                      className={`inline-flex items-center gap-1.5 w-full sm:w-auto justify-center text-center bg-white/95 backdrop-blur-sm text-primary font-bold text-[13px] md:text-[15px] px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg whitespace-nowrap ${block.styles?.textAlign ? "" : "text-center"} transition-all duration-300 group-hover:-translate-y-1 hover:bg-primary hover:text-white cursor-pointer hover:pl-5 hover:pr-5 group/btn`}
                                     >
                                       {item.title}
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 opacity-0 -ml-4 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all duration-300"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                     </span>
                                   )}
                                 </div>
@@ -5696,12 +5820,16 @@ export const DynamicBlockRenderer = ({
               className={`flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10 ${block.styles?.fullWidth ? "max-w-full px-0" : "max-w-container-max"} mx-auto px-margin-mobile md:px-margin-desktop`}
             >
               <div className="w-full md:w-auto flex-1">
-                <h2
-                  className="text-2xl font-bold text-slate-800 whitespace-normal md:whitespace-pre-line"
-                  style={getTitleStyle(block)}
-                >
-                  {block.title}
-                </h2>
+                <div className="flex items-center gap-4">
+                  <button onClick={() => setCalendarMonthOffsets(prev => ({...prev, [index]: (prev[index] || 0) - 1}))} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"><ChevronLeft className="w-5 h-5 text-slate-600" /></button>
+                  <h2
+                    className="text-2xl font-bold text-slate-800 whitespace-normal md:whitespace-pre-line"
+                    style={getTitleStyle(block)}
+                  >
+                    {getNavMonthYear(block.month || block.title, calendarMonthOffsets[index] || 0)}
+                  </h2>
+                  <button onClick={() => setCalendarMonthOffsets(prev => ({...prev, [index]: (prev[index] || 0) + 1}))} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"><ChevronRight className="w-5 h-5 text-slate-600" /></button>
+                </div>
                 {block.subtitle && (
                   <p className="text-slate-500 whitespace-normal md:whitespace-pre-line">
                     {block.subtitle}
@@ -5817,11 +5945,13 @@ export const DynamicBlockRenderer = ({
                   </div>
 
                   <div className="grid grid-cols-7 divide-x divide-y divide-slate-200 whitespace-normal md:whitespace-pre-line">
-                    {block.days?.map((day: any, i: number) => {
+                    {getAlignedCalendarDays(block.month, block.days, calendarMonthOffsets[index] || 0)?.map((day: any, i: number) => {
                       if (!day.isCurrentMonth) {
                         return (
                           <div
                             key={i}
+                            data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                             className="p-2 md:p-4 bg-slate-50/50 min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                           >
                             <span className="text-slate-400 font-medium opacity-50 text-xs md:text-base whitespace-normal md:whitespace-pre-line">
@@ -5831,10 +5961,12 @@ export const DynamicBlockRenderer = ({
                         );
                       }
 
-                      if (day.isClosed) {
+                      if (day.isWeekend) {
                         return (
                           <div
                             key={i}
+                            data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                             className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30 whitespace-normal md:whitespace-pre-line"
                           >
                             <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
@@ -5844,7 +5976,7 @@ export const DynamicBlockRenderer = ({
                               <span
                                 className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"}`}
                               >
-                                Kapalı
+                                Hafta Sonu
                               </span>
                             </div>
                           </div>
@@ -5855,6 +5987,8 @@ export const DynamicBlockRenderer = ({
                         return (
                           <div
                             key={i}
+                            data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                             className="p-2 md:p-4 bg-primary/5 transition-colors ring-1 md:ring-2 ring-inset ring-primary relative min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                           >
                             <div className="absolute -top-1 -right-1 whitespace-normal md:whitespace-pre-line">
@@ -5899,6 +6033,8 @@ export const DynamicBlockRenderer = ({
                       return (
                         <div
                           key={i}
+                          data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                           className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
                         >
                           <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
@@ -6038,30 +6174,18 @@ export const DynamicBlockRenderer = ({
           >
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 bg-surface-card p-6 rounded-xl border border-border-subtle shadow-sm whitespace-normal md:whitespace-pre-line">
               <div className="flex items-center space-x-6 mb-4 md:mb-0 whitespace-normal md:whitespace-pre-line">
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
-                  <span
-                    className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
-                    translate="no"
-                    aria-hidden="true"
-                  >
-                    chevron_left
-                  </span>
+                <button onClick={() => setCalendarMonthOffsets(prev => ({...prev, [index]: (prev[index] || 0) - 1}))} className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
+                  <span className="material-symbols-outlined whitespace-normal md:whitespace-pre-line" translate="no" aria-hidden="true">chevron_left</span>
                 </button>
                 <h2 className="font-headline-xl text-headline-xl text-on-surface whitespace-normal md:whitespace-pre-line">
-                  {block.month || "Ekim 2023"}
+                  {getNavMonthYear(block.month || "Ekim 2023", calendarMonthOffsets[index] || 0)}
                 </h2>
-                <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
-                  <span
-                    className="material-symbols-outlined whitespace-normal md:whitespace-pre-line"
-                    translate="no"
-                    aria-hidden="true"
-                  >
-                    chevron_right
-                  </span>
+                <button onClick={() => setCalendarMonthOffsets(prev => ({...prev, [index]: (prev[index] || 0) + 1}))} className="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface flex items-center justify-center whitespace-normal md:whitespace-pre-line">
+                  <span className="material-symbols-outlined whitespace-normal md:whitespace-pre-line" translate="no" aria-hidden="true">chevron_right</span>
                 </button>
               </div>
               <div className="flex space-x-4 whitespace-normal md:whitespace-pre-line">
-                {block.pdfUrl && (
+                {block.hidePdfButton !== true && block.pdfUrl && (
                   <SmartLink
                     url={block.pdfUrl}
                     target="_blank"
@@ -6081,8 +6205,9 @@ export const DynamicBlockRenderer = ({
               </div>
             </div>
 
-            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden shadow-sm mb-section-gap overflow-x-auto whitespace-normal md:whitespace-pre-line">
-              <div className="min-w-[800px] whitespace-normal md:whitespace-pre-line">
+            <div className="bg-surface-card border border-border-subtle rounded-xl shadow-sm mb-section-gap w-full overflow-hidden whitespace-normal md:whitespace-pre-line">
+              <div className="w-full overflow-x-auto overflow-y-hidden touch-pan-x" style={{ WebkitOverflowScrolling: "touch" }}>
+                <div className="min-w-[800px] whitespace-normal md:whitespace-pre-line">
                 <div className="grid grid-cols-7 border-b border-border-subtle bg-surface-container-low whitespace-normal md:whitespace-pre-line">
                   <div
                     className={`py-4 ${block.styles?.textAlign ? "" : "text-center"} font-label-md text-label-md text-on-surface-variant hidden md:block`}
@@ -6158,11 +6283,13 @@ export const DynamicBlockRenderer = ({
                 </div>
 
                 <div className="grid grid-cols-7 border-l border-t border-border-subtle whitespace-normal md:whitespace-pre-line">
-                  {block.days?.map((day: any, i: number) => {
+                  {getAlignedCalendarDays(block.month, block.days, calendarMonthOffsets[index] || 0)?.map((day: any, i: number) => {
                     if (!day.isCurrentMonth) {
                       return (
                         <div
                           key={i}
+                          data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                           className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container relative whitespace-normal md:whitespace-pre-line"
                         >
                           <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-normal md:whitespace-pre-line">
@@ -6176,6 +6303,8 @@ export const DynamicBlockRenderer = ({
                       return (
                         <div
                           key={i}
+                          data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                           className="min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle bg-surface-container-high relative whitespace-normal md:whitespace-pre-line"
                         >
                           <span className="font-label-md text-label-md text-on-surface-variant opacity-50 absolute top-1 md:top-2 right-1 md:right-2 whitespace-normal md:whitespace-pre-line">
@@ -6193,6 +6322,8 @@ export const DynamicBlockRenderer = ({
                     return (
                       <div
                         key={i}
+                        data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
                         className={`min-h-[80px] md:min-h-[120px] p-1 md:p-2 border-r border-b border-border-subtle relative group hover:bg-surface-container-lowest transition-colors ${day.isToday ? "ring-2 ring-primary ring-inset" : ""} ${day.bgColor ? day.bgColor : "bg-surface-card"}`}
                       >
                         {day.isToday && (
@@ -6249,6 +6380,7 @@ export const DynamicBlockRenderer = ({
                   })}
                 </div>
               </div>
+            </div>
             </div>
 
             {block.legends && block.legends.length > 0 && (
