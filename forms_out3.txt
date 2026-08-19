@@ -1,0 +1,31 @@
+ID: siZLDA1zRjMV2Z2YMBhE
+Type: career_application
+CreatedAt: 1787125824661
+Data keys: phone, kvkk, lastName, coverLetter, cv, position, firstName, email
+File key: cv
+File info: name=RİSALE-İ NUR AİLE KAMPI.pdf, hasDataUrl=true
+---
+ID: gO4OzKdXRYg078gR8YUW
+Type: career_application
+CreatedAt: 1787125264319
+Data keys: cv, lastName, email, firstName, position, coverLetter, kvkk, phone
+File key: cv
+File info: name=RİSALE-İ NUR AİLE KAMPI.pdf, hasDataUrl=false
+---
+ID: w8MqdUrUjjqczOV70zQz
+Type: career_application
+CreatedAt: 1787124519248
+Data keys: phone, kvkk, coverLetter, lastName, cv, firstName, email, position
+File key: cv
+File info: name=RİSALE-İ NUR AİLE KAMPI_ONAYLANAN TASARIM.pdf, hasDataUrl=false
+---
+ID: bP6qGE3FWHieWPvAmAcz
+Type: chat
+CreatedAt: 1787122346875
+Data keys: formName, Eğitim Kademesi, Mesaj, Kampüs, Adı Soyadı, Telefon Numarası
+---
+ID: NB9ZVKpoPjL18SD2mbRJ
+Type: newsletter
+CreatedAt: 1787122300661
+Data keys: E-Posta, formName
+---

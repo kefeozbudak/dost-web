@@ -35,12 +35,12 @@ service cloud.firestore {
     
     match /reports/{reportId} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow read, update, delete: if true;
     }
 
     match /forms/{formId} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow read, update, delete: if true;
     }
 
     match /media/{mediaId} {

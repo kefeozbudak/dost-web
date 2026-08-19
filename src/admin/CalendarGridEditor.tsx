@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function CalendarGridEditor({ block, arrayKey, onChange, activeArrayItem }: { block: any, arrayKey: string, onChange: (key: string, val: any) => void, activeArrayItem?: { arrayKey: string; index: number } | null }) {
       const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [monthOffset, setMonthOffset] = useState<number>(0);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   
@@ -34,21 +35,33 @@ export default function CalendarGridEditor({ block, arrayKey, onChange, activeAr
     "mayıs": 4, "mayis": 4, "haziran": 5, "temmuz": 6, "ağustos": 7, "agustos": 7,
     "eylül": 8, "eylul": 8, "ekim": 9, "kasım": 10, "kasim": 10, "aralık": 11, "aralik": 11
   };
-  let mIndex = new Date().getMonth();
+  let baseMIndex = new Date().getMonth();
   const lowerMonth = (block.month || "").toLocaleLowerCase('tr-TR').replace(/i̇/g, 'i');
   for (const [m, idx] of Object.entries(monthMap)) {
-    if (lowerMonth.includes(m)) { mIndex = idx; break; }
+    if (lowerMonth.includes(m)) { baseMIndex = idx; break; }
   }
   const yearMatch = (block.month || "").match(/\d{4}/);
-  const year = yearMatch ? parseInt(yearMatch[0]) : new Date().getFullYear();
+  let baseYear = yearMatch ? parseInt(yearMatch[0]) : new Date().getFullYear();
+  
+  let mIndex = baseMIndex + monthOffset;
+  let year = baseYear;
+  while (mIndex > 11) { mIndex -= 12; year++; }
+  while (mIndex < 0) { mIndex += 12; year--; }
   const daysInMonth = new Date(year, mIndex + 1, 0).getDate();
 
   const handleDayClick = (dayNum: number) => {
     setSelectedDay(dayNum);
   };
 
-  const activeItemIndex = currentArray.findIndex((d: any) => parseInt(String(d.date).replace(/\D/g, '')) === selectedDay);
-  const activeItem = activeItemIndex !== -1 ? currentArray[activeItemIndex] : { date: String(selectedDay) };
+  const activeItemIndex = currentArray.findIndex((d: any) => {
+    const oDate = String(d.date || "");
+    if (oDate.includes('-')) {
+       return oDate === `${year}-${String(mIndex + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
+    } else {
+       return monthOffset === 0 && parseInt(oDate.replace(/\D/g, '')) === selectedDay;
+    }
+  });
+  const activeItem = activeItemIndex !== -1 ? currentArray[activeItemIndex] : { date: `${year}-${String(mIndex + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}` };
 
   const updateActiveItem = (field: string, value: any) => {
     const newArray = [...currentArray];
@@ -62,6 +75,17 @@ export default function CalendarGridEditor({ block, arrayKey, onChange, activeAr
 
   return (
     <div ref={containerRef} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={(e) => { e.preventDefault(); setMonthOffset(prev => prev - 1); setSelectedDay(null); }} className="p-1 hover:bg-slate-200 rounded">
+          <span className="material-symbols-outlined text-sm">chevron_left</span>
+        </button>
+        <div className="text-sm font-bold text-slate-700">
+          {new Date(year, mIndex).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })}
+        </div>
+        <button onClick={(e) => { e.preventDefault(); setMonthOffset(prev => prev + 1); setSelectedDay(null); }} className="p-1 hover:bg-slate-200 rounded">
+          <span className="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+      </div>
       <div className="grid grid-cols-7 gap-1 mb-4">
         {['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pa'].map(d => (
           <div key={d} className="text-center text-[10px] font-bold text-slate-500">{d}</div>
@@ -71,7 +95,13 @@ export default function CalendarGridEditor({ block, arrayKey, onChange, activeAr
         ))}
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const dayNum = i + 1;
-          const hasData = currentArray.some((d: any) => parseInt(String(d.date).replace(/\D/g, '')) === dayNum && (d.meals?.length > 0 || d.events?.length > 0 || d.eventTitle));
+          const hasData = currentArray.some((d: any) => {
+            const oDate = String(d.date || "");
+            const matchesDate = oDate.includes('-') 
+              ? oDate === `${year}-${String(mIndex + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`
+              : (monthOffset === 0 && parseInt(oDate.replace(/\D/g, '')) === dayNum);
+            return matchesDate && (d.meals?.length > 0 || d.events?.length > 0 || d.eventTitle);
+          });
           return (
             <button
               key={dayNum}

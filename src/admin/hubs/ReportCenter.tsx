@@ -54,20 +54,52 @@ const CareerReportView = ({ data }: { data: any }) => {
               <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Ön Yazı</span>
               <p className="text-sm text-slate-700 whitespace-pre-wrap">{data.coverLetter || '-'}</p>
             </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
-              <div>
-                <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Özgeçmiş Dosyası</span>
-                <p className="text-sm font-semibold text-slate-800">{data.fileName || 'Yüklenmiş CV'}</p>
-              </div>
-              {data.cvUrl ? (
-                <a href={data.cvUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#002147] text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-900 transition">
-                  <span className="material-symbols-outlined text-[16px]">download</span>
-                  Görüntüle / İndir
-                </a>
-              ) : (
-                <span className="text-xs text-red-500 font-bold">Dosya Yok</span>
-              )}
-            </div>
+            {(() => {
+              const fileKeys = Object.keys(data).filter(key => data[key] && typeof data[key] === 'object' && data[key].isUploaded);
+              if (fileKeys.length > 0) {
+                return fileKeys.map((key, idx) => {
+                  const file = data[key];
+                  return (
+                    <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
+                      <div>
+                        <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">{key} (Yüklenen Dosya)</span>
+                        <p className="text-sm font-semibold text-slate-800">{file.name || 'İsimsiz Dosya'}</p>
+                      </div>
+                      {file.dataUrl ? (
+                        <a href={file.dataUrl} download={file.name || 'dosya'} className="flex items-center gap-2 bg-[#004899] text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-900 transition">
+                          <span className="material-symbols-outlined text-[16px]">download</span>
+                          Dosyayı İndir
+                        </a>
+                      ) : file.cvUrl ? (
+                        <a href={file.cvUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#004899] text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-900 transition">
+                          <span className="material-symbols-outlined text-[16px]">download</span>
+                          Dosyayı İndir
+                        </a>
+                      ) : (
+                        <span className="text-xs text-red-500 font-bold">Dosya İçeriği Eksik</span>
+                      )}
+                    </div>
+                  );
+                });
+              } else {
+                return (
+                  <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
+                    <div>
+                      <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Özgeçmiş Dosyası</span>
+                      <p className="text-sm font-semibold text-slate-800">{data.fileName || 'Dosya Bulunamadı'}</p>
+                    </div>
+                    {data.cvUrl ? (
+                      <a href={data.cvUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-[#004899] text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-900 transition">
+                        <span className="material-symbols-outlined text-[16px]">download</span>
+                        Görüntüle / İndir
+                      </a>
+                    ) : (
+                      <span className="text-xs text-red-500 font-bold">Dosya Eklenmemiş</span>
+                    )}
+                  </div>
+                );
+              }
+            })()}
           </div>
         </section>
       </div>
@@ -656,7 +688,7 @@ export default function ReportCenter() {
     if (activeTab === 'chat' && !(r.type === 'chat' || !r.type || r.data?.formName)) return false;
     if (activeTab === 'pre_registration' && r.type !== 'pre_registration_form') return false;
     if (activeTab === 'contact' && r.type !== 'contact_form') return false;
-    if (activeTab === 'career' && r.type !== 'is_basvuru_formu') return false;
+    if (activeTab === 'career' && r.type !== 'is_basvuru_formu' && r.type !== 'career_application') return false;
     if (activeTab === 'newsletter' && r.type !== 'newsletter') return false;
     
     const sender = extractSenderInfo(r.data);
@@ -943,7 +975,7 @@ export default function ReportCenter() {
                   <Briefcase className="w-4 h-4" />
                   İş Başvuruları
                   <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'career' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
-                    {reports.filter(r => r.type === 'is_basvuru_formu').length}
+                    {reports.filter(r => (r.type === 'is_basvuru_formu' || r.type === 'career_application')).length}
                   </span>
                 </button>
                 <button
@@ -1067,7 +1099,7 @@ export default function ReportCenter() {
                           />
                         )}
                         <span className="px-3 py-1 bg-[#004899]/10 text-[#004899] text-xs font-black rounded-lg border border-[#004899]/20">
-                          {report.type === 'newsletter' ? 'E-Bülten Aboneliği' : report.type === 'is_basvuru_formu' ? 'İş Başvurusu' : report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
+                          {report.type === 'newsletter' ? 'E-Bülten Aboneliği' : (report.type === 'is_basvuru_formu' || report.type === 'career_application') ? 'İş Başvurusu' : report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
                         </span>
 
                         <button 
@@ -1159,7 +1191,7 @@ export default function ReportCenter() {
 
                     {/* EXPANDABLE DETAILS AREA */}
                     {isExpanded && (
-                      report.type === 'is_basvuru_formu' ? <CareerReportView data={report.data} /> : report.type === 'pre_registration_form' ? <PreRegistrationReportView data={report.data} /> : (
+                      (report.type === 'is_basvuru_formu' || report.type === 'career_application') ? <CareerReportView data={report.data} /> : report.type === 'pre_registration_form' ? <PreRegistrationReportView data={report.data} /> : (
                       <div className="bg-gradient-to-b from-blue-50/50 to-slate-50 border border-slate-200 rounded-xl p-4.5 space-y-3.5 shadow-2xs">
                         
                         {/* 1. Gönderen & WhatsApp */}

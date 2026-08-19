@@ -1115,13 +1115,27 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
       const processedData = { ...formData };
       for (const key of Object.keys(processedData)) {
         if (processedData[key] instanceof File) {
-          // Just store file name and size for demo purposes as we don't have Storage setup
-          // Or read as DataURL if it's small, but to prevent firestore size limits, just metadata
+          const file = processedData[key];
+          // We must convert file to base64 string to store in Firestore without Firebase Storage
+          // Max size around 700KB to fit within 1MB Firestore limit after base64 encoding
+          if (file.size > 700 * 1024) {
+            alert("Dosya boyutu çok büyük. Lütfen 700KB'dan küçük bir dosya yükleyiniz.");
+            setSubmitting(false);
+            return;
+          }
+
+          const base64String = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+          });
+          
           processedData[key] = {
-            name: processedData[key].name,
-            size: processedData[key].size,
-            type: processedData[key].type,
+            name: file.name,
+            size: file.size,
+            type: file.type,
             isUploaded: true,
+            dataUrl: base64String // Store actual base64 content
           };
         }
       }
@@ -5836,33 +5850,7 @@ export const DynamicBlockRenderer = ({
                   </p>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-4 whitespace-normal md:whitespace-pre-line">
-                <div className="flex items-center bg-white rounded-xl border border-slate-200 p-1.5 shadow-sm whitespace-normal md:whitespace-pre-line">
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-normal md:whitespace-pre-line">
-                    <span
-                      className="material-symbols-outlined text-slate-500 whitespace-normal md:whitespace-pre-line"
-                      translate="no"
-                      aria-hidden="true"
-                    >
-                      chevron_left
-                    </span>
-                  </button>
-                  <span
-                    className={`px-2 md:px-6 font-bold text-slate-800 min-w-[140px] ${block.styles?.textAlign ? "" : "text-center"}`}
-                  >
-                    {block.month || "Ekim 2023"}
-                  </span>
-                  <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors whitespace-normal md:whitespace-pre-line">
-                    <span
-                      className="material-symbols-outlined text-slate-500 whitespace-normal md:whitespace-pre-line"
-                      translate="no"
-                      aria-hidden="true"
-                    >
-                      chevron_right
-                    </span>
-                  </button>
-                </div>
-              </div>
+
             </div>
 
             <div

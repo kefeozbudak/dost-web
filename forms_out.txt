@@ -1,0 +1,6 @@
+[FirebaseError: Missing or insufficient permissions.] {
+  code: 'permission-denied',
+  customData: undefined,
+  toString: [Function (anonymous)]
+}
+[2026-08-19T07:33:25.398Z]  @firebase/firestore: Firestore (12.17.0): GrpcConnection RPC 'Listen' stream 0x5cfc2de2 error. Code: 1 Message: 1 CANCELLED: Disconnecting idle stream. Timed out waiting for new targets.
