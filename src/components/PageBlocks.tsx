@@ -67,10 +67,16 @@ export const getAlignedCalendarDays = (blockMonth: string, originalDays: any[], 
     });
   }
 
-  for (let i = 1; i <= daysInMonth; i++) {
+    const realCurrentDate = new Date();
+  const realTodayYear = realCurrentDate.getFullYear();
+  const realTodayMonth = realCurrentDate.getMonth();
+  const realTodayDate = realCurrentDate.getDate();
+
+for (let i = 1; i <= daysInMonth; i++) {
     const dayStr = i.toString();
     const padStr = i < 10 ? `0${i}` : dayStr;
     const isWeekend = new Date(year, mIndex, i).getDay() === 0 || new Date(year, mIndex, i).getDay() === 6;
+    const isActualToday = (year === realTodayYear && mIndex === realTodayMonth && i === realTodayDate);
     
     let bestMatchIndex = -1;
     let bestMatch = null;
@@ -93,6 +99,7 @@ export const getAlignedCalendarDays = (blockMonth: string, originalDays: any[], 
             date: dayStr,
             isCurrentMonth: true,
             isWeekend: isWeekend,
+            isToday: isActualToday,
             _oIndex: bestMatchIndex
          });
     } else {
@@ -101,7 +108,8 @@ export const getAlignedCalendarDays = (blockMonth: string, originalDays: any[], 
             isCurrentMonth: true,
             isWeekend: isWeekend,
             events: [],
-            meals: []
+            meals: [],
+            isToday: isActualToday
         });
     }
   }
