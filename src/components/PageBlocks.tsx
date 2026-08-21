@@ -2834,7 +2834,7 @@ const QuickContactFormBlock = ({
           </div>
         </div>
 
-        <div className="p-6 md:p-12 bg-white whitespace-normal md:whitespace-pre-line">
+        <div className="bg-white whitespace-normal md:whitespace-pre-line">
           <DynamicFormBuilder getIconStyle={getIconStyle} block={block} type="quick_contact_form" />
         </div>
       </div>
