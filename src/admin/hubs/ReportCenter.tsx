@@ -329,7 +329,7 @@ const PreRegistrationPrintView = ({ data, date, index }: { data: any, date: numb
 export default function ReportCenter() {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'chat' | 'pre_registration' | 'contact' | 'career' | 'newsletter' | 'all'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'quick_contact' | 'pre_registration' | 'contact' | 'career' | 'newsletter' | 'all'>('chat');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterKampus, setFilterKampus] = useState('');
   const [filterKademe, setFilterKademe] = useState('');
@@ -624,9 +624,9 @@ export default function ReportCenter() {
       if (!val) return;
       const lowerKey = key.toLowerCase().trim();
       const label = keyTranslations[key] || key;
-      if (lowerKey.includes('formname')) return;
+      if (lowerKey.includes('formname') || lowerKey.includes('kvkk')) return;
 
-      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim') || lowerKey.includes('grade') || lowerKey.includes('class')) {
+      if (lowerKey.includes('kademe') || lowerKey.includes('sınıf') || lowerKey.includes('eğitim') || lowerKey.includes('grade') || lowerKey.includes('class') || lowerKey.includes('education')) {
         if (!kademe) kademe = String(val);
         else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('kampüs') || lowerKey.includes('kampus') || lowerKey.includes('campus')) {
@@ -638,7 +638,7 @@ export default function ReportCenter() {
       } else if (lowerKey.includes('email') || lowerKey.includes('eposta') || lowerKey.includes('e-posta')) {
         if (!email) email = String(val);
         else otherFields.push({ label, value: val });
-      } else if (lowerKey.includes('mesaj') || lowerKey.includes('not') || lowerKey.includes('açıklama') || lowerKey.includes('notes')) {
+      } else if (lowerKey.includes('mesaj') || lowerKey.includes('not') || lowerKey.includes('açıklama') || lowerKey.includes('notes') || lowerKey.includes('message')) {
         if (!message) message = String(val);
         else otherFields.push({ label, value: val });
       } else if (lowerKey.includes('adı') || lowerKey.includes('soyad') || lowerKey.includes('isim') || lowerKey.includes('ad ') || lowerKey === 'ad' || lowerKey.includes('name')) {
@@ -686,6 +686,7 @@ export default function ReportCenter() {
   const filteredReports = reports.filter(r => {
     // Tab filter
     if (activeTab === 'chat' && !(r.type === 'chat' || !r.type || r.data?.formName)) return false;
+    if (activeTab === 'quick_contact' && r.type !== 'quick_contact_form') return false;
     if (activeTab === 'pre_registration' && r.type !== 'pre_registration_form') return false;
     if (activeTab === 'contact' && r.type !== 'contact_form') return false;
     if (activeTab === 'career' && r.type !== 'is_basvuru_formu' && r.type !== 'career_application') return false;
@@ -828,7 +829,7 @@ export default function ReportCenter() {
            }
            
            const dateStr = rep.createdAt ? new Date(rep.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-           const formName = rep.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : rep.type === 'contact_form' ? 'İletişim Formu' : ((rep.type === 'chat' || !rep.type) ? 'Veli Asistanı Formu' : (rep.data?.formName || 'Veli Asistanı Formu'));
+           const formName = rep.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : rep.type === 'contact_form' ? 'İletişim Formu' : rep.type === 'quick_contact_form' ? 'Hızlı İletişim Formu' : ((rep.type === 'chat' || !rep.type) ? 'Veli Asistanı Formu' : (rep.data?.formName || 'Veli Asistanı Formu'));
            
            printContent += `
              <div class="report">
@@ -961,6 +962,19 @@ export default function ReportCenter() {
                   İLETİŞİM SAYFASI
                   <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'contact' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
                     {reports.filter(r => r.type === 'contact_form').length}
+                  </span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab('quick_contact')}
+                  className={`font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'quick_contact' 
+                      ? 'bg-[#004899] text-white shadow-sm' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  HIZLI İLETİŞİM
+                  <span className={`px-2 py-0.5 text-[10px] rounded-full font-extrabold ${activeTab === 'quick_contact' ? 'bg-[#38C1D2] text-white' : 'bg-slate-200 text-slate-700'}`}>
+                    {reports.filter(r => r.type === 'quick_contact_form').length}
                   </span>
                 </button>
                 
@@ -1099,7 +1113,7 @@ export default function ReportCenter() {
                           />
                         )}
                         <span className="px-3 py-1 bg-[#004899]/10 text-[#004899] text-xs font-black rounded-lg border border-[#004899]/20">
-                          {report.type === 'newsletter' ? 'E-Bülten Aboneliği' : (report.type === 'is_basvuru_formu' || report.type === 'career_application') ? 'İş Başvurusu' : report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
+                          {report.type === 'newsletter' ? 'E-Bülten Aboneliği' : (report.type === 'is_basvuru_formu' || report.type === 'career_application') ? 'İş Başvurusu' : report.type === 'pre_registration_form' ? 'Ön Kayıt Formu' : report.type === 'contact_form' ? 'İletişim Formu' : report.type === 'quick_contact_form' ? 'Hızlı İletişim Formu' : ((report.type === 'chat' || !report.type) ? 'Veli Asistanı Formu' : (report.data?.formName || 'Veli Asistanı Formu'))}
                         </span>
 
                         <button 

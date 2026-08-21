@@ -56,6 +56,7 @@ function cleanBrokenImages(obj: any, contextTitle = ''): any {
 export default function PublicView() {
   const location = useLocation();
   const navigate = useNavigate();
+  const handleAdminLogin = () => navigate('/admin/login');
   const [pageData, setPageData] = useState<any>(null);
   const [headerData, setHeaderData] = useState<any>(null);
   const [footerData, setFooterData] = useState<any>(null);

@@ -66,3 +66,11 @@ export const DEFAULT_CONTACT_INPUTS = [
   { type: 'text', name: 'subject', label: 'Konu', placeholder: 'Mesajınızın konusu', required: true, fullWidth: true },
   { type: 'textarea', name: 'message', label: 'Mesajınız', placeholder: 'Size nasıl yardımcı olabiliriz?', required: true, fullWidth: true }
 ];
+
+export const DEFAULT_QUICK_CONTACT_INPUTS = [
+  { type: 'text', name: 'name', label: 'Adı Soyadı', placeholder: 'Ad ve soyadınız', required: true, fullWidth: true },
+  { type: 'tel', name: 'phone', label: 'Telefon Numarası', placeholder: '05XX XXX XX XX', required: true, fullWidth: true },
+  { type: 'select', name: 'campus', label: 'Kampüs Seçimi', options: 'Ümitköy Kampüsü, Eryaman Kampüsü, Oran Kampüsü', required: true, fullWidth: true },
+  { type: 'select', name: 'educationLevel', label: 'Eğitim Kademesi', options: 'Anaokulu, İlkokul, Ortaokul, Lise', required: true, fullWidth: true },
+  { type: 'textarea', name: 'message', label: 'Mesajınız', placeholder: 'Sorunuz veya iletmek istediğiniz not...', required: false, fullWidth: true }
+];

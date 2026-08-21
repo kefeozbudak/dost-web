@@ -28,19 +28,19 @@ service cloud.firestore {
     }
 
     match /pages/{pageId} {
+      allow read, write: if true;
       allow read: if true;
       allow write: if isAdmin();
     }
-
     
     match /reports/{reportId} {
       allow create: if true;
-      allow read, update, delete: if true;
+      allow read, update, delete: if isAdmin();
     }
 
     match /forms/{formId} {
       allow create: if true;
-      allow read, update, delete: if true;
+      allow read, update, delete: if isAdmin();
     }
 
     match /media/{mediaId} {

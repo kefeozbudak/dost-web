@@ -18,7 +18,7 @@ import {
   DEFAULT_CLUB_INPUTS,
   DEFAULT_SCHOLARSHIP_INPUTS,
   DEFAULT_CAREER_INPUTS,
-  DEFAULT_CONTACT_INPUTS,
+  DEFAULT_CONTACT_INPUTS, DEFAULT_QUICK_CONTACT_INPUTS,
 } from "../lib/defaultFormInputs";
 
 
@@ -997,7 +997,9 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
             ? DEFAULT_CAREER_INPUTS
             : type === "contact_form"
               ? DEFAULT_CONTACT_INPUTS
-              : DEFAULT_PRE_REGISTRATION_INPUTS;
+              : type === "quick_contact_form"
+                ? DEFAULT_QUICK_CONTACT_INPUTS
+                : DEFAULT_PRE_REGISTRATION_INPUTS;
 
   // Migration for old pre_registration_form grade options
   const hasKvkk = defaultInputs.some((i: any) => i.name === "kvkk_approval" || (i.label && i.label.includes("KVKK")));
@@ -1181,7 +1183,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
   };
 
   const isStyledForm =
-    type === "pre_registration_form" || type === "bursluluk_exam_form";
+    type === "pre_registration_form" || type === "bursluluk_exam_form" || type === "quick_contact_form";
 
   return (
     <div
@@ -1235,7 +1237,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
               Sınav Giriş Belgesini Görüntüle ve İndir
             </a>
           </div>
-        ) : type === "contact_form" ? (
+        ) : (type === "contact_form" || type === "quick_contact_form") ? (
           <div
             className={`p-12 ${block.styles?.textAlign ? "" : "text-center"} bg-green-50 rounded-xl border border-green-100 min-h-[300px] flex flex-col items-center justify-center`}
           >
@@ -1690,8 +1692,7 @@ const DynamicFormBuilder = ({ block, type, submitForm, getIconStyle }: any) => {
             </div>
           )}
 
-          <div className="pt-6 whitespace-normal md:whitespace-pre-line">
-            <button
+                    <div className="pt-6 whitespace-normal md:whitespace-pre-line">            <button
               type="submit"
               disabled={submitting}
               className={
@@ -2780,6 +2781,67 @@ const BurslulukConfirmationBlock = ({
   );
 };
 
+const QuickContactFormBlock = ({
+  block,
+  index,
+  getStyle,
+  getTitleStyle,
+  getSubtitleStyle,
+  getIconStyle
+}: any) => {
+  return (
+    <section
+      key={index}
+      className="py-section-gap w-full flex items-center justify-center p-4 md:p-8 whitespace-normal md:whitespace-pre-line"
+      style={getStyle(block, "container")}
+    >
+      <div
+        className="w-full max-w-4xl bg-surface-card rounded-lg shadow-sm border border-border-subtle overflow-hidden relative whitespace-normal md:whitespace-pre-line"
+        style={
+          block.styles?.cardBgColor
+            ? { backgroundColor: block.styles.cardBgColor }
+            : {}
+        }
+      >
+        {/* Header */}
+        <div
+          className={`p-8 md:p-12 ${block.styles?.textAlign ? "" : "text-center"} relative overflow-hidden`}
+          style={{ backgroundColor: block.styles?.headerBgColor || "#002147" }}
+        >
+          <div className="relative z-10 whitespace-normal md:whitespace-pre-line">
+            <h1
+              className="font-headline-md text-headline-md text-white mb-2 uppercase tracking-wide whitespace-normal md:whitespace-pre-line"
+              style={getTitleStyle(block)}
+            >
+              {block.title || "HIZLI İLETİŞİM FORMU"}
+            </h1>
+            <p
+              className="font-body-md text-body-md text-blue-200 whitespace-normal md:whitespace-pre-line"
+              style={getSubtitleStyle(block)}
+            >
+              {block.subtitle || "Lütfen Formu Eksiksiz Doldurunuz."}
+            </p>
+            <div className="mt-6 flex justify-center whitespace-normal md:whitespace-pre-line">
+              <div
+                className="h-1 w-20 bg-primary rounded-full whitespace-normal md:whitespace-pre-line"
+                style={
+                  block.styles?.titlePart1Color
+                    ? { backgroundColor: block.styles.titlePart1Color }
+                    : { backgroundColor: "#004899" }
+                }
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 md:p-12 bg-white whitespace-normal md:whitespace-pre-line">
+          <DynamicFormBuilder getIconStyle={getIconStyle} block={block} type="quick_contact_form" />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ContactFormBlock = ({
   block,
   index,
@@ -3817,6 +3879,18 @@ export const DynamicBlockRenderer = ({
         case "edu_system_cta":
           return (
             <EduSystemCtaBlock
+              key={index}
+              block={block}
+              index={index}
+              getStyle={getStyle}
+              getIconStyle={getIconStyle}
+              getTitleStyle={getTitleStyle}
+              getSubtitleStyle={getSubtitleStyle}
+            />
+          );
+        case "quick_contact_form":
+          return (
+            <QuickContactFormBlock
               key={index}
               block={block}
               index={index}

@@ -1,3 +1,13 @@
+                              {isSelected && (
+                                <div className="absolute top-2 right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-white text-[10px] whitespace-normal md:whitespace-pre-line">
+                                  ✓
+                                </div>
+                              )}
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
             </div>

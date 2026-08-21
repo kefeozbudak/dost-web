@@ -8,7 +8,7 @@ import {
   DEFAULT_CLUB_INPUTS,
   DEFAULT_SCHOLARSHIP_INPUTS,
   DEFAULT_CAREER_INPUTS,
-  DEFAULT_CONTACT_INPUTS,
+  DEFAULT_CONTACT_INPUTS, DEFAULT_QUICK_CONTACT_INPUTS,
 } from "../lib/defaultFormInputs";
 
 import CalendarGridEditor from "./CalendarGridEditor";
@@ -112,6 +112,7 @@ export default function BlockFormEditor({
       if (block.type === "pre_registration_form")
         return DEFAULT_PRE_REGISTRATION_INPUTS;
       if (block.type === "contact_form") return DEFAULT_CONTACT_INPUTS;
+      if (block.type === "quick_contact_form") return DEFAULT_QUICK_CONTACT_INPUTS;
       if (block.type === "club_registration_form") return DEFAULT_CLUB_INPUTS;
       if (block.type === "career_application") return DEFAULT_CAREER_INPUTS;
       if (block.type === "bursluluk_exam_form")
@@ -3578,7 +3579,7 @@ export default function BlockFormEditor({
           </div>
         )}
 
-{['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form'].includes(block.type) && (
+{['pre_registration_form', 'club_registration_form', 'bursluluk_exam_form', 'career_application', 'contact_form', 'quick_contact_form'].includes(block.type) && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}

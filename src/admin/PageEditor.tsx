@@ -559,6 +559,7 @@ export default function PageEditor() {
                           { type: 'contact_hero', label: 'İletişim Hero' },
                           { type: 'contact_campuses', label: 'Kampüs Kartları' },
                           { type: 'contact_form', label: 'İletişim Formu' },
+                          { type: 'quick_contact_form', label: 'Hızlı İletişim Formu' },
                           { type: 'social_media', label: 'Sosyal Medya Linkleri' },
                           { type: 'tuition_fees_hero', label: 'Kayıt Ücretleri Hero' },
                           { type: 'tuition_fees', label: 'Kayıt Ücretleri (Tablolar)' },
