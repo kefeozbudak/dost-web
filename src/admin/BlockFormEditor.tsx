@@ -2731,7 +2731,7 @@ export default function BlockFormEditor({
               'buttons',
               [
                 {key: 'label', label: 'Metin', type: 'text'},
-                {key: 'url', label: 'URL', type: 'text'},
+                {key: 'url', label: 'URL', type: 'url'},
                 {key: 'icon', label: 'İkon', type: 'icon'},
                 {key: 'bgColor', label: 'Arka Plan Rengi', type: 'color'},
                 {key: 'textColor', label: 'Metin Rengi', type: 'color'}
@@ -2755,7 +2755,7 @@ export default function BlockFormEditor({
                 {key: 'statValue', label: 'Ana İstatistik', type: 'text'},
                 {key: 'statLabel', label: 'Ana İstatistik Etiketi', type: 'text'},
                 {key: 'buttonText', label: 'Buton Metni', type: 'text'},
-                {key: 'url', label: 'Buton URL', type: 'text'}
+                {key: 'url', label: 'Buton URL', type: 'url'}
               ],
               'Kartlar'
             )}
@@ -3344,7 +3344,8 @@ export default function BlockFormEditor({
               { key: 'title', label: 'Kart Başlığı', type: 'text' },
               { key: 'subtitle', label: 'Kart Açıklaması', type: 'textarea' },
               { key: 'image', label: 'Görsel', type: 'image' },
-              { key: 'colSpan', label: 'Tailwind Sütun Sınıfı (örn: col-span-12 md:col-span-6 lg:col-span-4)', type: 'text' }
+              { key: 'colSpan', label: 'Tailwind Sütun Sınıfı (örn: col-span-12 md:col-span-6 lg:col-span-4)', type: 'text' },
+              { key: 'url', label: 'Yönlendirme Linki (Opsiyonel)', type: 'url' }
             ], 'Bento Kartları')}
           </div>
         )}

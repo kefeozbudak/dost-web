@@ -3174,12 +3174,8 @@ export const DynamicBlockRenderer = ({
 } else if (item.styles?.backgroundColor) {
                     baseStyle.backgroundColor = item.styles.backgroundColor;
                   }
-                  return (
-                    <div
-                      key={i}
-                      className={`${cols} group relative overflow-hidden rounded-3xl h-[400px] border border-border-subtle hover:border-primary transition-all duration-500 shadow-sm`}
-                      style={baseStyle}
-                    >
+                  const cardContent = (
+                    <>
                       {item.image && (
                         <img
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 whitespace-normal md:whitespace-pre-line"
@@ -3195,7 +3191,7 @@ export const DynamicBlockRenderer = ({
                         >
                           {item.title}
                         </h3>
-                        {item.desc && (
+                        {(item.desc || item.subtitle) && (
                           <p
                             className="text-white/80 font-body-md whitespace-normal md:whitespace-pre-line"
                             style={getCardDescStyle(item, block)}
@@ -3204,6 +3200,25 @@ export const DynamicBlockRenderer = ({
                           </p>
                         )}
                       </div>
+                    </>
+                  );
+
+                  return item.url ? (
+                    <SmartLink
+                      key={i}
+                      url={item.url}
+                      className={`${cols} group relative overflow-hidden rounded-3xl h-[400px] border border-border-subtle hover:border-primary transition-all duration-500 shadow-sm block cursor-pointer`}
+                      style={baseStyle}
+                    >
+                      {cardContent}
+                    </SmartLink>
+                  ) : (
+                    <div
+                      key={i}
+                      className={`${cols} group relative overflow-hidden rounded-3xl h-[400px] border border-border-subtle hover:border-primary transition-all duration-500 shadow-sm`}
+                      style={baseStyle}
+                    >
+                      {cardContent}
                     </div>
                   );
                 })}
