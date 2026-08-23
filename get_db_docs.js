@@ -10,11 +10,14 @@ async function check() {
   try {
     const snap = await getDocs(collection(db, 'pages'));
     console.log("Pages count:", snap.size);
-    if (snap.size > 0) {
-      console.log("First page:", snap.docs[0].id);
-    }
+    snap.forEach(doc => {
+      const data = doc.data();
+      console.log(`Doc ID: ${doc.id}, Blocks count: ${data.blocks ? data.blocks.length : 0}, isDeleted: ${data.isDeleted}`);
+    });
+    process.exit(0);
   } catch (e) {
     console.error("Error:", e);
+    process.exit(1);
   }
 }
 check();

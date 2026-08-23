@@ -11,7 +11,7 @@ async function check() {
     const snap = await getDocs(collection(db, 'pages'));
     console.log("Pages count:", snap.size);
     if (snap.size > 0) {
-      console.log("First page:", snap.docs[0].id);
+      console.log("Database is accessible.");
     }
   } catch (e) {
     console.error("Error:", e);
