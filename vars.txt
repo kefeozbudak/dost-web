@@ -1,0 +1,11 @@
+defaultHomePageData
+defaultHakkimizdaData
+defaultBasarilarimizData
+defaultDuyurularData
+defaultPreRegistrationData
+defaultScholarshipPageData
+defaultScholarshipConfirmationPageData
+defaultEgitimSistemiData
+defaultCareerPageData
+defaultTuitionFeesData
+defaultLgsCalculatorData

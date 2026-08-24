@@ -1,229 +1,364 @@
 export const defaultHomePageData = [
   {
-    type: 'header',
-    logoUrl: '/dost-logo-png.png',
-    links: [
-      { label: 'Kampüslerimiz', url: '#' },
-      { label: 'Ön Kayıt', url: '/on-kayit' },
-      { label: 'İletişim', url: '#' }
-    ],
-    showSearch: true,
-    ctaButton: { label: 'Ön Kayıt Formu', url: '/on-kayit' }
-  },
-  
-  
-  
-  {
+    subtitle: 'Akademik mükemmeliyet ve karakter gelişimini odağına alan eğitim yaklaşımımızla, öğrencilerimizi yarının dünyasına hazırlıyoruz.',
+    title: 'Eğitimde Dostluk, Gelecekte Başarı',
     type: 'hero',
     badge: '',
-    titlePart1: 'Geleceği Dostça\n',
     titlePart1Color: '#232b38',
-    titlePart2: 'İnşa Ediyoruz',
-    titlePart2Color: '#232b38',
-    title: '',
-    subtitle: 'Modern eğitim yaklaşımları ve köklü değerlerimizle, her öğrencimizin\npotansiyelini zirveye taşıyoruz.',
     items: [
-      { title: 'Eryaman Kampüsü', url: '#eryaman-kampusu', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Oran Kampüsü', url: '#oran-kampusu', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Ümitköy Kampüsü', url: '#umitkoy-kampusu', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' }
+      {
+        link: '/eryaman-kampusu',
+        url: '/eryaman-kampusu',
+        image_scale: 120,
+        buttonUrl: '/eryaman-kampusu',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870133976_zwh4z7.jpg?alt=media&token=cc3c8142-ee59-4b8f-85a1-08bce7470f90',
+        title: 'Eryaman Kampüsü'
+      },
+      {
+        buttonUrl: '/oran-kampusu',
+        title: 'Oran Kampüsü',
+        link: '/oran-kampusu',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870136485_latfg8.jpg?alt=media&token=ee0aff03-f9ab-4edb-bb9a-724395892add',
+        image_scale: 136,
+        url: '/oran-kampusu',
+        image_posY: 75
+      },
+      {
+        image_posY: 56,
+        link: '/umitkoy-kampusu',
+        buttonUrl: '/umitkoy-kampusu',
+        image_scale: 142,
+        url: '/umitkoy-kampusu',
+        image_posX: 71,
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870138505_shxnfe.jpg?alt=media&token=b2d051c7-358d-4c1e-82f0-97fbe0f89506',
+        title: 'Ümitköy Kampüsü'
+      }
     ],
     buttons: [
-      { label: 'Hemen Ön Kayıt Ol', style: 'primary', url: '#campuses-section' },
-      { label: 'Hemen Başvur', style: 'secondary' }
-    ]
-  },
-  {
-    type: 'education_levels',
-    title: 'Eğitim Kademelerimiz',
-    icon: 'school',
-    items: [
-      { icon: 'child_care', title: 'Anaokulu', desc: 'Geleceğin temellerini sevgi ve oyunla atıyoruz.', buttonText: 'Detaylı Bilgi' },
-      { icon: 'menu_book', title: 'İlkokul', desc: 'Temel eğitim yolculuğunda merak uyandıran keşifler.', buttonText: 'Detaylı Bilgi' },
-      { icon: 'groups', title: 'Ortaokul', desc: 'Gelişim ve keşif sürecinde akademik derinlik.', buttonText: 'Detaylı Bilgi' },
-      { icon: 'workspace_premium', title: 'Lise', desc: 'Üniversiteye ve hayata güçlü, vizyoner hazırlık.', buttonText: 'Detaylı Bilgi' }
-    ]
-  },
-  {
-    type: 'features',
-    title: 'Ayrıcalıklı Eğitim Standartları',
-    subtitle: 'Neden Biz?',
-    items: [
-      { 
-        icon: 'verified_user', 
-        title: 'Akademik Mükemmellik', 
-        desc: 'Uluslararası standartlarda müfredat ve alanında uzman eğitim kadromuzla öğrencilerimizi geleceğe en iyi şekilde hazırlıyoruz.',
-        image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80',
-        rowSpan: true
+      {
+        label: 'Kampüsleri Keşfet',
+        textColor: '#ffffff',
+        bgColor: '#1d64a9',
+        style: 'primary',
+        icon: {
+          name: 'ArrowRight'
+        }
       },
-      { icon: 'translate', title: 'Çift Dilli Eğitim', desc: 'İngilizceyi ana dil yetkinliğinde öğrenen, dünya vatandaşı bireyler yetiştiriyoruz.' },
-      { icon: 'psychology', title: 'STEM Odaklı Öğrenme', desc: 'Bilim, teknoloji, mühendislik ve matematik odaklı laboratuvarlarımızla inovatif düşünceyi destekliyoruz.' },
-      { 
-        icon: 'neurology', 
-        title: 'Yapay Zeka Destekli Kişiselleştirilmiş Eğitim', 
-        desc: 'Her öğrencinin öğrenme hızına ve ilgi alanlarına göre özelleşen dijital öğrenme platformlarımızla başarıyı garantiliyoruz.',
-        highlight: true,
-        buttonText: 'Detaylı Bilgi'
+      {
+        icon: {
+          name: 'ArrowRight'
+        },
+        label: 'Ön Kayıt Formu',
+        bgColor: '#41c1d0',
+        url: '/on-kayit',
+        style: 'secondary',
+        textColor: '#ffffff'
       }
-    ]
+    ],
+    titlePart2Color: '#232b38',
+    styles: {
+      titlePart1Color: '#32373e',
+      heroAlignY: '',
+      titleColor: '#ed0707',
+      titlePart2MobileSize: '33px',
+      titlePart2Color: '#1d64a9',
+      titlePart1MobileSize: '33px',
+      titlePart2Size: '45px',
+      titlePart1Size: '45px',
+      mobileTextAlign: 'center'
+    },
+    titlePart2: 'Gelecekte Başarı',
+    layoutOrder: 'images_text_buttons',
+    titlePart1: 'Eğitimde Dostluk,'
+  },
+  {
+    title: 'Eğitim Kademelerimiz',
+    styles: {
+      iconColor: '#4be7fb',
+      iconAlign: 'left',
+      iconMobileAlign: 'center',
+      backgroundColor: '#1d64a9',
+      itemTitleMobileAlign: 'center',
+      iconMobileSize: '33px',
+      fullWidth: true,
+      itemTitleMobileSize: '25px',
+      itemTitleSize: '25px',
+      itemButtonBackgroundColor: '#4be7fb',
+      itemButtonColor: '#004f9e',
+      itemDescMobileAlign: 'center',
+      titleColor: '#ffffff',
+      iconSize: '41px'
+    },
+    icon: 'school',
+    subtitle: '',
+    items: [
+      {
+        title: 'Anaokulu',
+        buttonText: 'Detaylı Bilgi',
+        icon: 'child_care',
+        url: '/anaokulu',
+        desc: 'Geleceğin temellerini sevgi ve oyunla atıyoruz.',
+        buttonUrl: '/anaokulu',
+        link: '/anaokulu'
+      },
+      {
+        desc: 'Temel eğitim yolculuğunda merak uyandıran keşifler.',
+        icon: 'menu_book',
+        url: '/ilkokul',
+        buttonText: 'Detaylı Bilgi',
+        title: 'İlkokul'
+      },
+      {
+        title: 'Ortaokul',
+        url: '/ortaokul',
+        buttonText: 'Detaylı Bilgi',
+        desc: 'Gelişim ve keşif sürecinde akademik derinlik.',
+        icon: 'groups'
+      },
+      {
+        icon: 'workspace_premium',
+        buttonText: 'Detaylı Bilgi',
+        title: 'Lise',
+        desc: 'Üniversiteye ve hayata güçlü, vizyoner hazırlık.',
+        url: '/lise'
+      }
+    ],
+    type: 'education_levels'
+  },
+  {
+    title: 'Ayrıcalıklı Eğitim Standartları',
+    type: 'features',
+    items: [
+      {
+        title: 'Akademik Mükemmellik',
+        icon: 'verified_user',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786014297491_176vl8_akademik-m%C3%BCkemmelik.jpg?alt=media&token=cb8225e1-92eb-4b9a-a6b7-d15b075dc73a',
+        rowSpan: true,
+        desc: 'Uluslararası standartlarda müfredat ve alanında uzman eğitim kadromuzla öğrencilerimizi geleceğe en iyi şekilde hazırlıyoruz.'
+      },
+      {
+        desc: 'İngilizceyi ana dil yetkinliğinde öğrenen, dünya vatandaşı bireyler yetiştiriyoruz.',
+        cardBgColor: '#41c1d0',
+        hideButton: false,
+        itemTitleColor: '#ffffff',
+        icon: 'translate',
+        itemDescColor: '#ffffff',
+        title: 'Çift Dilli Eğitim',
+        buttonText: ''
+      },
+      {
+        title: 'STEM Odaklı Öğrenme',
+        icon: 'psychology',
+        desc: 'Bilim, teknoloji, mühendislik ve matematik odaklı laboratuvarlarımızla inovatif düşünceyi destekliyoruz.'
+      },
+      {
+        icon: 'neurology',
+        hideButton: false,
+        title: 'Kişiselleştirilmiş Eğitim',
+        desc: 'Her öğrencinin öğrenme hızına ve ilgi alanlarına göre özelleşen öğrenme programımızla başarıyı garantiliyoruz.',
+        highlight: true,
+        hoverEffect: false,
+        buttonText: ''
+      }
+    ],
+    styles: {
+      subtitleAlign: 'left',
+      titleAlign: 'left'
+    },
+    subtitle: 'Neden Biz?'
   },
   {
     type: 'campuses',
-    title: 'Size En Yakın Dost Koleji',
-    subtitle: 'Kampüslerimiz',
-    viewAllText: 'Tüm Şubeleri Gör',
     items: [
-      { title: 'Ümitköy Kampüsü', desc: 'Anaokulu, İlkokul ve Ortaokul kademelerinde doğayla iç içe bir eğitim ortamı.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Oran Kampüsü', desc: 'Fen ve Teknoloji Lisemiz ile inovatif projelerin merkezi olan modern şehir kampüsü.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80' },
-      { title: 'Eryaman Kampüsü', desc: 'Geniş spor alanları ve sanat atölyeleri ile donatılmış, huzurlu bir kampüs hayatı.', buttonText: 'İncele', image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80' }
-    ]
+      {
+        image_scale: 150,
+        buttonText: 'İncele',
+        buttonUrl: '/umitkoy-kampusu',
+        image_posY: 69,
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870140370_59b7r.jpg?alt=media&token=d6f62142-2cab-489e-90c4-b7c6b42b861b',
+        link: '/umitkoy-kampusu',
+        title: 'Ümitköy Kampüsü',
+        url: '/umitkoy-kampusu',
+        desc: 'Anaokulu, İlkokul ve Ortaokul',
+        image_posX: 88
+      },
+      {
+        link: '/oran-kampusu',
+        buttonUrl: '/oran-kampusu',
+        buttonText: 'İncele',
+        image_scale: 167,
+        url: '/oran-kampusu',
+        image_posY: 74,
+        title: 'Oran Kampüsü',
+        desc: 'Anaokulu, İlkokul ve Ortaokul',
+        image_posX: 61,
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870142114_ffygk.jpg?alt=media&token=8b6e53cc-2ad8-41ff-b545-25b77f5b4d89'
+      },
+      {
+        link: '/eryaman-kampusu',
+        url: '/eryaman-kampusu',
+        image_scale: 167,
+        title: 'Eryaman Kampüsü',
+        image_posX: 59,
+        buttonText: 'İncele',
+        desc: 'Anaokulu, İlkokul ve Ortaokul\nFen ve Anadolu Lisesi',
+        buttonUrl: '/eryaman-kampusu',
+        image_posY: 43,
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785870143852_pij8v.jpg?alt=media&token=d6e465af-39bd-4b23-b11c-88d705792c68'
+      }
+    ],
+    viewAllText: 'Tüm Şubeleri Gör',
+    subtitle: 'Kampüslerimiz',
+    styles: {
+      titleMobileAlign: 'left',
+      titleSize: '33px',
+      subtitleMobileAlign: 'left',
+      titleColor: '#0a488a',
+      titleMobileSize: '19px',
+      subtitleColor: '#27a8b9'
+    },
+    title: 'Size En Yakın Dost Koleji'
   },
   {
     type: 'video',
-    title: 'Eğitimde Geleceğe Bakış: <span class="text-primary">Dost Koleji</span> Tanıtım Filmi',
-    subtitle: 'Akademik başarılarımızdan kampüs yaşamına kadar bizi biz yapan değerleri keşfedin. Nitelikli eğitim anlayışımızla tanışın.',
-    desc: '<p>Alanında uzman kadromuz, modern eğitim teknolojilerimiz ve öğrenci merkezli yaklaşımımız ile çocuklarımızı sadece akademik başarıya değil, hayata hazırlıyoruz.</p><p>Dost Koleji, sadece bir okul değil, büyük bir ailedir.</p>',
-    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80'
+    desc: '',
+    isHidden: true,
+    videoUrl: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786015630200_uymuxb.jpg?alt=media&token=5e6d6e0e-649f-4307-88ce-da79897241df',
+    title: '<span class="text-primary">Dost Koleji</span> Tanıtım Filmi',
+    styles: {
+      titleBorderRadius: '0',
+      titleSize: '54px',
+      titleWeight: 'semibold',
+      descSize: '10px'
+    },
+    thumbnailUrl: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786015630200_uymuxb.jpg?alt=media&token=5e6d6e0e-649f-4307-88ce-da79897241df',
+    subtitle: 'Akademik başarılarımızdan kampüs yaşamına kadar bizi biz yapan değerleri keşfedin. Nitelikli eğitim anlayışımızla tanışın.'
   },
   {
     type: 'stats',
-    title: 'Başarı Bir Gelenektir',
-    subtitle: 'Öğrencilerimiz Türkiye\'nin ve dünyanın en saygın üniversitelerine yerleşerek bizleri gururlandırmaya devam ediyor.',
-    buttonText: 'Başarı Tablomuzu İnceleyin',
     items: [
-      { value: '%100', label: 'YKS Yerleşme Oranı' },
-      { value: '450+', label: 'TÜBİTAK Derecesi' },
-      { value: '25+', label: 'Ülke Mezun Ağı' },
-      { value: '9.5/10', label: 'Veli Memnuniyeti' }
-    ]
-  },
-  {
-    type: 'news',
-    title: 'Dost\'tan Haberler',
-    items: [
-      { title: '2024 Bilim ve Sanat Festivali Büyük Bir Coşkuyla Gerçekleşti', desc: 'Kampüslerimizde düzenlenen festivalde öğrencilerimiz yıl boyunca hazırladıkları projeleri ailelerine ve ziyaretçilere sundular.', image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=800&q=80', tag: 'Etkinlik', tagColor: 'bg-primary' },
-      { title: 'Robotics Takımımız Dünya Şampiyonası\'ndan Ödülle Döndü', desc: '12 Mayıs 2024', image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80', tag: 'Başarı', tagColor: 'bg-secondary' },
-      { title: 'Yeni Kayıt Dönemi Bilgilendirme Toplantıları Başladı', desc: '08 Mayıs 2024', image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80', tag: 'Duyuru', tagColor: 'bg-tertiary-container' }
-    ]
-  },
-  {
-    type: 'footer',
-    logoUrl: '/dost-logo-png.png',
-    brandName: 'Dost Koleji',
-    brandDesc: 'Dost Koleji, geleceğin liderlerini akademik mükemmeliyet, etik değerler ve modern eğitim yaklaşımlarıyla yetiştirmeyi misyon edinmiş köklü bir eğitim kurumudur. Ankara\'da üç farklı kampüsümüzle eğitimde fark yaratıyoruz.',
-    newsletterTitle: 'E-Bülten Kaydı',
-    newsletterDesc: 'Gelişmelerden ve etkinliklerimizden haberdar olmak için bültenimize abone olun.',
-    newsletterPlaceholder: 'E-posta adresiniz',
-    newsletterButtonText: 'Kaydol',
-    columns: [
       {
-        title: 'Kurumsal',
-        links: [
-          { label: 'Hakkımızda', url: '#' },
-          { label: 'Vizyon & Misyon', url: '#' },
-          { label: 'Kurucularımız', url: '#' },
-          { label: 'İnsan Kaynakları', url: '#' }
-        ]
+        label: 'YKS Yerleşme Oranı',
+        value: '%100'
       },
       {
-        title: 'Akademik',
-        links: [
-          { label: 'Anaokulu', url: '#' },
-          { label: 'İlkokul', url: '#' },
-          { label: 'Ortaokul', url: '#' },
-          { label: 'Fen ve Anadolu Lisesi', url: '#' }
-        ]
+        value: '450+',
+        label: 'TÜBİTAK Derecesi'
       },
       {
-        title: 'Kampüslerimiz',
-        links: [
-          { label: 'Ümitköy Kampüsü', url: '#' },
-          { label: 'Oran Kampüsü', url: '#' },
-          { label: 'Eryaman Kampüsü', url: '#' }
-        ]
+        label: 'Ülke Mezun Ağı',
+        value: '25+'
+      },
+      {
+        label: 'Veli Memnuniyeti',
+        value: '9.5/10'
       }
     ],
-    copyright: '© 2024 Dost Koleji. Tüm Hakları Saklıdır.',
-    legalLinks: [
-      { label: 'KVKK', url: '#' },
-      { label: 'Gizlilik Politikası', url: '#' },
-      { label: 'Çerez Politikası', url: '#' }
-    ]
+    isHidden: true,
+    buttonText: 'Başarı Tablomuzu İnceleyin',
+    subtitle: "Öğrencilerimiz Türkiye'nin ve dünyanın en saygın üniversitelerine yerleşerek bizleri gururlandırmaya devam ediyor.",
+    title: 'Başarı Bir Gelenektir'
+  },
+  {
+    items: [
+      {
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786015630200_uymuxb.jpg?alt=media&token=5e6d6e0e-649f-4307-88ce-da79897241df',
+        title: '2024 Bilim ve Sanat Festivali Büyük Bir Coşkuyla Gerçekleşti',
+        tag: 'Etkinlik',
+        desc: 'Kampüslerimizde düzenlenen festivalde öğrencilerimiz yıl boyunca hazırladıkları projeleri ailelerine ve ziyaretçilere sundular.',
+        tagColor: 'bg-primary'
+      },
+      {
+        tag: 'Başarı',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786000183246_hhda0h_basarilerimiz-footer.jpg?alt=media&token=d9fdc79e-7160-4c17-982d-222c047c7232',
+        tagColor: 'bg-secondary',
+        desc: 'Kampüslerimizde düzenlenen festivalde öğrencilerimiz yıl boyunca',
+        title: "Robotics Takımımız Dünya Şampiyonası'ndan Ödülle Döndü"
+      },
+      {
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785999296162_ejpy6r_egitim-sistemimiz-page.jpg?alt=media&token=f3a8a0bd-0885-4437-9c98-1c601e211983',
+        title: 'Yeni Kayıt Dönemi Bilgilendirme Toplantıları Başladı',
+        tag: 'Duyuru',
+        tagColor: 'bg-tertiary-container',
+        desc: 'Ön kayıt formu sayfamızdan hemen başvurunuzu yapın!'
+      }
+    ],
+    type: 'news',
+    title: "Dost'tan Haberler"
   }
 ];
 
-
-
 export const defaultHakkimizdaData = [
   {
-    type: 'header',
-    logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQvGjZIfU8rL4P84C8y4zL1Rj0K4h6V4H9F9S3Y7U0g6I2s9M1c8T5X4k2P5E7M1A9',
-    links: [
-      { label: 'Ana Sayfa', url: '/' },
-      { label: 'Kurumsal', url: '/hakkimizda' }
-    ],
-    buttonText: 'Kayıt Ol',
-    buttonUrl: '#',
-    styles: { backgroundColor: '#ffffff', color: '#1a1b23' }
-  },
-  {
-    type: 'about_hero',
+    subtitle: 'Dost Koleji, 2015 yılından bu yana akademik mükemmelliği ve karakter gelişimini odağına alarak, yarının liderlerini yetiştirmektedir.',
     badge: 'Geleceğe Hazırlıyoruz',
-    title: 'Eğitimde 25 Yıllık Güven ve Başarı',
-    subtitle: 'Dost Koleji, 1998 yılından bu yana akademik mükemmelliği ve karakter gelişimini odağına alarak, yarının liderlerini yetiştirmektedir.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCijzfAHE3wK3ySMb4dMKh0bQRV2MPrugw08hxyIuLqZf5APBZYCRfHXLa0nn4Ha65bWRshepqg3DA-8TK0wR2_OEx2-50bMsyxLR_jcGniF-3PQodeLfOgdHyyLrsHY3Hk9D1zyRk6MgvIWwi46AsUShQllofJp-l0qGkP4z6GotJUpo1aRPbAzhrIyc9kxdIcsKXKq47hY0uVpipX5ZrjHjuR6hddtsOigDbxHaDUlJS0UjPEjFdl',
-    buttons: [
-      { label: 'Tanıtım Filmi', url: '#', primary: true },
-      { label: 'Kampüs Turu', url: '#', primary: false }
-    ],
+    title: 'Eğitimde 11 Yıllık Güven ve Başarı',
     styles: {
-      color: '#ffffff'
-    }
+      overlayHoverReveal: false,
+      backgroundImage: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786530739239_c20vmc_kamp%C3%BCsler--banner-2.jpg?alt=media&token=b1cfab84-7893-4957-bfda-473917ef1fb4',
+      heroAlignX: 'left',
+      enableDarkOverlay: true,
+      titleSize: '39px',
+      titleMobileSize: '29px',
+      overlayOpacity: 50,
+      overlayColor: '#1d64a8'
+    },
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786015630200_uymuxb.jpg?alt=media&token=5e6d6e0e-649f-4307-88ce-da79897241df',
+    type: 'about_hero',
+    buttons: [
+      {
+        link: '/egitim-sistemimiz',
+        buttonUrl: '/egitim-sistemimiz',
+        url: '/egitim-sistemimiz',
+        label: 'Eğitim Sistemimiz',
+        primary: true
+      }
+    ]
   },
   {
     type: 'timeline',
-    title: 'Başarı Yolculuğumuz',
-    subtitle: 'Çeyrek asırlık tecrübemizle her geçen gün büyüyerek, binlerce öğrencinin hayatına dokunduk.',
     items: [
       {
-        year: '1998',
+        year: '',
+        desc: 'Eğitim meşalemiz 2015 yılında, modern bir eğitim anlayışıyla ilk kampüsümüzde yakıldı. Kuruluşumuzdan bu yana, her bir öğrencimizin potansiyelini en üst düzeye çıkarmayı hedefleyen bir vizyonla yola çıktık.',
+        image_posY: 57,
+        image_scale: 185,
         title: 'Kuruluş',
-        desc: 'Eğitim meşalemiz 1998 yılında, modern bir eğitim anlayışıyla ilk kampüsümüzde yakıldı. Kuruluşumuzdan bu yana, her bir öğrencimizin potansiyelini en üst düzeye çıkarmayı hedefleyen bir vizyonla yola çıktık.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFJjPBhGD5Emz2IDfG8Q8sOz1EzdpKJheTaz_hqSEpHaytRqrRbAP8tsig0gu79P4RaDbKCDHkAfvX5Av2y5SfFFzf4vS7RCYkZnnRVNBwgTcU2t6QAQE7M2W2mFPRThYq5OKItW6EcuDepDcitk27W_mYr_bPUvbUWwPNNdBZ3ZtSWETZ7nhNRkb4bllrKr4wWwJZTaHn77XfsyZMbXXUEjwllXuMjEVDOiuZZxEP4283vQAsPZVh'
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786105571791_3xqpx_Umitk%C3%B6y_Kampusu-2-0.jpg?alt=media&token=03995541-d6b3-403d-8aa0-2ab7ee282bdf',
+        image_posX: 80
       },
       {
-        year: '2010',
-        title: 'Modernizasyon',
         desc: 'Teknolojiyi eğitimle birleştiren ilk akıllı sınıf sistemlerimiz ve modern laboratuvarlarımız devreye girdi. Bu dönemde, bilimsel araştırmalara ve dijital okuryazarlığa verdiğimiz önemi artırarak eğitim kalitemizi uluslararası standartlara taşıdık.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCSKV1poAOJy9AacLpe7sziO8S1pQKTxeYi1Yebge1RhJ5aa1RS4qKiDXj_FfU5g89NWnaQ5FQ3zCGQD7w-75HYKu0XEaXAll1_-YBXro48jspXOonRVHp0OE9UQoK_L0zWbJRRPfH0LOJ7fyP_b8cVXFCQoL5WJ_6T7JMHfCFtGNO3WEg_zFmNAPF7CTgebakp1zh2SOIe9RA_eZaDxY66dnKyEUyDOtqdH_fNrqBiqzb6v55JpzC8'
+        year: '',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786021775492_a31fx_nice.JPG?alt=media&token=2471354c-29b2-4c0d-8436-4bf105d51772',
+        title: 'Modernizasyon'
       },
       {
-        year: '2024',
-        title: 'Bugün',
-        desc: '25. yılımızda Türkiye\'nin en saygın eğitim kurumlarından biri olarak binlerce mezunumuzla geleceğe güvenle bakıyoruz. Sürdürülebilir kampüsümüz ve yenilikçi eğitim modellerimizle, yarının dünyasını şekillendirecek liderler yetiştirmeye devam ediyoruz.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBYXA-Z-mXEJ2CgDh4MuI3GAEhoTqFRxMZCaveSjnplXbj66pq897E4lbeTv71aX8QlNbStHcEUbjIkqeOT95odmy7Bid23wAZS8qR_oKCy3zguajXGhQbyw_XnycW-pnt9u9RI4dk624p-LELYCixSwGDe4kQWRNJbCR5RQPoCiylK687IBdvDCcu5n9cUpJP-My60-MS9JjSkPde7wx8tnsMbbGfOxgp4WWFsuh1nAxQxPm2XWe8B'
+        desc: "11. yılımızda Türkiye'nin saygın eğitim kurumlarından biri olarak yüzlerce mezunumuzla geleceğe güvenle bakıyoruz. Sürdürülebilir kampüslerimiz ve yenilikçi eğitim modellerimizle, yarının dünyasını şekillendirecek liderler yetiştirmeye devam ediyoruz.",
+        year: '',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786105759751_qbawek_Eryaman%20Kamp%C3%BCs%C3%BC.jpg?alt=media&token=f27f8bd8-aec5-4b78-aa99-4f1f2146646e',
+        title: 'Bugün'
       }
-    ]
+    ],
+    title: 'Başarı Yolculuğumuz',
+    subtitle: 'Her geçen gün büyüyerek, binlerce öğrencinin hayatına dokunuyoruz.'
   },
   {
-    type: 'mission_vision',
     items: [
       {
-        icon: 'flag',
         title: 'Misyonumuz',
+        icon: 'flag',
         desc: 'Öğrencilerimizi evrensel değerlerle donatılmış, bilimsel düşünen, özgüveni yüksek ve topluma karşı sorumlu bireyler olarak yetiştirmek; onlara öğrenmeyi sevdiren bir eğitim ortamı sunmaktır.'
       },
       {
+        desc: "Uluslararası standartlarda eğitim kalitesiyle tanınan, inovatif yaklaşımları eğitim süreçlerine entegre eden, Türkiye'nin örnek alınan ve en çok tercih edilen öncü eğitim kurumu olmaktır.",
         icon: 'visibility',
-        title: 'Vizyonumuz',
-        desc: 'Uluslararası standartlarda eğitim kalitesiyle tanınan, inovatif yaklaşımları eğitim süreçlerine entegre eden, Türkiye\'nin örnek alınan ve en çok tercih edilen öncü eğitim kurumu olmaktır.'
+        title: 'Vizyonumuz'
       }
-    ]
+    ],
+    type: 'mission_vision'
   },
   {
-    type: 'values',
-    title: 'Temel Değerlerimiz',
-    subtitle: 'Karakterimizi belirleyen ve bizi biz yapan temel ilkelerimiz.',
     items: [
       {
         icon: 'verified_user',
@@ -232,614 +367,962 @@ export const defaultHakkimizdaData = [
       },
       {
         icon: 'lightbulb',
-        title: 'İnovasyon',
-        desc: 'Geleneksel eğitim yöntemlerini modern teknoloji ve yaratıcı yaklaşımlarla harmanlıyoruz.'
+        desc: 'Geleneksel eğitim yöntemlerini modern teknoloji ve yaratıcı yaklaşımlarla harmanlıyoruz.',
+        title: 'İnovasyon'
       },
       {
-        icon: 'favorite',
+        desc: 'Eğitimin temelinin sevgi olduğuna inanıyor, öğrencilerimize şefkatle yaklaşıyoruz.',
         title: 'Sevgi',
-        desc: 'Eğitimin temelinin sevgi olduğuna inanıyor, öğrencilerimize şefkatle yaklaşıyoruz.'
+        icon: 'favorite'
       },
       {
-        icon: 'gavel',
+        desc: 'Başarının anahtarı olan öz disiplini, baskıcı değil yol gösterici bir biçimde aşılıyoruz.',
         title: 'Disiplin',
-        desc: 'Başarının anahtarı olan öz disiplini, baskıcı değil yol gösterici bir biçimde aşılıyoruz.'
+        icon: 'gavel'
       }
-    ]
+    ],
+    title: 'Temel Değerlerimiz',
+    type: 'values',
+    subtitle: 'Karakterimizi belirleyen ve bizi biz yapan temel ilkelerimiz.'
   },
   {
-    type: 'quote_image',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDOD_d1rJUx_Jz73WeiEm2hKPVsyhgYIX7xJqpeGD7W2yhF3JlJ_eghXDYFgj4bRUiQ41HUo0oBOTuo7qFSevOF8lLpsit5qhUR8A9RWrRMIMVQrS8UZ_kHynvi3F5IuRJa4PkW070GV7Qisk9TaXPjlN46tviE2685h6XTzLHCn3CMujOEYUGPteJUC_zEbO7SXtW7V2_ZqNnLTZNKGNXhwbvNva0wbl746vPD9lPP7zgRoEg0Au6Z',
     title: 'Kurucumuzdan Mesaj',
-    quote: '"Dost Koleji\'ni kurarken hayalimiz, sadece ders notları yüksek değil, hayat başarısı yüksek, vicdanı hür bireyler yetiştirmekti. 25 yıldır bu hayali gerçeğe dönüştürmenin gururunu yaşıyoruz. Eğitim bir gönül işidir ve biz bu yolda tüm paydaşlarımızla el ele yürümeye devam edeceğiz."',
-    authorName: 'Dr. Ahmet Yılmaz',
+    image_posX: 47,
+    authorName: 'Dr. Muhammet ALPKENT',
+    quote: "Dost Koleji'ni kurarken hayalimiz, sadece ders notları yüksek değil, hayat başarısı yüksek, vicdanı hür bireyler yetiştirmekti. 11 yıldır bu hayali gerçeğe dönüştürmenin gururunu yaşıyoruz. Eğitim bir gönül işidir ve biz bu yolda tüm paydaşlarımızla el ele yürümeye devam edeceğiz.",
+    image_scale: 101,
+    styles: {
+      titleMobileSize: '17px',
+      backgroundImage: '',
+      authorColor: '#18538d',
+      titleSize: '29px',
+      authorNameSize: '0px',
+      authorTitleSize: '0px',
+      authorNameColor: '#155dfc',
+      quoteSize: '0px'
+    },
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786105342750_462glt_muhammed-alpkent.jpg?alt=media&token=af196904-7746-4a0e-a562-135ff8651215',
+    author: 'Dr. Muhammed ALPKENT',
+    image_posY: 41,
+    type: 'quote_image',
     authorTitle: 'Dost Koleji Kurucusu & Yönetim Kurulu Başkanı'
-  },
-  {
-    type: 'footer',
-    companyName: 'Dost Koleji',
-    companyDesc: 'Geleceğin liderlerini yetiştiren, yenilikçi ve köklü eğitim kurumu.',
-    links: [
-      { label: 'Hakkımızda', url: '/hakkimizda' },
-      { label: 'Eğitim', url: '#' },
-      { label: 'Kabul', url: '#' },
-      { label: 'İletişim', url: '#' }
-    ],
-    social: [
-      { platform: 'facebook', url: '#' },
-      { platform: 'twitter', url: '#' },
-      { platform: 'instagram', url: '#' },
-      { platform: 'linkedin', url: '#' }
-    ],
-    styles: { backgroundColor: '#1a1b23', color: '#ffffff' }
   }
 ];
 
-
-
-
-
 export const defaultBasarilarimizData = [
   {
-    type: 'header',
-    logoUrl: '/dost-logo-png.png',
-    links: [
-      { label: 'Kampüslerimiz', url: '#' },
-      { label: 'Ön Kayıt', url: '/on-kayit' },
-      { label: 'İletişim', url: '#' }
-    ],
-    showSearch: true,
-    ctaButton: { label: 'Ön Kayıt Formu', url: '/on-kayit' }
-  },
-  {
-    type: 'achievements_hero',
     badge: 'BİZİM GURUR TABLOMUZ',
-    titlePart1: 'Geleceği İnşa Eden ',
-    titlePart2: 'Başarılarımız',
-    titlePart2Color: '#D4AF37',
+    type: 'achievements_hero',
+    titlePart1: 'Geleceği İnşa Eden',
+    styles: {
+      badgeAlign: 'left',
+      heroAlignX: 'left',
+      titlePart1Align: 'left'
+    },
     subtitle: 'Dost Koleji olarak, her öğrencimizin içindeki potansiyeli keşfediyor, akademik mükemmellik ve karakter gelişimiyle harmanlanmış bir başarı yolculuğu sunuyoruz.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDclSWgXGDCdKOXaON8pIof0uJYpf9_sU6BVo6kWpFyj5umBZ2qgknO4mUlLTk5lEPDeIPtwnMcNWawwu-jupdVFCtjYvUMjCO5qND-jER1h5Lq0Z39Y0NqMh9bfT5O6OZml1bZ9P0eVAuJFjYokzeyQUNS3uiR9RFwJq1X7-2fpAoY5yzZLO9hMVZHLouja8_PSRucLdSJuIh3zynUKZY1ypR8TIK2gKp4U8wOatlgLxp3qQQDAL7w',
-    buttons: [
-      { label: 'Başarı Hikayelerini Keşfet', url: '#', icon: 'arrow_forward', bgColor: '#1d4eca', textColor: '#ffffff' }
-    ]
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785999868303_p1fbm9_basarilerimiz-header.jpg?alt=media&token=04dd706d-7a68-44e1-9950-516059b810c1',
+    buttons: [],
+    titlePart2: 'Başarılarımız'
   },
   {
-    type: 'achievements_academic_bento',
-    title: 'Akademik Mükemmellik',
+    type: 'bento_academic',
     items: [
       {
-        style: 'light',
-        icon: 'school',
+        stat: '500',
         title: 'LGS Başarısı',
-        desc: 'Ortaokul kademesinde üstün akademik hazırlık ve sonuç odaklı rehberlik.',
-        statValue: '498.4',
-        statLabel: 'Puan Ortalaması',
-        badge: 'TÜRKİYE BİRİNCİLİĞİ DERECESİ'
+        tag: 'TÜRKİYE BİRİNCİLİĞİ DERECESİ',
+        icon: 'school',
+        statLabel: 'Tam Puan',
+        desc: 'Ortaokul kademesinde üstün akademik hazırlık ve sonuç odaklı rehberlik.'
       },
       {
-        style: 'primary',
+        stat2Value: '82+',
+        stat2Label: 'Net Tutarlılığı Sağlayan Öğrencilerimiz',
+        stat1Label: 'Deneme Başarı Oranı',
+        url: '#',
+        buttonText: '',
         icon: 'star',
-        title: 'YKS Başarısı',
-        desc: 'Üniversite maratonunda her yıl çıtayı daha yükseğe taşıyoruz.',
+        desc: 'Üniversite maratonunda öğrencilerimizi daha yükseğe taşıyoruz.',
         stats: [
-          { value: '%98', label: 'Yerleştirme Oranı' },
-          { value: '82+', label: 'Tıp & Mühendislik' }
+          {
+            label: 'Yerleştirme Oranı',
+            value: '%98'
+          },
+          {
+            label: 'Tıp & Mühendislik',
+            value: '82+'
+          }
         ],
-        buttonText: 'Detaylı Liste',
-        url: '#'
+        stat1Value: '%98',
+        title: 'YKS Hedef Odaklı Hazırlık'
       },
       {
-        style: 'list',
-        icon: 'analytics',
-        title: 'Zirve İstatistikleri',
         desc: 'Tüm puan türlerinde kitlesel başarıda rakipsiz performans.',
-        listItems: [
-          'İlk 1000\'de 15 Öğrenci',
+        icon: 'analytics',
+        title: 'LGS Zirve İstatistikleri',
+        list: [
+          "İlk 1000'de 15 Öğrenci",
           'Sözel Puan Türünde İl 1.si',
           'Yabancı Dil Ortalaması 78.5'
-        ]
+        ],
+        listString: '500 Tam Puan ile Türkiye Birinciliği\n' +
+          'Sadece 1 Yanlış ile Türkiye İkinciliği\n' +
+          'Yabancı Dil Ortalaması 78.5'
       }
-    ]
+    ],
+    title: 'Akademik Mükemmellik'
   },
   {
-    type: 'achievements_social_gallery',
-    title: 'Sosyal ve Kültürel Başarılar',
-    subtitle: 'Sadece derslerde değil, hayatın her alanında şampiyonlar yetiştiriyoruz.',
+    type: 'achievements_grid',
     items: [
       {
-        title: 'Basketbol Takımı',
-        desc: 'Bölge Şampiyonu',
         hoverText: 'Ankara Gençler Ligi Şampiyonluğu - 2023',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCquMk48tzar5BY8-hU31vpomq_1ywRkTnVHCT7tmNJ3y09lvscPZ-XSgmgu-pAwFSyAYK-hTvKLpYG3p5bGdYXU5kAnkNMYTsiBKh86v9-qkor-Q2-6p4HWumCWT28dv_ei8_P_4CZId5w3orRudJRWztWwnmE_riivyVtgDFJZjSK17GuYagp4UmVNqSJOzWC-_G9mSkidJj5PnY3_pLHF5PHSx1oDaKldA4NX6g7xbYwDAoYbJKt'
+        subtitle: 'Bölge Şampiyonu',
+        title: 'Basketbol Takımı',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786362479159_mbmf1h_basketbol.jpg?alt=media&token=65d98de8-2227-40b4-ac4d-03955fae5a93'
       },
       {
-        title: 'Müzik ve Sanat',
-        desc: 'Piyano Resitali',
         hoverText: 'Uluslararası Chopin Piyano Yarışması 2.liği',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxLNUV3WlC4eUE8UTObvsaMinRPyoTb6y2qhCfg696xHJPwByzqt-VjergyJauRCT0N6kxVWykJ-a55kMmjqHKeQlYtbbAnnCg87OtHnAbpKKJoUIXMugXKl24NoQqBat2ZV90iTh7JriAmgSufymx4XqzFO1Xwd84k-Z2dcguRspdk-7waXzYqvpA2C-Yq1oFfnddtWZp7ERLJJhrX1yZ3NXPsLpUb-GtzVqioIQeUlkJcsl_kJtR'
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786362498510_qmrye_piyano.jpg?alt=media&token=4d4b2b1e-a934-4cd6-b908-fec72269b3ae',
+        subtitle: 'Piyano Resitali',
+        title: 'Müzik ve Sanat'
       },
       {
-        title: 'Satranç Kulübü',
-        desc: 'Ulusal Dereceler',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786362525419_mpaj7k_satranc.jpg?alt=media&token=abe683f6-f449-4012-a211-6063119abbdf',
         hoverText: 'Ulusal Satranç Turnuvası - Altın Madalya',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCyvGuHpk6vq2a3nqr5aGf2mwwSGbQme5tUezV4nbcGKs_mnTjRFY40uQHzdBDjyIW07tfLnkng1FdYDzatshgzq1fY-OoadG0OVz6m04yK22p4di96ue7dosZfSC70va7xLEeAQb9VlUD_la4QFuM5qvMsuhoGnNtoqfhOGkeyPV5MQI-rORmKIKiN608RAPU8Ugg-UOW-_VZ3R94I66CczPTF7p05-vDVlfGE-vZG-a5htIqIaj7d'
+        subtitle: 'Ulusal Dereceler',
+        title: 'Satranç Kulübü'
       },
       {
         title: 'Yüzme Takımı',
-        desc: '12 Altın Madalya',
-        hoverText: 'Okullar Arası Yüzme Şampiyonası',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBobthVP908_0_3H1N429YnscOa5GJ8fTUupxfxm5BdpPqYAl_CG6o0BTxorz7G9j779kzKfiKJCBViFtJZSbTWhgughmPE2n65AFTnFZ2w6RjDtugQDEYl0x3PWX9pDpUnqb9G9PAIUA16LrHma-fw7OjA6IIOqSZuNWDaK_jo_dFy5G8pMV3S5RlXZpn3cKuqjCIMUI21zG7LkxWJs5T2Y3xTx0VoDY-csDcgBJ7nYU0-t2CTszip'
+        subtitle: '12 Altın Madalya',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786362543663_2bxl5k_yuzme.jpg?alt=media&token=8b62ec12-63ce-4898-82e5-d616229d205e',
+        hoverText: 'Okullar Arası Yüzme Şampiyonası'
       }
-    ]
+    ],
+    subtitle: 'Sadece derslerde değil, hayatın her alanında şampiyonlar yetiştiriyoruz.',
+    title: 'Sosyal ve Kültürel Başarılar'
   },
   {
-    type: 'achievements_science_projects',
-    badge: 'İNOVASYON VE TEKNOLOJİ',
-    title: 'Bilim ve Geleceğin Projeleri',
-    subtitle: 'TÜBİTAK, Teknofest ve uluslararası bilim olimpiyatlarında Dost Koleji imzası.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDnacTnyUQX61YCKJQwBh9JdWSa4m3NGw5Y3XmHNIjBs_UYSf3fscDVJ4q4lFWrhDE6FwGoeKRXssVWsVSYd36h_n6z6HgecJTYV4UQTDFWHrYeFfoHYD7dAQpR20W6RCYXKshGgYYEsr4MTb1JoN-rzw_MulQTTdvc75mc1HwdnLL7a2Ye1bMkDiy_OgFRHbk5lKMUUTpusUtDH6gpJdl7eeQ5Y9sIOPoavRxD2RGM3xsn92-UFHok',
-    imageBadge: 'DÜNYA 3.LÜĞÜ',
+    image: '',
+    highlightTag: '',
+    image_scale: 99,
+    type: 'achievements_science',
+    badge: '',
     items: [
       {
-        icon: 'precision_manufacturing',
+        desc: `Uluslararası Robotik Olimpiyatları'nda "En İyi Yazılım" ödülü kazanan ekibimizle gurur duyuyoruz.`,
         title: 'Robotik Kodlama',
-        desc: 'Uluslararası Robotik Olimpiyatları\'nda "En İyi Yazılım" ödülü kazanan ekibimizle gurur duyuyoruz.'
+        icon: 'precision_manufacturing'
       },
       {
         icon: 'science',
         title: 'TÜBİTAK Bölge 1.liği',
         desc: 'Biyoloji alanında sürdürülebilir tarım projemiz Türkiye finallerine kalmaya hak kazandı.'
       }
-    ]
-  },
-  {
-    type: 'footer',
-    logoUrl: '/dost-logo-png.png',
-    description: "1995'ten beri eğitimde mükemmeliyetin adresi.",
-    address: 'Eryaman Mah. 123. Sok. Etimesgut/Ankara',
-    phone: '+90 (312) 555 00 00',
-    email: 'info@dostkoleji.edu.tr',
-    socialLinks: [
-      { label: 'Instagram', url: '#' },
-      { label: 'Twitter', url: '#' },
-      { label: 'LinkedIn', url: '#' }
     ],
-    links: [
-      { label: 'Hakkımızda', url: '/hakkimizda' },
-      { label: 'Vizyon & Misyon', url: '#' },
-      { label: 'İletişim', url: '/iletisim' }
-    ],
-    copyright: '© 2024 Dost Koleji. Tüm hakları saklıdır.'
+    title: 'Bilim ve Geleceğin Projeleri',
+    subtitle: '',
+    styles: {
+      fullWidth: false,
+      backgroundImage: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786000183246_hhda0h_basarilerimiz-footer.jpg?alt=media&token=d9fdc79e-7160-4c17-982d-222c047c7232',
+      innerBgColor: '#1d64a8',
+      innerBgOpacity: 66,
+      backgroundColor: ''
+    }
   }
 ];
 
 export const defaultDuyurularData = [
   {
-    type: 'news_hero',
+    fullWidth: true,
+    image_scale: 100,
+    styles: {
+      enableDarkOverlay: true,
+      backgroundImage: '',
+      fullWidth: false,
+      overlayColor: '#1d61a5',
+      overlayOpacity: 70
+    },
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786015630200_uymuxb.jpg?alt=media&token=5e6d6e0e-649f-4307-88ce-da79897241df',
+    image_posX: 50,
     title: 'Duyurular ve Haberler',
-    subtitle: 'Dost Koleji ailesindeki güncel gelişmeleri, akademik başarıları ve yaklaşan etkinlikleri buradan takip edebilirsiniz. Eğitim yolculuğumuzun her adımını sizinle paylaşıyoruz.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6Bmxu3AAUzepW3NL7-9gphkAJEtOZxEmh7grfk_qiyTZU8hdTAf0Rb2U8PwvwgpU2mJ3A3JvDoZcNwbUfzCelpbfOFVmAUxZ4V-C8-l0W9IumUSK349bi5G8M0dcjRWdorztXhDLZ8q75-gFEmyDwpbDXDgfGXbC_N5hYnMSIE6nrxhiFzMH5WVqX8LzMlg_avpcvrmfqI9iAAnSZO40YxI0azwPy7IT3Mdl_fWryM4T7kTP19k9S',
+    type: 'news_hero',
+    subtitle: 'Dost Koleji ailesindeki güncel gelişmeleri, akademik başarıları ve yaklaşan etkinlikleri buradan takip edebilirsiniz. Eğitim yolculuğumuzun her adımını sizinle paylaşıyoruz.'
   },
   {
-    type: 'news_grid',
-    showPagination: true,
     categories: [
-      { label: 'Tümü' },
-      { label: 'Akademik' },
-      { label: 'Etkinlikler' },
-      { label: 'Duyurular' },
-      { label: 'Sanat & Spor' }
+      'Tümü',
+      'Akademik',
+      'Etkinlikler',
+      'Duyurular',
+      'Sanat & Spor'
     ],
+    showPagination: true,
     items: [
       {
-        tag: 'Akademik',
-        tagColor: 'bg-secondary',
         date: '15 Mayıs 2024',
-        title: 'TÜBİTAK Bilim Yarışmasında Büyük Başarı',
         desc: 'Öğrencilerimiz tarafından hazırlanan yapay zeka tabanlı çevre projesi, TÜBİTAK Bölge Yarışmasında birincilik ödülüne layık görüldü.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBe6xqScqU2HxFB6TrgNtxc0XkIo6WrtnrVHTW8ohQGaXV1xZpiDDRRA966YHLx1G_AEdHkbYfXz4QfLeO8kTNLwS8SVQEKKk4479Q3VGlKeyQXrBcDmfIHetdzJULPLKkTa4_CoadJmD6KT1T5RdzpF6UEi3JuPyOt8KrOqMQQaFEOwcwD8PX5Uq87ZcTAM70a2S118BvZiKT3ri6YvYn7lmWXr2hnPKKGNuQxTJUnZQJGkzHL6ZU-',
-        url: '#'
+        hideButton: true,
+        tagColor: 'bg-secondary text-on-secondary',
+        tag: 'Akademik',
+        title: 'TÜBİTAK Bilim Yarışmasında Büyük Başarı',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1'
       },
       {
         tag: 'Etkinlikler',
-        tagColor: 'bg-secondary',
-        date: '12 Mayıs 2024',
-        title: 'Geleneksel Dost Kupası Turnuvası Başlıyor',
         desc: 'Bu yıl 10.sunu düzenleyeceğimiz Dost Kupası Basketbol Turnuvası, çevre okulların katılımıyla heyecan dolu karşılaşmalara sahne olacak.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCE6pT6AMzqgskqVB9WNnxORogZMJvEPBrozL1kUhgmm745GtAVzTLsJsnuN8fQDr4wa3gEC4OD5TEsvUnZlhtGl8nQR_IIiD3IxjTqh5D0EQTjFB8s3fhgnn6ImIU927o968n-zfyCG8SyN09UIL9tBfHvmmXSIJ1ukZpPNrw_vxD42JUvQVMNM6znuQPD6KDPJ5efY_QCfwNzL7zXGhJr_Wiy0XhUzcMzME6Mm3J2dEjoj0jidDMZ',
-        url: '#'
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1',
+        tagColor: 'bg-secondary text-on-secondary',
+        title: 'Geleneksel Dost Kupası Turnuvası Başlıyor',
+        date: '12 Mayıs 2024',
+        hideButton: true
       },
       {
+        hideButton: true,
         tag: 'Duyurular',
-        tagColor: 'bg-primary',
-        date: '10 Mayıs 2024',
-        title: 'Veli Bilgilendirme Seminerleri',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1',
+        tagColor: 'bg-primary text-on-primary',
         desc: 'Yeni dönem eğitim modellerimiz ve öğrenci gelişim takip sistemimiz hakkında detaylı bilgilendirme yapacağımız seminerimize tüm velilerimiz davetlidir.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDpuUc59kwHCS35masJqTs8rjf5S95T1tnzpxxWGhI943UjvidEbWm6uHSOTGv4O9Pe7PUk50vYirELKLMrqTQ9gkdilad3ogvYk7_v5kyA0yjV7MBvRSk4mCdpgx1ZJ4AdGNPLVDNAMHYOGLuuTNhsyXAhx6IL_4F0yox9DUQ3WC_0k9pQzgyOMGR2gKj_7cUd5UxWQRjwo4JkOxSgGXg2Nbab5-HOiFnmBI4sht8cxH4gAikjKmSG',
-        url: '#'
+        title: 'Veli Bilgilendirme Seminerleri',
+        date: '10 Mayıs 2024'
       },
       {
         tag: 'Sanat & Spor',
-        tagColor: 'bg-secondary',
+        desc: "Okul orkestramız ve koromuz, 25 Mayıs'ta gerçekleşecek olan büyük bahar konseri için provalarını sürdürüyor.",
         date: '08 Mayıs 2024',
-        title: 'Bahar Konseri Hazırlıkları Tam Gaz',
-        desc: 'Okul orkestramız ve koromuz, 25 Mayıs\'ta gerçekleşecek olan büyük bahar konseri için provalarını sürdürüyor.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXqFt91fX0wf5lO29SBg_Ww0quKfuLOhZUCl91oDkOulc-ki7Ec5vwcj61Qmds3itrevHMwafqZIv7AXbrxQRa59J1Caq0Kjew9R3VjVt7yNiTWggRbS16DQvLmsXMwLLc8h-olA2w3H4hzMCnNuDj761r51nyfJvR8rUcKlKDHVa5vEFYR9xIlWoDLDHgfzvDiNesCdHLVUFzVyksEQIXpw8Z71qJ1NW3U6q-JH4fSUKduiTsSwXP',
-        url: '#'
+        hideButton: true,
+        tagColor: 'bg-secondary text-on-secondary',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1',
+        title: 'Bahar Konseri Hazırlıkları Tam Gaz'
       },
       {
-        tag: 'Akademik',
-        tagColor: 'bg-secondary',
-        date: '05 Mayıs 2024',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1',
         title: 'Kütüphane Kaynaklarımız Genişliyor',
+        tagColor: 'bg-secondary text-on-secondary',
+        tag: 'Akademik',
         desc: 'Dijital kütüphane veri tabanımıza eklenen yeni bilimsel yayınlar ve e-kitaplar ile akademik kaynaklarımızı zenginleştirmeye devam ediyoruz.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsJr-RTEcP-lLbbqCi6hInHVBDSB5dAyXWF_cioPeUctSMyVx_HV1pGgY58hxELKSpqDopaeMO7JqXbtFaAT_Mqqa99-IKRNga0CYhM5D_v2aq6GpfljPsfkJqVROiuQRzI9ZwTsO03tk4SQM5d_FTt-isDnfV8qUsPdws01Tn9BrSFHVWJkUB4pJhluYSAa_vjZrCcb6l5LKIdeqgUb2B6pKHg0fyUlMdP-MC0MZjTAz0B-La-4bG',
-        url: '#'
+        hideButton: true,
+        date: '05 Mayıs 2024'
       },
       {
-        tag: 'Duyurular',
-        tagColor: 'bg-primary',
-        date: '01 Mayıs 2024',
         title: 'Yaz Dönemi Kurs Kayıtları',
+        image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786364574106_lw2bkr_dost-place-holder.jpg?alt=media&token=2bc94264-b3e2-4a0d-866e-6815f53f0ea1',
+        tagColor: 'bg-primary text-on-primary',
+        date: '01 Mayıs 2024',
         desc: 'Yaz aylarını verimli geçirmek isteyen öğrencilerimiz için düzenlenen spor ve sanat okulu kayıtlarımız başlamıştır.',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLXXk5BMaLvflgDA9MImcxpv6fq8YGYxrEr_YmTcrSPfevBexGmWQpeAf37_ve71bTK2IKiie5A48S09c8UJjnSVb2o0EEyCYLmok_WjFxf0bFlQYiTwubl0UWf_5DWdOiCLQmbRRzi6U75Tmt1N6Rw35WvnQeRCEsObgLw7wvWNA8Ifry8LG5kuY3NeDhLhoEPjPd_pPAazldWTixRfztPlv1q70aruEtj8p3HyjSmMA0Kc5a6UFS',
-        url: '#'
+        tag: 'Duyurular',
+        hideButton: true
       }
-    ]
+    ],
+    type: 'news_grid',
+    fullWidth: true
   },
   {
-    type: 'newsletter',
-    icon: 'mail',
-    title: 'Duyurulardan Haberdar Olun',
-    desc: 'Haftalık bültenimize abone olarak okulumuzdaki en güncel haberleri ve etkinlikleri e-posta adresinize alabilirsiniz.',
-    inputPlaceholder: 'E-posta adresiniz',
     buttonText: 'Abone Ol',
-    caption: 'Kayıt olarak Gizlilik Politikamızı ve KVKK metnini kabul etmiş sayılırsınız.'
+    styles: {
+      placeholderBorderRadius: '0'
+    },
+    fullWidth: true,
+    placeholder: '',
+    title: 'Duyurulardan Haberdar Olun',
+    inputPlaceholder: 'E-posta adresiniz',
+    icon: 'mail',
+    isHidden: true,
+    caption: 'Kayıt olarak Gizlilik Politikamızı ve KVKK metnini kabul etmiş sayılırsınız.',
+    type: 'newsletter',
+    desc: 'Haftalık bültenimize abone olarak okulumuzdaki en güncel haberleri ve etkinlikleri e-posta adresinize alabilirsiniz.'
   }
 ];
 
 export const defaultPreRegistrationData = [
   {
-    type: 'pre_registration_form',
-    title: 'ÖĞRENCİ ÖN KAYIT FORMU',
-    subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.',
+    inputs: [
+      {
+        icon: 'school',
+        label: 'Öğrenci Bilgileri',
+        required: false,
+        type: 'section_title'
+      },
+      {
+        placeholder: 'Örn: Ahmet Yılmaz',
+        required: true,
+        label: 'Öğrenci Adı Soyadı',
+        type: 'text',
+        name: 'student_fullname'
+      },
+      {
+        placeholder: '11 Haneli T.C. Kimlik No',
+        required: true,
+        label: 'T.C. Kimlik Numarası',
+        name: 'student_tc',
+        type: 'text'
+      },
+      {
+        type: 'date',
+        required: true,
+        name: 'dob',
+        label: 'Doğum Tarihi'
+      },
+      {
+        type: 'select',
+        options: 'Erkek, Kız',
+        label: 'Cinsiyet',
+        name: 'gender',
+        required: true
+      },
+      {
+        name: 'grade',
+        fullWidth: true,
+        type: 'select',
+        required: true,
+        label: 'Mevcut Sınıf Seviyesi',
+        options: 'Okul Öncesi 4 Yaş, Okul Öncesi 5 Yaş, Okul Öncesi 6 Yaş, 1. Sınıf, 2. Sınıf, 3. Sınıf, 4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf Anadolu Lisesi, 9. Sınıf Fen Lisesi, 10. Sınıf Anadolu Lisesi, 10. Sınıf Fen Lisesi, 11. Sınıf Anadolu Lisesi, 11. Sınıf Fen Lisesi, 12. Sınıf Anadolu Lisesi, 12. Sınıf Fen Lisesi'
+      },
+      {
+        label: 'Veli Bilgileri',
+        icon: 'family_restroom',
+        type: 'section_title'
+      },
+      {
+        label: 'Veli Adı Soyadı',
+        placeholder: 'Örn: Mehmet Yılmaz',
+        required: true,
+        name: 'parent_fullname',
+        type: 'text'
+      },
+      {
+        required: true,
+        label: 'T.C. Kimlik Numarası',
+        name: 'parent_tc',
+        type: 'text',
+        placeholder: '11 Haneli T.C. Kimlik No'
+      },
+      {
+        required: true,
+        label: 'Telefon Numarası',
+        placeholder: '05XX XXX XX XX',
+        name: 'phone',
+        type: 'tel'
+      },
+      {
+        label: 'E-posta Adresi',
+        name: 'email',
+        required: true,
+        type: 'email',
+        placeholder: 'ornek@email.com'
+      },
+      {
+        label: 'Öğrenciye Yakınlık Derecesi',
+        options: 'Anne, Baba, Vasi / Diğer',
+        required: true,
+        name: 'relation',
+        fullWidth: true,
+        type: 'select'
+      },
+      {
+        icon: 'location_on',
+        name: 'kamp_s_s',
+        label: 'Kampüs Seçiniz',
+        type: 'section_title'
+      },
+      {
+        required: true,
+        label: 'Kampüs Seçimi',
+        options: 'Eryaman Kampüsü, Oran Kampüsü, Ümitköy Kampüsü',
+        name: 'campus',
+        type: 'select'
+      },
+      {
+        options: '2026 - 2027, 2027 - 2028',
+        name: 'academic_year',
+        required: true,
+        type: 'select',
+        label: 'Akademik Yıl'
+      },
+      {
+        fullWidth: true,
+        required: true,
+        label: 'Bizi nereden duydunuz?',
+        options: 'Sosyal Medya, Tavsiye, Billboard / Açık Hava, İnternet Reklamları, Diğer',
+        type: 'select',
+        name: 'referral'
+      }
+    ],
     styles: {
-      backgroundColor: '#f6f6f8',
+      itemTitleMobileSize: '',
       headerBgColor: '#002147',
-      cardBgColor: '#ffffff',
-      titlePart1Color: '#1d4eca'
-    }
+      backgroundColor: '#f6f6f8',
+      itemTitleSize: '',
+      titlePart1Color: '#1d4eca',
+      cardBgColor: '#ffffff'
+    },
+    title: 'ÖĞRENCİ ÖN KAYIT FORMU',
+    type: 'pre_registration_form',
+    subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.'
   }
 ];
 
 export const defaultScholarshipPageData = [
   {
-    type: "bursluluk_hero",
-    badge: "2026-2027 EĞİTİM YILI",
-    title: "Akademik Başarıya Giden Yolunuz",
+    title: 'Akademik Başarıya\nGiden Yolunuz',
+    type: 'bursluluk_hero',
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786530739239_c20vmc_kamp%C3%BCsler--banner-2.jpg?alt=media&token=b1cfab84-7893-4957-bfda-473917ef1fb4',
+    styles: {
+      enableDarkOverlay: true,
+      overlayColor: '#1c62a5',
+      itemTitleColor: '#00e1ff',
+      backgroundColor: '#002147',
+      color: '#ffffff',
+      overlayHoverReveal: false,
+      backgroundImage: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786530739239_c20vmc_kamp%C3%BCsler--banner-2.jpg?alt=media&token=b1cfab84-7893-4957-bfda-473917ef1fb4',
+      overlayOpacity: 60
+    },
     subtitle: "Geleceğin liderlerini yetiştiren Dost Koleji'nde yerinizi ayırtın. Bursluluk sınavımıza katılarak %100'e varan eğitim desteği fırsatlarından yararlanın.",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
+    badge: '2026-2027 EĞİTİM YILI',
     stats: [
-      { value: "16-17 Mart", label: "Sınav Tarihi" },
-      { value: "4-11. Sınıflar", label: "Katılımcı Seviyesi" },
-      { value: "%100'e Varan", label: "Burs İmkanı" }
-    ],
-    styles: {
-      backgroundColor: "#002147",
-      color: "#ffffff"
-    }
-  },
-  {
-    type: "bursluluk_exam_form",
-    title: "Bursluluk Sınavı Başvuru Formu",
-    subtitle: "Lütfen aşağıdaki bilgileri eksiksiz ve doğru bir şekilde doldurunuz.",
-    styles: {
-      backgroundColor: "#faf8ff"
-    }
-  },
-  {
-    type: "bursluluk_info_cards",
-    title: "Sınav Bilgilendirmeleri",
-    subtitle: "Sınav süreci, gerekli belgeler ve değerlendirme kriterleri hakkında detaylı bilgi alabilirsiniz.",
-    items: [
       {
-        icon: "history_edu",
-        title: "Sınav Kuralları",
-        rules: [
-          "Sınav saatinden 30 dk önce okulda olunmalıdır.",
-          "Kalem, silgi ve su öğrenci tarafından getirilir."
-        ]
+        value: '5 Ocak 2027',
+        label: 'Sınav Tarihi'
       },
       {
-        icon: "content_paste",
-        title: "Gerekli Belgeler",
-        rules: [
-          "Nüfus Cüzdanı veya Kimlik Kartı aslı.",
-          "Sistemden alınan Sınav Giriş Belgesi."
-        ]
+        value: '4-11. Sınıflar',
+        label: 'Katılımcı Seviyesi'
       },
       {
-        icon: "insights",
-        title: "Puanlama",
-        rules: [
-          "4 yanlış 1 doğruyu götürmektedir.",
-          "Sonuçlar sınavdan 1 hafta sonra açıklanır."
-        ]
+        value: "%100'e Varan",
+        label: 'Burs İmkanı'
+      }
+    ]
+  },
+  {
+    inputs: [
+      {
+        type: 'section_title',
+        icon: 'school',
+        label: 'Öğrenci Bilgileri'
+      },
+      {
+        type: 'text',
+        label: 'Öğrenci Adı Soyadı',
+        name: 'student_fullname',
+        required: true,
+        placeholder: 'Örn: Ahmet Yılmaz'
+      },
+      {
+        type: 'text',
+        placeholder: '11 haneli kimlik numarası',
+        label: 'T.C. Kimlik No',
+        name: 'student_tc',
+        required: false
+      },
+      {
+        required: false,
+        label: 'Mevcut Okul',
+        type: 'text',
+        placeholder: 'Halen devam edilen okul',
+        name: 'current_school'
+      },
+      {
+        label: 'Sınıf Seviyesi',
+        required: true,
+        type: 'select',
+        name: 'grade_level',
+        options: '4. Sınıf, 5. Sınıf, 6. Sınıf, 7. Sınıf, 8. Sınıf, 9. Sınıf, 10. Sınıf, 11. Sınıf'
+      },
+      {
+        label: 'Veli Bilgileri',
+        type: 'section_title',
+        icon: 'family_restroom'
+      },
+      {
+        name: 'parent_fullname',
+        type: 'text',
+        placeholder: 'Örn: Mehmet Yılmaz',
+        label: 'Veli Adı Soyadı',
+        required: true
+      },
+      {
+        placeholder: '05XX XXX XX XX',
+        required: true,
+        label: 'Telefon Numarası',
+        name: 'parent_phone',
+        type: 'tel'
+      },
+      {
+        placeholder: 'ornek@mail.com',
+        required: false,
+        fullWidth: true,
+        type: 'email',
+        label: 'E-posta Adresi',
+        name: 'parent_email'
+      },
+      {
+        type: 'select',
+        fullWidth: true,
+        name: 'discovery_source',
+        options: 'Sosyal Medya, İnternet Reklamları, Tavsiye, Okul Afişleri/Bilboardlar, Diğer',
+        required: false,
+        label: 'Bizi nereden buldunuz?'
+      },
+      {
+        type: 'section_title',
+        icon: 'location_on',
+        label: 'Sınav Tercihi'
+      },
+      {
+        type: 'select',
+        options: 'Eryaman Kampüsü, Oran Kampüsü, Ümitköy Kampüsü',
+        required: true,
+        name: 'campus_preference',
+        label: 'Kampüs Seçimi'
+      },
+      {
+        name: 'exam_session',
+        label: 'Sınav Saati',
+        required: false,
+        type: 'select',
+        options: 'Seans 1: 10:00, Seans 2: 16:00'
       }
     ],
+    subtitle: 'Lütfen aşağıdaki bilgileri eksiksiz ve doğru bir şekilde doldurunuz.',
     styles: {
-      backgroundColor: "#ffffff"
-    }
+      backgroundColor: '#faf8ff'
+    },
+    title: 'Bursluluk Sınavı Başvuru Formu',
+    type: 'bursluluk_exam_form'
   },
   {
-    type: "bursluluk_result_query",
-    title: "Sınav Sonuç Sorgulama",
-    subtitle: "Aşağıdaki butona tıklayarak sınav sonuç sorgulama sayfasına ulaşabilirsiniz.",
-    buttonText: "SINAV SONUCUNU ÖĞREN",
-    buttonUrl: "#",
-    image: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80",
     styles: {
-      backgroundColor: "#e2e1ec"
-    }
+      backgroundColor: '#ffffff'
+    },
+    subtitle: 'Sınav süreci, gerekli belgeler ve değerlendirme kriterleri hakkında detaylı bilgi alabilirsiniz.',
+    items: [
+      {
+        title: 'Sınav Kuralları',
+        icon: 'history_edu',
+        rules: [
+          'Sınav saatinden 30 dk önce okulda olunmalıdır.',
+          'Kalem, silgi ve su öğrenci tarafından getirilir.'
+        ]
+      },
+      {
+        rules: [
+          'Nüfus Cüzdanı veya Kimlik Kartı aslı.',
+          'Sistemden alınan Sınav Giriş Belgesi.'
+        ],
+        icon: 'content_paste',
+        title: 'Gerekli Belgeler'
+      },
+      {
+        icon: 'insights',
+        rules: [
+          '4 yanlış 1 doğruyu götürmektedir.',
+          'Sonuçlar sınavdan 1 hafta sonra açıklanır.'
+        ],
+        title: 'Puanlama'
+      }
+    ],
+    type: 'bursluluk_info_cards',
+    title: 'Sınav Bilgilendirmeleri'
+  },
+  {
+    title: 'Sınav Sonuç Sorgulama',
+    image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80',
+    styles: {
+      backgroundColor: '#e2e1ec'
+    },
+    subtitle: 'Aşağıdaki butona tıklayarak sınav sonuç sorgulama sayfasına ulaşabilirsiniz.',
+    buttonText: 'SINAV SONUCUNU ÖĞREN',
+    buttonUrl: '#',
+    type: 'bursluluk_result_query'
   }
 ];
 
 export const defaultScholarshipConfirmationPageData = [
   {
-    type: "bursluluk_confirmation",
-    successIcon: "check_circle",
-    titlePart1: "Başvurunuz Başarıyla ",
-    titlePart1Color: "#002147",
-    titlePart2: "Alındı!",
-    titlePart2Color: "#002147",
-    title: "Başvurunuz Başarıyla Alındı!",
-    subtitle: "Sınav giriş belgeniz aşağıda oluşturulmuştur. Lütfen sınav günü yanınızda bulundurunuz. Belgenizi indirip yazdırarak sınava getirmeyi unutmayınız.",
-    documentTitle: "Bursluluk Sınavı Giriş Belgesi",
-    documentLogo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAcW18movsC69qnz9zpsbzsrJLWPy_Geo5sAAAi9nqoC0YE-bdMj0AiEUe-Z78NoFFBpFQy5UuXaMmRO0quff6khOovxlJfE1ptuTa38PqzHcJhVeJMUlPxZqHhxVw08UApxaSzgRKctOtlTu4DtjMgzPIZdZ0WMLs8KuA96cHwv2jaeSc1OpVg0rX0eqzr2iTpWL0N0C_Y9PkoQ7IeERePRqYH46NNAxWyoW03nr17RN7GXuwfevi2RYWTPiQtM4pg9fysMIgmkuk",
-    documentNoPrefix: "BELGE NO: ",
-    rules: [
-      "Sınav başlamadan 30 dk. önce salonda hazır bulununuz.",
-      "İlk 30 dk. ve son 15 dk. salondan çıkmak yasaktır.",
-      "Optik formda kodlamaları kurşun kalemle yapınız."
+    titlePart2: 'Alındı!',
+    titlePart1: 'Başvurunuz Başarıyla ',
+    documentNoPrefix: 'BELGE NO: ',
+    type: 'bursluluk_confirmation',
+    successIcon: 'check_circle',
+    documentTitle: 'Bursluluk Sınavı Giriş Belgesi',
+    buttons: [
+      {
+        icon: 'download',
+        label: 'İndir (PDF)',
+        action: 'download',
+        style: 'primary'
+      },
+      {
+        label: 'Yazdır',
+        icon: 'print',
+        style: 'outline',
+        action: 'print'
+      }
     ],
-    requiredDocuments: [
-      "Nüfus Cüzdanı veya Kimlik Kartı",
-      "Sınav Giriş Belgesi"
+    title: 'Başvurunuz Başarıyla Alındı!',
+    styles: {
+      backgroundColor: '#f6f6f8',
+      cardBgColor: '#ffffff'
+    },
+    rules: [
+      'Sınav başlamadan 30 dk. önce salonda hazır bulununuz.',
+      'İlk 30 dk. ve son 15 dk. salondan çıkmak yasaktır.',
+      'Optik formda kodlamaları kurşun kalemle yapınız.'
     ],
     campusAddresses: {
-      eryaman: "Şehit Osman Avcı Mh. Malazgirt 1071 Cad. No:20 Eryaman / Etimesgut / Ankara",
-      oran: "Oran Mh. Rafet Canıtez Cd. No:8 Çankaya / Ankara",
-      umitkoy: "Ümitköy Mh. 2432. Cd. No:18 Çankaya / Ankara"
+      oran: 'Oran Mh. Rafet Canıtez Cd. No:8 Çankaya / Ankara',
+      eryaman: 'Şehit Osman Avcı Mh. Malazgirt 1071 Cad. No:20 Eryaman / Etimesgut / Ankara',
+      umitkoy: 'Ümitköy Mh. 2432. Cd. No:18 Çankaya / Ankara'
     },
-    buttons: [
-      { label: "İndir (PDF)", action: "download", style: "primary", icon: "download" },
-      { label: "Yazdır", action: "print", style: "outline", icon: "print" }
-    ],
-    styles: {
-      backgroundColor: "#f6f6f8",
-      cardBgColor: "#ffffff"
-    }
+    titlePart1Color: '#002147',
+    subtitle: 'Sınav giriş belgeniz aşağıda oluşturulmuştur. Lütfen sınav günü yanınızda bulundurunuz. Belgenizi indirip yazdırarak sınava getirmeyi unutmayınız.',
+    documentLogo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAcW18movsC69qnz9zpsbzsrJLWPy_Geo5sAAAi9nqoC0YE-bdMj0AiEUe-Z78NoFFBpFQy5UuXaMmRO0quff6khOovxlJfE1ptuTa38PqzHcJhVeJMUlPxZqHhxVw08UApxaSzgRKctOtlTu4DtjMgzPIZdZ0WMLs8KuA96cHwv2jaeSc1OpVg0rX0eqzr2iTpWL0N0C_Y9PkoQ7IeERePRqYH46NNAxWyoW03nr17RN7GXuwfevi2RYWTPiQtM4pg9fysMIgmkuk',
+    titlePart2Color: '#002147',
+    requiredDocuments: [
+      'Nüfus Cüzdanı veya Kimlik Kartı',
+      'Sınav Giriş Belgesi'
+    ]
   }
 ];
 
-
 export const defaultEgitimSistemiData = [
   {
-    type: "edu_system_hero",
-    title: "Eğitim Sistemimiz: Geleceğe Güvenle Hazırlıyoruz",
-    subtitle: "Öğrencilerimizi sadece akademik olarak değil, sosyal, duygusal ve fiziksel olarak da destekleyen bütüncül (holistik) ve öğrenci odaklı bir eğitim modeli uyguluyoruz.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDXrfv9nG993CiDepWkpLVnJsyr4V4H0omhGEazGnoozOFIBn416oFqVDB0cU2KMjZ42WLGbfxzwGkfZpQB7RDZU2nFk6r0Fp-P8_EpALDAsjOzJHSwfSFekrpfepwCYUqWG1JJjcVg9rT4GSdexOGAcEsZnaVtgQft5ukI1hgqV4oaWwSUZ6m8mrcmxvj_9faGCMhX5JcOze8sYGkCVEgCW0So_2_F8TpGVXCuwJASLPt9t0rS8TSw",
-    image_posX: "50",
-    image_posY: "50",
-    image_scale: "100"
+    type: 'edu_system_hero',
+    subtitle: 'Öğrencilerimizi sadece akademik olarak değil, sosyal,\n' +
+      'duygusal ve fiziksel olarak da destekleyen bütüncül\n' +
+      've öğrenci odaklı bir eğitim modeli uyguluyoruz.',
+    image_posY: '50',
+    image_scale: 104,
+    styles: {
+      subtitleMobileAlign: '',
+      subtitleMobileSize: '13px',
+      titleColor: '#41c1d0',
+      titleAlign: 'left',
+      titleMobileSize: '33px',
+      subtitleAlign: 'left',
+      subtitleSize: '19px',
+      titleSize: '49px'
+    },
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785999140943_je1qwu_egitim-sistemimiz-header.jpg?alt=media&token=ed62d1cb-2eb6-482c-9928-adf650d76ea7',
+    image_posX: '50',
+    title: 'Geleceğe Güvenle\nHazırlıyoruz'
   },
   {
-    type: "edu_system_levels",
-    title: "Eğitim Kademelerimiz",
+    type: 'edu_system_levels',
+    title: 'Eğitim Kademelerimiz',
+    styles: {
+      backgroundColor: '',
+      titleSize: '45px',
+      titleMobileSize: '25px',
+      fullWidth: false
+    },
     items: [
       {
-        icon: "child_care",
-        title: "Anaokulu",
-        desc: "Oyun temelli öğrenme ile çocukların merak duygusunu besleyerek ilköğretime sağlam bir temel atıyoruz.",
-        buttonText: "Detaylı Bilgi",
-        url: "#"
+        desc: 'Oyun temelli öğrenme ile çocukların merak duygusunu besleyerek ilköğretime sağlam bir temel atıyoruz.',
+        hideButton: false,
+        url: '/anaokulu',
+        icon: 'child_care',
+        title: 'Anaokulu',
+        buttonText: 'Detaylı Bilgi',
+        link: '/anaokulu',
+        itemTitleColor: '#0031a3',
+        cardBorderColor: '#0031b8',
+        buttonUrl: '/anaokulu'
       },
       {
-        icon: "school",
-        title: "İlkokul",
-        desc: "Temel akademik becerilerin yanı sıra, karakter eğitimi ve değerler eğitimini merkeze alarak birey olma yolculuğunu destekliyoruz.",
-        buttonText: "Detaylı Bilgi",
-        url: "#"
+        link: '/ilkokul',
+        buttonUrl: '/ilkokul',
+        itemTitleColor: '#33c1d8',
+        buttonText: 'Detaylı Bilgi',
+        cardBorderColor: '#33c1d8',
+        url: '/ilkokul',
+        title: 'İlkokul',
+        desc: 'Temel akademik becerilerin yanı sıra, karakter eğitimi ve değerler eğitimini merkeze alarak birey olma yolculuğunu destekliyoruz.',
+        icon: 'school'
       },
       {
-        icon: "local_library",
-        title: "Ortaokul",
-        desc: "Liselere geçiş sınavlarına (LGS) profesyonel hazırlık sürecini, yoğun dil eğitimi ve kulüp faaliyetleriyle zenginleştiriyoruz.",
-        buttonText: "Detaylı Bilgi",
-        url: "#"
+        url: '/ortaokul',
+        link: '/ortaokul',
+        title: 'Ortaokul',
+        desc: 'Liselere geçiş sınavlarına (LGS) profesyonel hazırlık sürecini, yoğun dil eğitimi ve kulüp faaliyetleriyle zenginleştiriyoruz.',
+        icon: 'local_library',
+        buttonUrl: '/ortaokul',
+        itemTitleColor: '#0031a3',
+        cardBorderColor: '#0031b8',
+        buttonText: 'Detaylı Bilgi'
       },
       {
-        icon: "account_balance",
-        title: "Lise",
-        desc: "Üniversite hedeflerine yönelik yoğun akademik program, kariyer danışmanlığı ve uluslararası geçerliliği olan sertifika programları sunuyoruz.",
-        buttonText: "Detaylı Bilgi",
-        url: "#"
+        url: '/lise',
+        link: '/lise',
+        buttonUrl: '/lise',
+        title: 'Lise',
+        cardBorderColor: '#33c1cf',
+        desc: 'Üniversite hedeflerine yönelik yoğun akademik program, kariyer danışmanlığı ve uluslararası geçerliliği olan sertifika programları sunuyoruz.',
+        buttonText: 'Detaylı Bilgi',
+        icon: 'account_balance',
+        itemTitleColor: '#33c1cf'
       }
     ]
   },
   {
-    type: "edu_system_yadep",
-    title: "YADEP: Yaşam Becerileri ve Değerler Eğitimi",
-    subtitle: "Öğrencilerimizi sadece sınavlara değil, hayata hazırlayan özgün programımız.",
+    subtitle: 'Öğrencilerimizi sadece sınavlara değil, hayata hazırlayan özgün programımız.',
+    title: 'YADEP\nYaşam Becerileri ve Değerler Eğitimi',
+    type: 'edu_system_yadep',
     items: [
       {
-        icon: "psychology",
-        title: "Eleştirel Düşünme",
-        desc: "Bilgiyi sorgulama, analiz etme ve bağımsız fikirler üretebilme yetkinliği kazandırılır."
+        cardBgColor: '',
+        itemDescColor: '#174b7e',
+        desc: 'Bilgiyi sorgulama, analiz etme ve bağımsız fikirler üretebilme yetkinliği kazandırılır.',
+        cardBorderWidth: '0',
+        icon: 'psychology',
+        itemTitleColor: '#114bb8',
+        cardBorderColor: '',
+        title: 'Eleştirel Düşünme'
       },
       {
-        icon: "schedule",
-        title: "Zaman Yönetimi",
-        desc: "Öğrenciler, önceliklendirme ve planlama becerileriyle verimli çalışma alışkanlıkları edinir."
+        itemDescColor: '#174b7e',
+        itemTitleColor: '#33c1cf',
+        title: 'Zaman Yönetimi',
+        cardBgColor: '',
+        icon: 'schedule',
+        desc: 'Öğrenciler, önceliklendirme ve planlama becerileriyle verimli çalışma alışkanlıkları edinir.'
       },
       {
-        icon: "favorite",
-        title: "Duygusal Zeka",
-        desc: "Empati kurma, kriz yönetimi ve sağlıklı iletişim becerileriyle güçlü karakter inşası desteklenir."
+        desc: 'Empati kurma, kriz yönetimi ve sağlıklı iletişim becerileriyle güçlü karakter inşası desteklenir.',
+        icon: 'favorite',
+        itemTitleColor: '#ef6288',
+        itemDescColor: '#174b7e',
+        cardBorderWidth: '0',
+        title: 'Duygusal Zeka',
+        cardBgColor: '#ffffff'
       }
-    ]
+    ],
+    styles: {
+      backgroundColor: '#174b7e',
+      color: '',
+      titleColor: '#41c1ce',
+      subtitleColor: '#ffffff'
+    }
   },
   {
-    type: "edu_system_philosophy",
-    badge: "Pedagojik Felsefemiz",
-    title: "Öğrenci Odaklı Eğitim Felsefesi",
-    desc: "Her öğrencinin öğrenme hızı, ilgi alanları ve yetenekleri farklıdır. Bu bilinçle, standartlaşmış kalıplar yerine, her bireyin potansiyelini en üst düzeye çıkaracak kişiselleştirilmiş yaklaşımlar benimsiyoruz.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBiIc6awQpL3bVLsx7HUW7LAV6Is3Ys8NSNkcy59GGWgLaFiHU7BuvUjE3W0_Q6BpQw5jmtD7KM__i88i9ce-GrN8JLIQiiXxqaVd2c9Vm6pWKB8UKyWxLaatni_MGolw8vhxtABCIR4-FZlTBzPMi_B5a16-jJhBQc6CJSZ96pAyLXZPy9ydJBFEPJ1jhObunc_PtMYK_ySR7Ivtsy6dgw91uc_5IWsS6lZcegAbP8ji_jOrA1xNVG",
-    image_posX: "50",
-    image_posY: "50",
-    image_scale: "100",
-    cardIcon: "emoji_events",
-    cardTitle: "Ödüllü Yaklaşım",
-    cardDesc: "Modern eğitim standartlarına tam uyum sağlayan yenilikçi müfredat.",
+    cardIcon: 'emoji_events',
+    type: 'edu_system_philosophy',
+    desc: 'Her öğrencinin öğrenme hızı, ilgi alanları ve yetenekleri farklıdır. Bu bilinçle, standartlaşmış kalıplar yerine, her bireyin potansiyelini en üst düzeye çıkaracak kişiselleştirilmiş yaklaşımlar benimsiyoruz.',
+    image_scale: '100',
+    cardDesc: 'Modern eğitim standartlarına tam uyum sağlayan yenilikçi müfredat.',
     items: [
       {
-        icon: "psychology",
-        title: "Bireyselleştirilmiş Takip",
-        desc: "Düzenli akademik ve psikolojik değerlendirmelerle öğrencinin gelişimini adım adım izliyor, ihtiyaçlarına özel destek programları oluşturuyoruz."
+        desc: 'Düzenli akademik ve psikolojik değerlendirmelerle öğrencinin gelişimini adım adım izliyor, ihtiyaçlarına özel destek programları oluşturuyoruz.',
+        itemTitleColor: '#174b7e',
+        title: 'Bireyselleştirilmiş Takip',
+        icon: 'psychology'
       },
       {
-        icon: "rocket_launch",
-        title: "Girişimci Ruh",
-        desc: "Öğrencilerimizi proje bazlı çalışmalar, atölyeler ve kulüpler aracılığıyla inovatif düşünmeye ve problem çözmeye teşvik ediyoruz."
+        desc: 'Öğrencilerimizi proje bazlı çalışmalar, atölyeler ve kulüpler aracılığıyla inovatif düşünmeye ve problem çözmeye teşvik ediyoruz.',
+        icon: 'rocket_launch',
+        title: 'Girişimci Ruh',
+        itemTitleColor: '#174b7e'
       },
       {
-        icon: "diversity_1",
-        title: "Sosyal Duygusal Öğrenme",
-        desc: "Empati, öz-farkındalık, iletişim becerileri ve zorluklarla başa çıkma gibi 21. yüzyıl yaşam becerilerini müfredatımızın merkezine koyuyoruz."
+        desc: 'Empati, öz-farkındalık, iletişim becerileri ve zorluklarla başa çıkma gibi 21. yüzyıl yaşam becerilerini müfredatımızın merkezine koyuyoruz.',
+        title: 'Sosyal Duygusal Öğrenme',
+        itemTitleColor: '#174b7e',
+        icon: 'diversity_1'
       }
-    ]
+    ],
+    badge: 'Pedagojik Felsefemiz',
+    styles: {
+      cardTitleColor: '#b92282',
+      titleColor: '#174b7e'
+    },
+    title: 'Öğrenci Odaklı Eğitim Felsefesi',
+    cardTitle: 'Ödüllü Yaklaşım',
+    image_posX: '50',
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1785999296162_ejpy6r_egitim-sistemimiz-page.jpg?alt=media&token=f3a8a0bd-0885-4437-9c98-1c601e211983',
+    image_posY: '50'
   },
   {
-    type: "edu_system_cta",
-    title: "Okulumuzu Daha Yakından Tanımak İster misiniz?",
-    desc: "Eğitim felsefemiz, kampüs olanaklarımız ve kayıt süreçlerimiz hakkında detaylı bilgi almak için bizimle iletişime geçin veya e-kataloğumuzu inceleyin.",
     buttons: [
       {
-        label: "Tanışma Randevusu Al",
-        url: "#",
-        icon: "calendar_month"
+        link: '/iletisim',
+        url: '/iletisim',
+        icon: 'calendar_month',
+        buttonUrl: '/iletisim',
+        label: 'Tanışma Randevusu Al'
       }
-    ]
+    ],
+    styles: {
+      subtitleMobileSize: '14px',
+      titleSize: '35px',
+      subtitleSize: '19px',
+      titleColor: '#28d9e6',
+      titleMobileSize: '21px'
+    },
+    subtitle: 'Eğitim felsefemiz, kampüs olanaklarımız ve kayıt süreçlerimiz hakkında\n' +
+      'detaylı bilgi almak için bizimle iletişime geçin.',
+    type: 'edu_system_cta',
+    desc: 'Eğitim felsefemiz, kampüs olanaklarımız ve kayıt süreçlerimiz hakkında detaylı bilgi almak için bizimle iletişime geçin veya e-kataloğumuzu inceleyin.',
+    title: 'Okulumuzu Daha Yakından Tanımak İster misiniz?'
   }
 ];
 
 export const defaultCareerPageData = [
   {
-    type: 'career_hero',
-    title: 'Dost Koleji\'nde Kariyer',
+    title: "Dost Koleji'nde Kariyer",
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80',
     subtitle: 'Geleceği birlikte inşa edelim.',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2850&q=80'
+    type: 'career_hero'
   },
   {
-    type: 'career_benefits',
     items: [
       {
-        title: 'Sürekli Gelişim',
         desc: 'Eğitim sektöründe sürekli eğitim, atölye çalışmaları ve mesleki gelişim fırsatları ile personelimize yatırım yapıyoruz.',
-        icon: 'lucide:GraduationCap'
+        icon: 'lucide:GraduationCap',
+        title: 'Sürekli Gelişim'
       },
       {
+        icon: 'lucide:Shield',
         title: 'Kurumsal Güven',
-        desc: 'Dürüstlük ve istikrar temeli üzerine kurulmuş, güvenebileceğiniz güvenli ve şeffaf bir çalışma ortamı sunuyoruz.',
-        icon: 'lucide:Shield'
+        desc: 'Dürüstlük ve istikrar temeli üzerine kurulmuş, güvenebileceğiniz güvenli ve şeffaf bir çalışma ortamı sunuyoruz.'
       },
       {
+        icon: 'lucide:Leaf',
         title: 'Huzurlu Ortam',
-        desc: 'Kampüslerimiz hem öğrenciler hem de personel için refah, işbirliği ve uyumlu bir atmosferi teşvik etmek üzere tasarlanmıştır.',
-        icon: 'lucide:Leaf'
+        desc: 'Kampüslerimiz hem öğrenciler hem de personel için refah, işbirliği ve uyumlu bir atmosferi teşvik etmek üzere tasarlanmıştır.'
       }
-    ]
+    ],
+    type: 'career_benefits'
   },
   {
-    type: 'career_application',
     title: 'İş Başvurusu',
     items: [
-      { title: 'Sınıf Öğretmeni', type: 'Tam Zamanlı', dept: 'İlkokul' },
-      { title: 'İngilizce Öğretmeni', type: 'Tam Zamanlı', dept: 'Ortaokul' }
-    ]
+      {
+        val: '',
+        title: 'Matematik Öğretmeni'
+      },
+      {
+        type: 'Tam Zamanlı',
+        title: 'Sınıf Öğretmeni',
+        dept: 'İlkokul'
+      },
+      {
+        dept: 'Ortaokul',
+        title: 'İngilizce Öğretmeni',
+        type: 'Tam Zamanlı'
+      }
+    ],
+    type: 'career_application'
   }
 ];
 
-
 export const defaultTuitionFeesData = [
   {
-    type: "tuition_fees_hero",
-    title: "2026-2027 Eğitim-Öğretim Yılı Ücretleri",
-    subtitle: "Dost Koleji olarak, öğrencilerimize sunduğumuz kaliteli eğitim ve olanakların karşılığında belirlenen akademik yıl ücretlendirme detaylarımızı aşağıda inceleyebilirsiniz.",
-    badge: "2026-2027 EĞİTİM YILI",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=80"
+    id: 'tf_hero_17861989653590.4177780837511701',
+    badge: '2026-2027 EĞİTİM YILI',
+    type: 'tuition_fees_hero',
+    styles: {
+      backgroundImage: '',
+      overlayColor: '#194e87',
+      enableDarkOverlay: true,
+      overlayHoverReveal: false,
+      overlayOpacity: 55
+    },
+    title: '2026-2027\nEğitim-Öğretim Yılı Ücretleri',
+    image: 'https://firebasestorage.googleapis.com/v0/b/upheld-welder-321314.firebasestorage.app/o/media%2F1786530739239_c20vmc_kamp%C3%BCsler--banner-2.jpg?alt=media&token=b1cfab84-7893-4957-bfda-473917ef1fb4',
+    subtitle: 'Dost Koleji olarak, öğrencilerimize sunduğumuz kaliteli eğitim ve olanakların karşılığında belirlenen akademik yıl ücretlendirme detaylarımızı aşağıda inceleyebilirsiniz.'
   },
   {
-    type: "tuition_fees",
-    tableTitle: "Eğitim Kadranları Ücret Tablosu",
-    items: [
+    discountsTitle: 'İndirimler',
+    discounts: [
       {
-        title: "Anaokulu",
-        icon: "child_care",
-        tuitionFee: "120.000 ₺",
-        foodFee: "40.000 ₺"
-      },
-      {
-        title: "İlkokul",
-        icon: "backpack",
-        tuitionFee: "140.000 ₺",
-        foodFee: "45.000 ₺"
-      },
-      {
-        title: "Ortaokul",
-        icon: "school",
-        tuitionFee: "150.000 ₺",
-        foodFee: "45.000 ₺"
-      },
-      {
-        title: "Anadolu Lisesi",
-        icon: "menu_book",
-        tuitionFee: "160.000 ₺",
-        foodFee: "50.000 ₺"
-      },
-      {
-        title: "Fen Lisesi",
-        icon: "science",
-        tuitionFee: "170.000 ₺",
-        foodFee: "50.000 ₺"
+        title: 'Erken Kayıt İndirimi',
+        desc: 'Erken kayıtlarda avanjlı fiyatları yakalayın.'
       }
     ],
-    infoBoxTitle: "Önemli Bilgilendirmeler",
-    infoBoxContent: "Yukarıda belirtilen ücretlere KDV dahildir.\nKardeş indirimi %10 olarak uygulanmaktadır.\nPeşin ödemelerde %5 indirim uygulanır.\nEğitim materyalleri ve kıyafet ücretleri ayrıca hesaplanacaktır.",
-    paymentsTitle: "Ödeme Seçenekleri",
     payments: [
       {
-        title: "Peşin Ödeme",
-        icon: "payments",
-        desc: "Banka havalesi, EFT veya kredi kartı ile tek çekim olarak yapılabilir."
+        icon: 'payments',
+        desc: 'Banka havalesi, EFT veya kredi kartı ile tek çekim olarak yapılabilir.',
+        title: 'Peşin Ödeme'
       },
       {
-        title: "Taksitli Ödeme",
-        icon: "credit_card",
-        desc: "Anlaşmalı bankaların kredi kartlarına vade farksız taksit imkanı sunulmaktadır.",
-        banks: "Bonus, Maximum, World, Ziraat"
+        desc: 'Anlaşmalı bankaların kredi kartlarına vade farksız taksit imkanı sunulmaktadır.',
+        banks: 'Kuveyt Türk , Ziraat Bankası',
+        title: 'Taksitli Ödeme',
+        icon: 'credit_card'
       }
-    ]
+    ],
+    type: 'tuition_fees',
+    tableTitle: 'Eğitim Kademeleri Ücret Tablosu',
+    infoBoxContent: 'Yukarıda belirtilen ücretlere KDV dahildir.\n' +
+      'Kardeş indirimi %10 olarak uygulanmaktadır.\n' +
+      'Peşin ödemelerde %5 indirim uygulanır.\n' +
+      'Eğitim materyalleri ve kıyafet ücretleri ayrıca hesaplanacaktır.',
+    paymentsTitle: 'Ödeme Seçenekleri',
+    items: [
+      {
+        icon: 'child_care',
+        foodFee: '90.000 ₺',
+        totalFee: '330.000',
+        tuitionFee: '240.000 ₺',
+        title: 'Anaokulu'
+      },
+      {
+        foodFee: '108.000 ₺',
+        title: 'İlkokul',
+        totalFee: '438.000',
+        tuitionFee: '330.000 ₺',
+        icon: 'backpack'
+      },
+      {
+        totalFee: '428.000',
+        tuitionFee: '330.000 ₺',
+        icon: 'school',
+        title: 'Ortaokul',
+        foodFee: '98.000 ₺'
+      },
+      {
+        foodFee: '92.000 ₺',
+        tuitionFee: '342.000 ₺',
+        icon: 'menu_book',
+        totalFee: '434.000',
+        title: 'Anadolu Lisesi'
+      },
+      {
+        tuitionFee: '380.000 ₺',
+        foodFee: '92.000 ₺',
+        totalFee: '472.000',
+        title: 'Fen Lisesi',
+        icon: 'science'
+      }
+    ],
+    styles: {
+      titleSize: '37px',
+      subtitleSize: '19px',
+      itemTitleMobileAlign: '',
+      subtitleMobileSize: '13px',
+      titleMobileSize: '23px',
+      itemTitleColor: '#3e5075'
+    },
+    infoBoxTitle: 'Önemli Bilgilendirmeler'
+  },
+  {
+    isHidden: true,
+    type: 'campus_hero',
+    title: 'Kampüs Hero Başlığı'
   }
 ];
 
 export const defaultLgsCalculatorData = [
   {
-    type: "lgs_calculator",
-    title: "LGS Puan Hesaplama Modülü",
-    subtitle: "2026 güncel katsayılarına göre tahmini LGS puanınızı ve yüzdelik diliminizi hesaplayın.",
+    type: 'lgs_calculator',
+    title: 'LGS Puan Hesaplama Modülü',
+    subtitle: '2026 güncel katsayılarına göre tahmini LGS puanınızı ve yüzdelik diliminizi hesaplayın.',
     styles: {
-      backgroundColor: "#faf8ff"
+      backgroundColor: '#faf8ff'
     }
   }
 ];
+
