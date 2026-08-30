@@ -6,6 +6,7 @@ import { db, auth } from '../lib/firebase';
 import { Lock, Settings } from 'lucide-react';
 import AssistantWidget from '../components/AssistantWidget';
 import { DynamicBlockRenderer } from '../components/PageBlocks';
+import { liveFallbackData } from '../lib/liveFallbackData';
 import {
   defaultHomePageData,
   defaultHakkimizdaData,
@@ -78,20 +79,22 @@ export default function PublicView() {
         const headerDoc = await getDoc(doc(db, 'settings', 'header'));
         if (headerDoc.exists()) {
           setHeaderData(await resolveMediaUrls(headerDoc.data()));
+        } else if (liveFallbackData.settings.header) {
+          setHeaderData(liveFallbackData.settings.header);
         }
         
         const footerDoc = await getDoc(doc(db, 'settings', 'footer'));
         if (footerDoc.exists()) {
           setFooterData(await resolveMediaUrls(footerDoc.data()));
+        } else if (liveFallbackData.settings.footer) {
+          setFooterData(liveFallbackData.settings.footer);
         }
 
         const generalDoc = await getDoc(doc(db, 'settings', 'general'));
         if (generalDoc.exists()) {
           const gData = await resolveMediaUrls(generalDoc.data());
           setGeneralSettings(gData);
-          if (gData.siteTitle) {
-            document.title = gData.siteTitle;
-          }
+          if (gData.siteTitle) document.title = gData.siteTitle;
           if (gData.faviconUrl) {
             let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
             if (!link) {
@@ -101,9 +104,14 @@ export default function PublicView() {
             }
             link.href = gData.faviconUrl;
           }
+        } else if (liveFallbackData.settings.general) {
+          setGeneralSettings(liveFallbackData.settings.general);
         }
       } catch (e) {
         console.error("Error fetching settings:", e);
+        if (liveFallbackData.settings.header) setHeaderData(liveFallbackData.settings.header);
+        if (liveFallbackData.settings.footer) setFooterData(liveFallbackData.settings.footer);
+        if (liveFallbackData.settings.general) setGeneralSettings(liveFallbackData.settings.general);
       }
     };
     fetchSettings();
@@ -171,89 +179,122 @@ export default function PublicView() {
         console.error("Query by path error:", err);
       }
 
-      // Default built-in fallbacks if no doc in Firestore
-      const normalizedPath = cleanPath.toLowerCase();
-      if (rawPath === '/' || docId === 'home') {
-        setPageData({
-          title: 'Ana Sayfa',
-          blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
-        });
-      } else if (docId === 'kulup-kayit-formu' || normalizedPath === '/kulup-kayit-formu') {
-        setPageData({
-          title: 'Kulüp Kayıt Formu',
-          path: '/kulup-kayit-formu',
-          blocks: [
-            {
-              type: 'club_registration_form',
-              titlePart1: 'Dost Koleji',
-              titlePart2: 'Kulüp Kayıt',
-              subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.'
+      const applyFallback = () => {
+        const fallbackPages: any = liveFallbackData.pages;
+        let matchedFallback = null;
+        
+        if (docId && fallbackPages[docId]) {
+           matchedFallback = fallbackPages[docId];
+        } else {
+           const fallbackValues = Object.values(fallbackPages);
+           matchedFallback = fallbackValues.find((p: any) => p.path === cleanPath);
+        }
+  
+        if (matchedFallback && !matchedFallback.isDeleted && !matchedFallback.isHidden) {
+            setPageData(cleanBrokenImages(matchedFallback));
+        } else {
+            // Default built-in fallbacks if no doc in Firestore AND no live fallback
+            const normalizedPath = cleanPath.toLowerCase();
+            if (rawPath === '/' || docId === 'home') {
+              setPageData({
+                title: 'Ana Sayfa',
+                blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
+              });
+            } else if (docId === 'kulup-kayit-formu' || normalizedPath === '/kulup-kayit-formu') {
+              setPageData({
+                title: 'Kulüp Kayıt Formu',
+                path: '/kulup-kayit-formu',
+                blocks: [
+                  {
+                    type: 'club_registration_form',
+                    titlePart1: 'Dost Koleji',
+                    titlePart2: 'Kulüp Kayıt',
+                    subtitle: 'Lütfen Formu Eksiksiz Doldurunuz.'
+                  }
+                ]
+              });
+            } else if (docId === 'duyurular' || normalizedPath === '/duyurular') {
+              setPageData({
+                title: 'Duyurular',
+                blocks: defaultDuyurularData
+              });
+            } else if (docId === 'basarilarimiz' || normalizedPath === '/basarilarimiz') {
+              setPageData({
+                title: 'Başarılarımız',
+                blocks: defaultBasarilarimizData
+              });
+            } else if (docId === 'hakkimizda' || normalizedPath === '/hakkimizda') {
+              setPageData({
+                title: 'Hakkımızda',
+                blocks: defaultHakkimizdaData
+              });
+            } else if (docId === 'is-basvuru-formu' || docId === 'is-basvurusu' || ['/is-basvuru-formu', '/is-basvuru', '/is-basvurusu', '/isbasvurusu', '/isbasvuru'].includes(normalizedPath)) {
+              setPageData({
+                title: 'İş Başvurusu',
+                path: '/is-basvurusu',
+                blocks: defaultCareerPageData
+              });
+            } else if (docId === 'egitim-sistemimiz' || normalizedPath === '/egitim-sistemimiz') {
+              setPageData({
+                title: 'Eğitim Sistemimiz',
+                path: '/egitim-sistemimiz',
+                blocks: defaultEgitimSistemiData
+              });
+            } else if (docId === 'on-kayit' || normalizedPath === '/on-kayit') {
+              setPageData({
+                title: 'Öğrenci Ön Kayıt Formu',
+                blocks: defaultPreRegistrationData
+              });
+            } else if (docId === 'bursluluk-basvuru-formu' || normalizedPath === '/bursluluk-basvuru-formu') {
+              setPageData({
+                title: 'Bursluluk Sınav Başvurusu',
+                path: '/bursluluk-basvuru-formu',
+                blocks: defaultScholarshipPageData
+              });
+            } else if (docId === 'bursluluk-basvuru-onay' || normalizedPath === '/bursluluk-basvuru-onay') {
+              setPageData({
+                title: 'Bursluluk Sınav Başvuru Onayı',
+                path: '/bursluluk-basvuru-onay',
+                blocks: defaultScholarshipConfirmationPageData
+              });
+            } else if (docId === 'lgs-puan-hesaplama' || normalizedPath === '/lgs-puan-hesaplama') {
+              setPageData({
+                title: 'LGS Puan Hesaplama Modülü',
+                path: '/lgs-puan-hesaplama',
+                blocks: defaultLgsCalculatorData
+              });
+            } else {
+              setPageData(null);
             }
-          ]
-        });
-      } else if (docId === 'duyurular' || normalizedPath === '/duyurular') {
-        setPageData({
-          title: 'Duyurular',
-          blocks: defaultDuyurularData
-        });
-      } else if (docId === 'basarilarimiz' || normalizedPath === '/basarilarimiz') {
-        setPageData({
-          title: 'Başarılarımız',
-          blocks: defaultBasarilarimizData
-        });
-      } else if (docId === 'hakkimizda' || normalizedPath === '/hakkimizda') {
-        setPageData({
-          title: 'Hakkımızda',
-          blocks: defaultHakkimizdaData
-        });
-      } else if (docId === 'is-basvuru-formu' || docId === 'is-basvurusu' || ['/is-basvuru-formu', '/is-basvuru', '/is-basvurusu', '/isbasvurusu', '/isbasvuru'].includes(normalizedPath)) {
-        setPageData({
-          title: 'İş Başvurusu',
-          path: '/is-basvurusu',
-          blocks: defaultCareerPageData
-        });
-      } else if (docId === 'egitim-sistemimiz' || normalizedPath === '/egitim-sistemimiz') {
-        setPageData({
-          title: 'Eğitim Sistemimiz',
-          path: '/egitim-sistemimiz',
-          blocks: defaultEgitimSistemiData
-        });
-      } else if (docId === 'on-kayit' || normalizedPath === '/on-kayit') {
-        setPageData({
-          title: 'Öğrenci Ön Kayıt Formu',
-          blocks: defaultPreRegistrationData
-        });
-      } else if (docId === 'bursluluk-basvuru-formu' || normalizedPath === '/bursluluk-basvuru-formu') {
-        setPageData({
-          title: 'Bursluluk Sınav Başvurusu',
-          path: '/bursluluk-basvuru-formu',
-          blocks: defaultScholarshipPageData
-        });
-      } else if (docId === 'bursluluk-basvuru-onay' || normalizedPath === '/bursluluk-basvuru-onay') {
-        setPageData({
-          title: 'Bursluluk Sınav Başvuru Onayı',
-          path: '/bursluluk-basvuru-onay',
-          blocks: defaultScholarshipConfirmationPageData
-        });
-      } else if (docId === 'lgs-puan-hesaplama' || normalizedPath === '/lgs-puan-hesaplama') {
-        setPageData({
-          title: 'LGS Puan Hesaplama Modülü',
-          path: '/lgs-puan-hesaplama',
-          blocks: defaultLgsCalculatorData
-        });
-      } else {
-        setPageData(null);
-      }
-      setLoading(false);
+        }
+        setLoading(false);
+      };
+
+      // Apply fallback initially in case neither query succeeds
+      applyFallback();
+
     }, (e) => {
       console.error("PUBLIC_VIEW_ERROR:", e);
-      if (rawPath === '/' || docId === 'home') {
-        setPageData({
-          title: 'Ana Sayfa',
-          blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
-        });
+      const fallbackPages: any = liveFallbackData.pages;
+      let matchedFallback = null;
+      if (docId && fallbackPages[docId]) {
+         matchedFallback = fallbackPages[docId];
       } else {
-        setPageData(null);
+         const fallbackValues = Object.values(fallbackPages);
+         matchedFallback = fallbackValues.find((p: any) => p.path === cleanPath);
+      }
+
+      if (matchedFallback && !matchedFallback.isDeleted && !matchedFallback.isHidden) {
+          setPageData(cleanBrokenImages(matchedFallback));
+      } else {
+          if (rawPath === '/' || docId === 'home') {
+            setPageData({
+              title: 'Ana Sayfa',
+              blocks: defaultHomePageData.filter(b => b.type !== 'header' && b.type !== 'footer')
+            });
+          } else {
+            setPageData(null);
+          }
       }
       setLoading(false);
     });
