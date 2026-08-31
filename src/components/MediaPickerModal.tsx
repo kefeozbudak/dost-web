@@ -63,23 +63,28 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const fetchMedia = async () => {
+    try {
+      const q = query(collection(db, 'media'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      const items = snapshot.docs.map(doc => ({ 
+         id: doc.id, 
+         ...doc.data()
+      }));
+      setMediaItems(items);
+    } catch (err) {
+      console.error("Error fetching media", err);
+      setErrorMsg("Görseller yüklenirken hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       setErrorMsg(null);
       setLoading(true);
-      const q = query(collection(db, 'media'), orderBy('createdAt', 'desc'), limit(30));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const items = snapshot.docs.map(doc => ({ 
-           id: doc.id, 
-           ...doc.data()
-        }));
-        setMediaItems(items);
-        setLoading(false);
-      }, (err) => {
-        console.error("Error fetching media", err);
-        setLoading(false);
-      });
-      return () => unsubscribe();
+      fetchMedia();
     }
   }, [isOpen]);
 
@@ -129,6 +134,7 @@ export default function MediaPickerModal({ isOpen, onClose, onSelect }: MediaPic
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+      await fetchMedia();
     }
   };
 
