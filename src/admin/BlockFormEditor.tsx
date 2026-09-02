@@ -3713,7 +3713,28 @@ export default function BlockFormEditor({
         </div>
       )}
       
-            <MediaPickerModal
+            {block.type === 'rich_text' && (
+        <div className="space-y-4">
+          {renderInputWithStyle("Başlık", "title")}
+          {renderTextareaWithStyle("İçerik (HTML destekli)", "content")}
+        </div>
+      )}
+
+      {block.type === 'html' && (
+        <div className="space-y-4">
+          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+            Özel HTML Kodları
+          </label>
+          <textarea
+            value={block.content || ''}
+            onChange={(e) => onChange({ ...block, content: e.target.value })}
+            className="w-full h-64 p-3 border border-slate-200 rounded-lg font-mono text-sm"
+            placeholder="<div>...</div>"
+          />
+        </div>
+      )}
+
+      <MediaPickerModal
         isOpen={mediaPickerConfig.isOpen}
         onClose={() =>
           setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }))

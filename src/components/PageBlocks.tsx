@@ -5405,6 +5405,159 @@ export const DynamicBlockRenderer = ({
               getSubtitleStyle={getSubtitleStyle}
             />
           );
+        case "rich_text":
+          return (
+            <section
+              className={`w-full py-16 px-4 md:px-8 whitespace-normal md:whitespace-pre-line ${getAlignClass(block, "text-")}`}
+              style={getStyle(block)}
+            >
+              <div className="max-w-4xl mx-auto whitespace-normal md:whitespace-pre-line">
+                {block.title && (
+                  <h2
+                    className="font-headline-lg text-headline-lg text-primary mb-6 uppercase tracking-wider whitespace-normal md:whitespace-pre-line"
+                    style={getTitleStyle(block)}
+                  >
+                    {block.title}
+                  </h2>
+                )}
+                {block.content && (
+                  <div
+                    className="prose prose-slate max-w-none prose-p:leading-relaxed prose-a:text-blue-600 hover:prose-a:text-blue-800 text-slate-700 whitespace-normal md:whitespace-pre-line"
+                    style={getSubtitleStyle(block)}
+                    dangerouslySetInnerHTML={{ __html: block.content }}
+                  />
+                )}
+              </div>
+            </section>
+          );
+        
+        case "grid":
+          return (
+            <section
+              className={`w-full py-16 px-4 md:px-8 whitespace-normal md:whitespace-pre-line ${getAlignClass(block, "text-")}`}
+              style={getStyle(block)}
+            >
+              <div className="max-w-7xl mx-auto">
+                {(block.title || block.subtitle) && (
+                  <div className={`mb-12 ${block.styles?.textAlign || "text-center"}`}>
+                    {block.title && (
+                      <h2
+                        className="font-headline-lg text-headline-lg text-primary mb-4 whitespace-normal md:whitespace-pre-line"
+                        style={getTitleStyle(block)}
+                      >
+                        {block.title}
+                      </h2>
+                    )}
+                    {block.subtitle && (
+                      <p
+                        className="font-body-lg text-body-lg text-text-muted whitespace-normal md:whitespace-pre-line max-w-3xl mx-auto"
+                        style={getSubtitleStyle(block)}
+                      >
+                        {block.subtitle}
+                      </p>
+                    )}
+                  </div>
+                )}
+                
+                {block.items && block.items.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {block.items.map((item: any, idx: number) => {
+                      const Wrapper = item.url ? "a" : "div";
+                      return (
+                        <Wrapper
+                          key={idx}
+                          href={item.url || undefined}
+                          className={`bg-surface-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-border-subtle transition-all flex flex-col ${item.url ? 'cursor-pointer hover:-translate-y-1' : ''}`}
+                          style={getCardStyle(item, block)}
+                        >
+                          {item.image && (
+                            <div className="w-full aspect-video relative overflow-hidden">
+                              <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={getImageStyle(item, "image", idx)} />
+                            </div>
+                          )}
+                          <div className="p-6 flex flex-col flex-1">
+                            {item.icon && !item.image && (
+                              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                                <IconPreview data={item.icon} className="text-primary text-2xl" />
+                              </div>
+                            )}
+                            {item.title && (
+                              <h3 className="font-headline-sm text-headline-sm text-primary mb-2 whitespace-normal md:whitespace-pre-line">
+                                {item.title}
+                              </h3>
+                            )}
+                            {item.desc && (
+                              <p className="font-body-md text-body-md text-text-muted whitespace-normal md:whitespace-pre-line flex-1">
+                                {item.desc}
+                              </p>
+                            )}
+                          </div>
+                        </Wrapper>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+          
+        case "text_image":
+          return (
+            <section
+              className={`w-full py-16 px-4 md:px-8 whitespace-normal md:whitespace-pre-line`}
+              style={getStyle(block)}
+            >
+              <div className="max-w-7xl mx-auto">
+                <div className={`flex flex-col lg:flex-row gap-12 items-center ${block.imagePosition === 'left' ? 'lg:flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 w-full space-y-6 ${getAlignClass(block, "text-")}`}>
+                    {block.badge && (
+                       <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full">
+                         {block.badge}
+                       </span>
+                    )}
+                    {block.title && (
+                      <h2
+                        className="font-headline-lg text-headline-lg text-primary whitespace-normal md:whitespace-pre-line"
+                        style={getTitleStyle(block)}
+                      >
+                        {block.title}
+                      </h2>
+                    )}
+                    {block.content && (
+                      <div
+                        className="prose prose-slate max-w-none prose-p:leading-relaxed text-slate-700 whitespace-normal md:whitespace-pre-line"
+                        style={getSubtitleStyle(block)}
+                        dangerouslySetInnerHTML={{ __html: block.content }}
+                      />
+                    )}
+                  </div>
+                  {block.image && (
+                    <div className="flex-1 w-full relative">
+                      <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative">
+                        <img 
+                           src={block.image} 
+                           alt={block.title || "Görsel"} 
+                           className="w-full h-full object-cover" 
+                           style={getImageStyle(block, "image")}
+                        />
+                      </div>
+                      <div className={`absolute -z-10 w-2/3 h-2/3 rounded-3xl ${block.imagePosition === 'left' ? 'bg-secondary/20 -top-6 -right-6' : 'bg-primary/10 -bottom-6 -left-6'}`}></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          );
+          
+        case "html":
+          return (
+            <div 
+               className="w-full custom-html-block"
+               style={getStyle(block)}
+               dangerouslySetInnerHTML={{ __html: block.content || "" }} 
+            />
+          );
+
       default:
         if (block.type === "achievements_hero") {
         return (

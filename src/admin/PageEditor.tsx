@@ -601,6 +601,7 @@ export default function PageEditor() {
                           { type: 'bento_academic', label: 'Bento Akademik' },
                           { type: 'grid', label: 'Basit Grid' },
                           { type: 'text_image', label: 'Yazı + Resim' },
+                          { type: 'rich_text', label: 'Metin Bloğu (Düz Yazı)' },
                           { type: 'html', label: 'Özel HTML' }
                         ].map((b, i) => (
                           <button
