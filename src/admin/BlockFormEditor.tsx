@@ -2963,10 +2963,64 @@ export default function BlockFormEditor({
           </div>
         )}
 
+        {block.type === 'image_bento' && (
+          <div className="space-y-4">
+            {renderInputWithStyle('Başlık', 'title')}
+            {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            {renderInputWithStyle('Görsele Tıklanınca Büyüt (Lightbox)', 'enableLightbox', 'checkbox')}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Yan Yana Sütun Sayısı (Masaüstü)</label>
+              <select
+                value={block.columns || '3'}
+                onChange={(e) => onChange({ ...block, columns: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+              >
+                <option value="1">1'li Satır (En Büyük)</option>
+                <option value="2">2'li Satır (Büyük)</option>
+                <option value="3">3'lü Satır (Orta)</option>
+                <option value="4">4'lü Satır (Küçük)</option>
+              </select>
+            </div>
+            {renderArrayEditor(
+              'items',
+              [
+                { key: 'image', label: 'Görsel', type: 'image' },
+                { 
+                  key: 'aspectRatio', 
+                  label: 'Görsel Ebatı', 
+                  type: 'select', 
+                  options: [
+                    { value: 'aspect-[4/3]', label: '4:3 (Yatay)' },
+                    { value: 'aspect-square', label: '1:1 (Kare)' },
+                    { value: 'aspect-video', label: '16:9 (Geniş)' },
+                    { value: 'aspect-[3/4]', label: '3:4 (Dikey)' },
+                    { value: 'aspect-[9/16]', label: '9:16 (Uzun Dikey)' },
+                    { value: 'aspect-auto', label: 'Orijinal' }
+                  ] 
+                }
+              ],
+              'Bento Görselleri'
+            )}
+          </div>
+        )}
+
         {block.type === 'grid' && (
           <div className="space-y-4">
             {renderInputWithStyle('Başlık', 'title')}
             {renderTextareaWithStyle('Alt Başlık', 'subtitle')}
+            <div>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Yan Yana Sütun Sayısı (Masaüstü)</label>
+              <select
+                value={block.columns || '3'}
+                onChange={(e) => onChange({ ...block, columns: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+              >
+                <option value="1">1'li Satır (En Büyük)</option>
+                <option value="2">2'li Satır (Büyük)</option>
+                <option value="3">3'lü Satır (Orta)</option>
+                <option value="4">4'lü Satır (Küçük)</option>
+              </select>
+            </div>
             {renderArrayEditor(
               'items',
               [

@@ -2894,6 +2894,7 @@ export const DynamicBlockRenderer = ({
   onBlockClick?: (index: number, e?: React.MouseEvent) => void;
 }) => {
   const [calendarMonthOffsets, setCalendarMonthOffsets] = React.useState<Record<number, number>>({});
+  const [lightboxImage, setLightboxImage] = React.useState<string | null>(null);
   console.log("DynamicBlockRenderer blocks:", blocks);
   if (!blocks || !Array.isArray(blocks)) return null;
 
@@ -5431,6 +5432,79 @@ export const DynamicBlockRenderer = ({
             </section>
           );
         
+        case "image_bento":
+          return (
+            <section
+              className={`w-full py-16 px-4 md:px-8 whitespace-normal md:whitespace-pre-line ${getAlignClass(block, "text-")}`}
+              style={getStyle(block)}
+            >
+              <div className="max-w-7xl mx-auto">
+                {(block.title || block.subtitle) && (
+                  <div className={`mb-12 ${block.styles?.textAlign || "text-center"}`}>
+                    {block.title && (
+                      <h2
+                        className="font-headline-lg text-headline-lg text-primary mb-4 whitespace-normal md:whitespace-pre-line"
+                        style={getTitleStyle(block)}
+                      >
+                        {block.title}
+                      </h2>
+                    )}
+                    {block.subtitle && (
+                      <p
+                        className="font-body-lg text-body-lg text-text-muted whitespace-normal md:whitespace-pre-line max-w-3xl mx-auto"
+                        style={getSubtitleStyle(block)}
+                        dangerouslySetInnerHTML={{ __html: block.subtitle }}
+                      />
+                    )}
+                  </div>
+                )}
+                
+                {block.items && block.items.length > 0 && (
+                  <div className={`grid gap-4 md:gap-6 ${
+                    block.columns === "1" ? "grid-cols-1" :
+                    block.columns === "2" ? "grid-cols-1 md:grid-cols-2" :
+                    block.columns === "4" ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-4" :
+                    "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  }`}>
+                    {block.items.map((item: any, idx: number) => {
+                      const aspectRatio = item.aspectRatio || "aspect-[4/3]";
+                      return (
+                        <div
+                          key={idx}
+                          className={`${aspectRatio} rounded-2xl overflow-hidden shadow-sm border border-border-subtle transition-all relative group w-full ${block.enableLightbox ? 'cursor-pointer' : ''}`}
+                          style={getCardStyle(item, block)}
+                          onClick={(e) => {
+                            if (block.enableLightbox && item.image) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setLightboxImage(item.image);
+                            }
+                          }}
+                        >
+                          {item.image && (
+                            <img 
+                              src={item.image} 
+                              alt={`Bento görsel ${idx}`} 
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                              style={getImageStyle(item, "image", idx)} 
+                            />
+                          )}
+                          {block.enableLightbox && item.image && (
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
+                              <div className="w-12 h-12 rounded-full bg-white/90 shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-75 group-hover:scale-100">
+                                <span className="material-symbols-outlined text-primary text-xl">zoom_in</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        
         case "grid":
           return (
             <section
@@ -5460,7 +5534,12 @@ export const DynamicBlockRenderer = ({
                 )}
                 
                 {block.items && block.items.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  <div className={`grid gap-6 md:gap-8 ${
+                    block.columns === "1" ? "grid-cols-1 max-w-3xl mx-auto" :
+                    block.columns === "2" ? "grid-cols-1 md:grid-cols-2" :
+                    block.columns === "4" ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-4" :
+                    "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  }`}>
                     {block.items.map((item: any, idx: number) => {
                       const Wrapper = item.url ? "a" : "div";
                       return (
@@ -6894,6 +6973,31 @@ export const DynamicBlockRenderer = ({
   };
 
   return (
-    <>{processedBlocks.map((block: any, index: number) => renderBlock(block, index))}</>
+    <>
+      {processedBlocks.map((block: any, index: number) => renderBlock(block, index))}
+      
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white bg-black/20 hover:bg-black/50 p-3 rounded-full transition-all cursor-pointer z-50 flex items-center justify-center w-12 h-12 border border-white/10"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxImage(null);
+            }}
+          >
+            <span className="material-symbols-outlined text-2xl">close</span>
+          </button>
+          <img 
+            src={lightboxImage} 
+            alt="Büyük Görsel" 
+            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transform scale-100 animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()} 
+          />
+        </div>
+      )}
+    </>
   );
 };
