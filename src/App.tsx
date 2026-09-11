@@ -9,6 +9,7 @@ import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth, db } from "./lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuthStore } from "./store/authStore";
+import { runLibraryMigration } from "./lib/runMigration";
 
 // Placeholder imports for pages
 import PublicView from "./pages/PublicView";
@@ -69,6 +70,7 @@ export default function App() {
         setAuthData(null, []);
       }
       setLoading(false);
+      runLibraryMigration();
     });
     return () => unsubscribe();
   }, [setAuthData]);
