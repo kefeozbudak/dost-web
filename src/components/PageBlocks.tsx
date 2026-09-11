@@ -99,7 +99,7 @@ for (let i = 1; i <= daysInMonth; i++) {
             date: dayStr,
             isCurrentMonth: true,
             isWeekend: isWeekend,
-            isToday: isActualToday,
+            isToday: typeof bestMatch.isToday === 'boolean' ? bestMatch.isToday : isActualToday,
             _oIndex: bestMatchIndex
          });
     } else {
@@ -6278,28 +6278,6 @@ export const DynamicBlockRenderer = ({
                         );
                       }
 
-                      if (day.isWeekend) {
-                        return (
-                          <div
-                            key={i}
-                            data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
-                            data-editor-array-key="days"
-                            className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30 whitespace-normal md:whitespace-pre-line"
-                          >
-                            <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
-                              <span className="text-sm md:text-xl font-black text-slate-800 whitespace-normal md:whitespace-pre-line">
-                                {day.date}
-                              </span>
-                              <span
-                                className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"}`}
-                              >
-                                Hafta Sonu
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      }
-
                       if (day.isToday) {
                         return (
                           <div
@@ -6338,11 +6316,38 @@ export const DynamicBlockRenderer = ({
                                   key={mIndex}
                                   className="text-[10px] md:text-sm font-bold text-slate-800 flex items-start gap-1 md:gap-2 leading-tight whitespace-normal md:whitespace-pre-line"
                                 >
-                                  <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary mt-1 md:mt-1.5 shrink-0 whitespace-normal md:whitespace-pre-line"></span>{" "}
-                                  {meal}
+                                  <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-1.5 flex-shrink-0 whitespace-normal md:whitespace-pre-line"></span>
+                                  <span className="flex-1 whitespace-normal md:whitespace-pre-line">{meal}</span>
                                 </li>
                               ))}
                             </ul>
+                            {day.kcal && (
+                              <div className="mt-3 md:mt-4 inline-block px-1.5 md:px-2 py-0.5 md:py-1 bg-primary/10 text-primary text-[8px] md:text-xs font-bold rounded-full whitespace-normal md:whitespace-pre-line">
+                                {day.kcal}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                      
+                      if (day.isWeekend && !day.isToday) {
+                        return (
+                          <div
+                            key={i}
+                            data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
+                            data-editor-array-key="days"
+                            className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-red-50/30 whitespace-normal md:whitespace-pre-line"
+                          >
+                            <div className="flex flex-col md:flex-row md:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
+                              <span className="text-sm md:text-xl font-black text-slate-800 whitespace-normal md:whitespace-pre-line">
+                                {day.date}
+                              </span>
+                              <span
+                                className={`text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full bg-red-100 text-red-600 uppercase ${block.styles?.textAlign ? "" : "text-center"}`}
+                              >
+                                Hafta Sonu
+                              </span>
+                            </div>
                           </div>
                         );
                       }
@@ -6351,8 +6356,8 @@ export const DynamicBlockRenderer = ({
                         <div
                           key={i}
                           data-editor-item-index={day._oIndex !== undefined && day._oIndex !== -1 ? day._oIndex : (parseInt(day.date)-1)}
-                            data-editor-array-key="days"
-                          className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] whitespace-normal md:whitespace-pre-line"
+                          data-editor-array-key="days"
+                          className="p-2 md:p-4 hover:bg-slate-50 transition-colors group min-h-[120px] md:min-h-[220px] bg-white whitespace-normal md:whitespace-pre-line"
                         >
                           <div className="flex flex-col xl:flex-row xl:justify-between items-start gap-1 mb-3 whitespace-normal md:whitespace-pre-line">
                             <span className="text-sm md:text-xl font-black text-slate-800 whitespace-normal md:whitespace-pre-line">
@@ -6616,7 +6621,7 @@ export const DynamicBlockRenderer = ({
                       );
                     }
 
-                    if (day.isWeekend) {
+                    if (day.isWeekend && !day.isToday) {
                       return (
                         <div
                           key={i}
